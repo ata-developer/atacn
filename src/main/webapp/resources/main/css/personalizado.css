@@ -1,0 +1,6 @@
+.ui-panelgrid-cell {
+    border-width: 1px;
+    border-style: none !important;
+    border-color: inherit;
+    padding: 4px 10px;
+}

@@ -1,0 +1,6 @@
+/* Deprecated Grid CSS */
+.ui-widget-content {
+    border: none;
+    background: transparent;
+    color: transparent;
+}
