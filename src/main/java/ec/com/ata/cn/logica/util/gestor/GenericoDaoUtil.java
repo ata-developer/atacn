@@ -37,15 +37,6 @@ public class GenericoDaoUtil<T, I extends Serializable> {
     }
 
     /**
-     * @param em
-     * @param tablaEntidad
-     */
-    public GenericoDaoUtil(final Class<T> tablaEntidad, final EntityManager em) {
-        this.tablaEntidad = tablaEntidad;
-        this.em = em;
-    }
-
-    /**
      * Método genérico para insertar un registro
      *
      * @param tablaEntidad tabla de tipo entidad
@@ -74,8 +65,6 @@ public class GenericoDaoUtil<T, I extends Serializable> {
     public void eliminar(final I identificador) {
         T tablaEntidadEliminar = obtenerPorCodigo(identificador);
         em.remove(tablaEntidadEliminar);
-        em.flush();
-
     }
 
     /**
