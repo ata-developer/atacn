@@ -38,6 +38,13 @@
             <version>2.6</version>
         </dependency>
 
+        <!-- base de datos -->
+        <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.1-901-1.jdbc4</version>
+        </dependency>
+
         <!-- JEE dependencies -->
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -50,7 +57,7 @@
             <version>2.4.5.Final</version>
         </dependency>
 
-         <!-- Data Exporter -->
+        <!-- Data Exporter -->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
