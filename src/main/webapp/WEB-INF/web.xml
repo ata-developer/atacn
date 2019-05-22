@@ -53,7 +53,7 @@
     </context-param>
     <context-param>
         <param-name>primefaces.THEME</param-name>
-        <param-value>#{guestPreferences.theme}</param-value>
+        <param-value>blitzer</param-value>
     </context-param>
         <context-param>
         <param-name>primefaces.FONT_AWESOME</param-name>
@@ -85,7 +85,7 @@
 
     <filter>
         <filter-name>Character Encoding Filter</filter-name>
-        <filter-class>org.primefaces.showcase.filter.CharacterEncodingFilter</filter-class>
+        <filter-class>ec.com.ata.cn.controlador.filtro.CharacterEncodingFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>Character Encoding Filter</filter-name>
