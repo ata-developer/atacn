@@ -18,7 +18,7 @@ import javax.persistence.SequenceGenerator;
  * @author ATA1
  */
 @Entity
-public class Piso implements Serializable {
+public class PisoProteccion implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -50,10 +50,10 @@ public class Piso implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Piso)) {
+        if (!(object instanceof PisoProteccion)) {
             return false;
         }
-        Piso other = (Piso) object;
+        PisoProteccion other = (PisoProteccion) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }

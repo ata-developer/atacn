@@ -32,10 +32,10 @@ public class VehiculoCategoriaTrabajo implements Serializable {
     private Vehiculo vehiculo;
     
     @ManyToOne
-    private Categoria categoriaForrosTapiceria;
+    private Categoria categoriaTrabajoAsiento;
     
     @ManyToOne
-    private Categoria pisoIntegroProteccion;
+    private Categoria trabajoPiso;
     
 
     public void setId(Long id) {
@@ -82,31 +82,31 @@ public class VehiculoCategoriaTrabajo implements Serializable {
     }
 
     /**
-     * @return the categoriaForrosTapiceria
+     * @return the categoriaTrabajoAsiento
      */
-    public Categoria getCategoriaForrosTapiceria() {
-        return categoriaForrosTapiceria;
+    public Categoria getCategoriaTrabajoAsiento() {
+        return categoriaTrabajoAsiento;
     }
 
     /**
-     * @param categoriaForrosTapiceria the categoriaForrosTapiceria to set
+     * @param categoriaTrabajoAsiento the categoriaTrabajoAsiento to set
      */
-    public void setCategoriaForrosTapiceria(Categoria categoriaForrosTapiceria) {
-        this.categoriaForrosTapiceria = categoriaForrosTapiceria;
+    public void setCategoriaTrabajoAsiento(Categoria categoriaTrabajoAsiento) {
+        this.categoriaTrabajoAsiento = categoriaTrabajoAsiento;
     }
 
     /**
-     * @return the pisoIntegroProteccion
+     * @return the trabajoPiso
      */
-    public Categoria getPisoIntegroProteccion() {
-        return pisoIntegroProteccion;
+    public Categoria getTrabajoPiso() {
+        return trabajoPiso;
     }
 
     /**
-     * @param pisoIntegroProteccion the pisoIntegroProteccion to set
+     * @param trabajoPiso the trabajoPiso to set
      */
-    public void setPisoIntegroProteccion(Categoria pisoIntegroProteccion) {
-        this.pisoIntegroProteccion = pisoIntegroProteccion;
+    public void setTrabajoPiso(Categoria trabajoPiso) {
+        this.trabajoPiso = trabajoPiso;
     }
     
 }

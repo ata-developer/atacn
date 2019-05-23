@@ -18,43 +18,43 @@ import javax.persistence.SequenceGenerator;
  * @author ATA1
  */
 @Entity
-public class Moqueta implements Serializable {
+public class PisoIntegro implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @SequenceGenerator(
-            name = "moqueta_seq",
-            sequenceName = "moqueta_seq",
+            name = "piso_seq",
+            sequenceName = "piso_seq",
             allocationSize = 1)
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "moqueta_seq")
-    @Column(name = "moqueta_seq")
-    private Long idMoqueta;
+            generator = "piso_seq")
+    @Column(name = "id_piso")
+    private Long id;
 
-    public Long getIdMoqueta() {
-        return idMoqueta;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdMoqueta(Long idMoqueta) {
-        this.idMoqueta = idMoqueta;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idMoqueta != null ? idMoqueta.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the idMoqueta fields are not set
-        if (!(object instanceof Moqueta)) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof PisoIntegro)) {
             return false;
         }
-        Moqueta other = (Moqueta) object;
-        if ((this.idMoqueta == null && other.idMoqueta != null) || (this.idMoqueta != null && !this.idMoqueta.equals(other.idMoqueta))) {
+        PisoIntegro other = (PisoIntegro) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -62,7 +62,7 @@ public class Moqueta implements Serializable {
 
     @Override
     public String toString() {
-        return "ec.com.ata.cn.modelo.Moqueta[ id=" + idMoqueta + " ]";
+        return "ec.com.ata.cn.modelo.Piso[ id=" + id + " ]";
     }
     
 }

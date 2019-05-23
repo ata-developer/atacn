@@ -6,37 +6,24 @@
 package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
-import javax.persistence.Column;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.OneToMany;
 
 /**
  *
  * @author ATA1
  */
 @Entity
-public class ParteAsiento implements Serializable {
+public class Asiento implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(
-            name = "parteasiento_seq",
-            sequenceName = "parteasiento_seq",
-            allocationSize = 1)
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "paisorigen_seq")
-    @Column(name = "id_paisorigen")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
-   
-    
-    @ManyToOne
-    private Material material;
 
     public Long getId() {
         return id;
@@ -45,6 +32,9 @@ public class ParteAsiento implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+    
+    @OneToMany
+    private List<Parte> partes;
 
     @Override
     public int hashCode() {
@@ -56,10 +46,10 @@ public class ParteAsiento implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ParteAsiento)) {
+        if (!(object instanceof Asiento)) {
             return false;
         }
-        ParteAsiento other = (ParteAsiento) object;
+        Asiento other = (Asiento) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -68,23 +58,21 @@ public class ParteAsiento implements Serializable {
 
     @Override
     public String toString() {
-        return "ec.com.ata.cn.modelo.ParteAsiento[ id=" + id + " ]";
-    }
-    
-    /**
-     * @return the material
-     */
-    public Material getMaterial() {
-        return material;
+        return "ec.com.ata.cn.modelo.Asiento[ id=" + id + " ]";
     }
 
     /**
-     * @param material the material to set
+     * @return the partes
      */
-    public void setMaterial(Material material) {
-        this.material = material;
+    public List<Parte> getPartes() {
+        return partes;
     }
 
-    
+    /**
+     * @param partes the partes to set
+     */
+    public void setPartes(List<Parte> partes) {
+        this.partes = partes;
+    }
     
 }

@@ -12,35 +12,28 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 
 /**
  *
  * @author ATA1
  */
 @Entity
-public class ParteAsiento implements Serializable {
+public class Parte implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(
-            name = "parteasiento_seq",
-            sequenceName = "parteasiento_seq",
-            allocationSize = 1)
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "paisorigen_seq")
-    @Column(name = "id_paisorigen")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
-   
-    
-    @ManyToOne
-    private Material material;
 
     public Long getId() {
         return id;
     }
+
+    @Column(name = "parte")
+    private String parte;
+    
+    @ManyToOne
+    private Material material;
 
     public void setId(Long id) {
         this.id = id;
@@ -56,10 +49,10 @@ public class ParteAsiento implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ParteAsiento)) {
+        if (!(object instanceof Parte)) {
             return false;
         }
-        ParteAsiento other = (ParteAsiento) object;
+        Parte other = (Parte) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -68,9 +61,23 @@ public class ParteAsiento implements Serializable {
 
     @Override
     public String toString() {
-        return "ec.com.ata.cn.modelo.ParteAsiento[ id=" + id + " ]";
+        return "ec.com.ata.cn.modelo.Parte[ id=" + id + " ]";
     }
-    
+
+    /**
+     * @return the parte
+     */
+    public String getParte() {
+        return parte;
+    }
+
+    /**
+     * @param parte the parte to set
+     */
+    public void setParte(String parte) {
+        this.parte = parte;
+    }
+
     /**
      * @return the material
      */
@@ -85,6 +92,4 @@ public class ParteAsiento implements Serializable {
         this.material = material;
     }
 
-    
-    
 }
