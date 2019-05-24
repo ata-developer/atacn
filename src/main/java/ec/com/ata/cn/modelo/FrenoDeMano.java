@@ -14,7 +14,7 @@ import javax.persistence.Entity;
  * @author ATA1
  */
 @Entity
-@DiscriminatorValue( value="FORRO" )
+@DiscriminatorValue( value="FRENODEMANO" )
 public class FrenoDeMano extends Trabajo implements Serializable {
   
     private static final long serialVersionUID = 1L;
