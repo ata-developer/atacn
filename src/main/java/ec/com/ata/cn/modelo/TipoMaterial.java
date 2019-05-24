@@ -21,6 +21,7 @@ import javax.persistence.SequenceGenerator;
 public class TipoMaterial implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @SequenceGenerator(
             name = "tipomaterial_seq",

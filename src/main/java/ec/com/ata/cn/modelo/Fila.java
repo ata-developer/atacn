@@ -14,12 +14,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  *
  * @author ATA1
  */
 @Entity
+@Table
 public class Fila implements Serializable {
 
     private static final long serialVersionUID = 1L;

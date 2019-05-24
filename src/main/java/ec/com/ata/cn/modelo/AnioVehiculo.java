@@ -9,12 +9,14 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  *
  * @author ATA1
  */
 @Entity
+@Table
 public class AnioVehiculo implements Serializable {
   
     private static final long serialVersionUID = 1L;
