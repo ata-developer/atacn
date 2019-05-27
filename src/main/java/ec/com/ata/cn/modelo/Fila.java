@@ -37,7 +37,7 @@ public class Fila implements Serializable {
     private Long idFila;
     
     @OneToMany
-    private List<Asiento> listaAsiento;
+    private List<Asiento> asientos;
     
 
     public Long getIdFila() {
@@ -74,17 +74,17 @@ public class Fila implements Serializable {
     }
 
     /**
-     * @return the listaAsiento
+     * @return the asientos
      */
-    public List<Asiento> getListaAsiento() {
-        return listaAsiento;
+    public List<Asiento> getAsientos() {
+        return asientos;
     }
 
     /**
-     * @param listaAsiento the listaAsiento to set
+     * @param asientos the asientos to set
      */
-    public void setListaAsiento(List<Asiento> listaAsiento) {
-        this.listaAsiento = listaAsiento;
+    public void setAsientos(List<Asiento> asientos) {
+        this.asientos = asientos;
     }
     
 }

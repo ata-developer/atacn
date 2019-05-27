@@ -40,7 +40,7 @@ public class Vehiculo implements Serializable {
     private String modelo;
     
     @ManyToOne
-    private Marca marca;
+    private MarcaVehiculo marca;
     
     @ManyToOne
     private AnioVehiculo anioVehiculo;
@@ -87,14 +87,14 @@ public class Vehiculo implements Serializable {
     /**
      * @return the marca
      */
-    public Marca getMarca() {
+    public MarcaVehiculo getMarca() {
         return marca;
     }
 
     /**
      * @param marca the marca to set
      */
-    public void setMarca(Marca marca) {
+    public void setMarca(MarcaVehiculo marca) {
         this.marca = marca;
     }
 

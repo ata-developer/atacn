@@ -12,24 +12,26 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  *
  * @author ATA1
  */
 @Entity
+@Table
 public class PaisOrigen implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id    
     @SequenceGenerator(
-            name = "paisorigen_seq",
-            sequenceName = "paisorigen_seq",
+            name = "pais_origen_seq",
+            sequenceName = "pais_origen_seq",
             allocationSize = 1)
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "paisorigen_seq")
-    @Column(name = "id_paisorigen")
+            generator = "pais_origen_seq")
+    @Column(name = "id_pais_origen")
     private Long idPaisOrigen;
     
     @Column(name = "pais")

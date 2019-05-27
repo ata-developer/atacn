@@ -13,12 +13,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  *
  * @author ATA1
  */
 @Entity
+@Table
 public class Material implements Serializable {
 
     
@@ -33,6 +35,9 @@ public class Material implements Serializable {
             generator = "material_seq")
     @Column(name = "id_material")
     private Long idMaterial;
+    
+    @Column(name = "codigo")
+    private String codigo;
     
     @Column(name = "descripcion")
     private String descripcion;
@@ -99,6 +104,20 @@ public class Material implements Serializable {
      */
     public void setTipoMaterial(TipoMaterial tipoMaterial) {
         this.tipoMaterial = tipoMaterial;
+    }
+
+    /**
+     * @return the codigo
+     */
+    public String getCodigo() {
+        return codigo;
+    }
+
+    /**
+     * @param codigo the codigo to set
+     */
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
     
 }

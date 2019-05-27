@@ -6,10 +6,8 @@
 package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 
 /**
  *
@@ -17,30 +15,12 @@ import javax.persistence.OneToMany;
  */
 @Entity
 @DiscriminatorValue( value="FORRO" )
-public class Forro extends Trabajo implements Serializable {
+public class Forro extends TrabajoAsiento implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
-    @OneToMany
-    private List<Fila> filas;
-
+   
     @Override
     public String toString() {
-        return "ec.com.ata.cn.modelo.ForroTapiceria[ id=" + super.getIdTrabajo() + " ]";
+        return "ec.com.ata.cn.modelo.Forro[ id=" + super.getIdTrabajo() + " ]";
     }
-
-    /**
-     * @return the filas
-     */
-    public List<Fila> getFilas() {
-        return filas;
-    }
-
-    /**
-     * @param filas the filas to set
-     */
-    public void setFilas(List<Fila> filas) {
-        this.filas = filas;
-    }
-    
 }

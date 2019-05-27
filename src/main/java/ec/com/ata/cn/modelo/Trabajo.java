@@ -14,7 +14,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.MappedSuperclass;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -23,10 +22,10 @@ import javax.persistence.Table;
  * @author ATA1
  */
 
-@Inheritance( strategy = InheritanceType.SINGLE_TABLE )
-@DiscriminatorColumn( name="TRABAJO" )
-//@Polymorphism(type = PolymorphismType.IMPLICIT)
-@MappedSuperclass
+@Entity
+@Table
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipo_trabajo")
 public class Trabajo implements Serializable {
 
     private static final long serialVersionUID = 1L;

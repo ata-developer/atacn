@@ -12,52 +12,54 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  *
  * @author ATA1
  */
 @Entity
+@Table
 public class ObservacionAnio implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @SequenceGenerator(
-            name = "observacionanio_seq",
-            sequenceName = "observacionanio_seq",
+            name = "observacion_anio_seq",
+            sequenceName = "observacion_anio_seq",
             allocationSize = 1)
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "observacionanio_seq")
-    @Column(name = "id_observacionanio")
-    private Long id;
+            generator = "observacion_anio_seq")
+    @Column(name = "observacion_anio_seq")
+    private Long idObservacionAnio;
 
-    public Long getId() {
-        return id;
+    public Long getIdObservacionAnio() {
+        return idObservacionAnio;
     }
     
     @Column(name = "observacion")
     private String observacion;
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setIdObservacionAnio(Long idObservacionAnio) {
+        this.idObservacionAnio = idObservacionAnio;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (idObservacionAnio != null ? idObservacionAnio.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+        // TODO: Warning - this method won't work in the case the idObservacionAnio fields are not set
         if (!(object instanceof ObservacionAnio)) {
             return false;
         }
         ObservacionAnio other = (ObservacionAnio) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.idObservacionAnio == null && other.idObservacionAnio != null) || (this.idObservacionAnio != null && !this.idObservacionAnio.equals(other.idObservacionAnio))) {
             return false;
         }
         return true;
@@ -65,7 +67,7 @@ public class ObservacionAnio implements Serializable {
 
     @Override
     public String toString() {
-        return "ec.com.ata.cn.modelo.ObservacionAnio[ id=" + id + " ]";
+        return "ec.com.ata.cn.modelo.ObservacionAnio[ id=" + idObservacionAnio + " ]";
     }
 
     /**

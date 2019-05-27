@@ -16,31 +16,31 @@ import javax.persistence.OneToMany;
  * @author ATA1
  */
 @Entity
-@DiscriminatorValue( value="FRENODEMANO" )
-public class FrenoDeMano extends Trabajo implements Serializable {
+@DiscriminatorValue( value="OTRO" )
+public class Otro extends Trabajo implements Serializable {
   
     private static final long serialVersionUID = 1L;
-
+    
     @OneToMany
-    private List<ParteFrenoMano> listaParteFrenoMano;
+    private List<ParteOtro> listaParteOtro;
     
     @Override
     public String toString() {
-        return "ec.com.ata.cn.modelo.FrenoDeMano[ id=" + super.getIdTrabajo() + " ]";
+        return "ec.com.ata.cn.modelo.Otro[ id=" + super.getIdTrabajo() + " ]";
     }
 
     /**
-     * @return the listaParteFrenoMano
+     * @return the listaParteOtro
      */
-    public List<ParteFrenoMano> getListaParteFrenoMano() {
-        return listaParteFrenoMano;
+    public List<ParteOtro> getListaParteOtro() {
+        return listaParteOtro;
     }
 
     /**
-     * @param listaParteFrenoMano the listaParteFrenoMano to set
+     * @param listaParteOtro the listaParteOtro to set
      */
-    public void setListaParteFrenoMano(List<ParteFrenoMano> listaParteFrenoMano) {
-        this.listaParteFrenoMano = listaParteFrenoMano;
+    public void setListaParteOtro(List<ParteOtro> listaParteOtro) {
+        this.listaParteOtro = listaParteOtro;
     }
     
 }

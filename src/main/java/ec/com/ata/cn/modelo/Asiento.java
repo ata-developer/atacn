@@ -7,11 +7,13 @@ package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -25,16 +27,17 @@ public class Asiento implements Serializable {
     private static final long serialVersionUID = 1L;
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @SequenceGenerator(
+            name = "asiento_seq",
+            sequenceName = "asiento_seq",
+            allocationSize = 1)
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "asiento_seq")
+    @Column(name = "id_asiento")
+    private Long idAsiento;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    
     
     @OneToMany
     private List<Parte> partes;
@@ -42,7 +45,7 @@ public class Asiento implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (idAsiento != null ? idAsiento.hashCode() : 0);
         return hash;
     }
 
@@ -53,7 +56,7 @@ public class Asiento implements Serializable {
             return false;
         }
         Asiento other = (Asiento) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.idAsiento == null && other.idAsiento != null) || (this.idAsiento != null && !this.idAsiento.equals(other.idAsiento))) {
             return false;
         }
         return true;
@@ -61,7 +64,7 @@ public class Asiento implements Serializable {
 
     @Override
     public String toString() {
-        return "ec.com.ata.cn.modelo.Asiento[ id=" + id + " ]";
+        return "ec.com.ata.cn.modelo.Asiento[ id=" + idAsiento + " ]";
     }
 
     /**
@@ -76,6 +79,20 @@ public class Asiento implements Serializable {
      */
     public void setPartes(List<Parte> partes) {
         this.partes = partes;
+    }
+
+    /**
+     * @return the idAsiento
+     */
+    public Long getIdAsiento() {
+        return idAsiento;
+    }
+
+    /**
+     * @param idAsiento the idAsiento to set
+     */
+    public void setIdAsiento(Long idAsiento) {
+        this.idAsiento = idAsiento;
     }
     
 }

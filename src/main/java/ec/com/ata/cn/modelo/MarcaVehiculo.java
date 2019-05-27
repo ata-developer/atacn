@@ -12,23 +12,25 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  *
  * @author ATA1
  */
 @Entity
-public class Marca implements Serializable {
+@Table
+public class MarcaVehiculo implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @SequenceGenerator(
-            name = "marca_seq",
-            sequenceName = "marca_seq",
+            name = "marca_vehiculo_seq",
+            sequenceName = "marca_vehiculo_seq",
             allocationSize = 1)
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "marca_seq")
+            generator = "marca_vehiculo_seq")
     @Column(name = "id_marca")
     private Long idMarca;
     
@@ -53,10 +55,10 @@ public class Marca implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the idMarca fields are not set
-        if (!(object instanceof Marca)) {
+        if (!(object instanceof MarcaVehiculo)) {
             return false;
         }
-        Marca other = (Marca) object;
+        MarcaVehiculo other = (MarcaVehiculo) object;
         if ((this.idMarca == null && other.idMarca != null) || (this.idMarca != null && !this.idMarca.equals(other.idMarca))) {
             return false;
         }
