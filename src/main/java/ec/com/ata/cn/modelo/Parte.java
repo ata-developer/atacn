@@ -26,9 +26,8 @@ import javax.persistence.Table;
 @Table
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipo_parte")
-public class Parte implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public abstract class Parte implements Serializable {
+    
     @Id
     @SequenceGenerator(
             name = "parte_seq",

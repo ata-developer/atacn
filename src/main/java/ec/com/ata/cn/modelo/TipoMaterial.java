@@ -12,25 +12,27 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  *
  * @author ATA1
  */
 @Entity
+@Table
 public class TipoMaterial implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
     @Id
     @SequenceGenerator(
-            name = "tipomaterial_seq",
-            sequenceName = "tipomaterial_seq",
+            name = "tipo_material_seq",
+            sequenceName = "tipo_material_seq",
             allocationSize = 1)
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "tipomaterial_seq")
-    @Column(name = "id_pisomaterial")
+            generator = "tipo_material_seq")
+    @Column(name = "id_tipo_material")
     private Long idTipoMaterial;
     
     @Column(name = "tipo")

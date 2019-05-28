@@ -26,9 +26,7 @@ import javax.persistence.Table;
 @Table
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipo_trabajo")
-public class Trabajo implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public abstract class  Trabajo implements Serializable {
     
     @Id
     @SequenceGenerator(

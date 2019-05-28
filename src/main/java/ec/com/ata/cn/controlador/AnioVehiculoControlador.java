@@ -15,5 +15,6 @@ import javax.inject.Named;
 @SessionScoped
 @Named
 public class AnioVehiculoControlador extends BaseControlador{
-    
+    /*@Inject
+    private AnioVe|*/
 }

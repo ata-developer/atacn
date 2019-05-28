@@ -13,8 +13,8 @@
         </locale-config>
         <el-resolver>org.primefaces.application.exceptionhandler.PrimeExceptionHandlerELResolver</el-resolver>
         <resource-bundle>
-            <base-name>build</base-name>
-            <var>build</var>
+            <base-name>mensajes</base-name>
+            <var>msj</var>
         </resource-bundle>
     </application>
     

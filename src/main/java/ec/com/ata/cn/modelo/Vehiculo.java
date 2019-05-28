@@ -6,21 +6,21 @@
 package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  *
  * @author ATA1
  */
 @Entity
+@Table
 public class Vehiculo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,8 +48,6 @@ public class Vehiculo implements Serializable {
     @ManyToOne
     private AnioVehiculo observacionAnio;
     
-    @OneToMany
-    private List<Trabajo> listaTrabajo;
     
     public Long getIdVehiculo() {
         return idVehiculo;
@@ -139,21 +137,4 @@ public class Vehiculo implements Serializable {
     public void setObservacionAnio(AnioVehiculo observacionAnio) {
         this.observacionAnio = observacionAnio;
     }
-
-    /**
-     * @return the listaTrabajo
-     */
-    public List<Trabajo> getListaTrabajo() {
-        return listaTrabajo;
-    }
-
-    /**
-     * @param listaTrabajo the listaTrabajo to set
-     */
-    public void setListaTrabajo(List<Trabajo> listaTrabajo) {
-        this.listaTrabajo = listaTrabajo;
-    }
-
-    
-    
 }

@@ -15,9 +15,10 @@ import javax.persistence.Entity;
  */
 @Entity
 @DiscriminatorValue(value = "PISOINTEGRO")
-public class PisoIntegro extends Trabajo implements Serializable {
+public class PisoIntegro extends TrabajoPiso implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
 
     @Override
     public String toString() {

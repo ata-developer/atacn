@@ -6,26 +6,37 @@
 package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  *
  * @author ATA1
  */
 @Entity
+@Table
 public class VehiculoCategoriaTrabajo implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @SequenceGenerator(
+            name = "vehiculo_categoria_trabajo_seq",
+            sequenceName = "vehiculo_categoria_trabajo_seq",
+            allocationSize = 1)
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "vehiculo_categoria_trabajo_seq")
+    @Column(name = "idvehiculo_categoria_trabajo")
+    private Long idVehiculoCategoriaTrabajo;
 
-    public Long getId() {
-        return id;
+    public Long getIdVehiculoCategoriaTrabajo() {
+        return idVehiculoCategoriaTrabajo;
     }
     
     @ManyToOne
@@ -38,25 +49,25 @@ public class VehiculoCategoriaTrabajo implements Serializable {
     private Categoria trabajoPiso;
     
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setIdVehiculoCategoriaTrabajo(Long idVehiculoCategoriaTrabajo) {
+        this.idVehiculoCategoriaTrabajo = idVehiculoCategoriaTrabajo;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (idVehiculoCategoriaTrabajo != null ? idVehiculoCategoriaTrabajo.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+        // TODO: Warning - this method won't work in the case the idVehiculoCategoriaTrabajo fields are not set
         if (!(object instanceof VehiculoCategoriaTrabajo)) {
             return false;
         }
         VehiculoCategoriaTrabajo other = (VehiculoCategoriaTrabajo) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.idVehiculoCategoriaTrabajo == null && other.idVehiculoCategoriaTrabajo != null) || (this.idVehiculoCategoriaTrabajo != null && !this.idVehiculoCategoriaTrabajo.equals(other.idVehiculoCategoriaTrabajo))) {
             return false;
         }
         return true;
@@ -64,7 +75,7 @@ public class VehiculoCategoriaTrabajo implements Serializable {
 
     @Override
     public String toString() {
-        return "ec.com.ata.cn.modelo.VehiculoCategoriaTrabajo[ id=" + id + " ]";
+        return "ec.com.ata.cn.modelo.VehiculoCategoriaTrabajo[ id=" + idVehiculoCategoriaTrabajo + " ]";
     }
 
     /**
