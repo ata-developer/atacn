@@ -26,7 +26,7 @@ public final class BundleUtil {
 	/**
 	 * Nombre del archivo de propiedades de la aplicacion.
 	 */
-	public static final String BUNDLE_NAME = "messages";
+	public static final String BUNDLE_NAME = "mensajes";
 	/**
 	 * Logger de la clase.
 	 */

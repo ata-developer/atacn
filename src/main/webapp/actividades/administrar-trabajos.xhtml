@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templateATA.xhtml">
+
+    <ui:define name="content">
+        <h:form id="administrarTrabajoForma">
+            <p:panelGrid columns="2">
+
+                <p:outputLabel for="@next" value="#{msj.descripcionTrabajo}" />
+                <p:inputText id="descripcionTrabajo" value="#{trabajoControlador.trabajo.descripcion}" />
+
+                <p:commandButton
+                    id="btnGuardar" 
+                    value="#{msj.guardar}"
+                    update="tblListaTrabajo"
+                    action="#{trabajoControlador.guardar()}" />
+
+            </p:panelGrid>
+            <p:dataTable id="tblListaTrabajo" var="trabajo" value="#{trabajoControlador.listaTrabajo}">
+                <p:column headerText="#{msj.codigoTrabajo}">
+                    <h:outputText value="#{trabajo.idTrabajo}" />
+                </p:column>
+
+                <p:column headerText="#{msj.descripcionTrabajo}">
+                    <h:outputText value="#{trabajo.descripcion}" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>
