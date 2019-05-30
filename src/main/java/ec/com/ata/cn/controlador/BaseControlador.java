@@ -38,7 +38,7 @@ public class BaseControlador implements Serializable {
      * Estos Ids deben estar declarados en el template: messages.xhtml
      */
     // ID DE LOS MENSAJES GLOBALES
-    final static String ID_MENSAJE_INFORMACION_GLOBAL = "idMensajeInformacionGlobal";
+    final static String ID_MENSAJE_INFORMACION_GLOBAL = "mensajeGeneral";
     final static String ID_MENSAJE_ADVERTENCIA_GLOBAL = "idMensajeAdvertenciaGlobal";
     final static String ID_MENSAJE_ERROR_GLOBAL = "idMensajeErrorGlobal";
     final static String ID_MENSAJE_FATAL_GLOBAL = "idMensajeFatalGlobal";
@@ -306,7 +306,7 @@ public class BaseControlador implements Serializable {
         FacesMessage infoMessage = new FacesMessage();
         infoMessage.setSummary(summary);
 
-        StringBuffer detalle = new StringBuffer(STRING_VACIO);
+        StringBuilder detalle = new StringBuilder(STRING_VACIO);
         if (! "".equals(detail)) {
             detalle.append(DOS_PUNTOS);
             detalle.append(detail);

@@ -21,7 +21,7 @@ public class AnioVehiculoBean {
     @Inject
     private AnioVehiculoDao anioVehiculoDao;
     
-    public AnioVehiculo crear(AnioVehiculo anioVehiculoEntrada){
+    public AnioVehiculo crear(AnioVehiculo anioVehiculoEntrada) throws Exception {
         return anioVehiculoDao.crear(anioVehiculoEntrada);
     }
     

@@ -21,7 +21,7 @@ public class TrabajoBean {
     @Inject
     private TrabajoDao trabajoDao;
     
-    public Trabajo crear(Trabajo trabajoEntrada){
+    public Trabajo crear(Trabajo trabajoEntrada) throws Exception{
         return trabajoDao.crear(trabajoEntrada);
     }
     

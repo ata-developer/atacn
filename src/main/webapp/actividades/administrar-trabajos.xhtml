@@ -6,16 +6,21 @@
                 template="/WEB-INF/templateATA.xhtml">
 
     <ui:define name="content">
-        <h:form id="administrarTrabajoForma">
-            <p:panelGrid columns="2">
+        <h:form id="frmAdministrarTrabajo">
+            <p:panelGrid id="pngAdministrarTrabajo" columns="2">
 
-                <p:outputLabel for="@next" value="#{msj.descripcionTrabajo}" />
-                <p:inputText id="descripcionTrabajo" value="#{trabajoControlador.trabajo.descripcion}" />
+                <p:outputLabel
+                    for="@next"
+                    value="#{msj.descripcionTrabajo}" />
+                <p:inputText
+                    id="descripcionTrabajo"
+                    value="#{trabajoControlador.trabajo.descripcion}"
+                    onblur="value = value.toUpperCase()"/>
 
                 <p:commandButton
                     id="btnGuardar" 
                     value="#{msj.guardar}"
-                    update="tblListaTrabajo"
+                    update="tblListaTrabajo mensajeGeneral"
                     action="#{trabajoControlador.guardar()}" />
 
             </p:panelGrid>

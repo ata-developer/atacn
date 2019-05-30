@@ -41,7 +41,7 @@ public class GenericoDaoUtil<T, I extends Serializable> {
      *
      * @param tablaEntidad tabla de tipo entidad
      */
-    public T crear(final T tablaEntidad) {
+    public T crear(final T tablaEntidad) throws Exception {
         em.persist(tablaEntidad);
         em.flush();
         return tablaEntidad;

@@ -28,5 +28,10 @@ public class ConstantesUtil {
 	public static final String VALIDACION_FORMULARIO_MSG_FECHA_VALOR = "El valor del campo '";
 	public static final String VALIDACION_FORMULARIO_MSG_VAL_FECHAINI = "valorFechaInicial";
 	public static final String VALIDACION_FORMULARIO_MSG_VAL_FECHAFIN = "valorFechaFinal";
+        
+        public static final String EXITO = "Exitoso";
+        public static final String EXITO_DETALLE = "Se ha procesado su requerimiento exitosamente";
+        public static final String ERROR = "Error";
+        public static final String ERROR_TRABAJO_CONTROLADOR_GUARDAR = "Código 1 ";
 
 }

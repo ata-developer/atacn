@@ -5,6 +5,7 @@
  */
 package ec.com.ata.cn.controlador;
 
+import ec.com.ata.cn.controlador.util.ConstantesUtil;
 import ec.com.ata.cn.logica.TrabajoBean;
 import ec.com.ata.cn.modelo.Trabajo;
 import java.util.List;
@@ -19,29 +20,34 @@ import javax.inject.Named;
  */
 @SessionScoped
 @Named
-public class TrabajoControlador extends BaseControlador{
-    
+public class TrabajoControlador extends BaseControlador {
+
     @Inject
     private TrabajoBean trabajoBean;
-    
+
     private Trabajo trabajo;
-    
+
     private List<Trabajo> listaTrabajo;
-    
+
     @PostConstruct
     public void init() {
         trabajo = new Trabajo();
+        listaTrabajo = trabajoBean.obtenerLista();
     }
-    
-    public List<Trabajo> obtenerListaTrabajo(){
+
+    public List<Trabajo> obtenerListaTrabajo() {
         return trabajoBean.obtenerLista();
     }
-    
-    public void guardar(){
-        trabajoBean.crear(getTrabajo());
-        listaTrabajo = trabajoBean.obtenerLista();
-        setTrabajo(new Trabajo());
-        System.out.println("listaTrabajo.size: "+listaTrabajo.size());
+
+    public void guardar() {
+        try {
+            trabajoBean.crear(getTrabajo());
+            listaTrabajo = trabajoBean.obtenerLista();
+            setTrabajo(new Trabajo());
+            addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
+        } catch (Exception e) {
+            addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_GUARDAR + ":" + e.getMessage());
+        }
     }
 
     /**
@@ -72,4 +78,3 @@ public class TrabajoControlador extends BaseControlador{
         this.listaTrabajo = listaTrabajo;
     }
 }
-

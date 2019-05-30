@@ -34,7 +34,7 @@ public class  Trabajo implements Serializable {
     @Column(name = "id_trabajo")
     private Long idTrabajo;
     
-    @Column(name = "descripcion")
+    @Column(name = "descripcion",unique=true)
     private String descripcion;
     
     public Long getIdTrabajo() {
