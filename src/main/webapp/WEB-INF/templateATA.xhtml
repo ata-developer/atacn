@@ -54,16 +54,19 @@
 
                 <div id="MENUSIDE">
                     <div id="MENUSIDEindent">
-                        <span id="LOGO" class="bordersOfMenuSide">
-                            <h:graphicImage name="main/images/logo.svg" />
-                            <h:graphicImage id="BlueLogo" styleClass="hiddenLogo" name="main/images/logoBlue.svg" />
-                        </span>     
-                        <span id="SubMenu-Ajax" class="MenuSideMainLink bordersOfMenuSide" onclick="Showcase.openSubMenu(this);"><h:graphicImage name="main/images/mono/ajaxCore.svg" /><h:graphicImage styleClass="hiddenIcons" name="main/images/mono/ajaxCoreBlue.svg" /><span class="MainLinkText">#{msj.actividades}</span></span>
-                        <div class="SubMenuLinkContainer">
-                            <a class="SubMenuLink" href="#{request.contextPath}/actividades/consultar-precios-vehiculos.xhtml">&bull; #{msj.consultarPreciosVehiculos}</a>
-                            <a class="SubMenuLink" href="#{request.contextPath}/actividades/administrar-trabajos.xhtml">&bull; #{msj.administrarTrabajos}</a>
-                        </div>
-
+                        <h:form id="frmMenu">
+                            <span id="LOGO" class="bordersOfMenuSide">
+                                <h:graphicImage name="main/images/logo.svg" />
+                                <h:graphicImage id="BlueLogo" styleClass="hiddenLogo" name="main/images/logoBlue.svg" />
+                            </span>     
+                            <p:menu>
+                                <p:submenu label="#{msj.actividades}">
+                                    <p:menuitem value="#{msj.consultarPreciosVehiculos}" action="/actividades/consultar-precios-vehiculos.xhtml"/>
+                                    <p:menuitem value="#{msj.administrarTrabajos}" action="/actividades/administrar-trabajos.xhtml"/>
+                                    <p:menuitem value="#{msj.administrarCategorias}" action="/actividades/administrar-categorias.xhtml"/>
+                                </p:submenu>
+                            </p:menu>
+                        </h:form>
                     </div>
                 </div>
 

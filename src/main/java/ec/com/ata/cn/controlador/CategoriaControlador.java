@@ -6,8 +6,8 @@
 package ec.com.ata.cn.controlador;
 
 import ec.com.ata.cn.controlador.util.ConstantesUtil;
-import ec.com.ata.cn.logica.TrabajoBean;
-import ec.com.ata.cn.modelo.Trabajo;
+import ec.com.ata.cn.logica.CategoriaBean;
+import ec.com.ata.cn.modelo.Categoria;
 
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -23,64 +23,64 @@ import org.apache.commons.lang.exception.ExceptionUtils;
  */
 @SessionScoped
 @Named
-public class TrabajoControlador extends BaseControlador {
+public class CategoriaControlador extends BaseControlador {
 
     @Inject
-    private TrabajoBean trabajoBean;
+    private CategoriaBean trabajoBean;
 
-    private Trabajo trabajo;
+    private Categoria trabajo;
 
-    private List<Trabajo> listaTrabajo;
+    private List<Categoria> listaCategoria;
 
     @PostConstruct
     public void init() {
-        trabajo = new Trabajo();
-        listaTrabajo = trabajoBean.obtenerLista();
+        trabajo = new Categoria();
+        listaCategoria = trabajoBean.obtenerLista();
     }
 
-    public List<Trabajo> obtenerListaTrabajo() {
+    public List<Categoria> obtenerListaCategoria() {
         return trabajoBean.obtenerLista();
     }
 
     public void guardar() {
         try {
-            getTrabajo().setDescripcion(getTrabajo().getDescripcion().trim());
-            trabajoBean.crear(getTrabajo());
-            listaTrabajo = trabajoBean.obtenerLista();            
+            getCategoria().setCategoria(getCategoria().getCategoria().trim());
+            trabajoBean.crear(getCategoria());
+            listaCategoria = trabajoBean.obtenerLista();            
             addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
             addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_GUARDAR + ":" + root.getMessage());
         } finally {
-            setTrabajo(new Trabajo());
+            setCategoria(new Categoria());
         }
     }
 
     /**
      * @return the trabajo
      */
-    public Trabajo getTrabajo() {
+    public Categoria getCategoria() {
         return trabajo;
     }
 
     /**
      * @param trabajo the trabajo to set
      */
-    public void setTrabajo(Trabajo trabajo) {
+    public void setCategoria(Categoria trabajo) {
         this.trabajo = trabajo;
     }
 
     /**
-     * @return the listaTrabajo
+     * @return the listaCategoria
      */
-    public List<Trabajo> getListaTrabajo() {
-        return listaTrabajo;
+    public List<Categoria> getListaCategoria() {
+        return listaCategoria;
     }
 
     /**
-     * @param listaTrabajo the listaTrabajo to set
+     * @param listaCategoria the listaCategoria to set
      */
-    public void setListaTrabajo(List<Trabajo> listaTrabajo) {
-        this.listaTrabajo = listaTrabajo;
+    public void setListaCategoria(List<Categoria> listaCategoria) {
+        this.listaCategoria = listaCategoria;
     }
 }
