@@ -7,24 +7,37 @@
 
     <ui:define name="content">
         <h:form id="frmAdministrarTrabajo">
-            <p:panelGrid id="pngAdministrarTrabajo" columns="2">
+            <h1>#{msj.administrarTrabajos}</h1>
+            <p/>
+            <p:fieldset legend="#{msj.agregarTrabajo}">
+                <p:panelGrid id="pngAdministrarTrabajo" columns="2">
 
-                <p:outputLabel
-                    for="@next"
-                    value="#{msj.descripcionTrabajo}" />
-                <p:inputText
-                    id="descripcionTrabajo"
-                    value="#{trabajoControlador.trabajo.descripcion}"
-                    onblur="value = value.toUpperCase()"/>
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.descripcionTrabajo}" />
+                    <p:inputText
+                        id="descripcionTrabajo"
+                        value="#{trabajoControlador.trabajo.descripcion}"
+                        onblur="value = value.toUpperCase()"/>
 
-                <p:commandButton
-                    id="btnGuardar" 
-                    value="#{msj.guardar}"
-                    update="tblListaTrabajo mensajeGeneral"
-                    action="#{trabajoControlador.guardar()}" />
+                    <p:commandButton
+                        id="btnGuardar" 
+                        value="#{msj.guardar}"
+                        update="pngAdministrarTrabajo tblListaTrabajo mensajeGeneral"
+                        action="#{trabajoControlador.guardar()}" />
+                    <p:outputLabel
+                        value="" />
 
-            </p:panelGrid>
-            <p:dataTable id="tblListaTrabajo" var="trabajo" value="#{trabajoControlador.listaTrabajo}">
+                </p:panelGrid>
+            </p:fieldset>
+            <p/>
+            <p:dataTable
+                id="tblListaTrabajo"                
+                var="trabajo" 
+                value="#{trabajoControlador.listaTrabajo}">
+                <f:facet name="header">
+                    #{msj.listaDeTrabajos}
+                </f:facet>
                 <p:column headerText="#{msj.codigoTrabajo}">
                     <h:outputText value="#{trabajo.idTrabajo}" />
                 </p:column>

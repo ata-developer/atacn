@@ -13,6 +13,9 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.PersistenceException;
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.postgresql.util.PSQLException;
 
 /**
  *
@@ -42,11 +45,13 @@ public class TrabajoControlador extends BaseControlador {
     public void guardar() {
         try {
             trabajoBean.crear(getTrabajo());
-            listaTrabajo = trabajoBean.obtenerLista();
-            setTrabajo(new Trabajo());
+            listaTrabajo = trabajoBean.obtenerLista();            
             addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
         } catch (Exception e) {
-            addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_GUARDAR + ":" + e.getMessage());
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_GUARDAR + ":" + root.getMessage());
+        } finally {
+            setTrabajo(new Trabajo());
         }
     }
 
