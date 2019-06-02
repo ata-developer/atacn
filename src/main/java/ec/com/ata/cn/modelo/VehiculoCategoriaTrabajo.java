@@ -8,12 +8,10 @@ package ec.com.ata.cn.modelo;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -21,24 +19,24 @@ import javax.persistence.Table;
  * @author ATA1
  */
 @Entity
-@Table(name = "vehiculo_categoria_trabajo")
+@Table(name = "trabajo_categoria_precio")
+@IdClass(VehiculoCategoriaTrabajoId.class)
 public class VehiculoCategoriaTrabajo implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
-    @SequenceGenerator(
-            name = "vehiculo_categoria_trabajo_seq",
-            sequenceName = "vehiculo_categoria_trabajo_seq",
-            allocationSize = 1)
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "vehiculo_categoria_trabajo_seq")
-    @Column(name = "id_vehiculo_categoria_trabajo")
-    private Long idVehiculoCategoriaTrabajo;
-
-    public Long getIdVehiculoCategoriaTrabajo() {
-        return idVehiculoCategoriaTrabajo;
-    }
+    @Column(name = "id_vehiculo")
+    private Long idVehiculo;
+    
+    @Id
+    @Column(name = "id_categoria_forro_tapiceria")
+    private Long idCategoriaForroTapiceria;
+    
+    @Id
+    @Column(name = "id_categoria_piso")
+    private Long idCategoriaPiso;
+    
     
     @ManyToOne
     @PrimaryKeyJoinColumn(name="id_vehiculo", referencedColumnName="id_vehiculo")
@@ -52,34 +50,34 @@ public class VehiculoCategoriaTrabajo implements Serializable {
     @PrimaryKeyJoinColumn(name="id_categoria_piso", referencedColumnName="id_categoria")
     private Categoria categoriaPiso;
     
+    
 
-    public void setIdVehiculoCategoriaTrabajo(Long idVehiculoCategoriaTrabajo) {
-        this.idVehiculoCategoriaTrabajo = idVehiculoCategoriaTrabajo;
+    /**
+     * @return the idCategoriaForroTapiceria
+     */
+    public Long getIdCategoriaForroTapiceria() {
+        return idCategoriaForroTapiceria;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idVehiculoCategoriaTrabajo != null ? idVehiculoCategoriaTrabajo.hashCode() : 0);
-        return hash;
+    /**
+     * @param idCategoriaForroTapiceria the idCategoriaForroTapiceria to set
+     */
+    public void setIdCategoriaForroTapiceria(Long idCategoriaForroTapiceria) {
+        this.idCategoriaForroTapiceria = idCategoriaForroTapiceria;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the idVehiculoCategoriaTrabajo fields are not set
-        if (!(object instanceof VehiculoCategoriaTrabajo)) {
-            return false;
-        }
-        VehiculoCategoriaTrabajo other = (VehiculoCategoriaTrabajo) object;
-        if ((this.idVehiculoCategoriaTrabajo == null && other.idVehiculoCategoriaTrabajo != null) || (this.idVehiculoCategoriaTrabajo != null && !this.idVehiculoCategoriaTrabajo.equals(other.idVehiculoCategoriaTrabajo))) {
-            return false;
-        }
-        return true;
+    /**
+     * @return the idCategoriaPiso
+     */
+    public Long getIdCategoriaPiso() {
+        return idCategoriaPiso;
     }
 
-    @Override
-    public String toString() {
-        return "ec.com.ata.cn.modelo.VehiculoCategoriaTrabajo[ id=" + idVehiculoCategoriaTrabajo + " ]";
+    /**
+     * @param idCategoriaPiso the idCategoriaPiso to set
+     */
+    public void setIdCategoriaPiso(Long idCategoriaPiso) {
+        this.idCategoriaPiso = idCategoriaPiso;
     }
 
     /**
@@ -123,5 +121,20 @@ public class VehiculoCategoriaTrabajo implements Serializable {
     public void setCategoriaPiso(Categoria categoriaPiso) {
         this.categoriaPiso = categoriaPiso;
     }
+
+    /**
+     * @return the idVehiculo
+     */
+    public Long getIdVehiculo() {
+        return idVehiculo;
+    }
+
+    /**
+     * @param idVehiculo the idVehiculo to set
+     */
+    public void setIdVehiculo(Long idVehiculo) {
+        this.idVehiculo = idVehiculo;
+    }
+    
     
 }
