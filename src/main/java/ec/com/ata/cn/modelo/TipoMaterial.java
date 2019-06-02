@@ -19,7 +19,7 @@ import javax.persistence.Table;
  * @author ATA1
  */
 @Entity
-@Table
+@Table(name = "tipo_material")
 public class TipoMaterial implements Serializable {
 
     private static final long serialVersionUID = 1L;

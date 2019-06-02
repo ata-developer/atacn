@@ -21,7 +21,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table
-public class  Trabajo implements Serializable {
+public class Trabajo implements Serializable {
     
     @Id
     @SequenceGenerator(

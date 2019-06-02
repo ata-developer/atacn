@@ -16,7 +16,7 @@ import javax.persistence.Table;
  * @author ATA1
  */
 @Entity
-@Table
+@Table(name = "anio_vehiculo")
 public class AnioVehiculo implements Serializable {
   
     private static final long serialVersionUID = 1L;

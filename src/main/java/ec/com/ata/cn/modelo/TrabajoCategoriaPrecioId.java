@@ -6,10 +6,8 @@
 package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 /**
  *
@@ -20,72 +18,38 @@ public class TrabajoCategoriaPrecioId implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private BigDecimal precioVentaPublico;
-
-    private BigDecimal precioDescuento;
-
-    @ManyToOne
-    @JoinColumn(name = "id_trabajo")
-    private Trabajo trabajo;
-
-    @ManyToOne
-    @JoinColumn(name = "id_categoria")
-    private Categoria categoria;
+    @Column(name = "id_trabajo")
+    private Long idTrabajo;
+    
+    @Column(name = "id_categoria")
+    private Long idCategoria;
 
     /**
-     * @return the precioVentaPublico
+     * @return the idTrabajo
      */
-    public BigDecimal getPrecioVentaPublico() {
-        return precioVentaPublico;
+    public Long getIdTrabajo() {
+        return idTrabajo;
     }
 
     /**
-     * @param precioVentaPublico the precioVentaPublico to set
+     * @param idTrabajo the idTrabajo to set
      */
-    public void setPrecioVentaPublico(BigDecimal precioVentaPublico) {
-        this.precioVentaPublico = precioVentaPublico;
+    public void setIdTrabajo(Long idTrabajo) {
+        this.idTrabajo = idTrabajo;
     }
 
     /**
-     * @return the precioDescuento
+     * @return the idCategoria
      */
-    public BigDecimal getPrecioDescuento() {
-        return precioDescuento;
+    public Long getIdCategoria() {
+        return idCategoria;
     }
 
     /**
-     * @param precioDescuento the precioDescuento to set
+     * @param idCategoria the idCategoria to set
      */
-    public void setPrecioDescuento(BigDecimal precioDescuento) {
-        this.precioDescuento = precioDescuento;
+    public void setIdCategoria(Long idCategoria) {
+        this.idCategoria = idCategoria;
     }
-
-    /**
-     * @return the trabajo
-     */
-    public Trabajo getTrabajo() {
-        return trabajo;
-    }
-
-    /**
-     * @param trabajo the trabajo to set
-     */
-    public void setTrabajo(Trabajo trabajo) {
-        this.trabajo = trabajo;
-    }
-
-    /**
-     * @return the categoria
-     */
-    public Categoria getCategoria() {
-        return categoria;
-    }
-
-    /**
-     * @param categoria the categoria to set
-     */
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
-    }
-
+   
 }

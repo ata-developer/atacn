@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -20,7 +21,7 @@ import javax.persistence.Table;
  * @author ATA1
  */
 @Entity
-@Table
+@Table(name = "vehiculo_categoria_trabajo")
 public class VehiculoCategoriaTrabajo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -32,7 +33,7 @@ public class VehiculoCategoriaTrabajo implements Serializable {
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
             generator = "vehiculo_categoria_trabajo_seq")
-    @Column(name = "idvehiculo_categoria_trabajo")
+    @Column(name = "id_vehiculo_categoria_trabajo")
     private Long idVehiculoCategoriaTrabajo;
 
     public Long getIdVehiculoCategoriaTrabajo() {
@@ -40,13 +41,16 @@ public class VehiculoCategoriaTrabajo implements Serializable {
     }
     
     @ManyToOne
+    @PrimaryKeyJoinColumn(name="id_vehiculo", referencedColumnName="id_vehiculo")
     private Vehiculo vehiculo;
     
     @ManyToOne
-    private Categoria categoriaTrabajoAsiento;
+    @PrimaryKeyJoinColumn(name="id_categoria_forro_tapiceria", referencedColumnName="id_categoria")
+    private Categoria categoriaForroTapiceria;
     
     @ManyToOne
-    private Categoria trabajoPiso;
+    @PrimaryKeyJoinColumn(name="id_categoria_piso", referencedColumnName="id_categoria")
+    private Categoria categoriaPiso;
     
 
     public void setIdVehiculoCategoriaTrabajo(Long idVehiculoCategoriaTrabajo) {
@@ -93,31 +97,31 @@ public class VehiculoCategoriaTrabajo implements Serializable {
     }
 
     /**
-     * @return the categoriaTrabajoAsiento
+     * @return the categoriaForroTapiceria
      */
-    public Categoria getCategoriaTrabajoAsiento() {
-        return categoriaTrabajoAsiento;
+    public Categoria getCategoriaForroTapiceria() {
+        return categoriaForroTapiceria;
     }
 
     /**
-     * @param categoriaTrabajoAsiento the categoriaTrabajoAsiento to set
+     * @param categoriaForroTapiceria the categoriaForroTapiceria to set
      */
-    public void setCategoriaTrabajoAsiento(Categoria categoriaTrabajoAsiento) {
-        this.categoriaTrabajoAsiento = categoriaTrabajoAsiento;
+    public void setCategoriaForroTapiceria(Categoria categoriaForroTapiceria) {
+        this.categoriaForroTapiceria = categoriaForroTapiceria;
     }
 
     /**
-     * @return the trabajoPiso
+     * @return the categoriaPiso
      */
-    public Categoria getTrabajoPiso() {
-        return trabajoPiso;
+    public Categoria getCategoriaPiso() {
+        return categoriaPiso;
     }
 
     /**
-     * @param trabajoPiso the trabajoPiso to set
+     * @param categoriaPiso the categoriaPiso to set
      */
-    public void setTrabajoPiso(Categoria trabajoPiso) {
-        this.trabajoPiso = trabajoPiso;
+    public void setCategoriaPiso(Categoria categoriaPiso) {
+        this.categoriaPiso = categoriaPiso;
     }
     
 }

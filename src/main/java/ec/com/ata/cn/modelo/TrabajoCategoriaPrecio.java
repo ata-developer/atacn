@@ -9,11 +9,10 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 /**
@@ -21,64 +20,31 @@ import javax.persistence.Table;
  * @author ATA1
  */
 @Entity
-@Table
+@Table(name = "trabajo_categoria_precio")
+@IdClass(TrabajoCategoriaPrecioId.class)
 public class TrabajoCategoriaPrecio implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
-    @SequenceGenerator(
-            name = "trabajocategoriaprecio_seq",
-            sequenceName = "trabajo_seq",
-            allocationSize = 1)
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "trabajo_seq")
-    @Column(name = "id_forrotapiceria")
-    private Long id;
+    @Column(name = "id_trabajo")
+    private Long idTrabajo;
 
-    public Long getId() {
-        return id;
-    }
+    @Id
+    @Column(name = "id_categoria")
+    private Long idCategoria;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
-    private BigDecimal precioVentaPublico;
-    
-    private BigDecimal precioDescuento;
-    
     @ManyToOne
+    @PrimaryKeyJoinColumn(name = "id_trabajo", referencedColumnName="id_trabajo" )
     private Trabajo trabajo;
-    
+
     @ManyToOne
+    @PrimaryKeyJoinColumn(name = "id_categoria", referencedColumnName="id_categoria")
     private Categoria categoria;
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
+    private BigDecimal precioVentaPublico;
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TrabajoCategoriaPrecio)) {
-            return false;
-        }
-        TrabajoCategoriaPrecio other = (TrabajoCategoriaPrecio) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "ec.com.ata.cn.modelo.TrabajoCategoriaPrecio[ id=" + id + " ]";
-    }
+    private BigDecimal precioDescuento;
 
     /**
      * @return the precioVentaPublico
@@ -135,5 +101,35 @@ public class TrabajoCategoriaPrecio implements Serializable {
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
-    
+
+   
+
+    /**
+     * @return the idTrabajo
+     */
+    public Long getIdTrabajo() {
+        return idTrabajo;
+    }
+
+    /**
+     * @param idTrabajo the idTrabajo to set
+     */
+    public void setIdTrabajo(Long idTrabajo) {
+        this.idTrabajo = idTrabajo;
+    }
+
+    /**
+     * @return the idCategoria
+     */
+    public Long getIdCategoria() {
+        return idCategoria;
+    }
+
+    /**
+     * @param idCategoria the idCategoria to set
+     */
+    public void setIdCategoria(Long idCategoria) {
+        this.idCategoria = idCategoria;
+    }
+
 }
