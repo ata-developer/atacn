@@ -6,11 +6,11 @@
 package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
-import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
@@ -19,67 +19,29 @@ import javax.persistence.Table;
  * @author ATA1
  */
 @Entity
-@Table(name = "trabajo_categoria_precio")
-@IdClass(VehiculoCategoriaTrabajoId.class)
+@Table(name = "vehiculo_categoria_trabajo")
 public class VehiculoCategoriaTrabajo implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
-    @Id
-    @Column(name = "id_vehiculo")
-    private Long idVehiculo;
+    @EmbeddedId
+    private VehiculoCategoriaTrabajoId vehiculoCategoriaTrabajoId;
     
-    @Id
-    @Column(name = "id_categoria_forro_tapiceria")
-    private Long idCategoriaForroTapiceria;
-    
-    @Id
-    @Column(name = "id_categoria_piso")
-    private Long idCategoriaPiso;
-    
-    
+    @MapsId("idVehiculo")
+    @JoinColumn(name="id_vehiculo", referencedColumnName="id_vehiculo")
     @ManyToOne
-    @PrimaryKeyJoinColumn(name="id_vehiculo", referencedColumnName="id_vehiculo")
     private Vehiculo vehiculo;
     
+    @MapsId("idCategoriaForroTapiceria")
+    @JoinColumn(name="id_categoria_forro_tapiceria", referencedColumnName="id_categoria" )
     @ManyToOne
-    @PrimaryKeyJoinColumn(name="id_categoria_forro_tapiceria", referencedColumnName="id_categoria")
     private Categoria categoriaForroTapiceria;
     
+    @MapsId("idCategoriaPiso")
     @ManyToOne
     @PrimaryKeyJoinColumn(name="id_categoria_piso", referencedColumnName="id_categoria")
     private Categoria categoriaPiso;
-    
-    
-
-    /**
-     * @return the idCategoriaForroTapiceria
-     */
-    public Long getIdCategoriaForroTapiceria() {
-        return idCategoriaForroTapiceria;
-    }
-
-    /**
-     * @param idCategoriaForroTapiceria the idCategoriaForroTapiceria to set
-     */
-    public void setIdCategoriaForroTapiceria(Long idCategoriaForroTapiceria) {
-        this.idCategoriaForroTapiceria = idCategoriaForroTapiceria;
-    }
-
-    /**
-     * @return the idCategoriaPiso
-     */
-    public Long getIdCategoriaPiso() {
-        return idCategoriaPiso;
-    }
-
-    /**
-     * @param idCategoriaPiso the idCategoriaPiso to set
-     */
-    public void setIdCategoriaPiso(Long idCategoriaPiso) {
-        this.idCategoriaPiso = idCategoriaPiso;
-    }
-
+   
     /**
      * @return the vehiculo
      */
@@ -122,18 +84,19 @@ public class VehiculoCategoriaTrabajo implements Serializable {
         this.categoriaPiso = categoriaPiso;
     }
 
+    
     /**
-     * @return the idVehiculo
+     * @return the vehiculoCategoriaTrabajoId
      */
-    public Long getIdVehiculo() {
-        return idVehiculo;
+    public VehiculoCategoriaTrabajoId getVehiculoCategoriaTrabajoId() {
+        return vehiculoCategoriaTrabajoId;
     }
 
     /**
-     * @param idVehiculo the idVehiculo to set
+     * @param vehiculoCategoriaTrabajoId the vehiculoCategoriaTrabajoId to set
      */
-    public void setIdVehiculo(Long idVehiculo) {
-        this.idVehiculo = idVehiculo;
+    public void setVehiculoCategoriaTrabajoId(VehiculoCategoriaTrabajoId vehiculoCategoriaTrabajoId) {
+        this.vehiculoCategoriaTrabajoId = vehiculoCategoriaTrabajoId;
     }
     
     

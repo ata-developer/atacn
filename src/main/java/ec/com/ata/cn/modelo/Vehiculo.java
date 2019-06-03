@@ -20,7 +20,7 @@ import javax.persistence.Table;
  * @author ATA1
  */
 @Entity
-@Table
+@Table( name = "vehiculo")
 public class Vehiculo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -47,6 +47,7 @@ public class Vehiculo implements Serializable {
     
     @ManyToOne
     private AnioVehiculo observacionAnio;
+    
     
     
     public Long getIdVehiculo() {
@@ -137,4 +138,6 @@ public class Vehiculo implements Serializable {
     public void setObservacionAnio(AnioVehiculo observacionAnio) {
         this.observacionAnio = observacionAnio;
     }
+
+   
 }

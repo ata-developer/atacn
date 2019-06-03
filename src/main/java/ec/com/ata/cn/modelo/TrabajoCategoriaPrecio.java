@@ -7,12 +7,11 @@ package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
 
 /**
@@ -21,25 +20,21 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "trabajo_categoria_precio")
-@IdClass(TrabajoCategoriaPrecioId.class)
 public class TrabajoCategoriaPrecio implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @Column(name = "id_trabajo")
-    private Long idTrabajo;
+    @EmbeddedId
+    private TrabajoCategoriaPrecioId trabajoCategoriaPrecioId;
 
-    @Id
-    @Column(name = "id_categoria")
-    private Long idCategoria;
-
+    @MapsId("idTrabajo")
+    @JoinColumn(name = "id_trabajo", referencedColumnName = "id_trabajo")
     @ManyToOne
-    @PrimaryKeyJoinColumn(name = "id_trabajo", referencedColumnName="id_trabajo" )
     private Trabajo trabajo;
 
+    @MapsId("idCategoria")
+    @JoinColumn(name = "id_categoria", referencedColumnName = "id_categoria")
     @ManyToOne
-    @PrimaryKeyJoinColumn(name = "id_categoria", referencedColumnName="id_categoria")
     private Categoria categoria;
 
     private BigDecimal precioVentaPublico;
@@ -102,34 +97,18 @@ public class TrabajoCategoriaPrecio implements Serializable {
         this.categoria = categoria;
     }
 
-   
-
     /**
-     * @return the idTrabajo
+     * @return the trabajoCategoriaPrecioId
      */
-    public Long getIdTrabajo() {
-        return idTrabajo;
+    public TrabajoCategoriaPrecioId getTrabajoCategoriaPrecioId() {
+        return trabajoCategoriaPrecioId;
     }
 
     /**
-     * @param idTrabajo the idTrabajo to set
+     * @param trabajoCategoriaPrecioId the trabajoCategoriaPrecioId to set
      */
-    public void setIdTrabajo(Long idTrabajo) {
-        this.idTrabajo = idTrabajo;
-    }
-
-    /**
-     * @return the idCategoria
-     */
-    public Long getIdCategoria() {
-        return idCategoria;
-    }
-
-    /**
-     * @param idCategoria the idCategoria to set
-     */
-    public void setIdCategoria(Long idCategoria) {
-        this.idCategoria = idCategoria;
+    public void setTrabajoCategoriaPrecioId(TrabajoCategoriaPrecioId trabajoCategoriaPrecioId) {
+        this.trabajoCategoriaPrecioId = trabajoCategoriaPrecioId;
     }
 
 }

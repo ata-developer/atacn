@@ -1,0 +1,69 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templateATA.xhtml">
+
+    <ui:define name="content">
+        <h:form id="frmAdministrarPrecio">
+            <h1>#{msj.administrarPrecios}</h1>
+            <p/>
+            <p:fieldset legend="#{msj.agregarPrecio}">
+                <p:panelGrid id="pngAdministrarPrecio" columns="2">
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.seleccionarCategoria}" />
+                    <p:selectOneMenu id="advanced" value="#{selectOneMenuView.theme}" converter="themeConverter" panelStyle="width:180px"
+                                     effect="fade" var="t" style="width:160px" filter="true" filterMatchMode="startsWith">
+                        <f:selectItems value="#{selectOneMenuView.themes}" var="theme" itemLabel="#{theme.displayName}" itemValue="#{theme}" />
+
+                        <p:column style="width:10%">
+                            <h:graphicImage name="showcase/images/themeswitcher/themeswitcher-#{t.name}.png" alt="#{t.name}" styleClass="ui-theme" />
+                        </p:column>
+
+                        <p:column>
+                            <h:outputText value="#{t.displayName}" />
+                        </p:column>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.seleccionarTrabajo}" />
+                    <p:inputText
+                        id="descripcionPrecio"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{trabajoControlador.trabajo.descripcion}"
+                        onblur="value = value.toUpperCase()"/>
+
+                    <p:commandButton
+                        id="btnGuardar" 
+                        value="#{msj.guardar}"
+                        update="pngAdministrarPrecio tblListaPrecio mensajeGeneral"
+                        action="#{trabajoControlador.guardar()}" />
+                    <p:outputLabel
+                        value="" />
+
+                </p:panelGrid>
+            </p:fieldset>
+            <p/>
+            <p:dataTable
+                id="tblListaPrecio"                
+                var="trabajo" 
+                value="#{trabajoControlador.listaPrecio}">
+                <f:facet name="header">
+                    #{msj.listaDePrecios}
+                </f:facet>
+                <p:column headerText="#{msj.codigoPrecio}">
+                    <h:outputText value="#{trabajo.idPrecio}" />
+                </p:column>
+
+                <p:column headerText="#{msj.descripcionPrecio}">
+                    <h:outputText value="#{trabajo.descripcion}" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>
