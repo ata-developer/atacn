@@ -15,27 +15,47 @@
                     <p:outputLabel
                         for="@next"
                         value="#{msj.seleccionarCategoria}" />
-                    <p:selectOneMenu id="advanced" value="#{selectOneMenuView.theme}" converter="themeConverter" panelStyle="width:180px"
-                                     effect="fade" var="t" style="width:160px" filter="true" filterMatchMode="startsWith">
-                        <f:selectItems value="#{selectOneMenuView.themes}" var="theme" itemLabel="#{theme.displayName}" itemValue="#{theme}" />
-
-                        <p:column style="width:10%">
-                            <h:graphicImage name="showcase/images/themeswitcher/themeswitcher-#{t.name}.png" alt="#{t.name}" styleClass="ui-theme" />
-                        </p:column>
-
-                        <p:column>
-                            <h:outputText value="#{t.displayName}" />
-                        </p:column>
-                    </p:selectOneMenu>
+                    <!--<h:selectOneMenu
+                        id="somSeleccionarCategoria"
+                        value="#{trabajoCategoriaPrecioControlador.categoria}"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" noSelectionOption="true" />
+                        <f:selectItems value="#{trabajoCategoriaPrecioControlador.generarSelectItemDeCategorias}" />
+                    </h:selectOneMenu>-->
 
                     <p:outputLabel
                         for="@next"
                         value="#{msj.seleccionarTrabajo}" />
+                    <!--<h:selectOneMenu
+                        id="somSeleccionarTrabajo"
+                        value="#{trabajoCategoriaPrecioControlador.categoria}"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" noSelectionOption="true" />
+                        <f:selectItems value="#{trabajoCategoriaPrecioControlador.generarSelectItemDeTrabajos}" />
+                        <p:ajax 
+                            event="change"
+                            update="iTprecioVentaPublico iTprecioDescuento"
+                            listener="#{trabajoCategoriaPrecioControlador.cargarPrecio()}" />
+                    </h:selectOneMenu>-->
+                    
+                     <p:outputLabel
+                        for="@next"
+                        value="#{msj.precioVentaPublico}" />
                     <p:inputText
-                        id="descripcionPrecio"
+                        id="iTprecioVentaPublico"
                         required="true"
                         requiredMessage="#{msj.campoNecesario}"
-                        value="#{trabajoControlador.trabajo.descripcion}"
+                        value="#{trabajoCategoriaPrecioControlador.precioVentaPublico}"
+                        onblur="value = value.toUpperCase()"/>
+                    
+                     <p:outputLabel
+                        for="@next"
+                        value="#{msj.precioDescuento}" />
+                    <p:inputText
+                        id="iTprecioDescuento"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{trabajoCategoriaPrecioControlador.precioDescuento}"
                         onblur="value = value.toUpperCase()"/>
 
                     <p:commandButton
@@ -49,7 +69,7 @@
                 </p:panelGrid>
             </p:fieldset>
             <p/>
-            <p:dataTable
+            <!--<p:dataTable
                 id="tblListaPrecio"                
                 var="trabajo" 
                 value="#{trabajoControlador.listaPrecio}">
