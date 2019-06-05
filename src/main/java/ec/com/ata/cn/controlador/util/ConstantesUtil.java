@@ -33,6 +33,7 @@ public class ConstantesUtil {
         public static final String EXITO_DETALLE = "Se ha procesado su requerimiento exitosamente";
         public static final String NO_EXISTE_REGISTRO = "No existe registro";
         public static final String ERROR = "Error";
-        public static final String ERROR_TRABAJO_CONTROLADOR_GUARDAR = "Código 1 ";
+        public static final String ERROR_TRABAJO_CONTROLADOR_GUARDAR = "001 ";
+        public static final String ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO = "002 ";
 
 }

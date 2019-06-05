@@ -27,6 +27,13 @@ public class VehiculoCategoriaTrabajoId implements Serializable {
     @Column(name = "id_categoria_piso")
     private Long idCategoriaPiso;
 
+    @Override
+    public String toString() {
+        return "VehiculoCategoriaTrabajoId{" + "idVehiculo=" + idVehiculo + ", idCategoriaForroTapiceria=" + idCategoriaForroTapiceria + ", idCategoriaPiso=" + idCategoriaPiso + '}';
+    }
+    
+    
+
     /**
      * @return the idVehiculo
      */

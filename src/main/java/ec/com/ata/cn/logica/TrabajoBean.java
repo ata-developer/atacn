@@ -7,6 +7,8 @@ package ec.com.ata.cn.logica;
 
 import ec.com.ata.cn.logica.dao.TrabajoDao;
 import ec.com.ata.cn.modelo.Trabajo;
+import ec.com.ata.cn.modelo.TrabajoCategoriaPrecio;
+import ec.com.ata.cn.modelo.TrabajoCategoriaPrecioId;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -27,5 +29,9 @@ public class TrabajoBean {
     
     public List<Trabajo> obtenerLista(){
         return trabajoDao.obtenerTodos();
+    }
+    
+    public Trabajo obtenerPorId(Long idTrabajo){
+        return trabajoDao.obtenerPorCodigo(idTrabajo);
     }
 }

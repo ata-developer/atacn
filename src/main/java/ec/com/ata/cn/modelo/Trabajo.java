@@ -59,10 +59,7 @@ public class Trabajo implements Serializable {
             return false;
         }
         Trabajo other = (Trabajo) object;
-        if ((this.idTrabajo == null && other.idTrabajo != null) || (this.idTrabajo != null && !this.idTrabajo.equals(other.idTrabajo))) {
-            return false;
-        }
-        return true;
+        return !((this.idTrabajo == null && other.idTrabajo != null) || (this.idTrabajo != null && !this.idTrabajo.equals(other.idTrabajo)));
     }
 
     @Override

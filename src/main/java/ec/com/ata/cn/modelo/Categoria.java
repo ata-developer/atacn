@@ -60,10 +60,7 @@ public class Categoria implements Serializable {
             return false;
         }
         Categoria other = (Categoria) object;
-        if ((this.idCategoria == null && other.idCategoria != null) || (this.idCategoria != null && !this.idCategoria.equals(other.idCategoria))) {
-            return false;
-        }
-        return true;
+        return !((this.idCategoria == null && other.idCategoria != null) || (this.idCategoria != null && !this.idCategoria.equals(other.idCategoria)));
     }
 
     @Override

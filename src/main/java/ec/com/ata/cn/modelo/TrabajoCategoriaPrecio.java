@@ -7,6 +7,7 @@ package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Objects;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -40,6 +41,38 @@ public class TrabajoCategoriaPrecio implements Serializable {
     private BigDecimal precioVentaPublico;
 
     private BigDecimal precioDescuento;
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 29 * hash + Objects.hashCode(this.trabajoCategoriaPrecioId);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final TrabajoCategoriaPrecio other = (TrabajoCategoriaPrecio) obj;
+        if (!Objects.equals(this.trabajoCategoriaPrecioId, other.trabajoCategoriaPrecioId)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "TrabajoCategoriaPrecio{" + "trabajoCategoriaPrecioId=" + trabajoCategoriaPrecioId.toString() + ", precioVentaPublico=" + precioVentaPublico + ", precioDescuento=" + precioDescuento + '}';
+    }
+    
+    
 
     /**
      * @return the precioVentaPublico

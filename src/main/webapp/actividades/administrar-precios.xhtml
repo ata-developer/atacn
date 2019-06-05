@@ -15,28 +15,28 @@
                     <p:outputLabel
                         for="@next"
                         value="#{msj.seleccionarCategoria}" />
-                    <!--<h:selectOneMenu
+                    <h:selectOneMenu
                         id="somSeleccionarCategoria"
                         value="#{trabajoCategoriaPrecioControlador.categoria}"
                         converter="omnifaces.SelectItemsConverter">
-                        <f:selectItem itemLabel="#{msj.seleccionar}" noSelectionOption="true" />
-                        <f:selectItems value="#{trabajoCategoriaPrecioControlador.generarSelectItemDeCategorias}" />
-                    </h:selectOneMenu>-->
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{trabajoCategoriaPrecioControlador.generarSelectItemDeCategorias()}" />
+                    </h:selectOneMenu>
 
                     <p:outputLabel
                         for="@next"
                         value="#{msj.seleccionarTrabajo}" />
-                    <!--<h:selectOneMenu
+                    <h:selectOneMenu
                         id="somSeleccionarTrabajo"
-                        value="#{trabajoCategoriaPrecioControlador.categoria}"
+                        value="#{trabajoCategoriaPrecioControlador.trabajo}"
                         converter="omnifaces.SelectItemsConverter">
-                        <f:selectItem itemLabel="#{msj.seleccionar}" noSelectionOption="true" />
-                        <f:selectItems value="#{trabajoCategoriaPrecioControlador.generarSelectItemDeTrabajos}" />
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{trabajoCategoriaPrecioControlador.generarSelectItemDeTrabajos()}" />
                         <p:ajax 
                             event="change"
-                            update="iTprecioVentaPublico iTprecioDescuento"
+                            update="iTprecioVentaPublico iTprecioDescuento mensajeGeneral"
                             listener="#{trabajoCategoriaPrecioControlador.cargarPrecio()}" />
-                    </h:selectOneMenu>-->
+                    </h:selectOneMenu>
                     
                      <p:outputLabel
                         for="@next"
@@ -60,30 +60,13 @@
 
                     <p:commandButton
                         id="btnGuardar" 
-                        value="#{msj.guardar}"
-                        update="pngAdministrarPrecio tblListaPrecio mensajeGeneral"
-                        action="#{trabajoControlador.guardar()}" />
+                        value="#{msj.guardar}" />
                     <p:outputLabel
                         value="" />
 
                 </p:panelGrid>
             </p:fieldset>
             <p/>
-            <!--<p:dataTable
-                id="tblListaPrecio"                
-                var="trabajo" 
-                value="#{trabajoControlador.listaPrecio}">
-                <f:facet name="header">
-                    #{msj.listaDePrecios}
-                </f:facet>
-                <p:column headerText="#{msj.codigoPrecio}">
-                    <h:outputText value="#{trabajo.idPrecio}" />
-                </p:column>
-
-                <p:column headerText="#{msj.descripcionPrecio}">
-                    <h:outputText value="#{trabajo.descripcion}" />
-                </p:column>
-            </p:dataTable>
         </h:form>
     </ui:define>
 </ui:composition>

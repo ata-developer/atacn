@@ -14,6 +14,7 @@ import ec.com.ata.cn.modelo.Trabajo;
 import ec.com.ata.cn.modelo.TrabajoCategoriaPrecio;
 import ec.com.ata.cn.modelo.TrabajoCategoriaPrecioId;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -22,7 +23,7 @@ import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-//import org.omnifaces.util.selectitems.SelectItemsBuilder;
+import org.omnifaces.util.selectitems.SelectItemsBuilder;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 
@@ -68,23 +69,32 @@ public class TrabajoCategoriaPrecioControlador extends BaseControlador {
     }
 
     public void cargarPrecio() {
-        TrabajoCategoriaPrecioId trabajoCategoriaPrecioId = new TrabajoCategoriaPrecioId();
-        trabajoCategoriaPrecioId.setIdCategoria(categoria.getIdCategoria());
-        trabajoCategoriaPrecioId.setIdTrabajo(trabajo.getIdTrabajo());
-        TrabajoCategoriaPrecio trabajoCategoriaPrecioTmp = trabajoCategoriaTrabajoBean.obtenerPorId(trabajoCategoriaPrecioId);
-        if ( null != trabajoCategoriaPrecioTmp) {
-            setPrecioVentaPublico(trabajoCategoriaPrecioTmp.getPrecioVentaPublico());
-            setPrecioDescuento(trabajoCategoriaPrecioTmp.getPrecioDescuento());
-            addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
-            return;
+        try {
+            TrabajoCategoriaPrecioId trabajoCategoriaPrecioId = new TrabajoCategoriaPrecioId();
+            trabajoCategoriaPrecioId.setIdCategoria(categoria.getIdCategoria());
+            trabajoCategoriaPrecioId.setIdTrabajo(trabajo.getIdTrabajo());
+            TrabajoCategoriaPrecio trabajoCategoriaPrecioTmp = trabajoCategoriaTrabajoBean.obtenerPorId(trabajoCategoriaPrecioId);
+            if (null != trabajoCategoriaPrecioTmp) {
+                setPrecioVentaPublico(trabajoCategoriaPrecioTmp.getPrecioVentaPublico());
+                setPrecioDescuento(trabajoCategoriaPrecioTmp.getPrecioDescuento());
+                addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
+                return;
+            }
+            addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.NO_EXISTE_REGISTRO);
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root){
+                addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
         }
-        addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.NO_EXISTE_REGISTRO);
     }
 
-    /*public List<SelectItem> generarSelectItemDeTrabajos() {
+    public List<SelectItem> generarSelectItemDeTrabajos() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
         for (Trabajo trabajoTmp : getListaTrabajo()) {
-            selectItemsBuilder.add(trabajoTmp, trabajo.getDescripcion());
+            selectItemsBuilder.add(trabajoTmp, trabajoTmp.getDescripcion());
         }
         return selectItemsBuilder.buildList();
     }
@@ -95,7 +105,7 @@ public class TrabajoCategoriaPrecioControlador extends BaseControlador {
             selectItemsBuilder.add(categoriaTmp, categoriaTmp.getCategoria());
         }
         return selectItemsBuilder.buildList();
-    }*/
+    }
 
     public List<TrabajoCategoriaPrecio> obtenerListaTrabajo() {
         return trabajoCategoriaTrabajoBean.obtenerLista();
