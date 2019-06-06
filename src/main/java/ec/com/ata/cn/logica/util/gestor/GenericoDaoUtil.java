@@ -43,7 +43,6 @@ public class GenericoDaoUtil<T, I extends Serializable> {
      */
     public T crear(final T tablaEntidad) throws Exception {
         em.persist(tablaEntidad);
-        em.flush();
         return tablaEntidad;
     }
 
@@ -53,7 +52,7 @@ public class GenericoDaoUtil<T, I extends Serializable> {
      * @param tablaEntidad tabla de tipo entidad
      * @return tabla de tipo entidad con registro modificado
      */
-    public T modificar(final T tablaEntidad) {
+    public T modificar(final T tablaEntidad) throws Exception{
         return em.merge(tablaEntidad);
     }
 

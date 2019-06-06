@@ -14,7 +14,7 @@ import ec.com.ata.cn.modelo.Trabajo;
 import ec.com.ata.cn.modelo.TrabajoCategoriaPrecio;
 import ec.com.ata.cn.modelo.TrabajoCategoriaPrecioId;
 import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -50,7 +50,7 @@ public class TrabajoCategoriaPrecioControlador extends BaseControlador {
 
     private TrabajoCategoriaPrecio trabajoCategoriaPrecio;
 
-    private List<TrabajoCategoriaPrecio> listaTrabajoCategoriaPrecio;
+    private List<HashMap<String,Object>> listaMapaTrabajoCategoriaPrecio;
 
     private List<Trabajo> listaTrabajo;
 
@@ -62,32 +62,35 @@ public class TrabajoCategoriaPrecioControlador extends BaseControlador {
 
     @PostConstruct
     public void init() {
-        setTrabajoCategoriaPrecio(new TrabajoCategoriaPrecio());
-        setListaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerLista());
+        setTrabajoCategoriaPrecio(new TrabajoCategoriaPrecio());        
         setListaTrabajo(trabajoBean.obtenerLista());
         setListaCategoria(categoriaBean.obtenerLista());
+        setTrabajoCategoriaPrecio(new TrabajoCategoriaPrecio());
+        setListaMapaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecio());
     }
 
     public void cargarPrecio() {
         try {
-            TrabajoCategoriaPrecioId trabajoCategoriaPrecioId = new TrabajoCategoriaPrecioId();
-            trabajoCategoriaPrecioId.setIdCategoria(categoria.getIdCategoria());
-            trabajoCategoriaPrecioId.setIdTrabajo(trabajo.getIdTrabajo());
-            TrabajoCategoriaPrecio trabajoCategoriaPrecioTmp = trabajoCategoriaTrabajoBean.obtenerPorId(trabajoCategoriaPrecioId);
-            if (null != trabajoCategoriaPrecioTmp) {
-                setPrecioVentaPublico(trabajoCategoriaPrecioTmp.getPrecioVentaPublico());
-                setPrecioDescuento(trabajoCategoriaPrecioTmp.getPrecioDescuento());
-                addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
-                return;
+            if (null != categoria && null != trabajo) {
+                TrabajoCategoriaPrecioId trabajoCategoriaPrecioId = new TrabajoCategoriaPrecioId();
+                trabajoCategoriaPrecioId.setIdCategoria(categoria.getIdCategoria());
+                trabajoCategoriaPrecioId.setIdTrabajo(trabajo.getIdTrabajo());
+                trabajoCategoriaPrecio = trabajoCategoriaTrabajoBean.obtenerPorId(trabajoCategoriaPrecioId);
+                if (null != trabajoCategoriaPrecio) {
+                    setPrecioVentaPublico(trabajoCategoriaPrecio.getPrecioVentaPublico());
+                    setPrecioDescuento(trabajoCategoriaPrecio.getPrecioDescuento());
+                    addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
+                    return;
+                }
+                addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.NO_EXISTE_REGISTRO);
             }
-            addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.NO_EXISTE_REGISTRO);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
-            if (null != root){
-                addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+            if (null != root) {
+                addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_PRECIOS_CONTROLADOR_GUARDAR_ROOT + ":" + root.getMessage());
                 return;
             }
-            addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+            addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_PRECIOS_CONTROLADOR_GUARDAR_EX + ":" + e.getMessage());
         }
     }
 
@@ -113,7 +116,8 @@ public class TrabajoCategoriaPrecioControlador extends BaseControlador {
 
     public void guardar() {
         try {
-
+            trabajoCategoriaTrabajoBean.guardar(trabajoCategoriaPrecio);
+            setListaMapaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecio());
             addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
@@ -165,19 +169,7 @@ public class TrabajoCategoriaPrecioControlador extends BaseControlador {
         this.trabajoCategoriaPrecio = trabajoCategoriaPrecio;
     }
 
-    /**
-     * @return the listaTrabajoCategoriaPrecio
-     */
-    public List<TrabajoCategoriaPrecio> getListaTrabajoCategoriaPrecio() {
-        return listaTrabajoCategoriaPrecio;
-    }
-
-    /**
-     * @param listaTrabajoCategoriaPrecio the listaTrabajoCategoriaPrecio to set
-     */
-    public void setListaTrabajoCategoriaPrecio(List<TrabajoCategoriaPrecio> listaTrabajoCategoriaPrecio) {
-        this.listaTrabajoCategoriaPrecio = listaTrabajoCategoriaPrecio;
-    }
+    
 
     /**
      * @return the listaTrabajo
@@ -233,5 +225,19 @@ public class TrabajoCategoriaPrecioControlador extends BaseControlador {
      */
     public void setPrecioDescuento(BigDecimal precioDescuento) {
         this.precioDescuento = precioDescuento;
+    }
+
+    /**
+     * @return the listaMapaTrabajoCategoriaPrecio
+     */
+    public List<HashMap<String,Object>> getListaMapaTrabajoCategoriaPrecio() {
+        return listaMapaTrabajoCategoriaPrecio;
+    }
+
+    /**
+     * @param listaMapaTrabajoCategoriaPrecio the listaMapaTrabajoCategoriaPrecio to set
+     */
+    public void setListaMapaTrabajoCategoriaPrecio(List<HashMap<String,Object>> listaMapaTrabajoCategoriaPrecio) {
+        this.listaMapaTrabajoCategoriaPrecio = listaMapaTrabajoCategoriaPrecio;
     }
 }

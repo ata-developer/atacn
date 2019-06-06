@@ -69,7 +69,7 @@ public class TrabajoCategoriaPrecio implements Serializable {
 
     @Override
     public String toString() {
-        return "TrabajoCategoriaPrecio{" + "trabajoCategoriaPrecioId=" + trabajoCategoriaPrecioId.toString() + ", precioVentaPublico=" + precioVentaPublico + ", precioDescuento=" + precioDescuento + '}';
+        return "TrabajoCategoriaPrecio{" + "trabajoCategoriaPrecioId=" + (trabajoCategoriaPrecioId == null ? null : trabajoCategoriaPrecioId.toString()) + ", precioVentaPublico=" + precioVentaPublico + ", precioDescuento=" + precioDescuento + '}';
     }
     
     

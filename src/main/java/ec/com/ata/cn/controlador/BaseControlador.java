@@ -39,18 +39,18 @@ public class BaseControlador implements Serializable {
      */
     // ID DE LOS MENSAJES GLOBALES
     final static String ID_MENSAJE_INFORMACION_GLOBAL = "mensajeGeneral";
-    final static String ID_MENSAJE_ADVERTENCIA_GLOBAL = "idMensajeAdvertenciaGlobal";
-    final static String ID_MENSAJE_ERROR_GLOBAL = "idMensajeErrorGlobal";
-    final static String ID_MENSAJE_FATAL_GLOBAL = "idMensajeFatalGlobal";
+    final static String ID_MENSAJE_ADVERTENCIA_GLOBAL = "mensajeGeneral";
+    final static String ID_MENSAJE_ERROR_GLOBAL = "mensajeGeneral";
+    final static String ID_MENSAJE_FATAL_GLOBAL = "mensajeGeneral";
 
     // ID DE LOS MENSAJES PARA POPUP
-    final static String ID_MENSAJE_EXITOSO_POPUP = "idMensajeExitosoPopup";
-    final static String ID_MENSAJE_INFORMACION_POPUP = "idMensajeInformacionPopup";
-    final static String ID_MENSAJE_ADVERTENCIA_POPUP = "idMensajeAdvertenciaPopup";
-    final static String ID_MENSAJE_ERROR_POPUP = "idMensajeErrorPopup";
+    final static String ID_MENSAJE_EXITOSO_POPUP = "mensajeGeneral";
+    final static String ID_MENSAJE_INFORMACION_POPUP = "mensajeGeneral";
+    final static String ID_MENSAJE_ADVERTENCIA_POPUP = "mensajeGeneral";
+    final static String ID_MENSAJE_ERROR_POPUP = "mensajeGeneral";
 
     // ID DE LOS MENSAJES GLOBALES
-    private final static String ID_MENSAJE_EXITOSO_GLOBAL = "idMensajeExitosoGlobal";
+    private final static String ID_MENSAJE_EXITOSO_GLOBAL = "mensajeGeneral";
 
     /**
      *
@@ -469,7 +469,7 @@ public class BaseControlador implements Serializable {
      * @param detail detalle del mensaje
      */
     protected void addErrorMessage(final String summary, final String detail) {
-        this.addErrorMessage(this.ID_MENSAJE_ERROR_GLOBAL, summary, detail);
+        this.addErrorMessage(BaseControlador.ID_MENSAJE_ERROR_GLOBAL, summary, detail);
     }
 
     /**

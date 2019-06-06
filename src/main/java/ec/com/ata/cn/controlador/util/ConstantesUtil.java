@@ -33,7 +33,12 @@ public class ConstantesUtil {
         public static final String EXITO_DETALLE = "Se ha procesado su requerimiento exitosamente";
         public static final String NO_EXISTE_REGISTRO = "No existe registro";
         public static final String ERROR = "Error";
-        public static final String ERROR_TRABAJO_CONTROLADOR_GUARDAR = "001 ";
-        public static final String ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO = "002 ";
+        public static final String ERROR_TRABAJO_CONTROLADOR_GUARDAR = " 001 ";
+        public static final String ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO = " 002 ";
+        public static final String ERROR_CATEGORIA_CONTROLADOR_GUARDAR = " 003 ";
+        public static final String ERROR_PRECIOS_CONTROLADOR_GUARDAR_EX = " 004 ";
+        public static final String ERROR_PRECIOS_CONTROLADOR_GUARDAR_ROOT = " 005 ";
+        
+        public static final String TRABAJO_CATEGORIA = "TRABAJO/CATEGORIA";
 
 }
