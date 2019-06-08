@@ -305,13 +305,8 @@ public class BaseControlador implements Serializable {
     protected void addInfoMessage(final String idClient, final String summary, final String detail) {
         FacesMessage infoMessage = new FacesMessage();
         infoMessage.setSummary(summary);
-
-        StringBuilder detalle = new StringBuilder(STRING_VACIO);
-        if (! "".equals(detail)) {
-            detalle.append(DOS_PUNTOS);
-            detalle.append(detail);
-        }
-        infoMessage.setDetail(detalle.toString());
+        
+        infoMessage.setDetail(detail);
 
         infoMessage.setSeverity(FacesMessage.SEVERITY_INFO);
         FacesContext.getCurrentInstance().addMessage(idClient, infoMessage);

@@ -7,7 +7,6 @@
                 template="/WEB-INF/templateATA.xhtml">
 
     <ui:define name="content">
-        <p:importConstants type="ec.com.ata.cn.controlador.util.ConstantesUtil" var="ConstantesUtil" />
         <h:form id="frmAdministrarPrecio">
             <h1>#{msj.administrarPrecios}</h1>
             <p/>
@@ -37,7 +36,7 @@
                         <p:ajax 
                             event="change"
                             process="@this somSeleccionarCategoria"
-                            update="iTprecioVentaPublico iTprecioDescuento mensajeGeneral"
+                            update="iTprecioVentaPublico iTprecioDescuento mensajeGeneral dtListaMapaPrecio"
                             listener="#{trabajoCategoriaPrecioControlador.cargarPrecio()}" />
                     </h:selectOneMenu>
 
@@ -49,7 +48,9 @@
                         required="true"
                         requiredMessage="#{msj.campoNecesario}"
                         value="#{trabajoCategoriaPrecioControlador.precioVentaPublico}"
-                        onblur="value = value.toUpperCase()"/>
+                        onblur="value = value.toUpperCase()">
+                        <f:convertNumber pattern="#0.00" />
+                    </p:inputText>
 
                     <p:outputLabel
                         for="@next"
@@ -59,7 +60,9 @@
                         required="true"
                         requiredMessage="#{msj.campoNecesario}"
                         value="#{trabajoCategoriaPrecioControlador.precioDescuento}"
-                        onblur="value = value.toUpperCase()"/>
+                        onblur="value = value.toUpperCase()">
+                        <f:convertNumber pattern="#0.00" />
+                    </p:inputText>
 
                     <p:commandButton
                         id="btnGuardar" 
@@ -75,8 +78,34 @@
                 id="dtListaMapaPrecio"                
                 var="mapaTrabajoCategoriaPrecio" 
                 value="#{trabajoCategoriaPrecioControlador.listaMapaTrabajoCategoriaPrecio}">
-                <c:forEach var="clave" items="#{mapaTrabajoCategoriaPrecio.keySet}">
-                    #{clave}
+                <c:forEach var="categoria" items="#{trabajoCategoriaPrecioControlador.listaCategoriasTemporal()}">
+
+                    <p:column>
+                        <f:facet name="header" >
+                            <h:outputText value="#{categoria.categoria}" />
+                        </f:facet>
+                        <p:outputLabel
+                            rendered="#{categoria.categoria == 'TRABAJO/CATEGORIA'}"
+                            value="#{mapaTrabajoCategoriaPrecio[categoria.categoria]}" />
+                        <p:panelGrid 
+                            id="pngPrecio"
+                            columns="2" 
+                            rendered="#{categoria.categoria != 'TRABAJO/CATEGORIA'}">
+                            <p:outputLabel
+                                for="@next"
+                                value="#{msj.precioVentaPublico}" />
+                            <p:outputLabel
+                                value="#{mapaTrabajoCategoriaPrecio[categoria.categoria].precioVentaPublico}" />
+                            <p:outputLabel
+                                for="@next"
+                                value="#{msj.precioDescuento}" />
+                            <p:outputLabel
+                                value="#{mapaTrabajoCategoriaPrecio[categoria.categoria].precioDescuento}" />
+                        </p:panelGrid>
+
+                    </p:column>
+
+
                 </c:forEach>
             </p:dataTable>
         </h:form>

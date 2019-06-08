@@ -14,6 +14,7 @@ import ec.com.ata.cn.modelo.Trabajo;
 import ec.com.ata.cn.modelo.TrabajoCategoriaPrecio;
 import ec.com.ata.cn.modelo.TrabajoCategoriaPrecioId;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import java.util.List;
@@ -50,11 +51,13 @@ public class TrabajoCategoriaPrecioControlador extends BaseControlador {
 
     private TrabajoCategoriaPrecio trabajoCategoriaPrecio;
 
-    private List<HashMap<String,Object>> listaMapaTrabajoCategoriaPrecio;
+    private List<HashMap<String, Object>> listaMapaTrabajoCategoriaPrecio;
 
     private List<Trabajo> listaTrabajo;
 
     private List<Categoria> listaCategoria;
+
+    private List<Categoria> listaCategoriaTmp = null;
 
     private BigDecimal precioVentaPublico;
 
@@ -62,11 +65,29 @@ public class TrabajoCategoriaPrecioControlador extends BaseControlador {
 
     @PostConstruct
     public void init() {
-        setTrabajoCategoriaPrecio(new TrabajoCategoriaPrecio());        
+        setTrabajoCategoriaPrecio(new TrabajoCategoriaPrecio());
         setListaTrabajo(trabajoBean.obtenerLista());
         setListaCategoria(categoriaBean.obtenerLista());
         setTrabajoCategoriaPrecio(new TrabajoCategoriaPrecio());
         setListaMapaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecio());
+        System.out.println("init(): " + getListaMapaTrabajoCategoriaPrecio().size());
+    }
+
+    public List<String> clavesDelMapa(HashMap<String, Object> mapaEntrada) {
+        return new ArrayList<>((mapaEntrada == null ? new ArrayList<String>() : mapaEntrada.keySet()));
+    }
+
+    public List<Categoria> listaCategoriasTemporal() {
+        if (null == listaCategoriaTmp) {
+            listaCategoriaTmp = new ArrayList<>();
+            Categoria categoriaTmp = new Categoria();
+            categoriaTmp.setCategoria(ConstantesUtil.TRABAJO_CATEGORIA);
+            listaCategoriaTmp.add(categoriaTmp);
+            for (Categoria categoriaX : getListaCategoria()) {
+                listaCategoriaTmp.add(categoriaX);
+            }
+        }
+        return listaCategoriaTmp;
     }
 
     public void cargarPrecio() {
@@ -75,13 +96,17 @@ public class TrabajoCategoriaPrecioControlador extends BaseControlador {
                 TrabajoCategoriaPrecioId trabajoCategoriaPrecioId = new TrabajoCategoriaPrecioId();
                 trabajoCategoriaPrecioId.setIdCategoria(categoria.getIdCategoria());
                 trabajoCategoriaPrecioId.setIdTrabajo(trabajo.getIdTrabajo());
-                trabajoCategoriaPrecio = trabajoCategoriaTrabajoBean.obtenerPorId(trabajoCategoriaPrecioId);
-                if (null != trabajoCategoriaPrecio) {
-                    setPrecioVentaPublico(trabajoCategoriaPrecio.getPrecioVentaPublico());
-                    setPrecioDescuento(trabajoCategoriaPrecio.getPrecioDescuento());
+                TrabajoCategoriaPrecio trabajoCategoriaPrecioTmp = trabajoCategoriaTrabajoBean.obtenerPorId(trabajoCategoriaPrecioId);
+                if (null != trabajoCategoriaPrecioTmp) {
+                    setPrecioVentaPublico(trabajoCategoriaPrecioTmp.getPrecioVentaPublico());
+                    setPrecioDescuento(trabajoCategoriaPrecioTmp.getPrecioDescuento());
                     addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
                     return;
+                } else {
+                    setPrecioDescuento(null);
+                    setPrecioVentaPublico(null);
                 }
+                
                 addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.NO_EXISTE_REGISTRO);
             }
         } catch (Exception e) {
@@ -116,6 +141,15 @@ public class TrabajoCategoriaPrecioControlador extends BaseControlador {
 
     public void guardar() {
         try {
+            //TrabajoCategoriaPrecioId trabajoCategoriaPrecioId = new TrabajoCategoriaPrecioId();
+            //trabajoCategoriaPrecioId.setIdCategoria(getCategoria().getIdCategoria());
+            //trabajoCategoriaPrecioId.setIdTrabajo(getTrabajo().getIdTrabajo());
+            //trabajoCategoriaPrecio.setTrabajoCategoriaPrecioId(trabajoCategoriaPrecioId);
+            trabajoCategoriaPrecio = new TrabajoCategoriaPrecio();
+            trabajoCategoriaPrecio.setCategoria(getCategoria());
+            trabajoCategoriaPrecio.setTrabajo(getTrabajo());
+            trabajoCategoriaPrecio.setPrecioDescuento(getPrecioDescuento());
+            trabajoCategoriaPrecio.setPrecioVentaPublico(getPrecioVentaPublico());
             trabajoCategoriaTrabajoBean.guardar(trabajoCategoriaPrecio);
             setListaMapaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecio());
             addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
@@ -168,8 +202,6 @@ public class TrabajoCategoriaPrecioControlador extends BaseControlador {
     public void setTrabajoCategoriaPrecio(TrabajoCategoriaPrecio trabajoCategoriaPrecio) {
         this.trabajoCategoriaPrecio = trabajoCategoriaPrecio;
     }
-
-    
 
     /**
      * @return the listaTrabajo
@@ -230,14 +262,15 @@ public class TrabajoCategoriaPrecioControlador extends BaseControlador {
     /**
      * @return the listaMapaTrabajoCategoriaPrecio
      */
-    public List<HashMap<String,Object>> getListaMapaTrabajoCategoriaPrecio() {
+    public List<HashMap<String, Object>> getListaMapaTrabajoCategoriaPrecio() {
         return listaMapaTrabajoCategoriaPrecio;
     }
 
     /**
-     * @param listaMapaTrabajoCategoriaPrecio the listaMapaTrabajoCategoriaPrecio to set
+     * @param listaMapaTrabajoCategoriaPrecio the
+     * listaMapaTrabajoCategoriaPrecio to set
      */
-    public void setListaMapaTrabajoCategoriaPrecio(List<HashMap<String,Object>> listaMapaTrabajoCategoriaPrecio) {
+    public void setListaMapaTrabajoCategoriaPrecio(List<HashMap<String, Object>> listaMapaTrabajoCategoriaPrecio) {
         this.listaMapaTrabajoCategoriaPrecio = listaMapaTrabajoCategoriaPrecio;
     }
 }

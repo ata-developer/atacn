@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templateATA.xhtml">
+
+    <ui:define name="content">
+        <h:form id="frmAdministrarVehiculo">
+            <h1>#{msj.administrarVehiculos}</h1>
+            <p/>
+            <p:fieldset legend="#{msj.agregarVehiculo}">
+                <p:panelGrid id="pngAdministrarVehiculo" columns="2">
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.descripcionVehiculo}" />                    
+                    <p:inputText
+                        id="descripcionVehiculo"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{categoriaControlador.categoria.categoria}"
+                        onblur="value = value.toUpperCase()"/>
+
+                    <p:commandButton
+                        id="btnGuardar" 
+                        value="#{msj.guardar}"
+                        update="pngAdministrarVehiculo tblListaVehiculo mensajeGeneral"
+                        action="#{categoriaControlador.guardar()}" />
+                    <p:outputLabel
+                        value="" />
+
+                </p:panelGrid>
+            </p:fieldset>
+            <p/>
+            <p:dataTable
+                id="tblListaVehiculo"                
+                var="categoria" 
+                value="#{categoriaControlador.listaVehiculo}">
+                <f:facet name="header">
+                    #{msj.listaDeVehiculos}
+                </f:facet>
+                <p:column headerText="#{msj.codigoVehiculo}">
+                    <h:outputText value="#{categoria.idVehiculo}" />
+                </p:column>
+
+                <p:column headerText="#{msj.descripcionVehiculo}">
+                    <h:outputText value="#{categoria.categoria}" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -38,11 +38,11 @@ public class TrabajoCategoriaPrecioBean {
     }
 
     public TrabajoCategoriaPrecio guardar(TrabajoCategoriaPrecio trabajoCategoriaPrecioEntrada) throws Exception {
-        if (null != trabajoCategoriaPrecioEntrada.getTrabajoCategoriaPrecioId()) {
-            return trabajoCategoriaPrecioDao.modificar(trabajoCategoriaPrecioEntrada);
-        } else {
+        //if (null != trabajoCategoriaPrecioEntrada.getTrabajoCategoriaPrecioId()) {
+          //  return trabajoCategoriaPrecioDao.modificar(trabajoCategoriaPrecioEntrada);
+        //} else {
             return trabajoCategoriaPrecioDao.crear(trabajoCategoriaPrecioEntrada);
-        }
+        //}
     }
 
     public List<TrabajoCategoriaPrecio> obtenerLista() {

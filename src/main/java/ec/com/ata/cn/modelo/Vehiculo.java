@@ -39,16 +39,18 @@ public class Vehiculo implements Serializable {
     @Column(name = "modelo")
     private String modelo;
     
+    private String observacionAnio;
+    
+    private Integer numeroDeFilas;
+    
     @ManyToOne
     private MarcaVehiculo marca;
     
     @ManyToOne
-    private AnioVehiculo anioVehiculo;
+    private AnioVehiculo anioVehiculoDesde;
     
     @ManyToOne
-    private AnioVehiculo observacionAnio;
-    
-    
+    private AnioVehiculo anioVehiculoHasta;
     
     public Long getIdVehiculo() {
         return idVehiculo;
@@ -97,19 +99,7 @@ public class Vehiculo implements Serializable {
         this.marca = marca;
     }
 
-    /**
-     * @return the anioVehiculo
-     */
-    public AnioVehiculo getAnioVehiculo() {
-        return anioVehiculo;
-    }
-
-    /**
-     * @param anioVehiculo the anioVehiculo to set
-     */
-    public void setAnioVehiculo(AnioVehiculo anioVehiculo) {
-        this.anioVehiculo = anioVehiculo;
-    }
+    
 
     /**
      * @return the modelo
@@ -128,15 +118,57 @@ public class Vehiculo implements Serializable {
     /**
      * @return the observacionAnio
      */
-    public AnioVehiculo getObservacionAnio() {
+    public String getObservacionAnio() {
         return observacionAnio;
     }
 
     /**
      * @param observacionAnio the observacionAnio to set
      */
-    public void setObservacionAnio(AnioVehiculo observacionAnio) {
+    public void setObservacionAnio(String observacionAnio) {
         this.observacionAnio = observacionAnio;
+    }
+
+    /**
+     * @return the anioVehiculoDesde
+     */
+    public AnioVehiculo getAnioVehiculoDesde() {
+        return anioVehiculoDesde;
+    }
+
+    /**
+     * @param anioVehiculoDesde the anioVehiculoDesde to set
+     */
+    public void setAnioVehiculoDesde(AnioVehiculo anioVehiculoDesde) {
+        this.anioVehiculoDesde = anioVehiculoDesde;
+    }
+
+    /**
+     * @return the anioVehiculoHasta
+     */
+    public AnioVehiculo getAnioVehiculoHasta() {
+        return anioVehiculoHasta;
+    }
+
+    /**
+     * @param anioVehiculoHasta the anioVehiculoHasta to set
+     */
+    public void setAnioVehiculoHasta(AnioVehiculo anioVehiculoHasta) {
+        this.anioVehiculoHasta = anioVehiculoHasta;
+    }
+
+    /**
+     * @return the numeroDeFilas
+     */
+    public Integer getNumeroDeFilas() {
+        return numeroDeFilas;
+    }
+
+    /**
+     * @param numeroDeFilas the numeroDeFilas to set
+     */
+    public void setNumeroDeFilas(Integer numeroDeFilas) {
+        this.numeroDeFilas = numeroDeFilas;
     }
 
    
