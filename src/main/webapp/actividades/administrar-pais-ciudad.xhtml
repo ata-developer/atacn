@@ -1,0 +1,55 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templateATA.xhtml">
+
+    <ui:define name="content">
+        <h:form id="frmAdministrarPaisCiudad">
+            <h1>#{msj.administrarPais}</h1>
+            <p/>
+            <p:fieldset legend="#{msj.agregarPais}">
+                <p:panelGrid id="pngAdministrarPais" columns="2">
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.pais}" />                    
+                    <p:inputText
+                        id="descripcionPais"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{paisCiudadControlador.pais.pais}"
+                        onblur="value = value.toUpperCase()">
+                        <f:converter converterId="trimConverter" />
+                    </p:inputText>
+
+                    <p:commandButton
+                        id="btnGuardar" 
+                        value="#{msj.guardar}"
+                        update="pngAdministrarPais tblListaPais mensajeGeneral"
+                        action="#{paisCiudadControlador.guardar()}" />
+                    <p:outputLabel
+                        value="" />
+
+                </p:panelGrid>
+            </p:fieldset>
+            <p/>
+            <p:dataTable
+                id="tblListaPaisCiudad"                
+                var="paisCiudad" 
+                value="#{paisCiudadControlador.listaPaisCiudad}">
+                <f:facet name="header">
+                    #{msj.listaDePaisCiudads}
+                </f:facet>
+                <p:column headerText="#{msj.codigoPaisCiudad}">
+                    <h:outputText value="#{paisCiudad.idPaisCiudad}" />
+                </p:column>
+
+                <p:column headerText="#{msj.descripcionPaisCiudad}">
+                    <h:outputText value="#{paisCiudad.paisCiudad}" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>

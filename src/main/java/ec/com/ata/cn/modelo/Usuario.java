@@ -34,24 +34,35 @@ public class Usuario implements Serializable {
     @Column(name = "id_usuario")
     private Long idUsuario;
     
+    @Column(name = "nombre")
     private String nombre;
     
+    @Column(name = "apellido")
     private String apellido;
     
+    @Column(name = "calle_principal")
     private String callePrincipal;
     
+    @Column(name = "numeracion")
     private String numeracion;
     
+    @Column(name = "calle_secundaria")
     private String calleSecundaria;
     
+    @Column(name = "numero_documento")
     private String numeroDocumento;
     
+    @Column(name = "celular")
+    private String celular;
+    
+    @Column(name = "telefono")
+    private String telefono;
+    
+    @Column(name = "correo")
     private String correo;
     
+    @Column(name = "usuario")
     private String usuario;
-    
-    
-    
 
     public Long getIdUsuario() {
         return idUsuario;
@@ -196,6 +207,34 @@ public class Usuario implements Serializable {
      */
     public void setUsuario(String usuario) {
         this.usuario = usuario;
+    }
+
+    /**
+     * @return the celular
+     */
+    public String getCelular() {
+        return celular;
+    }
+
+    /**
+     * @param celular the celular to set
+     */
+    public void setCelular(String celular) {
+        this.celular = celular;
+    }
+
+    /**
+     * @return the telefono
+     */
+    public String getTelefono() {
+        return telefono;
+    }
+
+    /**
+     * @param telefono the telefono to set
+     */
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
     
 }

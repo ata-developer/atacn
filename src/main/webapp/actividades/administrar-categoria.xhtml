@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templateATA.xhtml">
+
+    <ui:define name="content">
+        <h:form id="frmAdministrarCategoria">
+            <h1>#{msj.administrarCategorias}</h1>
+            <p/>
+            <p:fieldset legend="#{msj.agregarCategoria}">
+                <p:panelGrid id="pngAdministrarCategoria" columns="2">
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.descripcionCategoria}" />                    
+                    <p:inputText
+                        id="descripcionCategoria"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{categoriaControlador.categoria.categoria}"
+                        onblur="value = value.toUpperCase()"/>
+
+                    <p:commandButton
+                        id="btnGuardar" 
+                        value="#{msj.guardar}"
+                        update="pngAdministrarCategoria tblListaCategoria mensajeGeneral"
+                        action="#{categoriaControlador.guardar()}" />
+                    <p:outputLabel
+                        value="" />
+
+                </p:panelGrid>
+            </p:fieldset>
+            <p/>
+            <p:dataTable
+                id="tblListaCategoria"                
+                var="categoria" 
+                value="#{categoriaControlador.listaCategoria}">
+                <f:facet name="header">
+                    #{msj.listaDeCategorias}
+                </f:facet>
+                <p:column headerText="#{msj.codigoCategoria}">
+                    <h:outputText value="#{categoria.idCategoria}" />
+                </p:column>
+
+                <p:column headerText="#{msj.descripcionCategoria}">
+                    <h:outputText value="#{categoria.categoria}" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>

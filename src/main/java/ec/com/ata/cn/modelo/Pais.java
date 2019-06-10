@@ -19,47 +19,47 @@ import javax.persistence.Table;
  * @author ATA1
  */
 @Entity
-@Table(name = "pais_origen")
-public class PaisOrigen implements Serializable {
+@Table(name = "pais")
+public class Pais implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id    
     @SequenceGenerator(
-            name = "pais_origen_seq",
-            sequenceName = "pais_origen_seq",
+            name = "pais_seq",
+            sequenceName = "pais_seq",
             allocationSize = 1)
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "pais_origen_seq")
-    @Column(name = "id_pais_origen")
-    private Long idPaisOrigen;
+            generator = "pais_seq")
+    @Column(name = "id_pais")
+    private Long idPais;
     
     @Column(name = "pais")
     private String pais;
 
-    public Long getIdPaisOrigen() {
-        return idPaisOrigen;
+    public Long getIdPais() {
+        return idPais;
     }
 
-    public void setIdPaisOrigen(Long idPaisOrigen) {
-        this.idPaisOrigen = idPaisOrigen;
+    public void setIdPais(Long idPais) {
+        this.idPais = idPais;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idPaisOrigen != null ? idPaisOrigen.hashCode() : 0);
+        hash += (idPais != null ? idPais.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the idPaisOrigen fields are not set
-        if (!(object instanceof PaisOrigen)) {
+        // TODO: Warning - this method won't work in the case the idPais fields are not set
+        if (!(object instanceof Pais)) {
             return false;
         }
-        PaisOrigen other = (PaisOrigen) object;
-        if ((this.idPaisOrigen == null && other.idPaisOrigen != null) || (this.idPaisOrigen != null && !this.idPaisOrigen.equals(other.idPaisOrigen))) {
+        Pais other = (Pais) object;
+        if ((this.idPais == null && other.idPais != null) || (this.idPais != null && !this.idPais.equals(other.idPais))) {
             return false;
         }
         return true;
@@ -67,7 +67,7 @@ public class PaisOrigen implements Serializable {
 
     @Override
     public String toString() {
-        return "ec.com.ata.cn.modelo.PaisOrigen[ id=" + idPaisOrigen + " ]";
+        return "ec.com.ata.cn.modelo.PaisOrigen[ id=" + idPais + " ]";
     }
 
     /**

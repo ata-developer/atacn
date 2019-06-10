@@ -3,51 +3,53 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
                 template="/WEB-INF/templateATA.xhtml">
 
     <ui:define name="content">
-        <h:form id="frmAdministrarCategoria">
-            <h1>#{msj.administrarCategorias}</h1>
+        <h:form id="frmAdministrarGrupoPrecio">
+            <h1>#{msj.administrarGrupoPrecio}</h1>
             <p/>
-            <p:fieldset legend="#{msj.agregarCategoria}">
-                <p:panelGrid id="pngAdministrarCategoria" columns="2">
-
+            <p:fieldset legend="#{msj.administrarGrupoPrecio}">
+                <p:panelGrid id="pngAdministrarGrupoPrecio" columns="2">
                     <p:outputLabel
                         for="@next"
-                        value="#{msj.descripcionCategoria}" />                    
+                        value="#{msj.nombreGrupoPrecio}" />
                     <p:inputText
-                        id="descripcionCategoria"
+                        id="iTGrupoPrecio"
                         required="true"
                         requiredMessage="#{msj.campoNecesario}"
-                        value="#{categoriaControlador.categoria.categoria}"
-                        onblur="value = value.toUpperCase()"/>
-
+                        value="#{grupoPrecioControlador.nombre}"
+                        onblur="value = value.toUpperCase()">
+                    </p:inputText>
+                    
                     <p:commandButton
                         id="btnGuardar" 
                         value="#{msj.guardar}"
-                        update="pngAdministrarCategoria tblListaCategoria mensajeGeneral"
-                        action="#{categoriaControlador.guardar()}" />
+                        update="pngAdministrarGrupoPrecio tblListaGrupoPrecio mensajeGeneral"
+                        action="#{grupoPrecioControlador.guardar()}" />
                     <p:outputLabel
                         value="" />
-
                 </p:panelGrid>
             </p:fieldset>
             <p/>
+            <p/>
             <p:dataTable
-                id="tblListaCategoria"                
-                var="categoria" 
-                value="#{categoriaControlador.listaCategoria}">
+                id="tblListaGrupoPrecio"                
+                var="grupoPrecio" 
+                value="#{grupoPrecioControlador.listaGrupoPrecio}">
                 <f:facet name="header">
                     #{msj.listaDeCategorias}
                 </f:facet>
                 <p:column headerText="#{msj.codigoCategoria}">
-                    <h:outputText value="#{categoria.idCategoria}" />
+                    <h:outputText value="#{grupoPrecio.idGrupoPrecio}" />
                 </p:column>
 
-                <p:column headerText="#{msj.descripcionCategoria}">
-                    <h:outputText value="#{categoria.categoria}" />
+                <p:column headerText="#{msj.descripcionGrupoPrecio}">
+                    <h:outputText value="#{grupoPrecio.nombre}" />
                 </p:column>
             </p:dataTable>
+            
         </h:form>
     </ui:define>
 </ui:composition>

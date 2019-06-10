@@ -6,8 +6,8 @@
 package ec.com.ata.cn.controlador;
 
 import ec.com.ata.cn.controlador.util.ConstantesUtil;
-import ec.com.ata.cn.logica.CategoriaBean;
-import ec.com.ata.cn.modelo.Categoria;
+import ec.com.ata.cn.logica.UsuarioBean;
+import ec.com.ata.cn.modelo.Usuario;
 
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -23,30 +23,29 @@ import org.apache.commons.lang.exception.ExceptionUtils;
  */
 @SessionScoped
 @Named
-public class CategoriaControlador extends BaseControlador {
+public class UsuarioControlador extends BaseControlador {
 
     @Inject
-    private CategoriaBean categoriaBean;
+    private UsuarioBean usuarioBean;
 
-    private Categoria categoria;
+    private Usuario usuario;
 
-    private List<Categoria> listaCategoria;
+    private List<Usuario> listaUsuario;
 
     @PostConstruct
     public void init() {
-        categoria = new Categoria();
-        listaCategoria = categoriaBean.obtenerLista();
+        usuario = new Usuario();
+        listaUsuario = usuarioBean.obtenerLista();
     }
 
-    public List<Categoria> obtenerListaCategoria() {
-        return categoriaBean.obtenerLista();
+    public List<Usuario> obtenerListaUsuario() {
+        return usuarioBean.obtenerLista();
     }
 
     public void guardar() {
         try {
-            getCategoria().setCategoria(getCategoria().getCategoria().trim());
-            categoriaBean.crear(getCategoria());
-            listaCategoria = categoriaBean.obtenerLista();            
+            usuarioBean.crear(getUsuario());
+            listaUsuario = usuarioBean.obtenerLista();            
             addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
@@ -56,35 +55,35 @@ public class CategoriaControlador extends BaseControlador {
             }
             addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
         } finally {
-            setCategoria(new Categoria());
+            setUsuario(new Usuario());
         }
     }
 
     /**
-     * @return the categoria
+     * @return the usuario
      */
-    public Categoria getCategoria() {
-        return categoria;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
     /**
-     * @param categoria the categoria to set
+     * @param usuario the usuario to set
      */
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     /**
-     * @return the listaCategoria
+     * @return the listaUsuario
      */
-    public List<Categoria> getListaCategoria() {
-        return listaCategoria;
+    public List<Usuario> getListaUsuario() {
+        return listaUsuario;
     }
 
     /**
-     * @param listaCategoria the listaCategoria to set
+     * @param listaUsuario the listaUsuario to set
      */
-    public void setListaCategoria(List<Categoria> listaCategoria) {
-        this.listaCategoria = listaCategoria;
+    public void setListaUsuario(List<Usuario> listaUsuario) {
+        this.listaUsuario = listaUsuario;
     }
 }

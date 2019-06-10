@@ -1,0 +1,134 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templateATA.xhtml">
+
+    <ui:define name="content">
+        <h:form id="frmAdministrarEstablecimiento">
+            <h1>#{msj.administrarEstablecimiento}</h1>
+            <p/>
+            <p:fieldset legend="#{msj.agregarEstablecimiento}">
+                <p:panelGrid id="pngAdministrarEstablecimiento" columns="2">
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.descripcionEstablecimiento}" />                    
+                    <p:inputText
+                        id="iTdescripcionEstablecimiento"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{establecimientoControlador.establecimiento.establecimiento}"
+                        onblur="value = value.toUpperCase()">
+                        <f:converter converterId="trimConverter" />
+
+                    </p:inputText>
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.callePrincipal}" />                    
+                    <p:inputText
+                        id="iTdescripcionEstablecimiento"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{establecimientoControlador.establecimiento.callePrincipal}"
+                        onblur="value = value.toUpperCase()">
+                        <f:converter converterId="trimConverter" />
+                    </p:inputText>
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.numeracion}" />                    
+                    <p:inputText
+                        id="iTnumeracion"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{establecimientoControlador.establecimiento.numeracion}"
+                        onblur="value = value.toUpperCase()">
+                        <f:converter converterId="trimConverter" />
+                    </p:inputText>
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.calleSecundaria}" />                    
+                    <p:inputText
+                        id="descripcionEstablecimiento"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{establecimientoControlador.establecimiento.calleSecundaria}"
+                        onblur="value = value.toUpperCase()">
+                        <f:converter converterId="trimConverter" />
+                    </p:inputText>
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.telefono}" />                    
+                    <p:inputText
+                        id="descripcionEstablecimiento"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{establecimientoControlador.establecimiento.telefono}"
+                        onblur="value = value.toUpperCase()">
+                        <f:converter converterId="trimConverter" />
+                    </p:inputText>
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.celular}" />                    
+                    <p:inputText
+                        id="descripcionEstablecimiento"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{establecimientoControlador.establecimiento.celular}"
+                        onblur="value = value.toUpperCase()">
+                        <f:converter converterId="trimConverter" />
+                    </p:inputText>
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.correoElectronico}" />                    
+                    <p:inputText
+                        id="descripcionEstablecimiento"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{establecimientoControlador.establecimiento.correo}"
+                        onblur="value = value.toUpperCase()">
+                        <f:converter converterId="trimConverter" />
+                    </p:inputText>
+
+
+
+                    <p:commandButton
+                        id="btnGuardar" 
+                        value="#{msj.guardar}"
+                        update="pngAdministrarEstablecimiento tblListaEstablecimiento mensajeGeneral"
+                        action="#{establecimientoControlador.guardar()}" />
+                    <p:outputLabel
+                        value="" />
+
+                </p:panelGrid>
+            </p:fieldset>
+            <p/>
+            <p:dataTable
+                id="tblListaEstablecimiento"                
+                var="establecimiento" 
+                value="#{establecimientoControlador.listaEstablecimiento}">
+                <f:facet name="header">
+                    #{msj.listaEstablecimiento}
+                </f:facet>
+                <p:column headerText="#{msj.codigoEstablecimiento}">
+                    <h:outputText value="#{establecimiento.idEstablecimiento}" />
+                </p:column>
+
+                <p:column headerText="#{msj.establecimiento}">
+                    <h:outputText value="#{establecimiento.establecimiento}" />
+                </p:column>
+                
+                <p:column headerText="#{msj.establecimiento}">
+                    <h:outputText value="#{establecimiento.establecimiento}" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>

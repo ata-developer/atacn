@@ -5,13 +5,21 @@
  */
 package ec.com.ata.cn.logica.util.gestor;
 
+import ec.com.ata.cn.logica.excepcion.ParametrosNoExisteExcepcion;
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 /**
  * Implementación del patrón de acceso a datos con métodos genéricos CRUD
@@ -87,4 +95,32 @@ public class GenericoDaoUtil<T, I extends Serializable> {
         return consulta.getResultList();
     }
     
+    /**
+     * MÃ©todo generico para consultar, utilizando criteria query
+     *
+     * @param parametros lista de parametros a consultar
+     * @param tablaEntidad tabla a consultar.
+     * @return
+     */
+    public List<T> obtenerListaPorParametros(Map<String, Object> parametros, final Class<T> tablaEntidad) {
+        if (parametros == null || parametros.isEmpty()) {
+            throw new ParametrosNoExisteExcepcion("NO EXISTE PARAMETROS PARA LA BUSQUEDA");
+        } else {
+            Object parametro;
+            List<Predicate> predicates = new ArrayList<>();
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<T> query = cb.createQuery(tablaEntidad);
+            Root<T> root = query.from(tablaEntidad);
+
+            Field[] fields = tablaEntidad.getDeclaredFields();
+            for (Field field : fields) {
+                parametro = parametros.get(field.getName());
+                if (null != parametro) {
+                    predicates.add(cb.and(cb.equal(root.get(field.getName()), parametro)));
+                }
+            }
+            query.select(root).where(predicates.toArray(new Predicate[predicates.size()]));
+            return em.createQuery(query).getResultList();
+        }
+    }
 }

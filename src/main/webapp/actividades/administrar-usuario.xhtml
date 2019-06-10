@@ -1,0 +1,141 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templateATA.xhtml">
+
+    <ui:define name="content">
+        <h:form id="frmAdministrarUsuario">
+            <h1>#{msj.administrarUsuario}</h1>
+            <p/>
+            <p:fieldset legend="#{msj.agregarUsuario}">
+                <p:panelGrid id="pngAdministrarUsuario" columns="2">
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.nombre}" />                    
+                    <p:inputText
+                        id="iTdescripcionUsuario"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{usuarioControlador.usuario.nombre}"
+                        onblur="value = value.toUpperCase()">
+                        <f:converter converterId="trimConverter" />
+                    </p:inputText>
+                    
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.apellido}" />                    
+                    <p:inputText
+                        id="iTdescripcionUsuario"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{usuarioControlador.usuario.apellido}"
+                        onblur="value = value.toUpperCase()">
+                        <f:converter converterId="trimConverter" />
+                    </p:inputText>
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.callePrincipal}" />                    
+                    <p:inputText
+                        id="iTdescripcionUsuario"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{usuarioControlador.usuario.callePrincipal}"
+                        onblur="value = value.toUpperCase()">
+                        <f:converter converterId="trimConverter" />
+                    </p:inputText>
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.numeracion}" />                    
+                    <p:inputText
+                        id="iTnumeracion"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{usuarioControlador.usuario.numeracion}"
+                        onblur="value = value.toUpperCase()">
+                        <f:converter converterId="trimConverter" />
+                    </p:inputText>
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.calleSecundaria}" />                    
+                    <p:inputText
+                        id="descripcionUsuario"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{usuarioControlador.usuario.calleSecundaria}"
+                        onblur="value = value.toUpperCase()">
+                        <f:converter converterId="trimConverter" />
+                    </p:inputText>
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.telefono}" />                    
+                    <p:inputText
+                        id="descripcionUsuario"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{usuarioControlador.usuario.telefono}"
+                        onblur="value = value.toUpperCase()">
+                        <f:converter converterId="trimConverter" />
+                    </p:inputText>
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.celular}" />                    
+                    <p:inputText
+                        id="descripcionUsuario"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{usuarioControlador.usuario.celular}"
+                        onblur="value = value.toUpperCase()">
+                        <f:converter converterId="trimConverter" />
+                    </p:inputText>
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.correoElectronico}" />                    
+                    <p:inputText
+                        id="descripcionUsuario"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{usuarioControlador.usuario.correo}"
+                        onblur="value = value.toUpperCase()">
+                        <f:converter converterId="trimConverter" />
+                    </p:inputText>
+
+
+
+                    <p:commandButton
+                        id="btnGuardar" 
+                        value="#{msj.guardar}"
+                        update="pngAdministrarUsuario tblListaUsuario mensajeGeneral"
+                        action="#{usuarioControlador.guardar()}" />
+                    <p:outputLabel
+                        value="" />
+
+                </p:panelGrid>
+            </p:fieldset>
+            <p/>
+            <p:dataTable
+                id="tblListaUsuario"                
+                var="usuario" 
+                value="#{usuarioControlador.listaUsuario}">
+                <f:facet name="header">
+                    #{msj.listaUsuario}
+                </f:facet>
+                <p:column headerText="#{msj.codigoUsuario}">
+                    <h:outputText value="#{usuario.idUsuario}" />
+                </p:column>
+
+                <p:column headerText="#{msj.usuario}">
+                    <h:outputText value="#{usuario.usuario}" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>
