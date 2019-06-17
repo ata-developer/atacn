@@ -97,6 +97,26 @@
                         <f:converter converterId="trimConverter" />
                     </p:inputText>
 
+                    
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.ciudad}" />
+                    <p:selectOneMenu
+                        id="somSeleccionarCiudad"
+                        required="true"
+                        filter="true" 
+                        filterMatchMode="contains"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{paisCiudadControlador.ciudad}"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{establecimientoControlador.generarSelectItemDeCiudad()}" />
+                        <p:ajax 
+                            event="change"
+                            process="@this"
+                            update="mensajeGeneral tblListaProvincia"
+                            listener="#{paisCiudadControlador.cargarProvinciasPorPais()}" />
+                    </p:selectOneMenu>
 
 
                     <p:commandButton
@@ -125,8 +145,12 @@
                     <h:outputText value="#{establecimiento.establecimiento}" />
                 </p:column>
                 
-                <p:column headerText="#{msj.establecimiento}">
+                <p:column headerText="#{msj.callePrincipal}">
                     <h:outputText value="#{establecimiento.establecimiento}" />
+                </p:column>
+                
+                <p:column headerText="#{msj.ciudad}">
+                    <h:outputText value="#{establecimiento.ciudad.ciudad}" />
                 </p:column>
             </p:dataTable>
         </h:form>

@@ -22,9 +22,11 @@
         <phase-listener>org.primefaces.component.lifecycle.LifecyclePhaseListener</phase-listener>
     </lifecycle>
     
+
+    
     <converter>
-        <converter-id>theme</converter-id>
-        <converter-class>org.primefaces.showcase.convert.ThemeConverter</converter-class>
+        <converter-id>trimConverter</converter-id>
+        <converter-class>ec.com.ata.cn.controlador.convertidor.TrimConverter</converter-class>
     </converter>
     
     <factory>

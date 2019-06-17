@@ -6,16 +6,20 @@
 package ec.com.ata.cn.controlador;
 
 import ec.com.ata.cn.controlador.util.ConstantesUtil;
+import ec.com.ata.cn.logica.TipoDocumentoBean;
 import ec.com.ata.cn.logica.UsuarioBean;
+import ec.com.ata.cn.modelo.TipoDocumento;
 import ec.com.ata.cn.modelo.Usuario;
 
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.omnifaces.util.selectitems.SelectItemsBuilder;
 
 /**
  *
@@ -27,15 +31,30 @@ public class UsuarioControlador extends BaseControlador {
 
     @Inject
     private UsuarioBean usuarioBean;
+    
+    @Inject
+    private TipoDocumentoBean tipoDocumentoBean;
 
     private Usuario usuario;
 
     private List<Usuario> listaUsuario;
-
+    
+    private List<TipoDocumento> listaTipoDocumento;
+    
+    
     @PostConstruct
     public void init() {
         usuario = new Usuario();
         listaUsuario = usuarioBean.obtenerLista();
+        listaTipoDocumento = tipoDocumentoBean.obtenerLista();
+    }
+    
+    public List<SelectItem> generarSelectItemDeTipoDocumento() {
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+        for (TipoDocumento tipoDocumentoTmo : getListaTipoDocumento()) {
+            selectItemsBuilder.add(tipoDocumentoTmo, tipoDocumentoTmo.getTipoDocumento());
+        }
+        return selectItemsBuilder.buildList();
     }
 
     public List<Usuario> obtenerListaUsuario() {
@@ -85,5 +104,19 @@ public class UsuarioControlador extends BaseControlador {
      */
     public void setListaUsuario(List<Usuario> listaUsuario) {
         this.listaUsuario = listaUsuario;
+    }
+
+    /**
+     * @return the listaTipoDocumento
+     */
+    public List<TipoDocumento> getListaTipoDocumento() {
+        return listaTipoDocumento;
+    }
+
+    /**
+     * @param listaTipoDocumento the listaTipoDocumento to set
+     */
+    public void setListaTipoDocumento(List<TipoDocumento> listaTipoDocumento) {
+        this.listaTipoDocumento = listaTipoDocumento;
     }
 }

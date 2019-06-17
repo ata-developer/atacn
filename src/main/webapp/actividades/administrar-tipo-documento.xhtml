@@ -6,27 +6,27 @@
                 template="/WEB-INF/templateATA.xhtml">
 
     <ui:define name="content">
-        <h:form id="frmAdministrarCategoria">
-            <h1>#{msj.administrarCategorias}</h1>
+        <h:form id="frmAdministrarTipoDocumento">
+            <h1>#{msj.administrarTipoDocumento}</h1>
             <p/>
-            <p:fieldset legend="#{msj.agregarCategoria}">
-                <p:panelGrid id="pngAdministrarCategoria" columns="2">
+            <p:fieldset legend="#{msj.agregarTipoDocumento}">
+                <p:panelGrid id="pngAdministrarTipoDocumento" columns="2">
 
                     <p:outputLabel
                         for="@next"
-                        value="#{msj.descripcionCategoria}" />                    
+                        value="#{msj.descripcionTipoDocumento}" />                    
                     <p:inputText
-                        id="descripcionCategoria"
+                        id="descripcionTipoDocumento"
                         required="true"
                         requiredMessage="#{msj.campoNecesario}"
-                        value="#{categoriaControlador.categoria.categoria}"
+                        value="#{tipoDocumentoControlador.tipoNumeracionDocumento.tipoDocumento}"
                         onblur="value = value.toUpperCase()"/>
 
                     <p:commandButton
                         id="btnGuardar" 
                         value="#{msj.guardar}"
-                        update="pngAdministrarCategoria tblListaCategoria mensajeGeneral"
-                        action="#{categoriaControlador.guardar()}" />
+                        update="pngAdministrarTipoDocumento tblListaTipoDocumento mensajeGeneral"
+                        action="#{tipoDocumentoControlador.guardar()}" />
                     <p:outputLabel
                         value="" />
 
@@ -34,18 +34,16 @@
             </p:fieldset>
             <p/>
             <p:dataTable
-                id="tblListaCategoria"                
-                var="categoria" 
-                value="#{categoriaControlador.listaCategoria}">
+                id="tblListaTipoDocumento"                
+                var="tipoDocumento"
+                style="width: 400px;"
+                value="#{tipoDocumentoControlador.listaTipoNumeracionDocumento}">
                 <f:facet name="header">
-                    #{msj.listaDeCategorias}
+                    #{msj.listaDeTipoDocumentos}
                 </f:facet>
-                <p:column headerText="#{msj.codigoCategoria}">
-                    <h:outputText value="#{categoria.idCategoria}" />
-                </p:column>
-
-                <p:column headerText="#{msj.descripcionCategoria}">
-                    <h:outputText value="#{categoria.categoria}" />
+               
+                <p:column headerText="#{msj.descripcionTipoDocumento}">
+                    <h:outputText value="#{tipoDocumento.tipoDocumento}" />
                 </p:column>
             </p:dataTable>
         </h:form>

@@ -102,7 +102,7 @@ public class GenericoDaoUtil<T, I extends Serializable> {
      * @param tablaEntidad tabla a consultar.
      * @return
      */
-    public List<T> obtenerListaPorParametros(Map<String, Object> parametros, final Class<T> tablaEntidad) {
+    public List<T> obtenerListaPorParametros(Map<String, Object> parametros) {
         if (parametros == null || parametros.isEmpty()) {
             throw new ParametrosNoExisteExcepcion("NO EXISTE PARAMETROS PARA LA BUSQUEDA");
         } else {

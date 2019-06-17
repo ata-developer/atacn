@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -34,35 +35,41 @@ public class Usuario implements Serializable {
     @Column(name = "id_usuario")
     private Long idUsuario;
     
-    @Column(name = "nombre")
+    @Column(name = "numero_documento", length = 60)
+    private String numeroDocumento;    
+    
+    @ManyToOne
+    private TipoDocumento tipoDocumento;
+    
+    @Column(name = "nombre", length = 60)
     private String nombre;
     
-    @Column(name = "apellido")
+    @Column(name = "apellido", length = 60)
     private String apellido;
     
-    @Column(name = "calle_principal")
+    @Column(name = "calle_principal", length = 60)
     private String callePrincipal;
     
-    @Column(name = "numeracion")
+    @Column(name = "numeracion", length = 60)
     private String numeracion;
     
-    @Column(name = "calle_secundaria")
+    @Column(name = "calle_secundaria", length = 60)
     private String calleSecundaria;
     
-    @Column(name = "numero_documento")
-    private String numeroDocumento;
-    
-    @Column(name = "celular")
+    @Column(name = "celular", length = 60)
     private String celular;
     
-    @Column(name = "telefono")
+    @Column(name = "telefono", length = 60)
     private String telefono;
     
-    @Column(name = "correo")
+    @Column(name = "correo", length = 60)
     private String correo;
     
-    @Column(name = "usuario")
+    @Column(name = "usuario", length = 60)
     private String usuario;
+    
+    @Column(name = "contrasenia", length = 80)
+    private String contrasenia;
 
     public Long getIdUsuario() {
         return idUsuario;
@@ -235,6 +242,35 @@ public class Usuario implements Serializable {
      */
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    /**
+     * @return the contrasenia
+     */
+    public String getContrasenia() {
+        return contrasenia;
+    }
+
+    /**
+     * @param contrasenia the contrasenia to set
+     */
+    public void setContrasenia(String contrasenia) {
+        this.contrasenia = contrasenia;
+    }
+
+    
+    /**
+     * @return the tipoDocumento
+     */
+    public TipoDocumento getTipoDocumento() {
+        return tipoDocumento;
+    }
+
+    /**
+     * @param tipoDocumento the tipoDocumento to set
+     */
+    public void setTipoDocumento(TipoDocumento tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
     }
     
 }

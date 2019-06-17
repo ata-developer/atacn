@@ -40,7 +40,7 @@ public class Ciudad implements Serializable {
     private String ciudad;
         
     @ManyToOne
-    private Pais pais;
+    private ProvinciaEstado provinciaEstado;
 
     public Long getIdCiudad() {
         return idCiudad;
@@ -87,17 +87,17 @@ public class Ciudad implements Serializable {
     }
 
     /**
-     * @return the pais
+     * @return the provinciaEstado
      */
-    public Pais getPais() {
-        return pais;
+    public ProvinciaEstado getProvinciaEstado() {
+        return provinciaEstado;
     }
 
     /**
-     * @param pais the pais to set
+     * @param provinciaEstado the provinciaEstado to set
      */
-    public void setPais(Pais pais) {
-        this.pais = pais;
+    public void setProvinciaEstado(ProvinciaEstado provinciaEstado) {
+        this.provinciaEstado = provinciaEstado;
     }
 
 }

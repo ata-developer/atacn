@@ -6,9 +6,7 @@
 package ec.com.ata.cn.logica.dao;
 
 import ec.com.ata.cn.logica.util.gestor.GenericoDaoUtil;
-import ec.com.ata.cn.modelo.Ciudad;
-import ec.com.ata.cn.modelo.Pais;
-import java.util.List;
+import ec.com.ata.cn.modelo.ProvinciaEstado;
 import javax.ejb.Stateless;
 
 /**
@@ -16,10 +14,10 @@ import javax.ejb.Stateless;
  * @author ATA1
  */
 @Stateless
-public class CiudadDao extends GenericoDaoUtil<Ciudad, Long>{
+public class ProvinciaEstadoDao extends GenericoDaoUtil<ProvinciaEstado, Long>{
     
-    public CiudadDao() {
-        super(Ciudad.class);
+    public ProvinciaEstadoDao() {
+        super(ProvinciaEstado.class);
     }
     
     

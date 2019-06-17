@@ -6,16 +6,21 @@
 package ec.com.ata.cn.controlador;
 
 import ec.com.ata.cn.controlador.util.ConstantesUtil;
+import ec.com.ata.cn.logica.CiudadBean;
 import ec.com.ata.cn.logica.EstablecimientoBean;
+import ec.com.ata.cn.modelo.Ciudad;
 import ec.com.ata.cn.modelo.Establecimiento;
+import ec.com.ata.cn.modelo.ProvinciaEstado;
 
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.omnifaces.util.selectitems.SelectItemsBuilder;
 
 /**
  *
@@ -27,19 +32,33 @@ public class EstablecimientoControlador extends BaseControlador {
 
     @Inject
     private EstablecimientoBean establecimientoBean;
+    
+    @Inject
+    private CiudadBean ciudadBean;
 
     private Establecimiento establecimiento;
 
     private List<Establecimiento> listaEstablecimiento;
+    
+    private List<Ciudad> listaCiudad;
 
     @PostConstruct
     public void init() {
         establecimiento = new Establecimiento();
         listaEstablecimiento = establecimientoBean.obtenerLista();
+        listaCiudad = ciudadBean.obtenerLista();
     }
 
     public List<Establecimiento> obtenerListaEstablecimiento() {
         return establecimientoBean.obtenerLista();
+    }
+    
+    public List<SelectItem> generarSelectItemDeCiudad() {
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+        for (Ciudad ciudadTmp : getListaCiudad()) {
+            selectItemsBuilder.add(ciudadTmp, ciudadTmp.getCiudad() + " - " + ciudadTmp.getProvinciaEstado().getProvinciaEstado() + " - " +ciudadTmp.getProvinciaEstado().getPais().getPais()  );
+        }
+        return selectItemsBuilder.buildList();
     }
 
     public void guardar() {
@@ -85,5 +104,19 @@ public class EstablecimientoControlador extends BaseControlador {
      */
     public void setListaEstablecimiento(List<Establecimiento> listaEstablecimiento) {
         this.listaEstablecimiento = listaEstablecimiento;
+    }
+
+    /**
+     * @return the listaCiudad
+     */
+    public List<Ciudad> getListaCiudad() {
+        return listaCiudad;
+    }
+
+    /**
+     * @param listaCiudad the listaCiudad to set
+     */
+    public void setListaCiudad(List<Ciudad> listaCiudad) {
+        this.listaCiudad = listaCiudad;
     }
 }

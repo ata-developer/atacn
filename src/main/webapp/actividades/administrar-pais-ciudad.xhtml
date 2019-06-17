@@ -6,7 +6,7 @@
                 template="/WEB-INF/templateATA.xhtml">
 
     <ui:define name="content">
-        <h:form id="frmAdministrarPaisCiudad">
+        <h:form id="frmAdministrarPais">
             <h1>#{msj.administrarPais}</h1>
             <p/>
             <p:fieldset legend="#{msj.agregarPais}">
@@ -25,9 +25,10 @@
                     </p:inputText>
 
                     <p:commandButton
-                        id="btnGuardar" 
+                        id="btnGuardarPais" 
                         value="#{msj.guardar}"
-                        update="pngAdministrarPais tblListaPais mensajeGeneral"
+                        process="@this descripcionPais"
+                        update="pngAdministrarPais tblListaPais mensajeGeneral somSeleccionarPaisParaProvincia"
                         action="#{paisCiudadControlador.guardar()}" />
                     <p:outputLabel
                         value="" />
@@ -36,18 +37,136 @@
             </p:fieldset>
             <p/>
             <p:dataTable
-                id="tblListaPaisCiudad"                
-                var="paisCiudad" 
-                value="#{paisCiudadControlador.listaPaisCiudad}">
+                id="tblListaPais"                
+                var="pais" 
+                value="#{paisCiudadControlador.listaPais}">
                 <f:facet name="header">
-                    #{msj.listaDePaisCiudads}
+                    #{msj.listaPais}
                 </f:facet>
-                <p:column headerText="#{msj.codigoPaisCiudad}">
-                    <h:outputText value="#{paisCiudad.idPaisCiudad}" />
+                <p:column headerText="#{msj.pais}">
+                    <h:outputText value="#{pais.pais}" />
                 </p:column>
+            </p:dataTable>
 
-                <p:column headerText="#{msj.descripcionPaisCiudad}">
-                    <h:outputText value="#{paisCiudad.paisCiudad}" />
+            <p/>
+
+            <h1>#{msj.administrarProvinciaEstado}</h1>
+            <p/>
+            <p:fieldset legend="#{msj.agregarProvincia}">
+                <p:panelGrid id="pngAdministrarProvincia" columns="2">
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.pais}" />
+                    <h:selectOneMenu
+                        id="somSeleccionarPaisParaProvincia"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{paisCiudadControlador.pais}"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{paisCiudadControlador.generarSelectItemDePais()}" />
+                        <p:ajax 
+                            event="change"
+                            process="@this"
+                            update="mensajeGeneral tblListaProvincia"
+                            listener="#{paisCiudadControlador.cargarProvinciasPorPais()}" />
+                    </h:selectOneMenu>
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.provincia}" />                    
+                    <p:inputText
+                        id="descripcionProvincia"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{paisCiudadControlador.provinciaEstado.provinciaEstado}"
+                        onblur="value = value.toUpperCase()">
+                        <f:converter converterId="trimConverter" />
+                    </p:inputText>
+
+                    <p:commandButton
+                        id="btnGuardarProvincia"
+                        process="@this descripcionProvincia"
+                        value="#{msj.guardar}"
+                        update="pngAdministrarProvincia tblListaProvincia somSeleccionarProvincia mensajeGeneral"
+                        action="#{paisCiudadControlador.guardarProvincia()}" />
+                    <p:outputLabel
+                        value="" />
+
+                </p:panelGrid>
+            </p:fieldset>
+            <p/>
+            <p:dataTable
+                id="tblListaProvincia"                
+                var="provincia" 
+                value="#{paisCiudadControlador.listaProvinciaEstado}">
+                <f:facet name="header">
+                    #{msj.listaProvincia}
+                </f:facet>
+                <p:column headerText="#{msj.provincia}">
+                    <h:outputText value="#{provincia.provinciaEstado}" />
+                </p:column>
+            </p:dataTable>
+
+            <p/>
+
+            <h1>#{msj.administrarCiudad}</h1>
+            <p/>
+            <p:fieldset legend="#{msj.agregarCiudad}">
+                <p:panelGrid id="pngAdministrarCiudad" columns="2">
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.provincia}" />
+                    <h:selectOneMenu
+                        id="somSeleccionarProvincia"
+                        value="#{paisCiudadControlador.provinciaEstado}"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{paisCiudadControlador.generarSelectItemDeProvincia()}" />
+                        <p:ajax 
+                            event="change"
+                            process="@this"
+                            update="mensajeGeneral tblListaCiudad"
+                            listener="#{paisCiudadControlador.cargarCiudadesPorProvincia()}" />
+                    </h:selectOneMenu>
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.ciudad}" />                    
+                    <p:inputText
+                        id="descripcionCiudad"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{paisCiudadControlador.ciudad.ciudad}"
+                        onblur="value = value.toUpperCase()">
+                        <f:converter converterId="trimConverter" />
+                    </p:inputText>
+
+                    <p:commandButton
+                        id="btnGuardarCiudad" 
+                        value="#{msj.guardar}"
+                        process="@this descripcionCiudad"
+                        update="pngAdministrarCiudad tblListaCiudad mensajeGeneral"
+                        action="#{paisCiudadControlador.guardarCiudad()}" />
+                    <p:outputLabel
+                        value="" />
+
+                </p:panelGrid>
+            </p:fieldset>
+            <p/>
+            <p:dataTable
+                id="tblListaCiudad"                
+                var="ciudad" 
+                value="#{paisCiudadControlador.listaCiudad}">
+                <f:facet name="header">
+                    #{msj.listaCiudad}
+                </f:facet>
+                <p:column headerText="#{msj.ciudad}">
+                    <h:outputText value="#{ciudad.ciudad}" />
                 </p:column>
             </p:dataTable>
         </h:form>
