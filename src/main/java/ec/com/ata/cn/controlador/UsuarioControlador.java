@@ -63,6 +63,7 @@ public class UsuarioControlador extends BaseControlador {
 
     public void guardar() {
         try {
+            
             usuarioBean.crear(getUsuario());
             listaUsuario = usuarioBean.obtenerLista();            
             addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);

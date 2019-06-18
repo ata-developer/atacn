@@ -65,9 +65,12 @@ public class Usuario implements Serializable {
     @Column(name = "correo", length = 60)
     private String correo;
     
+    @Column(name = "es_confirmado")
+    private Boolean esConfirmado;
+    
     @Column(name = "usuario", length = 60)
     private String usuario;
-    
+        
     @Column(name = "contrasenia", length = 80)
     private String contrasenia;
 
@@ -271,6 +274,20 @@ public class Usuario implements Serializable {
      */
     public void setTipoDocumento(TipoDocumento tipoDocumento) {
         this.tipoDocumento = tipoDocumento;
+    }
+
+    /**
+     * @return the esConfirmado
+     */
+    public Boolean getEsConfirmado() {
+        return esConfirmado;
+    }
+
+    /**
+     * @param esConfirmado the esConfirmado to set
+     */
+    public void setEsConfirmado(Boolean esConfirmado) {
+        this.esConfirmado = esConfirmado;
     }
     
 }

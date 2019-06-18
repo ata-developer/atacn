@@ -27,6 +27,7 @@ public class TipoDocumentoBean {
         return tipoNumeracionDocumentoDao.crear(tipoNumeracionDocumentoEntrada);
     }
     
+    
     public List<TipoDocumento> obtenerLista(){
         return tipoNumeracionDocumentoDao.obtenerTodos();
     }
