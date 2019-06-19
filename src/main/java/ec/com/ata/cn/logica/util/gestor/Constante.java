@@ -3,7 +3,7 @@
  * Copyright 2017 Servicio de Rentas Internas.
  * Todos los derechos reservados.
  */
-package ec.gob.sri.adm.logica.util.gestor;
+package ec.com.ata.cn.logica.util.gestor;
 
 /**
  * Clase donde se ubican las constantes a usarse en el proyecto ADM
@@ -38,5 +38,9 @@ public class Constante {
     public static final String ARBOLTIPOSUJETO = "ARBOLTIPOSUJETO";
     public static final String FECHA_MINIMA_NO = "no";
     public static final String FECHA_MINIMA_DIAFERIADO = "DiaFeriado";
+    
+    public static final int ITERATIONS = 65536;
+    public static final int KEY_LENGTH = 512;
+    public static final String ALGORITHM = "PBKDF2WithHmacSHA512";
 
 }

@@ -3,7 +3,7 @@
  * Copyright 2017 Servicio de Rentas Internas.
  * Todos los derechos reservados.
  */
-package ec.gob.sri.adm.logica.util.gestor;
+package ec.com.ata.cn.logica.util.gestor;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

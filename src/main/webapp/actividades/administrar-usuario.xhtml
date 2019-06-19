@@ -95,13 +95,15 @@
                     <p:outputLabel
                         for="@next"
                         value="#{msj.celular}" />                    
-                    <p:inputText
+                    <p:inputMask
                         id="ITCelular"
                         required="true"
                         value="#{usuarioControlador.usuario.celular}"
-                        onblur="value = value.toUpperCase()">
+                        
+                        mask="0">
+                        <f:validateRegex pattern="([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]"/>
                         <f:converter converterId="trimConverter" />
-                    </p:inputText>
+                    </p:inputMask>
 
                     <p:outputLabel
                         for="@next"
@@ -110,7 +112,8 @@
                         id="iTCorreo"
                         required="true"
                         value="#{usuarioControlador.usuario.correo}"
-                        onblur="value = value.toUpperCase()">
+                        validatorMessage="#{msj.emailInvalido}">
+                        <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
                         <f:converter converterId="trimConverter" />
                     </p:inputText>
 
@@ -132,7 +135,12 @@
                         value="#{usuarioControlador.usuario.contrasenia}"
                         match="pwdRepetirContrasena" 
                         label="#{msj.contrasena}" 
-                        required="true" />
+                        required="true"
+                        feedback="true"
+                        promptLabel="#{msj.contraseniaRequerida}"
+                        weakLabel="#{msj.debil}"
+                        goodLabel="#{msj.mediaDebil}"
+                        strongLabel="#{msj.fuerte}"/>
 
                     <p:outputLabel
                         for="@next"
@@ -141,7 +149,7 @@
                         id="pwdRepetirContrasena"
                         value="#{usuarioControlador.usuario.contrasenia}" 
                         label="#{msj.repetirContrasena}" 
-                        required="true" />
+                        required="true"/>
 
 
                     <p:commandButton

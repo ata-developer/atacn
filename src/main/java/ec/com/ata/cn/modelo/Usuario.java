@@ -71,7 +71,7 @@ public class Usuario implements Serializable {
     @Column(name = "usuario", length = 60)
     private String usuario;
         
-    @Column(name = "contrasenia", length = 80)
+    @Column(name = "contrasenia", length = 100)
     private String contrasenia;
 
     public Long getIdUsuario() {

@@ -43,8 +43,6 @@ public class ConstantesUtil {
 
     public static final String SALT = "Br6Jew==";
 
-    private static final int ITERATIONS = 65536;
-    private static final int KEY_LENGTH = 512;
-    private static final String ALGORITHM = "PBKDF2WithHmacSHA512";
+    
 
 }
