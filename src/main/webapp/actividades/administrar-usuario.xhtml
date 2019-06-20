@@ -33,7 +33,9 @@
                         id="iTNombre"
                         required="true"
                         value="#{usuarioControlador.usuario.nombre}"
+                        placeholder="#{msj.ejemploNombre}"
                         onblur="value = value.toUpperCase()">
+                        <p:keyFilter regEx="/[a-zA-ZáéíñóúüÁÉÍÑÓÚÜ\s]/"/>
                         <f:converter converterId="trimConverter" />
                     </p:inputText>
 
@@ -44,7 +46,9 @@
                         id="iTApellido"
                         required="true"
                         value="#{usuarioControlador.usuario.apellido}"
+                        placeholder="#{msj.ejemploApellido}"
                         onblur="value = value.toUpperCase()">
+                        <p:keyFilter regEx="/[a-zA-ZáéíñóúüÁÉÍÑÓÚÜ\s]/"/>
                         <f:converter converterId="trimConverter" />
                     </p:inputText>
 
@@ -55,6 +59,7 @@
                         id="iTCallePrincipal"
                         required="true"
                         value="#{usuarioControlador.usuario.callePrincipal}"
+                        placeholder="#{msj.ejemploCalle}"
                         onblur="value = value.toUpperCase()">
                         <f:converter converterId="trimConverter" />
                     </p:inputText>
@@ -66,6 +71,7 @@
                         id="iTnumeracion"
                         required="true"
                         value="#{usuarioControlador.usuario.numeracion}"
+                        placeholder="#{msj.ejemploNumeracion}"
                         onblur="value = value.toUpperCase()">
                         <f:converter converterId="trimConverter" />
                     </p:inputText>
@@ -77,6 +83,7 @@
                         id="iTCalleSecundaria"
                         required="true"
                         value="#{usuarioControlador.usuario.calleSecundaria}"
+                        placeholder="#{msj.ejemploSecundaria}"
                         onblur="value = value.toUpperCase()">
                         <f:converter converterId="trimConverter" />
                     </p:inputText>
@@ -84,13 +91,15 @@
                     <p:outputLabel
                         for="@next"
                         value="#{msj.telefono}" />                    
-                    <p:inputText
+                    <p:inputMask
                         id="iTTelefono"
                         required="true"
                         value="#{usuarioControlador.usuario.telefono}"
-                        onblur="value = value.toUpperCase()">
-                        <f:converter converterId="trimConverter" />
-                    </p:inputText>
+                        mask="9-999-999"
+                        placeholder="#{msj.mascaraEjemploTelefono}"
+                        validatorMessage="#{msj.telefonoInvalido}">
+                        <f:validateRegex pattern="\\d{7}$"/>
+                    </p:inputMask>
 
                     <p:outputLabel
                         for="@next"
@@ -99,10 +108,10 @@
                         id="ITCelular"
                         required="true"
                         value="#{usuarioControlador.usuario.celular}"
-                        
-                        mask="0">
-                        <f:validateRegex pattern="([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]"/>
-                        <f:converter converterId="trimConverter" />
+                        mask="999-999-9999"
+                        placeholder="#{msj.mascaraEjemploCelular}"
+                        validatorMessage="#{msj.celularInvalido}">
+                        <f:validateRegex pattern="^0\\d{9}$"/>
                     </p:inputMask>
 
                     <p:outputLabel
@@ -112,6 +121,7 @@
                         id="iTCorreo"
                         required="true"
                         value="#{usuarioControlador.usuario.correo}"
+                        placeholder="#{msj.ejemploCorreo}"
                         validatorMessage="#{msj.emailInvalido}">
                         <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
                         <f:converter converterId="trimConverter" />
@@ -123,6 +133,7 @@
                     <p:inputText
                         id="iTUsuario"
                         required="true"
+                        placeholder="#{msj.ejemploUsuario}"
                         value="#{usuarioControlador.usuario.usuario}">
                         <f:converter converterId="trimConverter" />
                     </p:inputText>
@@ -137,6 +148,7 @@
                         label="#{msj.contrasena}" 
                         required="true"
                         feedback="true"
+                        placeholder="#{msj.ejemploPassword}"
                         promptLabel="#{msj.contraseniaRequerida}"
                         weakLabel="#{msj.debil}"
                         goodLabel="#{msj.mediaDebil}"
@@ -147,6 +159,7 @@
                         value="#{msj.repetirContrasena}" />
                     <p:password
                         id="pwdRepetirContrasena"
+                        placeholder="#{msj.ejemploPassword}"
                         value="#{usuarioControlador.usuario.contrasenia}" 
                         label="#{msj.repetirContrasena}" 
                         required="true"/>

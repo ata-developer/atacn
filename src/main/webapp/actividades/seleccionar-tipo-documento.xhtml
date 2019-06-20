@@ -13,18 +13,21 @@
         required="true"
         rendered="#{usuarioControlador.usuario.tipoDocumento.tipoDocumento eq 'CÉDULA'}"
         value="#{usuarioControlador.usuario.numeroDocumento}" 
+        placeholder="#{msj.ejemploCedula}"
         mask="999999999-9"/>
     <p:inputMask 
         id="iMRuc" 
         required="true"
         rendered="#{usuarioControlador.usuario.tipoDocumento.tipoDocumento eq 'RUC'}"
         value="#{usuarioControlador.usuario.numeroDocumento}" 
+        placeholder="#{msj.ejemploRuc}"
         mask="9999999999-999"/>
     <p:inputText
         id="iTPasaporte"
         required="true"
         rendered="#{usuarioControlador.usuario.tipoDocumento.tipoDocumento eq 'PASAPORTE'}"
         requiredMessage="#{msj.campoNecesario}"
+        placeholder="#{msj.ejemploApellido}"
         value="#{usuarioControlador.usuario.numeroDocumento}">
         <f:converter converterId="trimConverter" />
     </p:inputText>
