@@ -23,7 +23,7 @@ import javax.persistence.Table;
 public class TipoDocumento implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @SequenceGenerator(
             name = "tipo_documento_seq",
@@ -37,6 +37,12 @@ public class TipoDocumento implements Serializable {
 
     @Column(name = "tipo_documento")
     private String tipoDocumento;
+
+    @Column(name = "es_sistema")
+    private Boolean esSistema;
+
+    @Column(name = "es_cliente")
+    private Boolean esCliente;
 
     public Long getIdTipoDocumento() {
         return idTipoDocumento;
@@ -80,6 +86,34 @@ public class TipoDocumento implements Serializable {
      */
     public void setTipoDocumento(String tipoDocumento) {
         this.tipoDocumento = tipoDocumento;
+    }
+
+    /**
+     * @return the esSistema
+     */
+    public Boolean getEsSistema() {
+        return esSistema;
+    }
+
+    /**
+     * @param esSistema the esSistema to set
+     */
+    public void setEsSistema(Boolean esSistema) {
+        this.esSistema = esSistema;
+    }
+
+    /**
+     * @return the esCliente
+     */
+    public Boolean getEsCliente() {
+        return esCliente;
+    }
+
+    /**
+     * @param esCliente the esCliente to set
+     */
+    public void setEsCliente(Boolean esCliente) {
+        this.esCliente = esCliente;
     }
 
 }

@@ -18,6 +18,7 @@
                     <p:selectOneMenu
                         id="somSeleccionarCategoria"
                         value="#{usuarioControlador.usuario.tipoDocumento}"
+                        required="true"
                         converter="omnifaces.SelectItemsConverter">
                         <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                         <f:selectItems value="#{usuarioControlador.generarSelectItemDeTipoDocumento()}" />
@@ -95,10 +96,9 @@
                         id="iTTelefono"
                         required="true"
                         value="#{usuarioControlador.usuario.telefono}"
-                        mask="9-999-999"
+                        mask="999-9999"
                         placeholder="#{msj.mascaraEjemploTelefono}"
                         validatorMessage="#{msj.telefonoInvalido}">
-                        <f:validateRegex pattern="\\d{7}$"/>
                     </p:inputMask>
 
                     <p:outputLabel
@@ -111,7 +111,6 @@
                         mask="999-999-9999"
                         placeholder="#{msj.mascaraEjemploCelular}"
                         validatorMessage="#{msj.celularInvalido}">
-                        <f:validateRegex pattern="^0\\d{9}$"/>
                     </p:inputMask>
 
                     <p:outputLabel

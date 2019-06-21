@@ -14,14 +14,14 @@
         rendered="#{usuarioControlador.usuario.tipoDocumento.tipoDocumento eq 'CÉDULA'}"
         value="#{usuarioControlador.usuario.numeroDocumento}" 
         placeholder="#{msj.ejemploCedula}"
-        mask="999999999-9"/>
+        mask="9999999999"/>
     <p:inputMask 
         id="iMRuc" 
         required="true"
         rendered="#{usuarioControlador.usuario.tipoDocumento.tipoDocumento eq 'RUC'}"
         value="#{usuarioControlador.usuario.numeroDocumento}" 
         placeholder="#{msj.ejemploRuc}"
-        mask="9999999999-999"/>
+        mask="9999999999999"/>
     <p:inputText
         id="iTPasaporte"
         required="true"

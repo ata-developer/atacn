@@ -8,11 +8,8 @@ package ec.com.ata.cn.modelo;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -24,27 +21,18 @@ import javax.persistence.Table;
 public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
+        
     @Id
-    @SequenceGenerator(
-            name = "usuario_seq",
-            sequenceName = "usuario_seq",
-            allocationSize = 1)
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "usuario_seq")
-    @Column(name = "id_usuario")
-    private Long idUsuario;
-    
     @Column(name = "numero_documento", length = 60)
     private String numeroDocumento;    
     
     @ManyToOne
     private TipoDocumento tipoDocumento;
     
-    @Column(name = "nombre", length = 60)
+    @Column(name = "nombre", length = 60, unique=true)
     private String nombre;
     
-    @Column(name = "apellido", length = 60)
+    @Column(name = "apellido", length = 60, unique=true)
     private String apellido;
     
     @Column(name = "calle_principal", length = 60)
@@ -56,47 +44,47 @@ public class Usuario implements Serializable {
     @Column(name = "calle_secundaria", length = 60)
     private String calleSecundaria;
     
-    @Column(name = "celular", length = 60)
+    @Column(name = "celular", length = 60, unique=true)
     private String celular;
     
-    @Column(name = "telefono", length = 60)
+    @Column(name = "telefono", length = 60, unique=true)
     private String telefono;
     
-    @Column(name = "correo", length = 60)
+    @Column(name = "correo", length = 60, unique=true)
     private String correo;
     
     @Column(name = "es_confirmado")
     private Boolean esConfirmado;
     
-    @Column(name = "usuario", length = 60)
+    @Column(name = "usuario", length = 60, unique=true)
     private String usuario;
         
     @Column(name = "contrasenia", length = 100)
     private String contrasenia;
 
-    public Long getIdUsuario() {
-        return idUsuario;
+    public String getIdUsuario() {
+        return numeroDocumento;
     }
 
-    public void setIdUsuario(Long idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setIdUsuario(String numeroDocumento) {
+        this.numeroDocumento = numeroDocumento;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idUsuario != null ? idUsuario.hashCode() : 0);
+        hash += (numeroDocumento != null ? numeroDocumento.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the idUsuario fields are not set
+        // TODO: Warning - this method won't work in the case the numeroDocumento fields are not set
         if (!(object instanceof Usuario)) {
             return false;
         }
         Usuario other = (Usuario) object;
-        if ((this.idUsuario == null && other.idUsuario != null) || (this.idUsuario != null && !this.idUsuario.equals(other.idUsuario))) {
+        if ((this.numeroDocumento == null && other.numeroDocumento != null) || (this.numeroDocumento != null && !this.numeroDocumento.equals(other.numeroDocumento))) {
             return false;
         }
         return true;
@@ -104,7 +92,7 @@ public class Usuario implements Serializable {
 
     @Override
     public String toString() {
-        return "ec.com.ata.cn.modelo.Usuario[ id=" + idUsuario + " ]";
+        return "ec.com.ata.cn.modelo.Usuario[ id=" + numeroDocumento + " ]";
     }
 
     /**
