@@ -21,6 +21,16 @@
                         requiredMessage="#{msj.campoNecesario}"
                         value="#{tipoDocumentoControlador.tipoNumeracionDocumento.tipoDocumento}"
                         onblur="value = value.toUpperCase()"/>
+                    
+                    <p:selectBooleanCheckbox
+                        value="#{tipoDocumentoControlador.tipoNumeracionDocumento.esCliente}"
+                        itemLabel="#{msj.esCliente}"/>
+                    
+                    <p:selectBooleanCheckbox
+                        value="#{tipoDocumentoControlador.tipoNumeracionDocumento.esSistema}"
+                        itemLabel="#{msj.esSistema}"/>
+                    
+                    <p:selectBooleanCheckbox value="#{selectBooleanView.value1}" itemLabel="Basic"/>
 
                     <p:commandButton
                         id="btnGuardar" 

@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -40,6 +41,7 @@ public class Ciudad implements Serializable {
     private String ciudad;
         
     @ManyToOne
+    @JoinColumn(name="id_provincia_estado", referencedColumnName="id_provincia_estado")
     private ProvinciaEstado provinciaEstado;
 
     public Long getIdCiudad() {

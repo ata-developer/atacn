@@ -6,9 +6,11 @@
 package ec.com.ata.cn.controlador;
 
 import ec.com.ata.cn.controlador.util.ConstantesUtil;
+import ec.com.ata.cn.logica.BarrioBean;
 import ec.com.ata.cn.logica.CiudadBean;
 import ec.com.ata.cn.logica.PaisBean;
 import ec.com.ata.cn.logica.ProvinciaBean;
+import ec.com.ata.cn.modelo.Barrio;
 import ec.com.ata.cn.modelo.Ciudad;
 import ec.com.ata.cn.modelo.Pais;
 import ec.com.ata.cn.modelo.ProvinciaEstado;
@@ -33,6 +35,9 @@ import org.omnifaces.util.selectitems.SelectItemsBuilder;
 public class PaisCiudadControlador extends BaseControlador {
 
     @Inject
+    private BarrioBean barrioBean;
+    
+    @Inject
     private CiudadBean ciudadBean;
     
     @Inject
@@ -41,12 +46,16 @@ public class PaisCiudadControlador extends BaseControlador {
     @Inject
     private PaisBean paisBean;
 
+    private Barrio barrio;
+    
     private Ciudad ciudad;
     
     private ProvinciaEstado provinciaEstado;
     
     private Pais pais;
 
+    private List<Barrio> listaBarrio;
+    
     private List<Ciudad> listaCiudad;
         
     private List<ProvinciaEstado> listaProvinciaEstado;
@@ -56,6 +65,7 @@ public class PaisCiudadControlador extends BaseControlador {
     @PostConstruct
     public void init() {
         
+        barrio = new Barrio();
         ciudad = new Ciudad();        
         provinciaEstado = new ProvinciaEstado();
         pais = new Pais();
@@ -64,6 +74,11 @@ public class PaisCiudadControlador extends BaseControlador {
         
         setListaProvinciaEstado(new ArrayList<ProvinciaEstado>());
         setListaCiudad(new ArrayList<Ciudad>());
+        setListaBarrio(new ArrayList<Barrio>());
+    }
+    
+    public void cargarBarriosPorCiudad(){
+        setListaBarrio(barrioBean.obtenerListaPorCiudad(ciudad));
     }
     
     public void cargarCiudadesPorProvincia(){
@@ -231,5 +246,33 @@ public class PaisCiudadControlador extends BaseControlador {
      */
     public void setListaProvinciaEstado(List<ProvinciaEstado> listaProvinciaEstado) {
         this.listaProvinciaEstado = listaProvinciaEstado;
+    }
+
+    /**
+     * @return the listaBarrio
+     */
+    public List<Barrio> getListaBarrio() {
+        return listaBarrio;
+    }
+
+    /**
+     * @param listaBarrio the listaBarrio to set
+     */
+    public void setListaBarrio(List<Barrio> listaBarrio) {
+        this.listaBarrio = listaBarrio;
+    }
+
+    /**
+     * @return the barrio
+     */
+    public Barrio getBarrio() {
+        return barrio;
+    }
+
+    /**
+     * @param barrio the barrio to set
+     */
+    public void setBarrio(Barrio barrio) {
+        this.barrio = barrio;
     }
 }

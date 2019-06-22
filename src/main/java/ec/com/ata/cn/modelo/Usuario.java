@@ -9,6 +9,7 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -26,13 +27,10 @@ public class Usuario implements Serializable {
     @Column(name = "numero_documento", length = 60)
     private String numeroDocumento;    
     
-    @ManyToOne
-    private TipoDocumento tipoDocumento;
-    
-    @Column(name = "nombre", length = 60, unique=true)
+    @Column(name = "nombre", length = 60)
     private String nombre;
     
-    @Column(name = "apellido", length = 60, unique=true)
+    @Column(name = "apellido", length = 60)
     private String apellido;
     
     @Column(name = "calle_principal", length = 60)
@@ -56,11 +54,25 @@ public class Usuario implements Serializable {
     @Column(name = "es_confirmado")
     private Boolean esConfirmado;
     
+    @Column(name = "es_sistema")
+    private Boolean esSistema;
+    
+    @Column(name = "es_cliente")
+    private Boolean esCliente;
+    
     @Column(name = "usuario", length = 60, unique=true)
     private String usuario;
         
     @Column(name = "contrasenia", length = 100)
     private String contrasenia;
+    
+    @ManyToOne
+    @JoinColumn(name="id_tipo_documento", referencedColumnName="id_tipo_documento")
+    private TipoDocumento tipoDocumento;
+    
+    @ManyToOne
+    @JoinColumn(name="id_ciudad", referencedColumnName="id_ciudad")
+    private Ciudad ciudad;
 
     public String getIdUsuario() {
         return numeroDocumento;
@@ -276,6 +288,48 @@ public class Usuario implements Serializable {
      */
     public void setEsConfirmado(Boolean esConfirmado) {
         this.esConfirmado = esConfirmado;
+    }
+
+    /**
+     * @return the ciudad
+     */
+    public Ciudad getCiudad() {
+        return ciudad;
+    }
+
+    /**
+     * @param ciudad the ciudad to set
+     */
+    public void setCiudad(Ciudad ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    /**
+     * @return the esCliente
+     */
+    public Boolean getEsCliente() {
+        return esCliente;
+    }
+
+    /**
+     * @param esCliente the esCliente to set
+     */
+    public void setEsCliente(Boolean esCliente) {
+        this.esCliente = esCliente;
+    }
+
+    /**
+     * @return the esSistema
+     */
+    public Boolean getEsSistema() {
+        return esSistema;
+    }
+
+    /**
+     * @param esSistema the esSistema to set
+     */
+    public void setEsSistema(Boolean esSistema) {
+        this.esSistema = esSistema;
     }
     
 }

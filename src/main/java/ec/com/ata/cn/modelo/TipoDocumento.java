@@ -44,6 +44,11 @@ public class TipoDocumento implements Serializable {
     @Column(name = "es_cliente")
     private Boolean esCliente;
 
+    public TipoDocumento() {
+        setEsSistema(false);
+        setEsCliente(false);
+    }
+
     public Long getIdTipoDocumento() {
         return idTipoDocumento;
     }
