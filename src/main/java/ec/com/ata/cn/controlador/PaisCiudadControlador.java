@@ -89,6 +89,14 @@ public class PaisCiudadControlador extends BaseControlador {
         setListaProvinciaEstado(provinciaBean.obtenerListaPorPais(pais));
     }
     
+    public List<SelectItem> generarSelectItemDeCiudad() {
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+        for (Ciudad ciudadTmp : getListaCiudad()) {
+            selectItemsBuilder.add(ciudadTmp, ciudadTmp.getCiudad());
+        }
+        return selectItemsBuilder.buildList();
+    }
+    
     public List<SelectItem> generarSelectItemDeProvincia() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
         for (ProvinciaEstado provinciaEstadoTmp : getListaProvinciaEstado()) {
@@ -151,6 +159,24 @@ public class PaisCiudadControlador extends BaseControlador {
             getCiudad().setProvinciaEstado(provinciaEstado);
             ciudadBean.crear(getCiudad());
             listaCiudad = ciudadBean.obtenerListaPorProvincia(provinciaEstado);            
+            addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+        } finally {
+            setCiudad(new Ciudad());
+        }
+    }
+    
+    public void guardarBarrio() {
+        try {
+            getBarrio().setCiudad(ciudad);
+            barrioBean.crear(getBarrio());
+            listaBarrio = barrioBean.obtenerListaPorCiudad(ciudad);            
             addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);

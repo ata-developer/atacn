@@ -85,6 +85,7 @@
         <filter-name>Character Encoding Filter</filter-name>
         <servlet-name>Faces Servlet</servlet-name>
     </filter-mapping>
+   
 
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>

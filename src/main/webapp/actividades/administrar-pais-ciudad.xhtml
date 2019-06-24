@@ -69,7 +69,7 @@
                         <p:ajax 
                             event="change"
                             process="@this"
-                            update="mensajeGeneral tblListaProvincia"
+                            update="mensajeGeneral tblListaProvincia somSeleccionarProvincia"
                             listener="#{paisCiudadControlador.cargarProvinciasPorPais()}" />
                     </h:selectOneMenu>
 
@@ -150,7 +150,7 @@
                         id="btnGuardarCiudad" 
                         value="#{msj.guardar}"
                         process="@this descripcionCiudad"
-                        update="pngAdministrarCiudad tblListaCiudad mensajeGeneral"
+                        update="pngAdministrarCiudad tblListaCiudad somSeleccionarCiudad mensajeGeneral"
                         action="#{paisCiudadControlador.guardarCiudad()}" />
                     <p:outputLabel
                         value="" />
@@ -169,6 +169,69 @@
                     <h:outputText value="#{ciudad.ciudad}" />
                 </p:column>
             </p:dataTable>
+
+            <p/>
+            
+            <h1>#{msj.administrarBarrio}</h1>
+            <p/>
+            <p:fieldset legend="#{msj.agregarBarrio}">
+                <p:panelGrid id="pngAdministrarBarrio" columns="2">
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.ciudad}" />
+                    <h:selectOneMenu
+                        id="somSeleccionarCiudad"
+                        value="#{paisCiudadControlador.ciudad}"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{paisCiudadControlador.generarSelectItemDeCiudad()}" />
+                        <p:ajax 
+                            event="change"
+                            process="@this"
+                            update="mensajeGeneral tblListaBarrio"
+                            listener="#{paisCiudadControlador.cargarBarriosPorCiudad()}" />
+                    </h:selectOneMenu>
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.barrio}" />                    
+                    <p:inputText
+                        id="descripcionBarrio"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{paisCiudadControlador.barrio.barrio}"
+                        onblur="value = value.toUpperCase()">
+                        <f:converter converterId="trimConverter" />
+                    </p:inputText>
+
+                    <p:commandButton
+                        id="btnGuardarBarrio" 
+                        value="#{msj.guardar}"
+                        process="@this descripcionBarrio"
+                        update="pngAdministrarBarrio tblListaBarrio mensajeGeneral"
+                        action="#{paisCiudadControlador.guardarBarrio()}" />
+                    <p:outputLabel
+                        value="" />
+
+                </p:panelGrid>
+            </p:fieldset>
+            <p/>
+            <p:dataTable
+                id="tblListaBarrio"                
+                var="barrio" 
+                value="#{paisCiudadControlador.listaBarrio}">
+                <f:facet name="header">
+                    #{msj.listaBarrio}
+                </f:facet>
+                <p:column headerText="#{msj.barrio}">
+                    <h:outputText value="#{barrio.barrio}" />
+                </p:column>
+            </p:dataTable>
+
+
         </h:form>
     </ui:define>
 </ui:composition>
