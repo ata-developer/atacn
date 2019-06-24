@@ -8,9 +8,10 @@ package ec.com.ata.cn.controlador;
 import ec.com.ata.cn.controlador.util.ConstantesUtil;
 import ec.com.ata.cn.logica.CiudadBean;
 import ec.com.ata.cn.logica.EstablecimientoBean;
+import ec.com.ata.cn.logica.UsuarioBean;
 import ec.com.ata.cn.modelo.Ciudad;
 import ec.com.ata.cn.modelo.Establecimiento;
-import ec.com.ata.cn.modelo.ProvinciaEstado;
+import ec.com.ata.cn.modelo.Usuario;
 
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -35,18 +36,24 @@ public class EstablecimientoControlador extends BaseControlador {
     
     @Inject
     private CiudadBean ciudadBean;
+    
+    @Inject
+    private UsuarioBean usuarioBean;
 
     private Establecimiento establecimiento;
 
     private List<Establecimiento> listaEstablecimiento;
     
     private List<Ciudad> listaCiudad;
+    
+    private List<Usuario> listaUsuario;
 
     @PostConstruct
     public void init() {
         establecimiento = new Establecimiento();
         listaEstablecimiento = establecimientoBean.obtenerLista();
         listaCiudad = ciudadBean.obtenerLista();
+        setListaUsuario(usuarioBean.obtenerLista());
     }
 
     public List<Establecimiento> obtenerListaEstablecimiento() {
@@ -118,5 +125,19 @@ public class EstablecimientoControlador extends BaseControlador {
      */
     public void setListaCiudad(List<Ciudad> listaCiudad) {
         this.listaCiudad = listaCiudad;
+    }
+
+    /**
+     * @return the listaUsuario
+     */
+    public List<Usuario> getListaUsuario() {
+        return listaUsuario;
+    }
+
+    /**
+     * @param listaUsuario the listaUsuario to set
+     */
+    public void setListaUsuario(List<Usuario> listaUsuario) {
+        this.listaUsuario = listaUsuario;
     }
 }

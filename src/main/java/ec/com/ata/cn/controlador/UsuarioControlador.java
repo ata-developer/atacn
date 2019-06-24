@@ -46,7 +46,7 @@ public class UsuarioControlador extends BaseControlador {
     public void init() {
         usuario = new Usuario();
         listaUsuario = usuarioBean.obtenerLista();
-        listaTipoDocumento = tipoDocumentoBean.obtenerLista();
+        listaTipoDocumento = tipoDocumentoBean.obtenerListasSistema(true);
     }
     
     public List<SelectItem> generarSelectItemDeTipoDocumento() {

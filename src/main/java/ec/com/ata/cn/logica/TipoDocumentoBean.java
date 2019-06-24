@@ -8,6 +8,7 @@ package ec.com.ata.cn.logica;
 
 import ec.com.ata.cn.logica.dao.TipoDocumentoDao;
 import ec.com.ata.cn.modelo.TipoDocumento;
+import java.util.HashMap;
 
 import java.util.List;
 import javax.ejb.Stateless;
@@ -26,9 +27,14 @@ public class TipoDocumentoBean {
     public TipoDocumento crear(TipoDocumento tipoNumeracionDocumentoEntrada) throws Exception{
         return tipoNumeracionDocumentoDao.crear(tipoNumeracionDocumentoEntrada);
     }
-    
-    
+        
     public List<TipoDocumento> obtenerLista(){
         return tipoNumeracionDocumentoDao.obtenerTodos();
+    }
+    
+    public List<TipoDocumento> obtenerListasSistema(Object parametroEntrada){
+        HashMap<String,Object> parametros = new HashMap<>();
+        parametros.put("esSistema", parametroEntrada);
+        return tipoNumeracionDocumentoDao.obtenerListaPorParametros(parametros);
     }
 }

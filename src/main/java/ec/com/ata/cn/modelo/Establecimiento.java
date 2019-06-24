@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -58,9 +59,11 @@ public class Establecimiento implements Serializable {
     private String correo;
     
     @ManyToOne
+    @JoinColumn(name="numero_documento", referencedColumnName="numero_documento")
     private Usuario responsable;
     
     @ManyToOne
+    @JoinColumn(name="id_ciudad", referencedColumnName="id_ciudad")
     private Ciudad ciudad;
     
     public Long getIdEstablecimiento() {

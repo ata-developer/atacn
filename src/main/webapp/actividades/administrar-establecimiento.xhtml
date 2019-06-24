@@ -11,28 +11,56 @@
             <p/>
             <p:fieldset legend="#{msj.agregarEstablecimiento}">
                 <p:panelGrid id="pngAdministrarEstablecimiento" columns="2">
+                    
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.descripcionTipoDocumento}" />
+                    <p:selectOneMenu
+                        id="somSeleccionarCategoria"
+                        value="#{usuarioControlador.usuario.tipoDocumento}"
+                        required="true"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{usuarioControlador.generarSelectItemDeTipoDocumento()}" />
+                        <p:ajax event="change" update="pngAdministrarEstablecimiento"/>
+                    </p:selectOneMenu>
+
+                    <ui:include src="seleccionar-tipo-documento.xhtml" />
+                    
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.nombre}" />                    
+                    <p:inputText
+                        id="iTNombre"
+                        required="true"
+                        value="#{usuarioControlador.usuario.nombre}"
+                        placeholder="#{msj.ejemploNombre}"
+                        onblur="value = value.toUpperCase()">
+                        <p:keyFilter regEx="/[a-zA-ZáéíñóúüÁÉÍÑÓÚÜ\s]/"/>
+                        <f:converter converterId="trimConverter" />
+                    </p:inputText>
 
                     <p:outputLabel
                         for="@next"
-                        value="#{msj.descripcionEstablecimiento}" />                    
+                        value="#{msj.apellido}" />                    
                     <p:inputText
-                        id="iTdescripcionEstablecimiento"
+                        id="iTApellido"
                         required="true"
-                        requiredMessage="#{msj.campoNecesario}"
-                        value="#{establecimientoControlador.establecimiento.establecimiento}"
+                        value="#{usuarioControlador.usuario.apellido}"
+                        placeholder="#{msj.ejemploApellido}"
                         onblur="value = value.toUpperCase()">
+                        <p:keyFilter regEx="/[a-zA-ZáéíñóúüÁÉÍÑÓÚÜ\s]/"/>
                         <f:converter converterId="trimConverter" />
-
                     </p:inputText>
 
                     <p:outputLabel
                         for="@next"
                         value="#{msj.callePrincipal}" />                    
                     <p:inputText
-                        id="iTdescripcionEstablecimiento"
+                        id="iTCallePrincipal"
                         required="true"
-                        requiredMessage="#{msj.campoNecesario}"
-                        value="#{establecimientoControlador.establecimiento.callePrincipal}"
+                        value="#{usuarioControlador.usuario.callePrincipal}"
+                        placeholder="#{msj.ejemploCalle}"
                         onblur="value = value.toUpperCase()">
                         <f:converter converterId="trimConverter" />
                     </p:inputText>
@@ -43,8 +71,8 @@
                     <p:inputText
                         id="iTnumeracion"
                         required="true"
-                        requiredMessage="#{msj.campoNecesario}"
-                        value="#{establecimientoControlador.establecimiento.numeracion}"
+                        value="#{usuarioControlador.usuario.numeracion}"
+                        placeholder="#{msj.ejemploNumeracion}"
                         onblur="value = value.toUpperCase()">
                         <f:converter converterId="trimConverter" />
                     </p:inputText>
@@ -53,10 +81,10 @@
                         for="@next"
                         value="#{msj.calleSecundaria}" />                    
                     <p:inputText
-                        id="descripcionEstablecimiento"
+                        id="iTCalleSecundaria"
                         required="true"
-                        requiredMessage="#{msj.campoNecesario}"
-                        value="#{establecimientoControlador.establecimiento.calleSecundaria}"
+                        value="#{usuarioControlador.usuario.calleSecundaria}"
+                        placeholder="#{msj.ejemploSecundaria}"
                         onblur="value = value.toUpperCase()">
                         <f:converter converterId="trimConverter" />
                     </p:inputText>
@@ -64,66 +92,83 @@
                     <p:outputLabel
                         for="@next"
                         value="#{msj.telefono}" />                    
-                    <p:inputText
-                        id="descripcionEstablecimiento"
+                    <p:inputMask
+                        id="iTTelefono"
                         required="true"
-                        requiredMessage="#{msj.campoNecesario}"
-                        value="#{establecimientoControlador.establecimiento.telefono}"
-                        onblur="value = value.toUpperCase()">
-                        <f:converter converterId="trimConverter" />
-                    </p:inputText>
+                        value="#{usuarioControlador.usuario.telefono}"
+                        mask="999-9999"
+                        placeholder="#{msj.mascaraEjemploTelefono}"
+                        validatorMessage="#{msj.telefonoInvalido}">
+                    </p:inputMask>
 
                     <p:outputLabel
                         for="@next"
                         value="#{msj.celular}" />                    
-                    <p:inputText
-                        id="descripcionEstablecimiento"
+                    <p:inputMask
+                        id="ITCelular"
                         required="true"
-                        requiredMessage="#{msj.campoNecesario}"
-                        value="#{establecimientoControlador.establecimiento.celular}"
-                        onblur="value = value.toUpperCase()">
-                        <f:converter converterId="trimConverter" />
-                    </p:inputText>
+                        value="#{usuarioControlador.usuario.celular}"
+                        mask="999-999-9999"
+                        placeholder="#{msj.mascaraEjemploCelular}"
+                        validatorMessage="#{msj.celularInvalido}">
+                    </p:inputMask>
 
                     <p:outputLabel
                         for="@next"
                         value="#{msj.correoElectronico}" />                    
                     <p:inputText
-                        id="descripcionEstablecimiento"
+                        id="iTCorreo"
                         required="true"
-                        requiredMessage="#{msj.campoNecesario}"
-                        value="#{establecimientoControlador.establecimiento.correo}"
-                        onblur="value = value.toUpperCase()">
+                        value="#{usuarioControlador.usuario.correo}"
+                        placeholder="#{msj.ejemploCorreo}"
+                        validatorMessage="#{msj.emailInvalido}">
+                        <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
                         <f:converter converterId="trimConverter" />
                     </p:inputText>
 
-                    
                     <p:outputLabel
                         for="@next"
-                        value="#{msj.ciudad}" />
-                    <p:selectOneMenu
-                        id="somSeleccionarCiudad"
+                        value="#{msj.usuario}" />
+                    <p:inputText
+                        id="iTEstablecimiento"
                         required="true"
-                        filter="true" 
-                        filterMatchMode="contains"
-                        requiredMessage="#{msj.campoNecesario}"
-                        value="#{paisCiudadControlador.ciudad}"
-                        converter="omnifaces.SelectItemsConverter">
-                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
-                        <f:selectItems value="#{establecimientoControlador.generarSelectItemDeCiudad()}" />
-                        <p:ajax 
-                            event="change"
-                            process="@this"
-                            update="mensajeGeneral tblListaProvincia"
-                            listener="#{paisCiudadControlador.cargarProvinciasPorPais()}" />
-                    </p:selectOneMenu>
+                        placeholder="#{msj.ejemploEstablecimiento}"
+                        value="#{usuarioControlador.usuario.usuario}">
+                        <f:converter converterId="trimConverter" />
+                    </p:inputText>
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.contrasena}" />
+                    <p:password
+                        id="pwdContrasena"
+                        value="#{usuarioControlador.usuario.contrasenia}"
+                        match="pwdRepetirContrasena" 
+                        label="#{msj.contrasena}" 
+                        required="true"
+                        feedback="true"
+                        placeholder="#{msj.ejemploPassword}"
+                        promptLabel="#{msj.contraseniaRequerida}"
+                        weakLabel="#{msj.debil}"
+                        goodLabel="#{msj.mediaDebil}"
+                        strongLabel="#{msj.fuerte}"/>
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.repetirContrasena}" />
+                    <p:password
+                        id="pwdRepetirContrasena"
+                        placeholder="#{msj.ejemploPassword}"
+                        value="#{usuarioControlador.usuario.contrasenia}" 
+                        label="#{msj.repetirContrasena}" 
+                        required="true"/>
 
 
                     <p:commandButton
                         id="btnGuardar" 
                         value="#{msj.guardar}"
                         update="pngAdministrarEstablecimiento tblListaEstablecimiento mensajeGeneral"
-                        action="#{establecimientoControlador.guardar()}" />
+                        action="#{usuarioControlador.guardar()}" />
                     <p:outputLabel
                         value="" />
 
@@ -132,25 +177,25 @@
             <p/>
             <p:dataTable
                 id="tblListaEstablecimiento"                
-                var="establecimiento" 
-                value="#{establecimientoControlador.listaEstablecimiento}">
+                var="usuario" 
+                value="#{usuarioControlador.listaEstablecimiento}">
                 <f:facet name="header">
                     #{msj.listaEstablecimiento}
                 </f:facet>
-                <p:column headerText="#{msj.codigoEstablecimiento}">
-                    <h:outputText value="#{establecimiento.idEstablecimiento}" />
+                <p:column headerText="#{msj.numeroDocumento}">
+                    <h:outputText value="#{usuario.numeroDocumento}" />
                 </p:column>
 
-                <p:column headerText="#{msj.establecimiento}">
-                    <h:outputText value="#{establecimiento.establecimiento}" />
+                <p:column headerText="#{msj.usuario}">
+                    <h:outputText value="#{usuario.usuario}" />
                 </p:column>
                 
-                <p:column headerText="#{msj.callePrincipal}">
-                    <h:outputText value="#{establecimiento.establecimiento}" />
+                <p:column headerText="#{msj.nombre}">
+                    <h:outputText value="#{usuario.nombre}" />
                 </p:column>
                 
-                <p:column headerText="#{msj.ciudad}">
-                    <h:outputText value="#{establecimiento.ciudad.ciudad}" />
+                <p:column headerText="#{msj.apellido}">
+                    <h:outputText value="#{usuario.apellido}" />
                 </p:column>
             </p:dataTable>
         </h:form>

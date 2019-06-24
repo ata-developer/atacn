@@ -41,6 +41,7 @@
             <groupId>org.omnifaces</groupId>
             <artifactId>omnifaces</artifactId>
             <version>3.3</version>
+            <type>jar</type>
         </dependency>
         
         <!-- base de datos -->
