@@ -8,12 +8,9 @@ package ec.com.ata.cn.modelo;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -27,19 +24,9 @@ public class Establecimiento implements Serializable {
     private static final long serialVersionUID = 1L;
     
     @Id
-    @SequenceGenerator(
-            name = "establecimiento_seq",
-            sequenceName = "establecimiento_seq",
-            allocationSize = 1)
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "establecimiento_seq")
-    @Column(name = "id_establecimiento")
-    private Long idEstablecimiento;
-
-    @Column(name = "establecimiento")
-    private String establecimiento;
-    
+    @Column(name = "nombre")
+    private Long nombre;
+        
     @Column(name = "calle_principal")
     private String callePrincipal;
     
@@ -66,50 +53,36 @@ public class Establecimiento implements Serializable {
     @JoinColumn(name="id_ciudad", referencedColumnName="id_ciudad")
     private Ciudad ciudad;
     
-    public Long getIdEstablecimiento() {
-        return idEstablecimiento;
+    public Long getNombre() {
+        return nombre;
     }
 
-    public void setIdEstablecimiento(Long idEstablecimiento) {
-        this.idEstablecimiento = idEstablecimiento;
+    public void setNombre(Long nombre) {
+        this.nombre = nombre;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (getIdEstablecimiento() != null ? getIdEstablecimiento().hashCode() : 0);
+        hash += (getNombre() != null ? getNombre().hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the idEstablecimiento fields are not set
+        // TODO: Warning - this method won't work in the case the nombre fields are not set
         if (!(object instanceof Establecimiento)) {
             return false;
         }
         Establecimiento other = (Establecimiento) object;
-        return !((this.idEstablecimiento == null && other.idEstablecimiento != null) || (this.idEstablecimiento != null && !this.idEstablecimiento.equals(other.idEstablecimiento)));
+        return !((this.nombre == null && other.nombre != null) || (this.nombre != null && !this.nombre.equals(other.nombre)));
     }
 
     @Override
     public String toString() {
-        return "ec.com.ata.cn.modelo.Establecimiento[ id=" + getIdEstablecimiento() + " ]";
+        return "ec.com.ata.cn.modelo.Establecimiento[ id=" + getNombre() + " ]";
     }
-
-    /**
-     * @return the establecimiento
-     */
-    public String getEstablecimiento() {
-        return establecimiento;
-    }
-
-    /**
-     * @param establecimiento the establecimiento to set
-     */
-    public void setEstablecimiento(String establecimiento) {
-        this.establecimiento = establecimiento;
-    }
-
+    
     /**
      * @return the callePrincipal
      */

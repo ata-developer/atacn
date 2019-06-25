@@ -63,11 +63,19 @@ public class EstablecimientoControlador extends BaseControlador {
     public List<SelectItem> generarSelectItemDeCiudad() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
         for (Ciudad ciudadTmp : getListaCiudad()) {
-            selectItemsBuilder.add(ciudadTmp, ciudadTmp.getCiudad() + " - " + ciudadTmp.getProvinciaEstado().getProvinciaEstado() + " - " +ciudadTmp.getProvinciaEstado().getPais().getPais()  );
+            selectItemsBuilder.add(ciudadTmp, ciudadTmp.getCiudad() + " - " + ciudadTmp.getProvinciaEstado().getProvinciaEstado() + " - " +ciudadTmp.getProvinciaEstado().getPais().getPais());
         }
         return selectItemsBuilder.buildList();
     }
 
+    public List<SelectItem> generarSelectItemDeUsuario() {
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+        for (Usuario usuarioTmp : getListaUsuario()) {
+            selectItemsBuilder.add(usuarioTmp, usuarioTmp.getUsuario());
+        }
+        return selectItemsBuilder.buildList();
+    }
+    
     public void guardar() {
         try {
             establecimientoBean.crear(getEstablecimiento());
