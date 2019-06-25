@@ -7,15 +7,20 @@ package ec.com.ata.cn.controlador;
 
 import ec.com.ata.cn.controlador.util.ConstantesUtil;
 import ec.com.ata.cn.logica.CategoriaBean;
+import ec.com.ata.cn.logica.GrupoPrecioBean;
 import ec.com.ata.cn.modelo.Categoria;
+import ec.com.ata.cn.modelo.GrupoPrecio;
+import java.util.ArrayList;
 
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.omnifaces.util.selectitems.SelectItemsBuilder;
 
 /**
  *
@@ -27,24 +32,43 @@ public class CategoriaControlador extends BaseControlador {
 
     @Inject
     private CategoriaBean categoriaBean;
+    
+    @Inject
+    private GrupoPrecioBean grupoPrecioBean;
 
     private Categoria categoria;
+    
+    private GrupoPrecio grupoPrecio;
 
     private List<Categoria> listaCategoria;
+    
+    private List<GrupoPrecio> listaGrupoPrecio;
 
     @PostConstruct
     public void init() {
         categoria = new Categoria();
-        listaCategoria = categoriaBean.obtenerLista();
+        listaCategoria = new ArrayList<>();
+        setListaGrupoPrecio(grupoPrecioBean.obtenerLista());
     }
 
     public List<Categoria> obtenerListaCategoria() {
         return categoriaBean.obtenerLista();
     }
+    
+    public void cargarListaCategoriaPorGrupoImpuesto(){
+        
+    }
+    
+     public List<SelectItem> generarSelectItemDeGrupoPrecio() {
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+        for (GrupoPrecio grupoPrecioTmp : getListaGrupoPrecio()) {
+            selectItemsBuilder.add(grupoPrecioTmp, grupoPrecioTmp.getNombre());
+        }
+        return selectItemsBuilder.buildList();
+    }
 
     public void guardar() {
         try {
-            getCategoria().setCategoria(getCategoria().getCategoria().trim());
             categoriaBean.crear(getCategoria());
             listaCategoria = categoriaBean.obtenerLista();            
             addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
@@ -86,5 +110,33 @@ public class CategoriaControlador extends BaseControlador {
      */
     public void setListaCategoria(List<Categoria> listaCategoria) {
         this.listaCategoria = listaCategoria;
+    }
+
+    /**
+     * @return the listaGrupoPrecio
+     */
+    public List<GrupoPrecio> getListaGrupoPrecio() {
+        return listaGrupoPrecio;
+    }
+
+    /**
+     * @param listaGrupoPrecio the listaGrupoPrecio to set
+     */
+    public void setListaGrupoPrecio(List<GrupoPrecio> listaGrupoPrecio) {
+        this.listaGrupoPrecio = listaGrupoPrecio;
+    }
+
+    /**
+     * @return the grupoPrecio
+     */
+    public GrupoPrecio getGrupoPrecio() {
+        return grupoPrecio;
+    }
+
+    /**
+     * @param grupoPrecio the grupoPrecio to set
+     */
+    public void setGrupoPrecio(GrupoPrecio grupoPrecio) {
+        this.grupoPrecio = grupoPrecio;
     }
 }

@@ -37,6 +37,12 @@ public class TrabajoCategoriaPrecio implements Serializable {
     @JoinColumn(name = "id_categoria", referencedColumnName = "id_categoria")
     @ManyToOne
     private Categoria categoria;
+    
+    @MapsId("idGrupoPrecio")
+    @JoinColumn(name = "id_grupo_precio", referencedColumnName = "id_grupo_precio")
+    @ManyToOne
+    private GrupoPrecio grupoPrecio;
+    
 
     private BigDecimal precioVentaPublico;
 
@@ -142,6 +148,20 @@ public class TrabajoCategoriaPrecio implements Serializable {
      */
     public void setTrabajoCategoriaPrecioId(TrabajoCategoriaPrecioId trabajoCategoriaPrecioId) {
         this.trabajoCategoriaPrecioId = trabajoCategoriaPrecioId;
+    }
+
+    /**
+     * @return the grupoPrecio
+     */
+    public GrupoPrecio getGrupoPrecio() {
+        return grupoPrecio;
+    }
+
+    /**
+     * @param grupoPrecio the grupoPrecio to set
+     */
+    public void setGrupoPrecio(GrupoPrecio grupoPrecio) {
+        this.grupoPrecio = grupoPrecio;
     }
 
 }

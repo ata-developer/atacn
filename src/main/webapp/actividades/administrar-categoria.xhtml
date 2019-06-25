@@ -10,8 +10,28 @@
             <h1>#{msj.administrarCategorias}</h1>
             <p/>
             <p:fieldset legend="#{msj.agregarCategoria}">
+                <p:panelGrid id="pngSeleccionarGrupoPrecioCategoria" columns="2">
+                    
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.descripcionGrupoPrecio}" />
+                    <p:selectOneMenu
+                        id="somSeleccionarGrupoPrecio"
+                        value="#{categoriaControlador.categoria.grupoPrecio}"
+                        required="true"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{categoriaControlador.generarSelectItemDeGrupoPrecio()}" />
+                        <p:ajax 
+                            event="change"
+                            process="@this"
+                            update="frmAdministrarCategoria mensajeGeneral"
+                            listener="#{categoriaControlador.cargarListaCategoriaPorGrupoImpuesto()}" />
+                    </p:selectOneMenu>
+                </p:panelGrid>
+            </p:fieldset>
+            <p:fieldset legend="#{msj.agregarCategoria}">
                 <p:panelGrid id="pngAdministrarCategoria" columns="2">
-
                     <p:outputLabel
                         for="@next"
                         value="#{msj.descripcionCategoria}" />                    
@@ -25,7 +45,7 @@
                     <p:commandButton
                         id="btnGuardar" 
                         value="#{msj.guardar}"
-                        update="pngAdministrarCategoria tblListaCategoria mensajeGeneral"
+                        update="frmAdministrarCategoria mensajeGeneral"
                         action="#{categoriaControlador.guardar()}" />
                     <p:outputLabel
                         value="" />

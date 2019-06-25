@@ -6,13 +6,11 @@
 package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -25,6 +23,7 @@ import javax.persistence.Table;
 public class GrupoPrecio implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @SequenceGenerator(
             name = "grupo_precio_seq",
@@ -33,27 +32,16 @@ public class GrupoPrecio implements Serializable {
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
             generator = "grupo_precio_seq")
-    @Column(name = "id_grupo_precio")
-    private Long idGrupoPrecio;
+    @Column(name = "id_establecimiento")
+    private Long idGrupoImpuesto;
     
-    @Column(name = "nombre")
+    @Column(name = "nombre", unique = true)
     private String nombre;
     
-    @OneToMany
-    private List<TrabajoCategoriaPrecio> listaTrabajoCategoriaPrecio;
-
-    public Long getIdGrupoPrecio() {
-        return idGrupoPrecio;
-    }
-
-    public void setIdGrupoPrecio(Long idGrupoPrecio) {
-        this.idGrupoPrecio = idGrupoPrecio;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idGrupoPrecio != null ? idGrupoPrecio.hashCode() : 0);
+        hash += (nombre != null ? nombre.hashCode() : 0);
         return hash;
     }
 
@@ -64,15 +52,12 @@ public class GrupoPrecio implements Serializable {
             return false;
         }
         GrupoPrecio other = (GrupoPrecio) object;
-        if ((this.idGrupoPrecio == null && other.idGrupoPrecio != null) || (this.idGrupoPrecio != null && !this.idGrupoPrecio.equals(other.idGrupoPrecio))) {
-            return false;
-        }
-        return true;
+        return !((this.nombre == null && other.nombre != null) || (this.nombre != null && !this.nombre.equals(other.nombre)));
     }
 
     @Override
     public String toString() {
-        return "ec.com.ata.cn.modelo.GrupoPrecio[ id=" + idGrupoPrecio + " ]";
+        return "ec.com.ata.cn.modelo.GrupoPrecio[ id=" + nombre + " ]";
     }
 
     /**
@@ -90,17 +75,17 @@ public class GrupoPrecio implements Serializable {
     }
 
     /**
-     * @return the listaTrabajoCategoriaPrecio
+     * @return the idGrupoImpuesto
      */
-    public List<TrabajoCategoriaPrecio> getListaTrabajoCategoriaPrecio() {
-        return listaTrabajoCategoriaPrecio;
+    public Long getIdGrupoImpuesto() {
+        return idGrupoImpuesto;
     }
 
     /**
-     * @param listaTrabajoCategoriaPrecio the listaTrabajoCategoriaPrecio to set
+     * @param idGrupoImpuesto the idGrupoImpuesto to set
      */
-    public void setListaTrabajoCategoriaPrecio(List<TrabajoCategoriaPrecio> listaTrabajoCategoriaPrecio) {
-        this.listaTrabajoCategoriaPrecio = listaTrabajoCategoriaPrecio;
+    public void setIdGrupoImpuesto(Long idGrupoImpuesto) {
+        this.idGrupoImpuesto = idGrupoImpuesto;
     }
     
 }

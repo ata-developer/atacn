@@ -32,6 +32,11 @@ public class VehiculoCategoriaTrabajo implements Serializable {
     @ManyToOne
     private Vehiculo vehiculo;
     
+    @MapsId("idGrupoPrecio")
+    @JoinColumn(name="id_grupo_precio", referencedColumnName="id_grupo_precio")
+    @ManyToOne
+    private GrupoPrecio grupoPrecio;
+    
     @MapsId("idCategoriaForroTapiceria")
     @JoinColumn(name="id_categoria_forro_tapiceria", referencedColumnName="id_categoria" )
     @ManyToOne
@@ -97,6 +102,20 @@ public class VehiculoCategoriaTrabajo implements Serializable {
      */
     public void setVehiculoCategoriaTrabajoId(VehiculoCategoriaTrabajoId vehiculoCategoriaTrabajoId) {
         this.vehiculoCategoriaTrabajoId = vehiculoCategoriaTrabajoId;
+    }
+
+    /**
+     * @return the grupoPrecio
+     */
+    public GrupoPrecio getGrupoPrecio() {
+        return grupoPrecio;
+    }
+
+    /**
+     * @param grupoPrecio the grupoPrecio to set
+     */
+    public void setGrupoPrecio(GrupoPrecio grupoPrecio) {
+        this.grupoPrecio = grupoPrecio;
     }
     
     

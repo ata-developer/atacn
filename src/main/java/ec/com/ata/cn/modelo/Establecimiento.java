@@ -6,11 +6,15 @@
 package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -23,9 +27,19 @@ public class Establecimiento implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
-    @Id
-    @Column(name = "nombre")
-    private Long nombre;
+     @Id
+    @SequenceGenerator(
+            name = "establecimiento_seq",
+            sequenceName = "establecimiento_seq",
+            allocationSize = 1)
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "establecimiento_seq")
+    @Column(name = "id_establecimiento")
+    private Long idEstablecimiento;
+     
+    @Column(name = "nombre", unique = true)
+    private String nombre;
         
     @Column(name = "calle_principal")
     private String callePrincipal;
@@ -53,34 +67,44 @@ public class Establecimiento implements Serializable {
     @JoinColumn(name="id_ciudad", referencedColumnName="id_ciudad")
     private Ciudad ciudad;
     
-    public Long getNombre() {
+    public String getNombre() {
         return nombre;
     }
 
-    public void setNombre(Long nombre) {
+    public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (getNombre() != null ? getNombre().hashCode() : 0);
+        int hash = 7;
+        hash = 89 * hash + Objects.hashCode(this.idEstablecimiento);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the nombre fields are not set
-        if (!(object instanceof Establecimiento)) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        Establecimiento other = (Establecimiento) object;
-        return !((this.nombre == null && other.nombre != null) || (this.nombre != null && !this.nombre.equals(other.nombre)));
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Establecimiento other = (Establecimiento) obj;
+        if (!Objects.equals(this.idEstablecimiento, other.idEstablecimiento)) {
+            return false;
+        }
+        return true;
     }
+
+    
 
     @Override
     public String toString() {
-        return "ec.com.ata.cn.modelo.Establecimiento[ id=" + getNombre() + " ]";
+        return "ec.com.ata.cn.modelo.Establecimiento[ id=" + idEstablecimiento+ " ]";
     }
     
     /**
@@ -193,6 +217,20 @@ public class Establecimiento implements Serializable {
      */
     public void setCiudad(Ciudad ciudad) {
         this.ciudad = ciudad;
+    }
+
+    /**
+     * @return the idEstablecimiento
+     */
+    public Long getIdEstablecimiento() {
+        return idEstablecimiento;
+    }
+
+    /**
+     * @param idEstablecimiento the idEstablecimiento to set
+     */
+    public void setIdEstablecimiento(Long idEstablecimiento) {
+        this.idEstablecimiento = idEstablecimiento;
     }
 
 }

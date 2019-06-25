@@ -29,8 +29,6 @@ public class GrupoPrecioControlador extends BaseControlador {
     private GrupoPrecioBean grupoPrecioBean;
 
     private GrupoPrecio grupoPrecio;
-    
-    private String nombre;
 
     private List<GrupoPrecio> listaGrupoPrecio;
 
@@ -43,10 +41,11 @@ public class GrupoPrecioControlador extends BaseControlador {
     public List<GrupoPrecio> obtenerListaGrupoPrecio() {
         return grupoPrecioBean.obtenerLista();
     }
+    
+   
 
     public void guardar() {
         try {
-            getGrupoPrecio().setNombre(getGrupoPrecio().getNombre().trim());
             grupoPrecioBean.crear(getGrupoPrecio());
             listaGrupoPrecio = grupoPrecioBean.obtenerLista();            
             addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
@@ -90,17 +89,5 @@ public class GrupoPrecioControlador extends BaseControlador {
         this.listaGrupoPrecio = listaGrupoPrecio;
     }
 
-    /**
-     * @return the nombre
-     */
-    public String getNombre() {
-        return nombre;
-    }
-
-    /**
-     * @param nombre the nombre to set
-     */
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+    
 }

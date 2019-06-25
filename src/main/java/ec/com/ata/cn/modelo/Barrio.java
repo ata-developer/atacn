@@ -37,7 +37,7 @@ public class Barrio implements Serializable {
     @Column(name = "id_barrio")
     private Long idBarrio;
 
-    @Column(name = "barrio")
+    @Column(name = "barrio", unique = true)
     private String barrio;
         
     @ManyToOne

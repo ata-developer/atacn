@@ -28,7 +28,7 @@
                         id="btnGuardarPais" 
                         value="#{msj.guardar}"
                         process="@this descripcionPais"
-                        update="pngAdministrarPais tblListaPais mensajeGeneral somSeleccionarPaisParaProvincia"
+                        update="frmAdministrarPais mensajeGeneral"
                         action="#{paisCiudadControlador.guardar()}" />
                     <p:outputLabel
                         value="" />
@@ -69,7 +69,7 @@
                         <p:ajax 
                             event="change"
                             process="@this"
-                            update="mensajeGeneral tblListaProvincia somSeleccionarProvincia"
+                            update="frmAdministrarPais mensajeGeneral"
                             listener="#{paisCiudadControlador.cargarProvinciasPorPais()}" />
                     </h:selectOneMenu>
 
@@ -89,7 +89,7 @@
                         id="btnGuardarProvincia"
                         process="@this descripcionProvincia"
                         value="#{msj.guardar}"
-                        update="pngAdministrarProvincia tblListaProvincia somSeleccionarProvincia mensajeGeneral"
+                        update="frmAdministrarPais mensajeGeneral"
                         action="#{paisCiudadControlador.guardarProvincia()}" />
                     <p:outputLabel
                         value="" />
@@ -130,7 +130,7 @@
                         <p:ajax 
                             event="change"
                             process="@this"
-                            update="mensajeGeneral tblListaCiudad"
+                            update="frmAdministrarPais mensajeGeneral"
                             listener="#{paisCiudadControlador.cargarCiudadesPorProvincia()}" />
                     </h:selectOneMenu>
 
@@ -150,7 +150,7 @@
                         id="btnGuardarCiudad" 
                         value="#{msj.guardar}"
                         process="@this descripcionCiudad"
-                        update="pngAdministrarCiudad tblListaCiudad somSeleccionarCiudad mensajeGeneral"
+                        update="frmAdministrarPais mensajeGeneral"
                         action="#{paisCiudadControlador.guardarCiudad()}" />
                     <p:outputLabel
                         value="" />
@@ -191,7 +191,7 @@
                         <p:ajax 
                             event="change"
                             process="@this"
-                            update="mensajeGeneral tblListaBarrio"
+                            update="frmAdministrarPais mensajeGeneral"
                             listener="#{paisCiudadControlador.cargarBarriosPorCiudad()}" />
                     </h:selectOneMenu>
 
@@ -211,7 +211,7 @@
                         id="btnGuardarBarrio" 
                         value="#{msj.guardar}"
                         process="@this descripcionBarrio"
-                        update="pngAdministrarBarrio tblListaBarrio mensajeGeneral"
+                        update="frmAdministrarPais mensajeGeneral"
                         action="#{paisCiudadControlador.guardarBarrio()}" />
                     <p:outputLabel
                         value="" />

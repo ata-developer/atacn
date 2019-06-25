@@ -11,6 +11,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -37,6 +39,10 @@ public class Categoria implements Serializable {
 
     @Column(name = "categoria")
     private String categoria;
+    
+    @ManyToOne
+    @JoinColumn(name="id_grupo_precio", referencedColumnName="id_grupo_precio")
+    private GrupoPrecio grupoPrecio;
 
     public Long getIdCategoria() {
         return idCategoria;
@@ -80,6 +86,20 @@ public class Categoria implements Serializable {
      */
     public void setCategoria(String categoria) {
         this.categoria = categoria;
+    }
+
+    /**
+     * @return the GrupoPrecio
+     */
+    public GrupoPrecio getGrupoPrecio() {
+        return grupoPrecio;
+    }
+
+    /**
+     * @param grupoPrecio the GrupoPrecio to set
+     */
+    public void setGrupoPrecio(GrupoPrecio grupoPrecio) {
+        this.grupoPrecio = grupoPrecio;
     }
 
 }

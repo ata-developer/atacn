@@ -35,7 +35,7 @@ public class TipoMaterial implements Serializable {
     @Column(name = "id_tipo_material")
     private Long idTipoMaterial;
     
-    @Column(name = "tipo")
+    @Column(name = "tipo", unique = true)
     private String tipo;
 
     public Long getIdTipoMaterial() {

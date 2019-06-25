@@ -8,6 +8,8 @@ package ec.com.ata.cn.logica;
 
 import ec.com.ata.cn.logica.dao.CategoriaDao;
 import ec.com.ata.cn.modelo.Categoria;
+import ec.com.ata.cn.modelo.GrupoPrecio;
+import java.util.HashMap;
 
 import java.util.List;
 import javax.ejb.Stateless;
@@ -29,5 +31,11 @@ public class CategoriaBean {
     
     public List<Categoria> obtenerLista(){
         return categoriaDao.obtenerTodos();
+    }
+    
+    public List<Categoria> obtenerListaPorGrupoImpuesto(GrupoPrecio grupoPrecio){
+        HashMap<String, Object> parametros = new HashMap<>();
+        parametros.put("grupoPrecio", grupoPrecio);
+        return categoriaDao.obtenerListaPorParametros(parametros);
     }
 }

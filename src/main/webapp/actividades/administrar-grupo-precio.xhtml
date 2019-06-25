@@ -19,14 +19,15 @@
                         id="iTGrupoPrecio"
                         required="true"
                         requiredMessage="#{msj.campoNecesario}"
-                        value="#{grupoPrecioControlador.nombre}"
+                        value="#{grupoPrecioControlador.grupoPrecio.nombre}"
                         onblur="value = value.toUpperCase()">
+                        <f:converter converterId="trimConverter" />
                     </p:inputText>
                     
                     <p:commandButton
                         id="btnGuardar" 
                         value="#{msj.guardar}"
-                        update="pngAdministrarGrupoPrecio tblListaGrupoPrecio mensajeGeneral"
+                        update="frmAdministrarGrupoPrecio mensajeGeneral"
                         action="#{grupoPrecioControlador.guardar()}" />
                     <p:outputLabel
                         value="" />
@@ -41,9 +42,6 @@
                 <f:facet name="header">
                     #{msj.listaDeCategorias}
                 </f:facet>
-                <p:column headerText="#{msj.codigoCategoria}">
-                    <h:outputText value="#{grupoPrecio.idGrupoPrecio}" />
-                </p:column>
 
                 <p:column headerText="#{msj.descripcionGrupoPrecio}">
                     <h:outputText value="#{grupoPrecio.nombre}" />

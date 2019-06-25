@@ -23,13 +23,14 @@ public class TrabajoCategoriaPrecioId implements Serializable {
     
     @Column(name = "id_categoria")
     private Long idCategoria;
+    
+    @Column(name = "id_grupo_precio")
+    private Long idGrupoPrecio;
 
     @Override
     public String toString() {
-        return "TrabajoCategoriaPrecioId{" + "idTrabajo=" + idTrabajo + ", idCategoria=" + idCategoria + '}';
+        return "TrabajoCategoriaPrecioId{" + "idTrabajo=" + idTrabajo + ", idCategoria=" + idCategoria + ", idGrupoPrecio=" + idGrupoPrecio + '}';
     }
-    
-    
 
     /**
      * @return the idTrabajo
@@ -57,6 +58,20 @@ public class TrabajoCategoriaPrecioId implements Serializable {
      */
     public void setIdCategoria(Long idCategoria) {
         this.idCategoria = idCategoria;
+    }
+
+    /**
+     * @return the idGrupoPrecio
+     */
+    public Long getIdGrupoPrecio() {
+        return idGrupoPrecio;
+    }
+
+    /**
+     * @param idGrupoPrecio the idGrupoPrecio to set
+     */
+    public void setIdGrupoPrecio(Long idGrupoPrecio) {
+        this.idGrupoPrecio = idGrupoPrecio;
     }
    
 }

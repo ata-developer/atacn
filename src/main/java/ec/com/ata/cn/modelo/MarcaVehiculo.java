@@ -34,7 +34,7 @@ public class MarcaVehiculo implements Serializable {
     @Column(name = "id_marca")
     private Long idMarca;
     
-    @Column(name = "marca")
+    @Column(name = "marca", unique = true)
     private String marca;
 
     public Long getIdMarca() {

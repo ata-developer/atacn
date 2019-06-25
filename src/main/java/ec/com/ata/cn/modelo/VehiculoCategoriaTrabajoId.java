@@ -21,6 +21,9 @@ public class VehiculoCategoriaTrabajoId implements Serializable {
     @Column(name = "id_vehiculo")
     private Long idVehiculo;
     
+    @Column(name = "id_grupo_precio")
+    private Long idGrupoPrecio;
+    
     @Column(name = "id_categoria_forro_tapiceria")
     private Long idCategoriaForroTapiceria;
     
@@ -29,11 +32,9 @@ public class VehiculoCategoriaTrabajoId implements Serializable {
 
     @Override
     public String toString() {
-        return "VehiculoCategoriaTrabajoId{" + "idVehiculo=" + idVehiculo + ", idCategoriaForroTapiceria=" + idCategoriaForroTapiceria + ", idCategoriaPiso=" + idCategoriaPiso + '}';
+        return "VehiculoCategoriaTrabajoId{" + "idVehiculo=" + idVehiculo + ", idGrupoPrecio=" + idGrupoPrecio + ", idCategoriaForroTapiceria=" + idCategoriaForroTapiceria + ", idCategoriaPiso=" + idCategoriaPiso + '}';
     }
     
-    
-
     /**
      * @return the idVehiculo
      */
@@ -67,6 +68,20 @@ public class VehiculoCategoriaTrabajoId implements Serializable {
      */
     public Long getIdCategoriaPiso() {
         return idCategoriaPiso;
+    }
+
+    /**
+     * @return the idGrupoPrecio
+     */
+    public Long getIdGrupoPrecio() {
+        return idGrupoPrecio;
+    }
+
+    /**
+     * @param idGrupoPrecio the idGrupoPrecio to set
+     */
+    public void setIdGrupoPrecio(Long idGrupoPrecio) {
+        this.idGrupoPrecio = idGrupoPrecio;
     }
     
 }
