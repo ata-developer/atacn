@@ -10,6 +10,7 @@
         <h:form id="frmAdministrarGrupoPrecio">
             <h1>#{msj.administrarGrupoPrecio}</h1>
             <p/>
+            <!-- INICIO CONFIGURACION GRUPO PRECIO -->
             <p:fieldset legend="#{msj.administrarGrupoPrecio}">
                 <p:panelGrid id="pngAdministrarGrupoPrecio" columns="2">
                     <p:outputLabel
@@ -34,7 +35,6 @@
                 </p:panelGrid>
             </p:fieldset>
             <p/>
-            <p/>
             <p:dataTable
                 id="tblListaGrupoPrecio"                
                 var="grupoPrecio" 
@@ -47,6 +47,112 @@
                     <h:outputText value="#{grupoPrecio.nombre}" />
                 </p:column>
             </p:dataTable>
+            <p/>
+            <p:fieldset legend="#{msj.agregarCategoria}">
+                <p:panelGrid id="pngSeleccionarGrupoPrecioCategoria" columns="2">
+                    
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.descripcionGrupoPrecio}" />
+                    <p:selectOneMenu
+                        id="somSeleccionarGrupoPrecio"
+                        value="#{categoriaControlador.categoria.grupoPrecio}"
+                        required="true"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{categoriaControlador.generarSelectItemDeGrupoPrecio()}" />
+                        <p:ajax 
+                            event="change"
+                            process="@this"
+                            update="frmAdministrarCategoria mensajeGeneral"
+                            listener="#{categoriaControlador.cargarListaCategoriaPorGrupoImpuesto()}" />
+                    </p:selectOneMenu>
+                </p:panelGrid>
+            </p:fieldset>
+            <!-- FIN CONFIGURACION GRUPO PRECIO -->
+            
+            <!-- INICIO CONFIGURACION CATEGORIA -->
+            <p:fieldset legend="#{msj.agregarCategoria}">
+                <p:panelGrid id="pngAdministrarCategoria" columns="2">
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.descripcionCategoria}" />                    
+                    <p:inputText
+                        id="descripcionCategoria"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{categoriaControlador.categoria.categoria}"
+                        onblur="value = value.toUpperCase()"/>
+
+                    <p:commandButton
+                        id="btnGuardar" 
+                        value="#{msj.guardar}"
+                        update="frmAdministrarCategoria mensajeGeneral"
+                        action="#{categoriaControlador.guardar()}" />
+                    <p:outputLabel
+                        value="" />
+
+                </p:panelGrid>
+            </p:fieldset>
+            <p/>
+            <p:dataTable
+                id="tblListaCategoria"                
+                var="categoria" 
+                value="#{categoriaControlador.listaCategoria}">
+                <f:facet name="header">
+                    #{msj.listaDeCategorias}
+                </f:facet>
+                <p:column headerText="#{msj.codigoCategoria}">
+                    <h:outputText value="#{categoria.idCategoria}" />
+                </p:column>
+
+                <p:column headerText="#{msj.descripcionCategoria}">
+                    <h:outputText value="#{categoria.categoria}" />
+                </p:column>
+            </p:dataTable>
+            <!-- FIN CONFIGURACION CATEGORIA -->
+            
+            <!-- INICIO CONFIGURACION TRABAJO -->
+            <p:fieldset legend="#{msj.agregarTrabajo}">
+                <p:panelGrid id="pngAdministrarTrabajo" columns="2">
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.descripcionTrabajo}" />
+                    <p:inputText
+                        id="descripcionTrabajo"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{trabajoControlador.trabajo.descripcion}"
+                        onblur="value = value.toUpperCase()"/>
+
+                    <p:commandButton
+                        id="btnGuardar" 
+                        value="#{msj.guardar}"
+                        update="pngAdministrarTrabajo tblListaTrabajo mensajeGeneral"
+                        action="#{trabajoControlador.guardar()}" />
+                    <p:outputLabel
+                        value="" />
+
+                </p:panelGrid>
+            </p:fieldset>
+            <p/>
+            <p:dataTable
+                id="tblListaTrabajo"                
+                var="trabajo" 
+                value="#{trabajoControlador.listaTrabajo}">
+                <f:facet name="header">
+                    #{msj.listaDeTrabajos}
+                </f:facet>
+                <p:column headerText="#{msj.codigoTrabajo}">
+                    <h:outputText value="#{trabajo.idTrabajo}" />
+                </p:column>
+
+                <p:column headerText="#{msj.descripcionTrabajo}">
+                    <h:outputText value="#{trabajo.descripcion}" />
+                </p:column>
+            </p:dataTable>
+            <!-- FIN CONFIGURACION TRABAJO -->
             
         </h:form>
     </ui:define>
