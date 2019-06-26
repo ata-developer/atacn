@@ -79,7 +79,6 @@ public class GrupoPrecioControlador extends BaseControlador {
         listaCategoria = new ArrayList<>();
         listaTrabajo = new ArrayList<>();
         setTrabajoCategoriaPrecio(new TrabajoCategoriaPrecio());
-        setTrabajoCategoriaPrecio(new TrabajoCategoriaPrecio());
         setListaMapaTrabajoCategoriaPrecio(new ArrayList<HashMap<String, Object>>());
     }
 
