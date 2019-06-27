@@ -55,9 +55,7 @@ public class CategoriaControlador extends BaseControlador {
         return categoriaBean.obtenerLista();
     }
     
-    public void cargarListaCategoriaPorGrupoImpuesto(){
-        
-    }
+    
     
      public List<SelectItem> generarSelectItemDeGrupoPrecio() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();

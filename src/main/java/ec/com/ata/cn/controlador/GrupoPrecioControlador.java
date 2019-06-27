@@ -20,8 +20,8 @@ import java.util.HashMap;
 
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.model.SelectItem;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -32,7 +32,7 @@ import org.omnifaces.util.selectitems.SelectItemsBuilder;
  *
  * @author ATA1
  */
-@SessionScoped
+@ViewScoped
 @Named
 public class GrupoPrecioControlador extends BaseControlador {
 
@@ -81,6 +81,11 @@ public class GrupoPrecioControlador extends BaseControlador {
         setTrabajoCategoriaPrecio(new TrabajoCategoriaPrecio());
         setListaMapaTrabajoCategoriaPrecio(new ArrayList<HashMap<String, Object>>());
     }
+    
+    public void cargarListaCategoriaYTrabajos(){
+        listaCategoria = categoriaBean.obtenerListaPorGrupoImpuesto(grupoPrecio);
+        listaTrabajo = trabajoBean.obtenerListaPorGrupoImpuesto(grupoPrecio);
+    }
 
     public List<GrupoPrecio> obtenerListaGrupoPrecio() {
         return grupoPrecioBean.obtenerLista();
@@ -92,9 +97,9 @@ public class GrupoPrecioControlador extends BaseControlador {
             selectItemsBuilder.add(grupoPrecioTmp, grupoPrecioTmp.getNombre());
         }
         return selectItemsBuilder.buildList();
-    }
-
-    public void guardar() {
+    }    
+    
+    public void guardarGrupoPrecio() {
         try {
             grupoPrecioBean.crear(getGrupoPrecio());
             listaGrupoPrecio = grupoPrecioBean.obtenerLista();
@@ -108,6 +113,42 @@ public class GrupoPrecioControlador extends BaseControlador {
             addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
         } finally {
             setGrupoPrecio(new GrupoPrecio());
+        }
+    }
+    
+    public void guardarCategoria() {
+        try {
+            getCategoria().setGrupoPrecio(grupoPrecio);
+            categoriaBean.crear(getCategoria());
+            listaCategoria = categoriaBean.obtenerListaPorGrupoImpuesto(grupoPrecio);
+            addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+        } finally {
+            setCategoria(new Categoria());
+        }
+    }
+    
+    public void guardarTrabajo() {
+        try {
+            getTrabajo().setGrupoPrecio(grupoPrecio);
+            trabajoBean.crear(trabajo);
+            listaTrabajo = trabajoBean.obtenerListaPorGrupoImpuesto(grupoPrecio);
+            addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+        } finally {
+            setTrabajo(new Trabajo());
         }
     }
 

@@ -6,9 +6,9 @@
 package ec.com.ata.cn.logica;
 
 import ec.com.ata.cn.logica.dao.TrabajoDao;
+import ec.com.ata.cn.modelo.GrupoPrecio;
 import ec.com.ata.cn.modelo.Trabajo;
-import ec.com.ata.cn.modelo.TrabajoCategoriaPrecio;
-import ec.com.ata.cn.modelo.TrabajoCategoriaPrecioId;
+import java.util.HashMap;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -33,5 +33,11 @@ public class TrabajoBean {
     
     public Trabajo obtenerPorId(Long idTrabajo){
         return trabajoDao.obtenerPorCodigo(idTrabajo);
+    }
+    
+    public List<Trabajo> obtenerListaPorGrupoImpuesto(GrupoPrecio grupoPrecio){
+        HashMap<String, Object> parametros = new HashMap<>();
+        parametros.put("grupoPrecio", grupoPrecio);
+        return trabajoDao.obtenerListaPorParametros(parametros);
     }
 }

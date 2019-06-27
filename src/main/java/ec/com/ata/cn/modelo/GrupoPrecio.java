@@ -32,8 +32,8 @@ public class GrupoPrecio implements Serializable {
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
             generator = "grupo_precio_seq")
-    @Column(name = "id_establecimiento")
-    private Long idGrupoImpuesto;
+    @Column(name = "id_grupo_precio")
+    private Long idGrupoPrecio;
     
     @Column(name = "nombre", unique = true)
     private String nombre;
@@ -75,17 +75,17 @@ public class GrupoPrecio implements Serializable {
     }
 
     /**
-     * @return the idGrupoImpuesto
+     * @return the idGrupoPrecio
      */
-    public Long getIdGrupoImpuesto() {
-        return idGrupoImpuesto;
+    public Long getIdGrupoPrecio() {
+        return idGrupoPrecio;
     }
 
     /**
-     * @param idGrupoImpuesto the idGrupoImpuesto to set
+     * @param idGrupoPrecio the idGrupoPrecio to set
      */
-    public void setIdGrupoImpuesto(Long idGrupoImpuesto) {
-        this.idGrupoImpuesto = idGrupoImpuesto;
+    public void setIdGrupoPrecio(Long idGrupoPrecio) {
+        this.idGrupoPrecio = idGrupoPrecio;
     }
     
 }
