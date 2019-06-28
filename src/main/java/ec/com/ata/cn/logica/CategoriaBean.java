@@ -33,7 +33,7 @@ public class CategoriaBean {
         return categoriaDao.obtenerTodos();
     }
     
-    public List<Categoria> obtenerListaPorGrupoImpuesto(GrupoPrecio grupoPrecio){
+    public List<Categoria> obtenerListaPorGrupoPrecio(GrupoPrecio grupoPrecio){
         HashMap<String, Object> parametros = new HashMap<>();
         parametros.put("grupoPrecio", grupoPrecio);
         return categoriaDao.obtenerListaPorParametros(parametros);

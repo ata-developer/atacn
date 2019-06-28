@@ -8,6 +8,7 @@ package ec.com.ata.cn.logica;
 import ec.com.ata.cn.controlador.util.ConstantesUtil;
 import ec.com.ata.cn.logica.dao.TrabajoCategoriaPrecioDao;
 import ec.com.ata.cn.modelo.Categoria;
+import ec.com.ata.cn.modelo.GrupoPrecio;
 import ec.com.ata.cn.modelo.Trabajo;
 import ec.com.ata.cn.modelo.TrabajoCategoriaPrecio;
 import ec.com.ata.cn.modelo.TrabajoCategoriaPrecioId;
@@ -78,6 +79,31 @@ public class TrabajoCategoriaPrecioBean {
             listaTrabajoCategoriaPrecio.add(mapaTrabajoCategoriaPrecio);
         }
 
+        return listaTrabajoCategoriaPrecio;
+    }
+    
+    public List<HashMap<String, Object>> obtenerListaMapaTrabajoCategoriaPrecio(GrupoPrecio grupoPrecio) {
+        List<HashMap<String, Object>> listaTrabajoCategoriaPrecio = new ArrayList<>();       
+        List<Trabajo> listaTrabajo = trabajoBean.obtenerListaPorGrupoPrecio(grupoPrecio);
+        List<Categoria> listaCategoria = categoriaBean.obtenerListaPorGrupoPrecio(grupoPrecio);
+        for (Trabajo trabajo : listaTrabajo) {
+             HashMap<String, Object> mapaTrabajoCategoriaPrecio = new HashMap<>();
+             mapaTrabajoCategoriaPrecio.put(ConstantesUtil.TRABAJO_CATEGORIA, trabajo.getDescripcion());
+            for (Categoria categoria : listaCategoria) {
+                String clave = categoria.getCategoria();
+                Long idCategoria = categoria.getIdCategoria();
+                Long idTrabajo = trabajo.getIdTrabajo();
+                Long idGrupoPrecio = grupoPrecio.getIdGrupoPrecio();
+                TrabajoCategoriaPrecioId trabajoCategoriaPrecioIdTmp = new TrabajoCategoriaPrecioId();
+                trabajoCategoriaPrecioIdTmp.setIdCategoria(idCategoria);
+                trabajoCategoriaPrecioIdTmp.setIdTrabajo(idTrabajo);
+                trabajoCategoriaPrecioIdTmp.setIdGrupoPrecio(idGrupoPrecio);
+                TrabajoCategoriaPrecio trabajoCategoriaPrecioTmp = trabajoCategoriaPrecioDao.obtenerPorCodigo(trabajoCategoriaPrecioIdTmp);
+                trabajoCategoriaPrecioTmp = (trabajoCategoriaPrecioTmp == null ? new TrabajoCategoriaPrecio() :trabajoCategoriaPrecioTmp);
+                mapaTrabajoCategoriaPrecio.put(clave, trabajoCategoriaPrecioTmp);
+            }
+            listaTrabajoCategoriaPrecio.add(mapaTrabajoCategoriaPrecio);
+        }
         return listaTrabajoCategoriaPrecio;
     }
 }

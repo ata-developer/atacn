@@ -164,11 +164,111 @@
                         <h:outputText value="#{trabajo.descripcion}" />
                     </p:column>
                 </p:dataTable>
-                
+
             </p:fieldset>
             <p/>
             <p/>
             <!-- FIN CONFIGURACION TRABAJO -->
+
+            <!-- INICIO CONFIGURACION DE PRECIOS -->
+            <p:fieldset legend="#{msj.agregarPrecio}">
+                <p:panelGrid id="pngAdministrarPrecio" columns="2">
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.seleccionarCategoria}" />
+                    <h:selectOneMenu
+                        id="somSeleccionarCategoriaConfiguracion"
+                        value="#{grupoPrecioControlador.categoria}"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{grupoPrecioControlador.generarSelectItemDeCategorias()}" />
+                    </h:selectOneMenu>
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.seleccionarTrabajo}" />
+                    <h:selectOneMenu
+                        id="somSeleccionarTrabajo"
+                        value="#{grupoPrecioControlador.trabajo}"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{grupoPrecioControlador.generarSelectItemDeTrabajos()}" />
+                        <p:ajax 
+                            event="change"
+                            process="@this somSelecciosomSeleccionarCategoriaConfiguracionnarCategoria"
+                            update="frmAdministrarGrupoPrecio mensajeGeneral"
+                            listener="#{grupoPrecioControlador.cargarPrecio()}" />
+                    </h:selectOneMenu>
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.precioVentaPublico}" />
+                    <p:inputText
+                        id="iTprecioVentaPublico"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{grupoPrecioControlador.precioVentaPublico}"
+                        onblur="value = value.toUpperCase()">
+                        <f:convertNumber pattern="#0.00" />
+                    </p:inputText>
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.precioDescuento}" />
+                    <p:inputText
+                        id="iTprecioDescuento"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{grupoPrecioControlador.precioDescuento}"
+                        onblur="value = value.toUpperCase()">
+                        <f:convertNumber pattern="#0.00" />
+                    </p:inputText>
+
+                    <p:commandButton
+                        id="btnGuardar" 
+                        value="#{msj.guardar}" 
+                        update="dtListaMapaPrecio mensajeGeneral"
+                        actionListener="#{grupoPrecioControlador.guardarPrecioConfiguracion()}"/>
+                    <p:outputLabel
+                        value="" />
+                </p:panelGrid>
+            </p:fieldset>
+            <p/>
+            <p:dataTable
+                id="dtListaMapaPrecio"                
+                var="mapaTrabajoCategoriaPrecio" 
+                value="#{trabajoCategoriaPrecioControlador.listaMapaTrabajoCategoriaPrecio}">
+                <c:forEach var="categoria" items="#{trabajoCategoriaPrecioControlador.listaCategoriasTemporal()}">
+
+                    <p:column>
+                        <f:facet name="header" >
+                            <h:outputText value="#{categoria.categoria}" />
+                        </f:facet>
+                        <p:outputLabel
+                            rendered="#{categoria.categoria == 'TRABAJO/CATEGORIA'}"
+                            value="#{mapaTrabajoCategoriaPrecio[categoria.categoria]}" />
+                        <p:panelGrid 
+                            id="pngPrecio"
+                            columns="2" 
+                            rendered="#{categoria.categoria != 'TRABAJO/CATEGORIA'}">
+                            <p:outputLabel
+                                for="@next"
+                                value="#{msj.precioVentaPublico}" />
+                            <p:outputLabel
+                                value="#{mapaTrabajoCategoriaPrecio[categoria.categoria].precioVentaPublico}" />
+                            <p:outputLabel
+                                for="@next"
+                                value="#{msj.precioDescuento}" />
+                            <p:outputLabel
+                                value="#{mapaTrabajoCategoriaPrecio[categoria.categoria].precioDescuento}" />
+                        </p:panelGrid>
+
+                    </p:column>
+
+
+                </c:forEach>
+            </p:dataTable>
+            <!-- FIN CONGIGURACION DEL PRECIOS -->
 
         </h:form>
     </ui:define>

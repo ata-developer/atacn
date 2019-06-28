@@ -35,7 +35,7 @@ public class TrabajoBean {
         return trabajoDao.obtenerPorCodigo(idTrabajo);
     }
     
-    public List<Trabajo> obtenerListaPorGrupoImpuesto(GrupoPrecio grupoPrecio){
+    public List<Trabajo> obtenerListaPorGrupoPrecio(GrupoPrecio grupoPrecio){
         HashMap<String, Object> parametros = new HashMap<>();
         parametros.put("grupoPrecio", grupoPrecio);
         return trabajoDao.obtenerListaPorParametros(parametros);

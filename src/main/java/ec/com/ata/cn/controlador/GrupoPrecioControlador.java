@@ -14,6 +14,7 @@ import ec.com.ata.cn.modelo.Categoria;
 import ec.com.ata.cn.modelo.Trabajo;
 import ec.com.ata.cn.modelo.GrupoPrecio;
 import ec.com.ata.cn.modelo.TrabajoCategoriaPrecio;
+import ec.com.ata.cn.modelo.TrabajoCategoriaPrecioId;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,7 +45,7 @@ public class GrupoPrecioControlador extends BaseControlador {
 
     @Inject
     private TrabajoBean trabajoBean;
-
+    
     @Inject
     private TrabajoCategoriaPrecioBean trabajoCategoriaTrabajoBean;
 
@@ -82,9 +83,72 @@ public class GrupoPrecioControlador extends BaseControlador {
         setListaMapaTrabajoCategoriaPrecio(new ArrayList<HashMap<String, Object>>());
     }
     
+    public void guardarPrecioConfiguracion() {
+        try {
+            trabajoCategoriaPrecio = new TrabajoCategoriaPrecio();
+            trabajoCategoriaPrecio.setCategoria(getCategoria());
+            trabajoCategoriaPrecio.setTrabajo(getTrabajo());
+            trabajoCategoriaPrecio.setPrecioDescuento(getPrecioDescuento());
+            trabajoCategoriaPrecio.setPrecioVentaPublico(getPrecioVentaPublico());
+            trabajoCategoriaTrabajoBean.guardar(trabajoCategoriaPrecio);
+            setListaMapaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecio());
+            addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_GUARDAR + ":" + root.getMessage());
+        } finally {
+
+        }
+    }
+    
+    public void cargarPrecio() {
+        try {
+            if (null != categoria && null != trabajo) {
+                TrabajoCategoriaPrecioId trabajoCategoriaPrecioId = new TrabajoCategoriaPrecioId();
+                trabajoCategoriaPrecioId.setIdCategoria(categoria.getIdCategoria());
+                trabajoCategoriaPrecioId.setIdTrabajo(trabajo.getIdTrabajo());
+                TrabajoCategoriaPrecio trabajoCategoriaPrecioTmp = trabajoCategoriaTrabajoBean.obtenerPorId(trabajoCategoriaPrecioId);
+                if (null != trabajoCategoriaPrecioTmp) {
+                    setPrecioVentaPublico(trabajoCategoriaPrecioTmp.getPrecioVentaPublico());
+                    setPrecioDescuento(trabajoCategoriaPrecioTmp.getPrecioDescuento());
+                    addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
+                    return;
+                } else {
+                    setPrecioDescuento(null);
+                    setPrecioVentaPublico(null);
+                }
+                
+                addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.NO_EXISTE_REGISTRO);
+            }
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_PRECIOS_CONTROLADOR_GUARDAR_ROOT + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_PRECIOS_CONTROLADOR_GUARDAR_EX + ":" + e.getMessage());
+        }
+    }
+    
+    public List<SelectItem> generarSelectItemDeTrabajos() {
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+        for (Trabajo trabajoTmp : getListaTrabajo()) {
+            selectItemsBuilder.add(trabajoTmp, trabajoTmp.getDescripcion());
+        }
+        return selectItemsBuilder.buildList();
+    }
+
+    public List<SelectItem> generarSelectItemDeCategorias() {
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+        for (Categoria categoriaTmp : getListaCategoria()) {
+            selectItemsBuilder.add(categoriaTmp, categoriaTmp.getCategoria());
+        }
+        return selectItemsBuilder.buildList();
+    }
+    
     public void cargarListaCategoriaYTrabajos(){
-        listaCategoria = categoriaBean.obtenerListaPorGrupoImpuesto(grupoPrecio);
-        listaTrabajo = trabajoBean.obtenerListaPorGrupoImpuesto(grupoPrecio);
+        listaCategoria = categoriaBean.obtenerListaPorGrupoPrecio(grupoPrecio);
+        listaTrabajo = trabajoBean.obtenerListaPorGrupoPrecio(grupoPrecio);
     }
 
     public List<GrupoPrecio> obtenerListaGrupoPrecio() {
@@ -120,7 +184,7 @@ public class GrupoPrecioControlador extends BaseControlador {
         try {
             getCategoria().setGrupoPrecio(grupoPrecio);
             categoriaBean.crear(getCategoria());
-            listaCategoria = categoriaBean.obtenerListaPorGrupoImpuesto(grupoPrecio);
+            listaCategoria = categoriaBean.obtenerListaPorGrupoPrecio(grupoPrecio);
             addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
@@ -138,7 +202,7 @@ public class GrupoPrecioControlador extends BaseControlador {
         try {
             getTrabajo().setGrupoPrecio(grupoPrecio);
             trabajoBean.crear(trabajo);
-            listaTrabajo = trabajoBean.obtenerListaPorGrupoImpuesto(grupoPrecio);
+            listaTrabajo = trabajoBean.obtenerListaPorGrupoPrecio(grupoPrecio);
             addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
