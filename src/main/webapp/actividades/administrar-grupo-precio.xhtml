@@ -195,7 +195,7 @@
                         <f:selectItems value="#{grupoPrecioControlador.generarSelectItemDeTrabajos()}" />
                         <p:ajax 
                             event="change"
-                            process="@this somSelecciosomSeleccionarCategoriaConfiguracionnarCategoria"
+                            process="@this somSeleccionarCategoriaConfiguracion"
                             update="frmAdministrarGrupoPrecio mensajeGeneral"
                             listener="#{grupoPrecioControlador.cargarPrecio()}" />
                     </h:selectOneMenu>
@@ -237,8 +237,8 @@
             <p:dataTable
                 id="dtListaMapaPrecio"                
                 var="mapaTrabajoCategoriaPrecio" 
-                value="#{trabajoCategoriaPrecioControlador.listaMapaTrabajoCategoriaPrecio}">
-                <c:forEach var="categoria" items="#{trabajoCategoriaPrecioControlador.listaCategoriasTemporal()}">
+                value="#{grupoPrecioControlador.listaMapaTrabajoCategoriaPrecio}">
+                <c:forEach var="categoria" items="#{grupoPrecioControlador.listaCategoriasTemporal()}">
 
                     <p:column>
                         <f:facet name="header" >

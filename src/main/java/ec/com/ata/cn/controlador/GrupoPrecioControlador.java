@@ -83,15 +83,29 @@ public class GrupoPrecioControlador extends BaseControlador {
         setListaMapaTrabajoCategoriaPrecio(new ArrayList<HashMap<String, Object>>());
     }
     
+    public List<Categoria> listaCategoriasTemporal() {
+        if (null == listaCategoriaTmp) {
+            listaCategoriaTmp = new ArrayList<>();
+            Categoria categoriaTmp = new Categoria();
+            categoriaTmp.setCategoria(ConstantesUtil.TRABAJO_CATEGORIA);
+            listaCategoriaTmp.add(categoriaTmp);
+            for (Categoria categoriaX : getListaCategoria()) {
+                listaCategoriaTmp.add(categoriaX);
+            }
+        }
+        return listaCategoriaTmp;
+    }
+    
     public void guardarPrecioConfiguracion() {
         try {
             trabajoCategoriaPrecio = new TrabajoCategoriaPrecio();
             trabajoCategoriaPrecio.setCategoria(getCategoria());
             trabajoCategoriaPrecio.setTrabajo(getTrabajo());
+            trabajoCategoriaPrecio.setGrupoPrecio(getGrupoPrecio());
             trabajoCategoriaPrecio.setPrecioDescuento(getPrecioDescuento());
             trabajoCategoriaPrecio.setPrecioVentaPublico(getPrecioVentaPublico());
             trabajoCategoriaTrabajoBean.guardar(trabajoCategoriaPrecio);
-            setListaMapaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecio());
+            setListaMapaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecio(grupoPrecio));
             addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
@@ -107,7 +121,9 @@ public class GrupoPrecioControlador extends BaseControlador {
                 TrabajoCategoriaPrecioId trabajoCategoriaPrecioId = new TrabajoCategoriaPrecioId();
                 trabajoCategoriaPrecioId.setIdCategoria(categoria.getIdCategoria());
                 trabajoCategoriaPrecioId.setIdTrabajo(trabajo.getIdTrabajo());
+                trabajoCategoriaPrecioId.setIdGrupoPrecio(grupoPrecio.getIdGrupoPrecio());
                 TrabajoCategoriaPrecio trabajoCategoriaPrecioTmp = trabajoCategoriaTrabajoBean.obtenerPorId(trabajoCategoriaPrecioId);
+                setListaMapaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecio(grupoPrecio));
                 if (null != trabajoCategoriaPrecioTmp) {
                     setPrecioVentaPublico(trabajoCategoriaPrecioTmp.getPrecioVentaPublico());
                     setPrecioDescuento(trabajoCategoriaPrecioTmp.getPrecioDescuento());
