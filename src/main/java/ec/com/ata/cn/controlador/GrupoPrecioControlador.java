@@ -49,13 +49,19 @@ public class GrupoPrecioControlador extends BaseControlador {
     @Inject
     private TrabajoCategoriaPrecioBean trabajoCategoriaTrabajoBean;
 
+    private GrupoPrecio grupoPrecio;
+    
+    private GrupoPrecio grupoPrecioSeccionado;
+    
+    private Categoria categoria;
+    
+    private Categoria categoriaSeleccionado;
+    
     private Trabajo trabajo;
+    
+    private Trabajo trabajoSeleccionado;
 
     private List<Trabajo> listaTrabajo;
-
-    private Categoria categoria;
-
-    private GrupoPrecio grupoPrecio;
 
     private List<Categoria> listaCategoria;
 
@@ -76,6 +82,9 @@ public class GrupoPrecioControlador extends BaseControlador {
         grupoPrecio = new GrupoPrecio();
         categoria = new Categoria();
         trabajo = new Trabajo();
+        grupoPrecioSeccionado = new GrupoPrecio();
+        categoriaSeleccionado = new Categoria();
+        trabajoSeleccionado = new Trabajo();        
         listaGrupoPrecio = grupoPrecioBean.obtenerLista();
         listaCategoria = new ArrayList<>();
         listaTrabajo = new ArrayList<>();
@@ -84,12 +93,12 @@ public class GrupoPrecioControlador extends BaseControlador {
     }
     
     public List<Categoria> listaCategoriasTemporal() {
-        if (null == listaCategoriaTmp) {
+        if (null == listaCategoriaTmp && null != grupoPrecioSeccionado.getIdGrupoPrecio() ) {
             listaCategoriaTmp = new ArrayList<>();
             Categoria categoriaTmp = new Categoria();
             categoriaTmp.setCategoria(ConstantesUtil.TRABAJO_CATEGORIA);
             listaCategoriaTmp.add(categoriaTmp);
-            for (Categoria categoriaX : getListaCategoria()) {
+            for (Categoria categoriaX : categoriaBean.obtenerListaPorGrupoPrecio(grupoPrecioSeccionado)) {
                 listaCategoriaTmp.add(categoriaX);
             }
         }
@@ -105,7 +114,7 @@ public class GrupoPrecioControlador extends BaseControlador {
             trabajoCategoriaPrecio.setPrecioDescuento(getPrecioDescuento());
             trabajoCategoriaPrecio.setPrecioVentaPublico(getPrecioVentaPublico());
             trabajoCategoriaTrabajoBean.guardar(trabajoCategoriaPrecio);
-            setListaMapaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecio(grupoPrecio));
+            setListaMapaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecio(grupoPrecioSeccionado));
             addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
@@ -117,13 +126,13 @@ public class GrupoPrecioControlador extends BaseControlador {
     
     public void cargarPrecio() {
         try {
-            if (null != categoria && null != trabajo) {
+            if (null != categoriaSeleccionado && null != trabajoSeleccionado) {
                 TrabajoCategoriaPrecioId trabajoCategoriaPrecioId = new TrabajoCategoriaPrecioId();
-                trabajoCategoriaPrecioId.setIdCategoria(categoria.getIdCategoria());
-                trabajoCategoriaPrecioId.setIdTrabajo(trabajo.getIdTrabajo());
-                trabajoCategoriaPrecioId.setIdGrupoPrecio(grupoPrecio.getIdGrupoPrecio());
+                trabajoCategoriaPrecioId.setIdCategoria(categoriaSeleccionado.getIdCategoria());
+                trabajoCategoriaPrecioId.setIdTrabajo(trabajoSeleccionado.getIdTrabajo());
+                trabajoCategoriaPrecioId.setIdGrupoPrecio(grupoPrecioSeccionado.getIdGrupoPrecio());
                 TrabajoCategoriaPrecio trabajoCategoriaPrecioTmp = trabajoCategoriaTrabajoBean.obtenerPorId(trabajoCategoriaPrecioId);
-                setListaMapaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecio(grupoPrecio));
+                setListaMapaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecio(grupoPrecioSeccionado));
                 if (null != trabajoCategoriaPrecioTmp) {
                     setPrecioVentaPublico(trabajoCategoriaPrecioTmp.getPrecioVentaPublico());
                     setPrecioDescuento(trabajoCategoriaPrecioTmp.getPrecioDescuento());
@@ -163,8 +172,8 @@ public class GrupoPrecioControlador extends BaseControlador {
     }
     
     public void cargarListaCategoriaYTrabajos(){
-        listaCategoria = categoriaBean.obtenerListaPorGrupoPrecio(grupoPrecio);
-        listaTrabajo = trabajoBean.obtenerListaPorGrupoPrecio(grupoPrecio);
+        listaCategoria = categoriaBean.obtenerListaPorGrupoPrecio(grupoPrecioSeccionado);
+        listaTrabajo = trabajoBean.obtenerListaPorGrupoPrecio(grupoPrecioSeccionado);
     }
 
     public List<GrupoPrecio> obtenerListaGrupoPrecio() {
@@ -198,9 +207,9 @@ public class GrupoPrecioControlador extends BaseControlador {
     
     public void guardarCategoria() {
         try {
-            getCategoria().setGrupoPrecio(grupoPrecio);
+            getCategoria().setGrupoPrecio(grupoPrecioSeccionado);
             categoriaBean.crear(getCategoria());
-            listaCategoria = categoriaBean.obtenerListaPorGrupoPrecio(grupoPrecio);
+            listaCategoria = categoriaBean.obtenerListaPorGrupoPrecio(grupoPrecioSeccionado);
             addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
@@ -216,9 +225,9 @@ public class GrupoPrecioControlador extends BaseControlador {
     
     public void guardarTrabajo() {
         try {
-            getTrabajo().setGrupoPrecio(grupoPrecio);
+            getTrabajo().setGrupoPrecio(grupoPrecioSeccionado);
             trabajoBean.crear(trabajo);
-            listaTrabajo = trabajoBean.obtenerListaPorGrupoPrecio(grupoPrecio);
+            listaTrabajo = trabajoBean.obtenerListaPorGrupoPrecio(grupoPrecioSeccionado);
             addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
@@ -384,6 +393,48 @@ public class GrupoPrecioControlador extends BaseControlador {
      */
     public void setPrecioDescuento(BigDecimal precioDescuento) {
         this.precioDescuento = precioDescuento;
+    }
+
+    /**
+     * @return the grupoPrecioSeccionado
+     */
+    public GrupoPrecio getGrupoPrecioSeccionado() {
+        return grupoPrecioSeccionado;
+    }
+
+    /**
+     * @param grupoPrecioSeccionado the grupoPrecioSeccionado to set
+     */
+    public void setGrupoPrecioSeccionado(GrupoPrecio grupoPrecioSeccionado) {
+        this.grupoPrecioSeccionado = grupoPrecioSeccionado;
+    }
+
+    /**
+     * @return the categoriaSeleccionado
+     */
+    public Categoria getCategoriaSeleccionado() {
+        return categoriaSeleccionado;
+    }
+
+    /**
+     * @param categoriaSeleccionado the categoriaSeleccionado to set
+     */
+    public void setCategoriaSeleccionado(Categoria categoriaSeleccionado) {
+        this.categoriaSeleccionado = categoriaSeleccionado;
+    }
+
+    /**
+     * @return the trabajoSeleccionado
+     */
+    public Trabajo getTrabajoSeleccionado() {
+        return trabajoSeleccionado;
+    }
+
+    /**
+     * @param trabajoSeleccionado the trabajoSeleccionado to set
+     */
+    public void setTrabajoSeleccionado(Trabajo trabajoSeleccionado) {
+        this.trabajoSeleccionado = trabajoSeleccionado;
     }
 
 }

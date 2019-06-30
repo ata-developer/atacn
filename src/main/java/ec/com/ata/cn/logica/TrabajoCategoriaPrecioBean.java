@@ -89,11 +89,13 @@ public class TrabajoCategoriaPrecioBean {
         for (Trabajo trabajo : listaTrabajo) {
              HashMap<String, Object> mapaTrabajoCategoriaPrecio = new HashMap<>();
              mapaTrabajoCategoriaPrecio.put(ConstantesUtil.TRABAJO_CATEGORIA, trabajo.getDescripcion());
+             System.out.println("------- TRABAJO: "+trabajo.getDescripcion());
             for (Categoria categoria : listaCategoria) {
                 String clave = categoria.getCategoria();
                 Long idCategoria = categoria.getIdCategoria();
                 Long idTrabajo = trabajo.getIdTrabajo();
                 Long idGrupoPrecio = grupoPrecio.getIdGrupoPrecio();
+                System.out.println("------- CATEGORIA: "+categoria.getCategoria());
                 TrabajoCategoriaPrecioId trabajoCategoriaPrecioIdTmp = new TrabajoCategoriaPrecioId();
                 trabajoCategoriaPrecioIdTmp.setIdCategoria(idCategoria);
                 trabajoCategoriaPrecioIdTmp.setIdTrabajo(idTrabajo);
