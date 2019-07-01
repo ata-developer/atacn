@@ -67,6 +67,10 @@ public class Establecimiento implements Serializable {
     @JoinColumn(name="id_ciudad", referencedColumnName="id_ciudad")
     private Ciudad ciudad;
     
+    @ManyToOne
+    @JoinColumn(name="id_grupo_precio", referencedColumnName="id_grupo_precio")
+    private GrupoPrecio grupoPrecio;
+    
     public String getNombre() {
         return nombre;
     }
@@ -231,6 +235,20 @@ public class Establecimiento implements Serializable {
      */
     public void setIdEstablecimiento(Long idEstablecimiento) {
         this.idEstablecimiento = idEstablecimiento;
+    }
+
+    /**
+     * @return the grupoPrecio
+     */
+    public GrupoPrecio getGrupoPrecio() {
+        return grupoPrecio;
+    }
+
+    /**
+     * @param grupoPrecio the grupoPrecio to set
+     */
+    public void setGrupoPrecio(GrupoPrecio grupoPrecio) {
+        this.grupoPrecio = grupoPrecio;
     }
 
 }

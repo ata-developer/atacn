@@ -8,9 +8,12 @@ package ec.com.ata.cn.modelo;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -22,9 +25,19 @@ import javax.persistence.Table;
 public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
-        
+    
     @Id
-    @Column(name = "numero_documento", length = 60)
+    @SequenceGenerator(
+            name = "usuario_seq",
+            sequenceName = "usuario_seq",
+            allocationSize = 1)
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "usuario_seq")
+    @Column(name = "id_usuario")
+    private Long idUsuario;
+    
+    @Column(name = "numero_documento", length = 60, unique=true)
     private String numeroDocumento;    
     
     @Column(name = "nombre", length = 60)
@@ -51,14 +64,11 @@ public class Usuario implements Serializable {
     @Column(name = "correo", length = 60, unique=true)
     private String correo;
     
-    @Column(name = "es_confirmado")
-    private Boolean esConfirmado;
+    @Column(name = "tipo_usuario", length = 60)
+    private String tipoEstado;
     
-    @Column(name = "es_sistema")
-    private Boolean esSistema;
-    
-    @Column(name = "es_cliente")
-    private Boolean esCliente;
+    @Column(name = "estado", length = 60)
+    private String estado;
     
     @Column(name = "usuario", length = 60, unique=true)
     private String usuario;
@@ -73,39 +83,6 @@ public class Usuario implements Serializable {
     @ManyToOne
     @JoinColumn(name="id_ciudad", referencedColumnName="id_ciudad")
     private Ciudad ciudad;
-
-    public String getIdUsuario() {
-        return numeroDocumento;
-    }
-
-    public void setIdUsuario(String numeroDocumento) {
-        this.numeroDocumento = numeroDocumento;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (numeroDocumento != null ? numeroDocumento.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the numeroDocumento fields are not set
-        if (!(object instanceof Usuario)) {
-            return false;
-        }
-        Usuario other = (Usuario) object;
-        if ((this.numeroDocumento == null && other.numeroDocumento != null) || (this.numeroDocumento != null && !this.numeroDocumento.equals(other.numeroDocumento))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "ec.com.ata.cn.modelo.Usuario[ id=" + numeroDocumento + " ]";
-    }
 
     /**
      * @return the nombre
@@ -275,21 +252,7 @@ public class Usuario implements Serializable {
     public void setTipoDocumento(TipoDocumento tipoDocumento) {
         this.tipoDocumento = tipoDocumento;
     }
-
-    /**
-     * @return the esConfirmado
-     */
-    public Boolean getEsConfirmado() {
-        return esConfirmado;
-    }
-
-    /**
-     * @param esConfirmado the esConfirmado to set
-     */
-    public void setEsConfirmado(Boolean esConfirmado) {
-        this.esConfirmado = esConfirmado;
-    }
-
+    
     /**
      * @return the ciudad
      */
@@ -305,31 +268,45 @@ public class Usuario implements Serializable {
     }
 
     /**
-     * @return the esCliente
+     * @return the tipoEstado
      */
-    public Boolean getEsCliente() {
-        return esCliente;
+    public String getTipoEstado() {
+        return tipoEstado;
     }
 
     /**
-     * @param esCliente the esCliente to set
+     * @param tipoEstado the tipoEstado to set
      */
-    public void setEsCliente(Boolean esCliente) {
-        this.esCliente = esCliente;
+    public void setTipoEstado(String tipoEstado) {
+        this.tipoEstado = tipoEstado;
     }
 
     /**
-     * @return the esSistema
+     * @return the estado
      */
-    public Boolean getEsSistema() {
-        return esSistema;
+    public String getEstado() {
+        return estado;
     }
 
     /**
-     * @param esSistema the esSistema to set
+     * @param estado the estado to set
      */
-    public void setEsSistema(Boolean esSistema) {
-        this.esSistema = esSistema;
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    /**
+     * @return the idUsuario
+     */
+    public Long getIdUsuario() {
+        return idUsuario;
+    }
+
+    /**
+     * @param idUsuario the idUsuario to set
+     */
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
     }
     
 }
