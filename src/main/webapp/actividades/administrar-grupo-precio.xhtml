@@ -62,7 +62,6 @@
                     <p:selectOneMenu
                         id="somSeleccionarGrupoPrecio"
                         value="#{grupoPrecioControlador.grupoPrecioSeccionado}"
-                        required="true"
                         converter="omnifaces.SelectItemsConverter">
                         <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                         <f:selectItems value="#{grupoPrecioControlador.generarSelectItemDeGrupoPrecio()}" />
@@ -78,7 +77,7 @@
             <!-- FIN CONFIGURACION SELECCION GRUPO PRECIO -->
 
             <!-- INICIO CONFIGURACION CATEGORIA -->
-            <p:fieldset legend="#{msj.agregarCategoria}">
+            <p:fieldset legend="#{msj.agregarCategoria}" rendered="#{grupoPrecioControlador.grupoPrecioSeccionado.idGrupoPrecio != null}" >
                 <p:panelGrid id="pngAdministrarCategoria" columns="2">
                     <p:outputLabel
                         for="@next"
@@ -123,7 +122,7 @@
             <!-- FIN CONFIGURACION CATEGORIA -->
 
             <!-- INICIO CONFIGURACION TRABAJO -->
-            <p:fieldset legend="#{msj.agregarTrabajo}">
+            <p:fieldset legend="#{msj.agregarTrabajo}" rendered="#{grupoPrecioControlador.grupoPrecioSeccionado.idGrupoPrecio != null}">
                 <p:panelGrid id="pngAdministrarTrabajo" columns="2">
 
                     <p:outputLabel
@@ -171,7 +170,7 @@
             <!-- FIN CONFIGURACION TRABAJO -->
 
             <!-- INICIO CONFIGURACION DE PRECIOS -->
-            <p:fieldset legend="#{msj.agregarPrecio}">
+            <p:fieldset legend="#{msj.agregarPrecio}" rendered="#{grupoPrecioControlador.grupoPrecioSeccionado.idGrupoPrecio != null}" >
                 <p:panelGrid id="pngAdministrarPrecio" columns="2">
                     <p:outputLabel
                         for="@next"
@@ -182,6 +181,11 @@
                         converter="omnifaces.SelectItemsConverter">
                         <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                         <f:selectItems value="#{grupoPrecioControlador.generarSelectItemDeCategorias()}" />
+                         <p:ajax 
+                            event="change"
+                            process="@this somSeleccionarTrabajo"
+                            update="frmAdministrarGrupoPrecio mensajeGeneral"
+                            listener="#{grupoPrecioControlador.limpiarTrabajo()}" />
                     </h:selectOneMenu>
 
                     <p:outputLabel
@@ -236,6 +240,7 @@
             </p:fieldset>
             <p/>
             <p:dataTable
+                rendered="#{grupoPrecioControlador.grupoPrecioSeccionado.idGrupoPrecio != null}"
                 id="dtListaMapaPrecio"                
                 var="mapaTrabajoCategoriaPrecio" 
                 value="#{grupoPrecioControlador.listaMapaTrabajoCategoriaPrecio}">

@@ -16,6 +16,7 @@ import ec.com.ata.cn.modelo.GrupoPrecio;
 import ec.com.ata.cn.modelo.TrabajoCategoriaPrecio;
 import ec.com.ata.cn.modelo.TrabajoCategoriaPrecioId;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -108,9 +109,9 @@ public class GrupoPrecioControlador extends BaseControlador {
     public void guardarPrecioConfiguracion() {
         try {
             trabajoCategoriaPrecio = new TrabajoCategoriaPrecio();
-            trabajoCategoriaPrecio.setCategoria(getCategoria());
-            trabajoCategoriaPrecio.setTrabajo(getTrabajo());
-            trabajoCategoriaPrecio.setGrupoPrecio(getGrupoPrecio());
+            trabajoCategoriaPrecio.setCategoria(getCategoriaSeleccionado());
+            trabajoCategoriaPrecio.setTrabajo(getTrabajoSeleccionado());
+            trabajoCategoriaPrecio.setGrupoPrecio(getGrupoPrecioSeccionado());
             trabajoCategoriaPrecio.setPrecioDescuento(getPrecioDescuento());
             trabajoCategoriaPrecio.setPrecioVentaPublico(getPrecioVentaPublico());
             trabajoCategoriaTrabajoBean.guardar(trabajoCategoriaPrecio);
@@ -171,9 +172,16 @@ public class GrupoPrecioControlador extends BaseControlador {
         return selectItemsBuilder.buildList();
     }
     
+    public void limpiarTrabajo() {
+        trabajoSeleccionado = new Trabajo();
+        precioVentaPublico = null;
+        precioDescuento = null;
+    }
+    
     public void cargarListaCategoriaYTrabajos(){
         listaCategoria = categoriaBean.obtenerListaPorGrupoPrecio(grupoPrecioSeccionado);
         listaTrabajo = trabajoBean.obtenerListaPorGrupoPrecio(grupoPrecioSeccionado);
+        setListaMapaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecio(grupoPrecioSeccionado));
     }
 
     public List<GrupoPrecio> obtenerListaGrupoPrecio() {
