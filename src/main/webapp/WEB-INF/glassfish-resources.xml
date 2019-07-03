@@ -5,13 +5,11 @@
     <jdbc-connection-pool name="ATACNPoolRC"
                           datasource-classname="org.postgresql.ds.PGConnectionPoolDataSource"
                           res-type="javax.sql.ConnectionPoolDataSource">
-        <!--<property name="URL" value="jdbc:postgresql://atabdcn.csevi2nyqwgg.us-east-2.rds.amazonaws.com:5432/atabdcn"/>-->
-        <property name="URL" value="jdbc:postgresql://localhost:5432/atabdcn"/>
+        <property name="URL" value="jdbc:postgresql://atabdcn.csevi2nyqwgg.us-east-2.rds.amazonaws.com:5432/atabdcn"/>
         <property name="user" value="ata_db_user_01"></property>
         <property name="password" value="**Ata0510**"></property>
         <property name="databaseName" value="atabdcn"></property>
-        <!--<property name="serverName" value="atabdcn.csevi2nyqwgg.us-east-2.rds.amazonaws.com"></property>-->
-        <property name="serverName" value="localhost"></property>
+        <property name="serverName" value="atabdcn.csevi2nyqwgg.us-east-2.rds.amazonaws.com"></property>
         <property name="portNumber" value="5432"></property>
     </jdbc-connection-pool>
 

@@ -65,57 +65,11 @@
         
 
 
-        <!-- Data Exporter -->
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>3.17</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>3.17</version>
-        </dependency>
-        <dependency>
-            <groupId>com.lowagie</groupId>
-            <artifactId>itext</artifactId>
-            <version>2.1.7</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>bouncycastle</groupId>
-                    <artifactId>bcmail-jdk14</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>bouncycastle</groupId>
-                    <artifactId>bcprov-jdk14</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.bouncycastle</groupId>
-                    <artifactId>bctsp-jdk14</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <!-- FeedReader -->
-        <dependency>
-            <groupId>com.rometools</groupId>
-            <artifactId>rome</artifactId>
-            <version>1.7.3</version>
-        </dependency>
-
+        
         <!-- Twitter API -->
-        <dependency>
-            <groupId>org.twitter4j</groupId>
-            <artifactId>twitter4j-core</artifactId>
-            <version>3.0.5</version>
-        </dependency>
+        
 
-        <!-- Logging -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>1.6.1</version>
-        </dependency>
+        
 
         <!-- Themes -->
         <dependency>
@@ -124,29 +78,10 @@
             <version>1.0.10</version>
         </dependency>
 
-        <!-- GraphicImage -->
-        <dependency>
-            <groupId>net.sourceforge.barbecue</groupId>
-            <artifactId>barbecue</artifactId>
-            <version>1.5-beta1</version>
-        </dependency>
-        <dependency>
-            <groupId>jfree</groupId>
-            <artifactId>jfreechart</artifactId>
-            <version>1.0.0</version>
-        </dependency>
+        
 
         <!-- Barcode -->
-        <dependency>
-            <groupId>net.glxn</groupId>
-            <artifactId>qrgen</artifactId>
-            <version>1.4</version>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.barcode4j</groupId>
-            <artifactId>barcode4j-light</artifactId>
-            <version>2.1</version>
-        </dependency>
+        
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>org.eclipse.persistence.core</artifactId>

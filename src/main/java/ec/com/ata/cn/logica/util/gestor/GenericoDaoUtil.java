@@ -120,11 +120,11 @@ public class GenericoDaoUtil<T, I extends Serializable> {
                 }
                 if (parametros.containsKey(field.getName().concat("IsNull"))) {
                     String parametroCadena = (String) parametros.get(field.getName().concat("IsNull"));
-                    predicates.add(cb.and(cb.equal(root.get(parametroCadena), null)));
+                    predicates.add(cb.and(cb.isNull(root.get(parametroCadena))));
                 }                
                 if (parametros.containsKey(field.getName().concat("IsNotNull"))) {
-                    String parametroCadena = (String) parametros.get(field.getName().concat("IsNull"));
-                    predicates.add(cb.and(cb.notEqual(root.get(parametroCadena), null)));
+                    String parametroCadena = (String) parametros.get(field.getName().concat("IsNotNull"));
+                    predicates.add(cb.and(cb.isNotNull(root.get(parametroCadena))));
                 }
             }
             query.select(root).where(predicates.toArray(new Predicate[predicates.size()]));
