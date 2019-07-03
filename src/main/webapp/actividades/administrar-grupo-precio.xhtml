@@ -76,6 +76,33 @@
             <p/>
             <!-- FIN CONFIGURACION SELECCION GRUPO PRECIO -->
 
+            <!-- INICIO CONFIGURACION GRUPO PRECIO ESTABLECIMIENTO-->
+            <p:fieldset legend="#{msj.configurarPrecioEstablecimiento}" rendered="#{grupoPrecioControlador.grupoPrecioSeccionado.idGrupoPrecio != null}">
+                <p:panelGrid id="pngConfigurarPrecioEstablecimiento" columns="2">
+                    <h3>#{mjs.seleccionarConfiguracionEstablecimiento}</h3>
+                    <p:pickList id="PojoPickList" value="#{grupoPrecioControlador.listaEstablecimientos}" var="establecimiento" effect="bounce"
+                                itemValue="#{establecimiento}" itemLabel="#{establecimiento.nombre}" showSourceControls="true" showTargetControls="true" showCheckbox="true"
+                                showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" converter="establecimiento" responsive="true">
+
+                        <f:facet name="sourceCaption">#{msj.disponibles}</f:facet>
+                        <f:facet name="targetCaption">#{msj.configuradas}</f:facet>
+
+                        <p:ajax event="transfer" listener="#{grupoPrecioControlador.onTransfer}" update="mensajeGeneral" />
+                        <p:ajax event="select" listener="#{grupoPrecioControlador.onSelect}" update="mensajeGeneral"/>
+                        <p:ajax event="unselect" listener="#{grupoPrecioControlador.onUnselect}" update="mensajeGeneral"/>
+                        <p:ajax event="reorder" listener="#{grupoPrecioControlador.onReorder}" update="mensajeGeneral"/>
+
+                        <p:column style="width:85%;">
+                            <h:outputText value="#{establecimiento.nombre}" />
+                        </p:column>
+                    </p:pickList>
+                </p:panelGrid>
+            </p:fieldset>
+            <!-- FIN CONFIGURACION GRUPO PRECIO ESTABLECIMIENTO-->            
+            <p/>
+            <p/>
+            <!-- FIN CONFIGURACION GRUPO PRECIO -->
+
             <!-- INICIO CONFIGURACION CATEGORIA -->
             <p:fieldset legend="#{msj.agregarCategoria}" rendered="#{grupoPrecioControlador.grupoPrecioSeccionado.idGrupoPrecio != null}" >
                 <p:panelGrid id="pngAdministrarCategoria" columns="2">
@@ -181,7 +208,7 @@
                         converter="omnifaces.SelectItemsConverter">
                         <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                         <f:selectItems value="#{grupoPrecioControlador.generarSelectItemDeCategorias()}" />
-                         <p:ajax 
+                        <p:ajax 
                             event="change"
                             process="@this somSeleccionarTrabajo"
                             update="frmAdministrarGrupoPrecio mensajeGeneral"

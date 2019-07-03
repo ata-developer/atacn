@@ -8,6 +8,7 @@ package ec.com.ata.cn.logica;
 
 import ec.com.ata.cn.logica.dao.EstablecimientoDao;
 import ec.com.ata.cn.modelo.Establecimiento;
+import ec.com.ata.cn.modelo.GrupoPrecio;
 
 import java.util.List;
 import javax.ejb.Stateless;
@@ -29,5 +30,13 @@ public class EstablecimientoBean {
     
     public List<Establecimiento> obtenerLista(){
         return establecimientoDao.obtenerTodos();
+    }
+    
+    public List<Establecimiento> obtenerListaSinGrupoPrecio(){
+        return establecimientoDao.obtenerListaSinGrupoPrecio();
+    }
+    
+    public List<Establecimiento> obtenerListaPorGrupoPrecio(GrupoPrecio grupoPrecio){
+        return establecimientoDao.obtenerListaPorGrupoPrecio(grupoPrecio);
     }
 }

@@ -7,21 +7,24 @@ package ec.com.ata.cn.controlador;
 
 import ec.com.ata.cn.controlador.util.ConstantesUtil;
 import ec.com.ata.cn.logica.CategoriaBean;
+import ec.com.ata.cn.logica.EstablecimientoBean;
 import ec.com.ata.cn.logica.GrupoPrecioBean;
 import ec.com.ata.cn.logica.TrabajoBean;
 import ec.com.ata.cn.logica.TrabajoCategoriaPrecioBean;
 import ec.com.ata.cn.modelo.Categoria;
+import ec.com.ata.cn.modelo.Establecimiento;
 import ec.com.ata.cn.modelo.Trabajo;
 import ec.com.ata.cn.modelo.GrupoPrecio;
 import ec.com.ata.cn.modelo.TrabajoCategoriaPrecio;
 import ec.com.ata.cn.modelo.TrabajoCategoriaPrecioId;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -29,6 +32,10 @@ import javax.inject.Named;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.omnifaces.util.selectitems.SelectItemsBuilder;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.TransferEvent;
+import org.primefaces.event.UnselectEvent;
+import org.primefaces.model.DualListModel;
 
 /**
  *
@@ -46,20 +53,23 @@ public class GrupoPrecioControlador extends BaseControlador {
 
     @Inject
     private TrabajoBean trabajoBean;
-    
+
     @Inject
     private TrabajoCategoriaPrecioBean trabajoCategoriaTrabajoBean;
+    
+    @Inject
+    private EstablecimientoBean establecimientoBean;
 
     private GrupoPrecio grupoPrecio;
-    
+
     private GrupoPrecio grupoPrecioSeccionado;
-    
+
     private Categoria categoria;
-    
+
     private Categoria categoriaSeleccionado;
-    
+
     private Trabajo trabajo;
-    
+
     private Trabajo trabajoSeleccionado;
 
     private List<Trabajo> listaTrabajo;
@@ -78,6 +88,12 @@ public class GrupoPrecioControlador extends BaseControlador {
 
     private BigDecimal precioDescuento;
 
+    private List<Establecimiento> establecimientosOrigen;
+    
+    private List<Establecimiento> establecimientosDestino;
+    
+    private DualListModel<Establecimiento> listaEstablecimientos;
+
     @PostConstruct
     public void init() {
         grupoPrecio = new GrupoPrecio();
@@ -85,16 +101,50 @@ public class GrupoPrecioControlador extends BaseControlador {
         trabajo = new Trabajo();
         grupoPrecioSeccionado = new GrupoPrecio();
         categoriaSeleccionado = new Categoria();
-        trabajoSeleccionado = new Trabajo();        
+        trabajoSeleccionado = new Trabajo();
         listaGrupoPrecio = grupoPrecioBean.obtenerLista();
         listaCategoria = new ArrayList<>();
         listaTrabajo = new ArrayList<>();
+        
+        setEstablecimientosOrigen(new ArrayList<Establecimiento>());
+        setEstablecimientosDestino(new ArrayList<Establecimiento>());
+        setListaEstablecimientos(new DualListModel<Establecimiento>());
+
         setTrabajoCategoriaPrecio(new TrabajoCategoriaPrecio());
         setListaMapaTrabajoCategoriaPrecio(new ArrayList<HashMap<String, Object>>());
     }
+
+    public void onTransfer(TransferEvent event) {
+        StringBuilder builder = new StringBuilder();
+        for(Object item : event.getItems()) {
+            builder.append(((Establecimiento) item).getNombre()).append("<br />");
+        }
+         
+        FacesMessage msg = new FacesMessage();
+        msg.setSeverity(FacesMessage.SEVERITY_INFO);
+        msg.setSummary("Items Transferred");
+        msg.setDetail(builder.toString());
+         
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }  
+     
+    public void onSelect(SelectEvent event) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Item Selected", event.getObject().toString()));
+    }
+     
+    public void onUnselect(UnselectEvent event) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Item Unselected", event.getObject().toString()));
+    }
+     
+    public void onReorder() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "List Reordered", null));
+    }
     
     public List<Categoria> listaCategoriasTemporal() {
-        if (null == listaCategoriaTmp && null != grupoPrecioSeccionado.getIdGrupoPrecio() ) {
+        if (null == listaCategoriaTmp && null != grupoPrecioSeccionado.getIdGrupoPrecio()) {
             listaCategoriaTmp = new ArrayList<>();
             Categoria categoriaTmp = new Categoria();
             categoriaTmp.setCategoria(ConstantesUtil.TRABAJO_CATEGORIA);
@@ -105,7 +155,7 @@ public class GrupoPrecioControlador extends BaseControlador {
         }
         return listaCategoriaTmp;
     }
-    
+
     public void guardarPrecioConfiguracion() {
         try {
             trabajoCategoriaPrecio = new TrabajoCategoriaPrecio();
@@ -124,7 +174,7 @@ public class GrupoPrecioControlador extends BaseControlador {
 
         }
     }
-    
+
     public void cargarPrecio() {
         try {
             if (null != categoriaSeleccionado && null != trabajoSeleccionado) {
@@ -143,7 +193,7 @@ public class GrupoPrecioControlador extends BaseControlador {
                     setPrecioDescuento(null);
                     setPrecioVentaPublico(null);
                 }
-                
+
                 addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.NO_EXISTE_REGISTRO);
             }
         } catch (Exception e) {
@@ -155,7 +205,7 @@ public class GrupoPrecioControlador extends BaseControlador {
             addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_PRECIOS_CONTROLADOR_GUARDAR_EX + ":" + e.getMessage());
         }
     }
-    
+
     public List<SelectItem> generarSelectItemDeTrabajos() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
         for (Trabajo trabajoTmp : getListaTrabajo()) {
@@ -171,14 +221,16 @@ public class GrupoPrecioControlador extends BaseControlador {
         }
         return selectItemsBuilder.buildList();
     }
-    
+
     public void limpiarTrabajo() {
         trabajoSeleccionado = new Trabajo();
         precioVentaPublico = null;
         precioDescuento = null;
     }
-    
-    public void cargarListaCategoriaYTrabajos(){
+
+    public void cargarListaCategoriaYTrabajos() {
+        establecimientosOrigen = establecimientoBean.obtenerListaSinGrupoPrecio();
+        establecimientosDestino = establecimientoBean.obtenerListaPorGrupoPrecio(grupoPrecioSeccionado);
         listaCategoria = categoriaBean.obtenerListaPorGrupoPrecio(grupoPrecioSeccionado);
         listaTrabajo = trabajoBean.obtenerListaPorGrupoPrecio(grupoPrecioSeccionado);
         setListaMapaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecio(grupoPrecioSeccionado));
@@ -194,8 +246,8 @@ public class GrupoPrecioControlador extends BaseControlador {
             selectItemsBuilder.add(grupoPrecioTmp, grupoPrecioTmp.getNombre());
         }
         return selectItemsBuilder.buildList();
-    }    
-    
+    }
+
     public void guardarGrupoPrecio() {
         try {
             grupoPrecioBean.crear(getGrupoPrecio());
@@ -212,7 +264,7 @@ public class GrupoPrecioControlador extends BaseControlador {
             setGrupoPrecio(new GrupoPrecio());
         }
     }
-    
+
     public void guardarCategoria() {
         try {
             getCategoria().setGrupoPrecio(grupoPrecioSeccionado);
@@ -230,7 +282,7 @@ public class GrupoPrecioControlador extends BaseControlador {
             setCategoria(new Categoria());
         }
     }
-    
+
     public void guardarTrabajo() {
         try {
             getTrabajo().setGrupoPrecio(grupoPrecioSeccionado);
@@ -355,7 +407,8 @@ public class GrupoPrecioControlador extends BaseControlador {
     }
 
     /**
-     * @param listaMapaTrabajoCategoriaPrecio the listaMapaTrabajoCategoriaPrecio to set
+     * @param listaMapaTrabajoCategoriaPrecio the
+     * listaMapaTrabajoCategoriaPrecio to set
      */
     public void setListaMapaTrabajoCategoriaPrecio(List<HashMap<String, Object>> listaMapaTrabajoCategoriaPrecio) {
         this.listaMapaTrabajoCategoriaPrecio = listaMapaTrabajoCategoriaPrecio;
@@ -444,5 +497,49 @@ public class GrupoPrecioControlador extends BaseControlador {
     public void setTrabajoSeleccionado(Trabajo trabajoSeleccionado) {
         this.trabajoSeleccionado = trabajoSeleccionado;
     }
+
+    /**
+     * @return the establecimientosOrigen
+     */
+    public List<Establecimiento> getEstablecimientosOrigen() {
+        return establecimientosOrigen;
+    }
+
+    /**
+     * @param establecimientosOrigen the establecimientosOrigen to set
+     */
+    public void setEstablecimientosOrigen(List<Establecimiento> establecimientosOrigen) {
+        this.establecimientosOrigen = establecimientosOrigen;
+    }
+
+    /**
+     * @return the establecimientosDestino
+     */
+    public List<Establecimiento> getEstablecimientosDestino() {
+        return establecimientosDestino;
+    }
+
+    /**
+     * @param establecimientosDestino the establecimientosDestino to set
+     */
+    public void setEstablecimientosDestino(List<Establecimiento> establecimientosDestino) {
+        this.establecimientosDestino = establecimientosDestino;
+    }
+
+    /**
+     * @return the listaEstablecimientos
+     */
+    public DualListModel<Establecimiento> getListaEstablecimientos() {
+        return listaEstablecimientos;
+    }
+
+    /**
+     * @param listaEstablecimientos the listaEstablecimientos to set
+     */
+    public void setListaEstablecimientos(DualListModel<Establecimiento> listaEstablecimientos) {
+        this.listaEstablecimientos = listaEstablecimientos;
+    }
+
+   
 
 }
