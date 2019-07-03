@@ -17,7 +17,7 @@ import javax.ejb.Stateless;
  * @author ATA1
  */
 @Stateless
-public class EstablecimientoDao extends GenericoDaoUtil<Establecimiento, Long>{
+public class EstablecimientoDao extends GenericoDaoUtil<Establecimiento, Long> {
     
     public EstablecimientoDao() {
         super(Establecimiento.class);

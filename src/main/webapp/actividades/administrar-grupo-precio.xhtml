@@ -80,9 +80,18 @@
             <p:fieldset legend="#{msj.configurarPrecioEstablecimiento}" rendered="#{grupoPrecioControlador.grupoPrecioSeccionado.idGrupoPrecio != null}">
                 <p:panelGrid id="pngConfigurarPrecioEstablecimiento" columns="2">
                     <h3>#{mjs.seleccionarConfiguracionEstablecimiento}</h3>
-                    <p:pickList id="PojoPickList" value="#{grupoPrecioControlador.listaEstablecimientos}" var="establecimiento" effect="bounce"
-                                itemValue="#{establecimiento}" itemLabel="#{establecimiento.nombre}" showSourceControls="true" showTargetControls="true" showCheckbox="true"
-                                showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" converter="establecimiento" responsive="true">
+                    <p:pickList
+                        id="PojoPickList"
+                        value="#{grupoPrecioControlador.listaEstablecimientos}"
+                        var="establecimiento"
+                        effect="bounce"
+                        itemValue="#{establecimiento}"
+                        itemLabel="#{establecimiento.nombre}"
+                        showCheckbox="true"
+                        showSourceFilter="true"
+                        showTargetFilter="true"
+                        filterMatchMode="contains"
+                        responsive="true">
 
                         <f:facet name="sourceCaption">#{msj.disponibles}</f:facet>
                         <f:facet name="targetCaption">#{msj.configuradas}</f:facet>
