@@ -18,12 +18,6 @@
         </resource-bundle>
     </application>
     
-    <lifecycle>
-        <phase-listener>org.primefaces.component.lifecycle.LifecyclePhaseListener</phase-listener>
-    </lifecycle>
-    
-
-    
     <converter>
         <converter-id>trimConverter</converter-id>
         <converter-class>ec.com.ata.cn.controlador.convertidor.TrimConverter</converter-class>

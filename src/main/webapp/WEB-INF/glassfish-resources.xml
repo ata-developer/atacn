@@ -3,16 +3,16 @@
 <resources>
 
     <jdbc-connection-pool name="ATACNPoolRC"
-                          datasource-classname="org.postgresql.ds.PGConnectionPoolDataSource"
+                          datasource-classname="org.postgresql.jdbc3.Jdbc3PoolingDataSource"
                           res-type="javax.sql.ConnectionPoolDataSource">
-        <property name="URL" value="jdbc:postgresql://atabdcn.csevi2nyqwgg.us-east-2.rds.amazonaws.com:5432/atabdcn"/>
-        <property name="user" value="ata_db_user_01"></property>
+        <property name="URL" value="jdbc:postgresql://aa1l8mrqv99azpv.csevi2nyqwgg.us-east-2.rds.amazonaws.com:5432/ebdb"/>
+        <property name="user" value="atadbuser01"></property>
         <property name="password" value="**Ata0510**"></property>
-        <property name="databaseName" value="atabdcn"></property>
-        <property name="serverName" value="atabdcn.csevi2nyqwgg.us-east-2.rds.amazonaws.com"></property>
+        <property name="databaseName" value="ebdb"></property>
+        <property name="serverName" value="aa1l8mrqv99azpv.csevi2nyqwgg.us-east-2.rds.amazonaws.com"></property>
         <property name="portNumber" value="5432"></property>
     </jdbc-connection-pool>
 
-    <jdbc-resource enabled="true" jndi-name="java:app/jdbc/ATACNPool" object-type="user" pool-name="ATACNPoolRC" />
+    <jdbc-resource jndi-name="jdbc/ATACNPool" pool-name="ATACNPoolRC" />
 
 </resources>

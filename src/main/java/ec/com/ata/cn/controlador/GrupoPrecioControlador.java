@@ -23,6 +23,7 @@ import java.util.HashMap;
 
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.annotation.FacesConfig;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -41,6 +42,7 @@ import org.primefaces.model.DualListModel;
  *
  * @author ATA1
  */
+@FacesConfig
 @ViewScoped
 @Named
 public class GrupoPrecioControlador extends BaseControlador {
