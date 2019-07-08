@@ -69,11 +69,11 @@
 
     
 
-    <!-- MyFaces
+    
     <listener>
-        <listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>
+        <listener-class>ec.com.ata.cn.controlador.escuchador.MiEscuchador</listener-class>
     </listener>
-    -->
+    
 
     <filter>
         <filter-name>Character Encoding Filter</filter-name>
