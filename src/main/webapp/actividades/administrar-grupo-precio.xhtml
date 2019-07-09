@@ -78,14 +78,14 @@
 
             <!-- INICIO CONFIGURACION GRUPO PRECIO ESTABLECIMIENTO-->
             <p:fieldset legend="#{msj.configurarPrecioEstablecimiento}" rendered="#{grupoPrecioControlador.grupoPrecioSeccionado.idGrupoPrecio != null}">
-                <p:panelGrid id="pngConfigurarPrecioEstablecimiento" columns="2">
+                <p:panelGrid id="pngConfigurarPrecioEstablecimiento" columns="1">
                     <h3>#{mjs.seleccionarConfiguracionEstablecimiento}</h3>
                     <p:pickList
                         id="plEstablecimientos"
                         value="#{grupoPrecioControlador.listaEstablecimientos}"
                         var="establecimiento"
                         effect="bounce"
-                        itemValue="#{establecimiento}"
+                        itemValue="#{establecimiento.idEstablecimiento}"
                         itemLabel="#{establecimiento.nombre}"
                         showCheckbox="true"
                         showSourceFilter="true"
@@ -93,25 +93,17 @@
                         filterMatchMode="contains"
                         responsive="true"
                         converter="#{establecimientoConvertidor}">
-
+                        
                         <f:facet name="sourceCaption">#{msj.disponibles}</f:facet>
                         <f:facet name="targetCaption">#{msj.configuradas}</f:facet>
-
+                        
                         <p:ajax event="transfer" listener="#{grupoPrecioControlador.onTransfer}" update="mensajeGeneral" />
                         
 
-                        <p:column style="width:85%;">
-                            <h:outputText value="#{establecimiento.nombre}" />
-                        </p:column>
+                        
                     </p:pickList>
-                    <p:commandButton
-                        id="btnGuardaConfiguracionEstablecimientos"
-                        process="@this plEstablecimientos"
-                        value="#{msj.guardar}"
-                        update="plEstablecimientos  mensajeGeneral"
-                        action="#{grupoPrecioControlador.guardarConfiguracionEstablecimiento()}" />
-                    <p:outputLabel
-                        value="" />
+                    
+                    
                 </p:panelGrid>
             </p:fieldset>
             <!-- FIN CONFIGURACION GRUPO PRECIO ESTABLECIMIENTO-->            

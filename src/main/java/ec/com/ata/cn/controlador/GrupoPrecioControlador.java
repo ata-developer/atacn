@@ -138,7 +138,7 @@ public class GrupoPrecioControlador extends BaseControlador {
             establecimientosDestino = establecimientoBean.obtenerListaPorGrupoPrecio(grupoPrecioSeccionado);
             listaEstablecimientos.setSource(establecimientosOrigen);
             listaEstablecimientos.setTarget(establecimientosDestino);
-            
+
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
             if (null != root) {
@@ -151,9 +151,36 @@ public class GrupoPrecioControlador extends BaseControlador {
     }
 
     public void onTransfer(TransferEvent event) {
-        for (Object item : event.getItems()) {
-            //Establecimiento establecimiento = (Establecimiento) item;
-            System.out.println("--->: " + item.toString());
+        try {
+            if (event.isAdd()) {
+                for (Object item : event.getItems()) {
+                    Long idEstablecimiento = new Long(item.toString().trim());
+                    System.out.println("agrego --->: " + idEstablecimiento);
+                    Establecimiento establecimientoTmp = establecimientoBean.obtenerPorCodigo(idEstablecimiento);
+                    if (null == establecimientoTmp.getGrupoPrecio()) {
+                        establecimientoTmp.setGrupoPrecio(grupoPrecioSeccionado);
+                        establecimientoBean.modificar(establecimientoTmp);
+                    }
+                }
+            } else {
+                for (Object item : event.getItems()) {
+                    Long idEstablecimiento = new Long(item.toString().trim());
+                    System.out.println("retiro --->: " + idEstablecimiento);
+                    Establecimiento establecimientoTmp = establecimientoBean.obtenerPorCodigo(idEstablecimiento);
+                    if (null != establecimientoTmp.getGrupoPrecio()) {
+                        establecimientoTmp.setGrupoPrecio(null);
+                        establecimientoBean.modificar(establecimientoTmp);
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_PRECIOS_CONTROLADOR_GUARDAR_ROOT + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_PRECIOS_CONTROLADOR_GUARDAR_EX + ":" + e.getMessage());
         }
 
     }
