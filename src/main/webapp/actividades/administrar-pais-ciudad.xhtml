@@ -16,7 +16,7 @@
                         for="@next"
                         value="#{msj.pais}" />                    
                     <p:inputText
-                        id="descripcionPais"
+                        id="txtDescripcionPais"
                         required="true"
                         requiredMessage="#{msj.campoNecesario}"
                         value="#{paisCiudadControlador.pais.pais}"
@@ -27,8 +27,8 @@
                     <p:commandButton
                         id="btnGuardarPais" 
                         value="#{msj.guardar}"
-                        process="@this descripcionPais"
-                        update="frmAdministrarPais mensajeGeneral"
+                        process="@this txtDescripcionPais"
+                        update="tblListaPais pngAdministrarPais pngAdministrarProvincia mensajeGeneral"
                         action="#{paisCiudadControlador.guardar()}" />
                     <p:outputLabel
                         value="" />
@@ -62,14 +62,14 @@
                         id="somSeleccionarPaisParaProvincia"
                         required="true"
                         requiredMessage="#{msj.campoNecesario}"
-                        value="#{paisCiudadControlador.pais}"
+                        value="#{paisCiudadControlador.paisSeleccionado}"
                         converter="omnifaces.SelectItemsConverter">
                         <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                         <f:selectItems value="#{paisCiudadControlador.generarSelectItemDePais()}" />
                         <p:ajax 
                             event="change"
                             process="@this"
-                            update="frmAdministrarPais mensajeGeneral"
+                            update="tblListaProvincia pngAdministrarCiudad mensajeGeneral"
                             listener="#{paisCiudadControlador.cargarProvinciasPorPais()}" />
                     </h:selectOneMenu>
 
@@ -89,7 +89,7 @@
                         id="btnGuardarProvincia"
                         process="@this descripcionProvincia"
                         value="#{msj.guardar}"
-                        update="frmAdministrarPais mensajeGeneral"
+                        update="tblListaProvincia pngAdministrarProvincia pngAdministrarCiudad mensajeGeneral"
                         action="#{paisCiudadControlador.guardarProvincia()}" />
                     <p:outputLabel
                         value="" />
@@ -121,7 +121,7 @@
                         value="#{msj.provincia}" />
                     <h:selectOneMenu
                         id="somSeleccionarProvincia"
-                        value="#{paisCiudadControlador.provinciaEstado}"
+                        value="#{paisCiudadControlador.provinciaEstadoSeleccionado}"
                         required="true"
                         requiredMessage="#{msj.campoNecesario}"
                         converter="omnifaces.SelectItemsConverter">
@@ -130,7 +130,7 @@
                         <p:ajax 
                             event="change"
                             process="@this"
-                            update="frmAdministrarPais mensajeGeneral"
+                            update="tblListaCiudad mensajeGeneral"
                             listener="#{paisCiudadControlador.cargarCiudadesPorProvincia()}" />
                     </h:selectOneMenu>
 
@@ -150,7 +150,7 @@
                         id="btnGuardarCiudad" 
                         value="#{msj.guardar}"
                         process="@this descripcionCiudad"
-                        update="frmAdministrarPais mensajeGeneral"
+                        update="tblListaCiudad pngAdministrarCiudad pngAdministrarBarrio mensajeGeneral"
                         action="#{paisCiudadControlador.guardarCiudad()}" />
                     <p:outputLabel
                         value="" />
@@ -182,7 +182,7 @@
                         value="#{msj.ciudad}" />
                     <h:selectOneMenu
                         id="somSeleccionarCiudad"
-                        value="#{paisCiudadControlador.ciudad}"
+                        value="#{paisCiudadControlador.ciudadSeleccionado}"
                         required="true"
                         requiredMessage="#{msj.campoNecesario}"
                         converter="omnifaces.SelectItemsConverter">
@@ -191,7 +191,7 @@
                         <p:ajax 
                             event="change"
                             process="@this"
-                            update="frmAdministrarPais mensajeGeneral"
+                            update="tblListaBarrio mensajeGeneral"
                             listener="#{paisCiudadControlador.cargarBarriosPorCiudad()}" />
                     </h:selectOneMenu>
 
@@ -211,7 +211,7 @@
                         id="btnGuardarBarrio" 
                         value="#{msj.guardar}"
                         process="@this descripcionBarrio"
-                        update="frmAdministrarPais mensajeGeneral"
+                        update="frmAdministrarPais pngAdministrarBarrio mensajeGeneral"
                         action="#{paisCiudadControlador.guardarBarrio()}" />
                     <p:outputLabel
                         value="" />

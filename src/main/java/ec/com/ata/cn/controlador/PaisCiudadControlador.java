@@ -45,15 +45,24 @@ public class PaisCiudadControlador extends BaseControlador {
     
     @Inject
     private PaisBean paisBean;
-
-    private Barrio barrio;
     
-    private Ciudad ciudad;
+    private Pais pais;
+    
+    private Pais paisSeleccionado;
     
     private ProvinciaEstado provinciaEstado;
     
-    private Pais pais;
+    private ProvinciaEstado provinciaEstadoSeleccionado;
+    
+    private Ciudad ciudad;
+    
+    private Ciudad ciudadSeleccionado;
 
+    private Barrio barrio;
+    
+    private Barrio barrioSeleccionado;
+    
+    
     private List<Barrio> listaBarrio;
     
     private List<Ciudad> listaCiudad;
@@ -70,6 +79,11 @@ public class PaisCiudadControlador extends BaseControlador {
         provinciaEstado = new ProvinciaEstado();
         pais = new Pais();
         
+        barrioSeleccionado = new Barrio();
+        ciudadSeleccionado = new Ciudad();        
+        provinciaEstadoSeleccionado = new ProvinciaEstado();
+        paisSeleccionado = new Pais();
+        
         listaPais = paisBean.obtenerLista();
         
         setListaProvinciaEstado(new ArrayList<ProvinciaEstado>());
@@ -78,15 +92,15 @@ public class PaisCiudadControlador extends BaseControlador {
     }
     
     public void cargarBarriosPorCiudad(){
-        setListaBarrio(barrioBean.obtenerListaPorCiudad(ciudad));
+        setListaBarrio(barrioBean.obtenerListaPorCiudad(ciudadSeleccionado));
     }
     
     public void cargarCiudadesPorProvincia(){
-        setListaCiudad(ciudadBean.obtenerListaPorProvincia(provinciaEstado));
+        setListaCiudad(ciudadBean.obtenerListaPorProvincia(provinciaEstadoSeleccionado));
     }
     
     public void cargarProvinciasPorPais(){
-        setListaProvinciaEstado(provinciaBean.obtenerListaPorPais(pais));
+        setListaProvinciaEstado(provinciaBean.obtenerListaPorPais(paisSeleccionado));
     }
     
     public List<SelectItem> generarSelectItemDeCiudad() {
@@ -121,7 +135,7 @@ public class PaisCiudadControlador extends BaseControlador {
         try {
             paisBean.crear(getPais());
             listaPais = paisBean.obtenerLista();
-            
+            paisSeleccionado = new Pais();
             addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
@@ -137,12 +151,11 @@ public class PaisCiudadControlador extends BaseControlador {
     
     public void guardarProvincia() {
         try {
-            getProvinciaEstado().setPais(pais);
+            getProvinciaEstado().setPais(paisSeleccionado);
             provinciaBean.crear(getProvinciaEstado());
-            listaProvinciaEstado = provinciaBean.obtenerListaPorPais(pais);            
+            listaProvinciaEstado = provinciaBean.obtenerListaPorPais(pais);
             addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
         } catch (Exception e) {
-            e.printStackTrace();
             final Throwable root = ExceptionUtils.getRootCause(e);
             if (null != root) {
                 addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
@@ -156,9 +169,9 @@ public class PaisCiudadControlador extends BaseControlador {
     
     public void guardarCiudad() {
         try {
-            getCiudad().setProvinciaEstado(provinciaEstado);
+            getCiudad().setProvinciaEstado(provinciaEstadoSeleccionado);
             ciudadBean.crear(getCiudad());
-            listaCiudad = ciudadBean.obtenerListaPorProvincia(provinciaEstado);            
+            listaCiudad = ciudadBean.obtenerListaPorProvincia(provinciaEstadoSeleccionado);            
             addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
@@ -174,9 +187,9 @@ public class PaisCiudadControlador extends BaseControlador {
     
     public void guardarBarrio() {
         try {
-            getBarrio().setCiudad(ciudad);
+            getBarrio().setCiudad(ciudadSeleccionado);
             barrioBean.crear(getBarrio());
-            listaBarrio = barrioBean.obtenerListaPorCiudad(ciudad);            
+            listaBarrio = barrioBean.obtenerListaPorCiudad(ciudadSeleccionado);            
             addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
@@ -186,7 +199,7 @@ public class PaisCiudadControlador extends BaseControlador {
             }
             addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
         } finally {
-            setCiudad(new Ciudad());
+            setBarrio(new Barrio());
         }
     }
 
@@ -300,5 +313,61 @@ public class PaisCiudadControlador extends BaseControlador {
      */
     public void setBarrio(Barrio barrio) {
         this.barrio = barrio;
+    }
+
+    /**
+     * @return the paisSeleccionado
+     */
+    public Pais getPaisSeleccionado() {
+        return paisSeleccionado;
+    }
+
+    /**
+     * @param paisSeleccionado the paisSeleccionado to set
+     */
+    public void setPaisSeleccionado(Pais paisSeleccionado) {
+        this.paisSeleccionado = paisSeleccionado;
+    }
+
+    /**
+     * @return the provinciaEstadoSeleccionado
+     */
+    public ProvinciaEstado getProvinciaEstadoSeleccionado() {
+        return provinciaEstadoSeleccionado;
+    }
+
+    /**
+     * @param provinciaEstadoSeleccionado the provinciaEstadoSeleccionado to set
+     */
+    public void setProvinciaEstadoSeleccionado(ProvinciaEstado provinciaEstadoSeleccionado) {
+        this.provinciaEstadoSeleccionado = provinciaEstadoSeleccionado;
+    }
+
+    /**
+     * @return the ciudadSeleccionado
+     */
+    public Ciudad getCiudadSeleccionado() {
+        return ciudadSeleccionado;
+    }
+
+    /**
+     * @param ciudadSeleccionado the ciudadSeleccionado to set
+     */
+    public void setCiudadSeleccionado(Ciudad ciudadSeleccionado) {
+        this.ciudadSeleccionado = ciudadSeleccionado;
+    }
+
+    /**
+     * @return the barrioSeleccionado
+     */
+    public Barrio getBarrioSeleccionado() {
+        return barrioSeleccionado;
+    }
+
+    /**
+     * @param barrioSeleccionado the barrioSeleccionado to set
+     */
+    public void setBarrioSeleccionado(Barrio barrioSeleccionado) {
+        this.barrioSeleccionado = barrioSeleccionado;
     }
 }

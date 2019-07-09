@@ -5,14 +5,14 @@
  */
 package ec.com.ata.cn.controlador;
 
-import javax.enterprise.context.SessionScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 /**
  *
  * @author ATA1
  */
-@SessionScoped
+@ViewScoped
 @Named
 public class AnioVehiculoControlador extends BaseControlador{
     /*@Inject

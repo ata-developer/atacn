@@ -22,6 +22,11 @@
         <converter-id>trimConverter</converter-id>
         <converter-class>ec.com.ata.cn.controlador.convertidor.TrimConverter</converter-class>
     </converter>
+    <converter>
+        <converter-id>establecimientoConvertidor</converter-id>
+        <converter-class>ec.com.ata.cn.controlador.convertidor.EstablecimientoConvertidor</converter-class>
+    </converter>
+    
     
     <factory>
         <exception-handler-factory>org.primefaces.application.exceptionhandler.PrimeExceptionHandlerFactory</exception-handler-factory>

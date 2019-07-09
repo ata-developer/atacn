@@ -5,7 +5,7 @@
     <jdbc-connection-pool name="ATACNPoolRC"
                           datasource-classname="org.postgresql.ds.PGPoolingDataSource"
                           res-type="javax.sql.ConnectionPoolDataSource">
-        <property name="URL" value="jdbc:postgresql://atacnbd.cwzrbevyltko.us-west-2.rds.amazonaws.com:5432/atacnbd"/>
+        <property name="URL" value="jdbc:postgresql://localhost:5432/atacnbd"/>
         <property name="user" value="atadbuser01"></property>
         <property name="password" value="**Ata0510**"></property>
     </jdbc-connection-pool>

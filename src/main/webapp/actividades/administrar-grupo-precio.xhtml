@@ -81,7 +81,7 @@
                 <p:panelGrid id="pngConfigurarPrecioEstablecimiento" columns="2">
                     <h3>#{mjs.seleccionarConfiguracionEstablecimiento}</h3>
                     <p:pickList
-                        id="PojoPickList"
+                        id="plEstablecimientos"
                         value="#{grupoPrecioControlador.listaEstablecimientos}"
                         var="establecimiento"
                         effect="bounce"
@@ -91,20 +91,27 @@
                         showSourceFilter="true"
                         showTargetFilter="true"
                         filterMatchMode="contains"
-                        responsive="true">
+                        responsive="true"
+                        converter="establecimientoConvertidor">
 
                         <f:facet name="sourceCaption">#{msj.disponibles}</f:facet>
                         <f:facet name="targetCaption">#{msj.configuradas}</f:facet>
 
                         <p:ajax event="transfer" listener="#{grupoPrecioControlador.onTransfer}" update="mensajeGeneral" />
-                        <p:ajax event="select" listener="#{grupoPrecioControlador.onSelect}" update="mensajeGeneral"/>
-                        <p:ajax event="unselect" listener="#{grupoPrecioControlador.onUnselect}" update="mensajeGeneral"/>
-                        <p:ajax event="reorder" listener="#{grupoPrecioControlador.onReorder}" update="mensajeGeneral"/>
+                        
 
                         <p:column style="width:85%;">
                             <h:outputText value="#{establecimiento.nombre}" />
                         </p:column>
                     </p:pickList>
+                    <p:commandButton
+                        id="btnGuardaConfiguracionEstablecimientos"
+                        process="@this plEstablecimientos"
+                        value="#{msj.guardar}"
+                        update="plEstablecimientos  mensajeGeneral"
+                        action="#{grupoPrecioControlador.guardarConfiguracionEstablecimiento()}" />
+                    <p:outputLabel
+                        value="" />
                 </p:panelGrid>
             </p:fieldset>
             <!-- FIN CONFIGURACION GRUPO PRECIO ESTABLECIMIENTO-->            

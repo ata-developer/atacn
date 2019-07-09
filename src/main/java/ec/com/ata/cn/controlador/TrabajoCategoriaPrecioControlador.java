@@ -19,8 +19,8 @@ import java.util.HashMap;
 
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.model.SelectItem;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -32,7 +32,7 @@ import org.apache.commons.lang.exception.ExceptionUtils;
  *
  * @author ATA1
  */
-@SessionScoped
+@ViewScoped
 @Named
 public class TrabajoCategoriaPrecioControlador extends BaseControlador {
 

@@ -70,9 +70,9 @@
     
 
     
-    <listener>
+    <!--<listener>
         <listener-class>ec.com.ata.cn.controlador.escuchador.MiEscuchador</listener-class>
-    </listener>
+    </listener>-->
     
 
     <filter>

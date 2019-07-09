@@ -58,7 +58,7 @@ public class GrupoPrecioControlador extends BaseControlador {
 
     @Inject
     private TrabajoCategoriaPrecioBean trabajoCategoriaTrabajoBean;
-    
+
     @Inject
     private EstablecimientoBean establecimientoBean;
 
@@ -91,9 +91,9 @@ public class GrupoPrecioControlador extends BaseControlador {
     private BigDecimal precioDescuento;
 
     private List<Establecimiento> establecimientosOrigen;
-    
+
     private List<Establecimiento> establecimientosDestino;
-    
+
     private DualListModel<Establecimiento> listaEstablecimientos;
 
     @PostConstruct
@@ -107,7 +107,7 @@ public class GrupoPrecioControlador extends BaseControlador {
         listaGrupoPrecio = grupoPrecioBean.obtenerLista();
         listaCategoria = new ArrayList<>();
         listaTrabajo = new ArrayList<>();
-        
+
         setEstablecimientosOrigen(new ArrayList<Establecimiento>());
         setEstablecimientosDestino(new ArrayList<Establecimiento>());
         setListaEstablecimientos(new DualListModel<Establecimiento>());
@@ -116,35 +116,63 @@ public class GrupoPrecioControlador extends BaseControlador {
         setListaMapaTrabajoCategoriaPrecio(new ArrayList<HashMap<String, Object>>());
     }
 
-    public void onTransfer(TransferEvent event) {
-        StringBuilder builder = new StringBuilder();
-        for(Object item : event.getItems()) {
-            builder.append(((Establecimiento) item).getNombre()).append("<br />");
+    public void guardarConfiguracionEstablecimiento() {
+        try {
+            List<Establecimiento> listaOrigen = getListaEstablecimientos().getSource();
+            List<Establecimiento> listaDestino = getListaEstablecimientos().getTarget();
+            for (Establecimiento establecimientoTmp : listaOrigen) {
+                if (null != establecimientoTmp.getGrupoPrecio()) {
+                    establecimientoTmp.setGrupoPrecio(null);
+                    establecimientoBean.modificar(establecimientoTmp);
+                }
+            }
+
+            for (Establecimiento establecimiento : listaDestino) {
+                if (null == establecimiento.getGrupoPrecio()) {
+                    establecimiento.setGrupoPrecio(grupoPrecioSeccionado);
+                    establecimientoBean.modificar(establecimiento);
+                }
+            }
+
+            establecimientosOrigen = establecimientoBean.obtenerListaSinGrupoPrecio();
+            establecimientosDestino = establecimientoBean.obtenerListaPorGrupoPrecio(grupoPrecioSeccionado);
+            listaEstablecimientos.setSource(establecimientosOrigen);
+            listaEstablecimientos.setTarget(establecimientosDestino);
+            
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_PRECIOS_CONTROLADOR_GUARDAR_ROOT + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_PRECIOS_CONTROLADOR_GUARDAR_EX + ":" + e.getMessage());
         }
-         
-        FacesMessage msg = new FacesMessage();
-        msg.setSeverity(FacesMessage.SEVERITY_INFO);
-        msg.setSummary("Items Transferred");
-        msg.setDetail(builder.toString());
-         
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }  
-     
+
+    }
+
+    public void onTransfer(TransferEvent event) {
+        for (Object item : event.getItems()) {
+            //Establecimiento establecimiento = (Establecimiento) item;
+            System.out.println("--->: " + item.toString());
+        }
+
+    }
+
     public void onSelect(SelectEvent event) {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Item Selected", event.getObject().toString()));
     }
-     
+
     public void onUnselect(UnselectEvent event) {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Item Unselected", event.getObject().toString()));
     }
-     
+
     public void onReorder() {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "List Reordered", null));
     }
-    
+
     public List<Categoria> listaCategoriasTemporal() {
         if (null == listaCategoriaTmp && null != grupoPrecioSeccionado.getIdGrupoPrecio()) {
             listaCategoriaTmp = new ArrayList<>();
@@ -171,7 +199,11 @@ public class GrupoPrecioControlador extends BaseControlador {
             addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
-            addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_GUARDAR + ":" + root.getMessage());
+            if (null != root) {
+                addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_PRECIOS_CONTROLADOR_GUARDAR_ROOT + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_PRECIOS_CONTROLADOR_GUARDAR_EX + ":" + e.getMessage());
         } finally {
 
         }
@@ -233,6 +265,8 @@ public class GrupoPrecioControlador extends BaseControlador {
     public void cargarListaCategoriaYTrabajos() {
         establecimientosOrigen = establecimientoBean.obtenerListaSinGrupoPrecio();
         establecimientosDestino = establecimientoBean.obtenerListaPorGrupoPrecio(grupoPrecioSeccionado);
+        listaEstablecimientos.setSource(establecimientosOrigen);
+        listaEstablecimientos.setTarget(establecimientosDestino);
         listaCategoria = categoriaBean.obtenerListaPorGrupoPrecio(grupoPrecioSeccionado);
         listaTrabajo = trabajoBean.obtenerListaPorGrupoPrecio(grupoPrecioSeccionado);
         setListaMapaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecio(grupoPrecioSeccionado));
@@ -541,7 +575,5 @@ public class GrupoPrecioControlador extends BaseControlador {
     public void setListaEstablecimientos(DualListModel<Establecimiento> listaEstablecimientos) {
         this.listaEstablecimientos = listaEstablecimientos;
     }
-
-   
 
 }

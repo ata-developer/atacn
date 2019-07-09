@@ -24,8 +24,16 @@ public class EstablecimientoBean {
     @Inject
     private EstablecimientoDao establecimientoDao;
     
-    public Establecimiento crear(Establecimiento establecimientoEntrada) throws Exception{
+    public Establecimiento obtenerPorCodigo(Long codigo) {
+        return establecimientoDao.obtenerPorCodigo(codigo);
+    }
+    
+    public Establecimiento crear(Establecimiento establecimientoEntrada) throws Exception {    
         return establecimientoDao.crear(establecimientoEntrada);
+    }
+    
+    public Establecimiento modificar(Establecimiento establecimientoEntrada) throws Exception {
+        return establecimientoDao.modificar(establecimientoEntrada);
     }
     
     public List<Establecimiento> obtenerLista(){

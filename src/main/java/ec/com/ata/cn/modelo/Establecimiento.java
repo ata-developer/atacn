@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
@@ -250,5 +251,4 @@ public class Establecimiento implements Serializable {
     public void setGrupoPrecio(GrupoPrecio grupoPrecio) {
         this.grupoPrecio = grupoPrecio;
     }
-
 }

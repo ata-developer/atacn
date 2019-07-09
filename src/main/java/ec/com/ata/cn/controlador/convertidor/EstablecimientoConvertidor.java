@@ -5,32 +5,32 @@
  */
 package ec.com.ata.cn.controlador.convertidor;
 
-import ec.com.ata.cn.logica.TrabajoBean;
-import ec.com.ata.cn.modelo.Trabajo;
+import ec.com.ata.cn.logica.EstablecimientoBean;
+import ec.com.ata.cn.modelo.Establecimiento;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.ConverterException;
+import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
-import javax.inject.Named;
 
 /**
  *
  * @author ATA1
-s */
-@Named
-public class TrabajoConvertidor implements Convertidor<Trabajo>{
+ */
+@FacesConverter(value = "establecimientoConvertidor")
+public class EstablecimientoConvertidor implements Convertidor<Establecimiento>{
      
     @Inject
-    private TrabajoBean trabajoBean;
+    private EstablecimientoBean establecimientoBean;
 
     /**
      * Default constructor
      */
-    public TrabajoConvertidor () {
+    public EstablecimientoConvertidor () {
     }
 
     @Override
-    public Trabajo getAsObject (final FacesContext context, final UIComponent component, final String submittedValue) {
+    public Establecimiento getAsObject (final FacesContext context, final UIComponent component, final String submittedValue) {
         // Is the value null or empty?
         if ((null == submittedValue) || (submittedValue.trim().isEmpty())) {
             // Return null
@@ -38,31 +38,31 @@ public class TrabajoConvertidor implements Convertidor<Trabajo>{
         }
 
         // Init instance
-        Trabajo trabajo = null;
+        Establecimiento establecimiento = null;
 
         try {
             // Try to parse the value as long
-            final Long idTrabajo = Long.valueOf(submittedValue);
+            final Long idEstablecimiento = Long.valueOf(submittedValue);
 
             // Try to get user instance from it
-            trabajo = trabajoBean.obtenerPorId(idTrabajo);
+            establecimiento = establecimientoBean.obtenerPorCodigo(idEstablecimiento);
         } catch (Exception ex) {
             // Throw again
             throw new ConverterException(ex);
         } 
 
         // Return it
-        return trabajo;
+        return establecimiento;
     }
 
     @Override
-    public String getAsString(FacesContext context, UIComponent component, Object trabajo) {
-        if ((null == trabajo) || (String.valueOf(trabajo).isEmpty())) {
+    public String getAsString(FacesContext context, UIComponent component, Object establecimiento) {
+        if ((null == establecimiento) || (String.valueOf(establecimiento).isEmpty())) {
             // Is null
             return ""; //NOI18N
         }
 
         // Return id number
-        return String.valueOf(((Trabajo)trabajo).getIdTrabajo());
+        return String.valueOf( ((Establecimiento) establecimiento).getIdEstablecimiento());
     }
 }
