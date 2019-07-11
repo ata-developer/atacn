@@ -5,8 +5,9 @@
  */
 package ec.com.ata.cn.logica;
 
-import ec.com.ata.cn.controlador.util.ConstantesUtil;
+
 import ec.com.ata.cn.logica.dao.TrabajoCategoriaPrecioDao;
+import ec.com.ata.cn.logica.util.gestor.Constante;
 import ec.com.ata.cn.modelo.Categoria;
 import ec.com.ata.cn.modelo.GrupoPrecio;
 import ec.com.ata.cn.modelo.Trabajo;
@@ -64,7 +65,7 @@ public class TrabajoCategoriaPrecioBean {
         List<Categoria> listaCategoria = categoriaBean.obtenerLista();
         for (Trabajo trabajo : listaTrabajo) {
              HashMap<String, Object> mapaTrabajoCategoriaPrecio = new HashMap<>();
-             mapaTrabajoCategoriaPrecio.put(ConstantesUtil.TRABAJO_CATEGORIA, trabajo.getDescripcion());
+             mapaTrabajoCategoriaPrecio.put(Constante.TRABAJO_CATEGORIA, trabajo.getDescripcion());
             for (Categoria categoria : listaCategoria) {
                 String clave = categoria.getCategoria();
                 Long idCategoria = categoria.getIdCategoria();
@@ -88,7 +89,7 @@ public class TrabajoCategoriaPrecioBean {
         List<Categoria> listaCategoria = categoriaBean.obtenerListaPorGrupoPrecio(grupoPrecio);
         for (Trabajo trabajo : listaTrabajo) {
              HashMap<String, Object> mapaTrabajoCategoriaPrecio = new HashMap<>();
-             mapaTrabajoCategoriaPrecio.put(ConstantesUtil.TRABAJO_CATEGORIA, trabajo.getDescripcion());
+             mapaTrabajoCategoriaPrecio.put(Constante.TRABAJO_CATEGORIA, trabajo.getDescripcion());
             for (Categoria categoria : listaCategoria) {
                 String clave = categoria.getCategoria();
                 Long idCategoria = categoria.getIdCategoria();

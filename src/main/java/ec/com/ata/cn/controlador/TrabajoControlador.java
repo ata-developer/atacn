@@ -5,8 +5,9 @@
  */
 package ec.com.ata.cn.controlador;
 
-import ec.com.ata.cn.controlador.util.ConstantesUtil;
+
 import ec.com.ata.cn.logica.TrabajoBean;
+import ec.com.ata.cn.logica.util.gestor.Constante;
 import ec.com.ata.cn.modelo.Trabajo;
 
 import java.util.List;
@@ -47,14 +48,14 @@ public class TrabajoControlador extends BaseControlador {
             getTrabajo().setDescripcion(getTrabajo().getDescripcion().trim());
             trabajoBean.crear(getTrabajo());
             listaTrabajo = trabajoBean.obtenerLista();            
-            addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
             if (null != root) {
-                addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
                 return;
             }
-            addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
         } finally {
             setTrabajo(new Trabajo());
         }

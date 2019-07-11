@@ -5,11 +5,12 @@
  */
 package ec.com.ata.cn.controlador;
 
-import ec.com.ata.cn.controlador.util.ConstantesUtil;
+
 import ec.com.ata.cn.logica.BarrioBean;
 import ec.com.ata.cn.logica.CiudadBean;
 import ec.com.ata.cn.logica.PaisBean;
 import ec.com.ata.cn.logica.ProvinciaBean;
+import ec.com.ata.cn.logica.util.gestor.Constante;
 import ec.com.ata.cn.modelo.Barrio;
 import ec.com.ata.cn.modelo.Ciudad;
 import ec.com.ata.cn.modelo.Pais;
@@ -136,14 +137,14 @@ public class PaisCiudadControlador extends BaseControlador {
             paisBean.crear(getPais());
             listaPais = paisBean.obtenerLista();
             paisSeleccionado = new Pais();
-            addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
             if (null != root) {
-                addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
                 return;
             }
-            addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
         } finally {
             setPais(new Pais());
         }
@@ -154,14 +155,14 @@ public class PaisCiudadControlador extends BaseControlador {
             getProvinciaEstado().setPais(paisSeleccionado);
             provinciaBean.crear(getProvinciaEstado());
             listaProvinciaEstado = provinciaBean.obtenerListaPorPais(pais);
-            addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
             if (null != root) {
-                addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
                 return;
             }
-            addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
         } finally {
             setProvinciaEstado(new ProvinciaEstado());
         }
@@ -172,14 +173,14 @@ public class PaisCiudadControlador extends BaseControlador {
             getCiudad().setProvinciaEstado(provinciaEstadoSeleccionado);
             ciudadBean.crear(getCiudad());
             listaCiudad = ciudadBean.obtenerListaPorProvincia(provinciaEstadoSeleccionado);            
-            addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
             if (null != root) {
-                addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
                 return;
             }
-            addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
         } finally {
             setCiudad(new Ciudad());
         }
@@ -190,14 +191,14 @@ public class PaisCiudadControlador extends BaseControlador {
             getBarrio().setCiudad(ciudadSeleccionado);
             barrioBean.crear(getBarrio());
             listaBarrio = barrioBean.obtenerListaPorCiudad(ciudadSeleccionado);            
-            addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
             if (null != root) {
-                addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
                 return;
             }
-            addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
         } finally {
             setBarrio(new Barrio());
         }

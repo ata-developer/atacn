@@ -5,9 +5,10 @@
  */
 package ec.com.ata.cn.controlador;
 
-import ec.com.ata.cn.controlador.util.ConstantesUtil;
+
 import ec.com.ata.cn.logica.CategoriaBean;
 import ec.com.ata.cn.logica.GrupoPrecioBean;
+import ec.com.ata.cn.logica.util.gestor.Constante;
 import ec.com.ata.cn.modelo.Categoria;
 import ec.com.ata.cn.modelo.GrupoPrecio;
 import java.util.ArrayList;
@@ -69,14 +70,14 @@ public class CategoriaControlador extends BaseControlador {
         try {
             categoriaBean.crear(getCategoria());
             listaCategoria = categoriaBean.obtenerLista();            
-            addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
             if (null != root) {
-                addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
                 return;
             }
-            addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
         } finally {
             setCategoria(new Categoria());
         }

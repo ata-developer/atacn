@@ -5,12 +5,13 @@
  */
 package ec.com.ata.cn.controlador;
 
-import ec.com.ata.cn.controlador.util.ConstantesUtil;
+
 import ec.com.ata.cn.logica.CategoriaBean;
 import ec.com.ata.cn.logica.EstablecimientoBean;
 import ec.com.ata.cn.logica.GrupoPrecioBean;
 import ec.com.ata.cn.logica.TrabajoBean;
 import ec.com.ata.cn.logica.TrabajoCategoriaPrecioBean;
+import ec.com.ata.cn.logica.util.gestor.Constante;
 import ec.com.ata.cn.modelo.Categoria;
 import ec.com.ata.cn.modelo.Establecimiento;
 import ec.com.ata.cn.modelo.Trabajo;
@@ -142,10 +143,10 @@ public class GrupoPrecioControlador extends BaseControlador {
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
             if (null != root) {
-                addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_PRECIOS_CONTROLADOR_GUARDAR_ROOT + ":" + root.getMessage());
+                addErrorMessage(Constante.ERROR, Constante.ERROR_PRECIOS_CONTROLADOR_GUARDAR_ROOT + ":" + root.getMessage());
                 return;
             }
-            addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_PRECIOS_CONTROLADOR_GUARDAR_EX + ":" + e.getMessage());
+            addErrorMessage(Constante.ERROR, Constante.ERROR_PRECIOS_CONTROLADOR_GUARDAR_EX + ":" + e.getMessage());
         }
 
     }
@@ -177,10 +178,10 @@ public class GrupoPrecioControlador extends BaseControlador {
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
             if (null != root) {
-                addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_PRECIOS_CONTROLADOR_GUARDAR_ROOT + ":" + root.getMessage());
+                addErrorMessage(Constante.ERROR, Constante.ERROR_PRECIOS_CONTROLADOR_GUARDAR_ROOT + ":" + root.getMessage());
                 return;
             }
-            addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_PRECIOS_CONTROLADOR_GUARDAR_EX + ":" + e.getMessage());
+            addErrorMessage(Constante.ERROR, Constante.ERROR_PRECIOS_CONTROLADOR_GUARDAR_EX + ":" + e.getMessage());
         }
 
     }
@@ -204,7 +205,7 @@ public class GrupoPrecioControlador extends BaseControlador {
         if (null == listaCategoriaTmp && null != grupoPrecioSeccionado.getIdGrupoPrecio()) {
             listaCategoriaTmp = new ArrayList<>();
             Categoria categoriaTmp = new Categoria();
-            categoriaTmp.setCategoria(ConstantesUtil.TRABAJO_CATEGORIA);
+            categoriaTmp.setCategoria(Constante.TRABAJO_CATEGORIA);
             listaCategoriaTmp.add(categoriaTmp);
             for (Categoria categoriaX : categoriaBean.obtenerListaPorGrupoPrecio(grupoPrecioSeccionado)) {
                 listaCategoriaTmp.add(categoriaX);
@@ -223,14 +224,14 @@ public class GrupoPrecioControlador extends BaseControlador {
             trabajoCategoriaPrecio.setPrecioVentaPublico(getPrecioVentaPublico());
             trabajoCategoriaTrabajoBean.guardar(trabajoCategoriaPrecio);
             setListaMapaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecio(grupoPrecioSeccionado));
-            addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
             if (null != root) {
-                addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_PRECIOS_CONTROLADOR_GUARDAR_ROOT + ":" + root.getMessage());
+                addErrorMessage(Constante.ERROR, Constante.ERROR_PRECIOS_CONTROLADOR_GUARDAR_ROOT + ":" + root.getMessage());
                 return;
             }
-            addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_PRECIOS_CONTROLADOR_GUARDAR_EX + ":" + e.getMessage());
+            addErrorMessage(Constante.ERROR, Constante.ERROR_PRECIOS_CONTROLADOR_GUARDAR_EX + ":" + e.getMessage());
         } finally {
 
         }
@@ -248,22 +249,22 @@ public class GrupoPrecioControlador extends BaseControlador {
                 if (null != trabajoCategoriaPrecioTmp) {
                     setPrecioVentaPublico(trabajoCategoriaPrecioTmp.getPrecioVentaPublico());
                     setPrecioDescuento(trabajoCategoriaPrecioTmp.getPrecioDescuento());
-                    addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
+                    addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
                     return;
                 } else {
                     setPrecioDescuento(null);
                     setPrecioVentaPublico(null);
                 }
 
-                addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.NO_EXISTE_REGISTRO);
+                addInfoMessage(Constante.EXITO, Constante.NO_EXISTE_REGISTRO);
             }
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
             if (null != root) {
-                addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_PRECIOS_CONTROLADOR_GUARDAR_ROOT + ":" + root.getMessage());
+                addErrorMessage(Constante.ERROR, Constante.ERROR_PRECIOS_CONTROLADOR_GUARDAR_ROOT + ":" + root.getMessage());
                 return;
             }
-            addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_PRECIOS_CONTROLADOR_GUARDAR_EX + ":" + e.getMessage());
+            addErrorMessage(Constante.ERROR, Constante.ERROR_PRECIOS_CONTROLADOR_GUARDAR_EX + ":" + e.getMessage());
         }
     }
 
@@ -315,14 +316,14 @@ public class GrupoPrecioControlador extends BaseControlador {
         try {
             grupoPrecioBean.crear(getGrupoPrecio());
             listaGrupoPrecio = grupoPrecioBean.obtenerLista();
-            addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
             if (null != root) {
-                addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
                 return;
             }
-            addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
         } finally {
             setGrupoPrecio(new GrupoPrecio());
         }
@@ -333,14 +334,14 @@ public class GrupoPrecioControlador extends BaseControlador {
             getCategoria().setGrupoPrecio(grupoPrecioSeccionado);
             categoriaBean.crear(getCategoria());
             listaCategoria = categoriaBean.obtenerListaPorGrupoPrecio(grupoPrecioSeccionado);
-            addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
             if (null != root) {
-                addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
                 return;
             }
-            addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
         } finally {
             setCategoria(new Categoria());
         }
@@ -351,14 +352,14 @@ public class GrupoPrecioControlador extends BaseControlador {
             getTrabajo().setGrupoPrecio(grupoPrecioSeccionado);
             trabajoBean.crear(trabajo);
             listaTrabajo = trabajoBean.obtenerListaPorGrupoPrecio(grupoPrecioSeccionado);
-            addInfoMessage(ConstantesUtil.EXITO, ConstantesUtil.EXITO_DETALLE);
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
             if (null != root) {
-                addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
                 return;
             }
-            addErrorMessage(ConstantesUtil.ERROR, ConstantesUtil.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
         } finally {
             setTrabajo(new Trabajo());
         }

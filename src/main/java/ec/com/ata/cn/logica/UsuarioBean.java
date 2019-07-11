@@ -6,8 +6,8 @@
 package ec.com.ata.cn.logica;
 
 
-import ec.com.ata.cn.controlador.util.ConstantesUtil;
 import ec.com.ata.cn.logica.dao.UsuarioDao;
+import ec.com.ata.cn.logica.util.gestor.Constante;
 import ec.com.ata.cn.logica.util.gestor.HashCreadorUtil;
 import ec.com.ata.cn.modelo.Usuario;
 
@@ -27,7 +27,7 @@ public class UsuarioBean {
     private UsuarioDao usuarioDao;
     
     public Usuario crear(Usuario usuarioEntrada) throws Exception{
-        Optional<String> hashContraseniaOptional = HashCreadorUtil.hashContrasenia(usuarioEntrada.getContrasenia(), ConstantesUtil.SALT);
+        Optional<String> hashContraseniaOptional = HashCreadorUtil.hashContrasenia(usuarioEntrada.getContrasenia(), Constante.SALT);
         String hashContrasenia = hashContraseniaOptional.get();
         usuarioEntrada.setContrasenia(hashContrasenia);
         return usuarioDao.crear(usuarioEntrada);

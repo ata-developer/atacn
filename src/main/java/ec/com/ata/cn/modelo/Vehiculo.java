@@ -46,11 +46,9 @@ public class Vehiculo implements Serializable {
     @ManyToOne
     private MarcaVehiculo marca;
     
-    @ManyToOne
-    private AnioVehiculo anioVehiculoDesde;
-    
-    @ManyToOne
-    private AnioVehiculo anioVehiculoHasta;
+    private Long anioVehiculoDesde;
+        
+    private Long anioVehiculoHasta;
     
     public Long getIdVehiculo() {
         return idVehiculo;
@@ -132,28 +130,28 @@ public class Vehiculo implements Serializable {
     /**
      * @return the anioVehiculoDesde
      */
-    public AnioVehiculo getAnioVehiculoDesde() {
+    public Long getAnioVehiculoDesde() {
         return anioVehiculoDesde;
     }
 
     /**
      * @param anioVehiculoDesde the anioVehiculoDesde to set
      */
-    public void setAnioVehiculoDesde(AnioVehiculo anioVehiculoDesde) {
+    public void setAnioVehiculoDesde(Long anioVehiculoDesde) {
         this.anioVehiculoDesde = anioVehiculoDesde;
     }
 
     /**
      * @return the anioVehiculoHasta
      */
-    public AnioVehiculo getAnioVehiculoHasta() {
+    public Long getAnioVehiculoHasta() {
         return anioVehiculoHasta;
     }
 
     /**
      * @param anioVehiculoHasta the anioVehiculoHasta to set
      */
-    public void setAnioVehiculoHasta(AnioVehiculo anioVehiculoHasta) {
+    public void setAnioVehiculoHasta(Long anioVehiculoHasta) {
         this.anioVehiculoHasta = anioVehiculoHasta;
     }
 
