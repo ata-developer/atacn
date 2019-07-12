@@ -7,6 +7,7 @@ package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -43,6 +44,9 @@ public class ProvinciaEstado implements Serializable {
     @ManyToOne
     @JoinColumn(name="id_pais", referencedColumnName="id_pais")
     private Pais pais;
+    
+    @Embedded
+    private GenericoEntidad genericoEntidad;
 
     public Long getIdProvinciaEstado() {
         return idProvinciaEstado;

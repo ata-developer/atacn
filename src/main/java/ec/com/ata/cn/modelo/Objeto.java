@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -51,6 +52,9 @@ public class Objeto implements Serializable {
 
     @Column(name = "detalle")
     private String detalle;
+    
+    @Embedded
+    private GenericoEntidad genericoEntidad;
 
     @Transient
     private Long idObjectoPadre;

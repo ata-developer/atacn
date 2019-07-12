@@ -7,6 +7,7 @@ package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -24,6 +25,9 @@ public class AnioVehiculo implements Serializable {
     @Id
     @Column(name = "anio")
     private Long anio;
+    
+    @Embedded
+    private GenericoEntidad genericoEntidad;
 
     public Long getAnio() {
         return anio;
@@ -56,6 +60,20 @@ public class AnioVehiculo implements Serializable {
     @Override
     public String toString() {
         return "ec.com.ata.cn.modelo.AnioVehiculo[ id=" + anio + " ]";
+    }
+
+    /**
+     * @return the genericoEntidad
+     */
+    public GenericoEntidad getGenericoEntidad() {
+        return genericoEntidad;
+    }
+
+    /**
+     * @param genericoEntidad the genericoEntidad to set
+     */
+    public void setGenericoEntidad(GenericoEntidad genericoEntidad) {
+        this.genericoEntidad = genericoEntidad;
     }
     
 }

@@ -7,6 +7,7 @@ package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -41,6 +42,9 @@ public class Material implements Serializable {
     
     @Column(name = "descripcion")
     private String descripcion;
+    
+    @Embedded
+    private GenericoEntidad genericoEntidad;
     
     @ManyToOne
     private TipoMaterial tipoMaterial;

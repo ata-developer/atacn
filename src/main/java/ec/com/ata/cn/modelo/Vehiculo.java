@@ -7,6 +7,7 @@ package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -42,6 +43,9 @@ public class Vehiculo implements Serializable {
     private String observacionAnio;
     
     private Integer numeroDeFilas;
+    
+    @Embedded
+    private GenericoEntidad genericoEntidad;
     
     @ManyToOne
     private MarcaVehiculo marca;

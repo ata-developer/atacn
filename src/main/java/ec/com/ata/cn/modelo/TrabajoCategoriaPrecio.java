@@ -8,6 +8,7 @@ package ec.com.ata.cn.modelo;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
+import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -42,6 +43,9 @@ public class TrabajoCategoriaPrecio implements Serializable {
     @JoinColumn(name = "id_grupo_precio", referencedColumnName = "id_grupo_precio")
     @ManyToOne
     private GrupoPrecio grupoPrecio;
+    
+    @Embedded
+    private GenericoEntidad genericoEntidad;
     
 
     private BigDecimal precioVentaPublico;

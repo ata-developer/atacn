@@ -7,6 +7,7 @@ package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -33,6 +34,9 @@ public class ObservacionAnio implements Serializable {
             generator = "observacion_anio_seq")
     @Column(name = "observacion_anio_seq")
     private Long idObservacionAnio;
+    
+    @Embedded
+    private GenericoEntidad genericoEntidad;
 
     public Long getIdObservacionAnio() {
         return idObservacionAnio;

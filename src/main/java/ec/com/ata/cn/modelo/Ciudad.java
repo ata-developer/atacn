@@ -7,6 +7,7 @@ package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -39,6 +40,9 @@ public class Ciudad implements Serializable {
 
     @Column(name = "ciudad")
     private String ciudad;
+    
+    @Embedded
+    private GenericoEntidad genericoEntidad;
         
     @ManyToOne
     @JoinColumn(name="id_provincia_estado", referencedColumnName="id_provincia_estado")

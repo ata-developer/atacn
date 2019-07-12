@@ -7,6 +7,7 @@ package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -67,14 +68,14 @@ public class Usuario implements Serializable {
     @Column(name = "tipo_usuario", length = 60)
     private String tipoEstado;
     
-    @Column(name = "estado", length = 60)
-    private String estado;
-    
     @Column(name = "usuario", length = 60, unique=true)
     private String usuario;
         
     @Column(name = "contrasenia", length = 100)
     private String contrasenia;
+    
+    @Embedded
+    private GenericoEntidad genericoEntidad;
     
     @ManyToOne
     @JoinColumn(name="id_tipo_documento", referencedColumnName="id_tipo_documento")
@@ -281,19 +282,7 @@ public class Usuario implements Serializable {
         this.tipoEstado = tipoEstado;
     }
 
-    /**
-     * @return the estado
-     */
-    public String getEstado() {
-        return estado;
-    }
-
-    /**
-     * @param estado the estado to set
-     */
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
+    
 
     /**
      * @return the idUsuario

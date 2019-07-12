@@ -8,6 +8,7 @@ package ec.com.ata.cn.modelo;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -58,6 +59,9 @@ public class Establecimiento implements Serializable {
     
     @Column(name = "correo")
     private String correo;
+    
+    @Embedded
+    private GenericoEntidad genericoEntidad;
     
     @ManyToOne
     @JoinColumn(name="numero_documento", referencedColumnName="numero_documento")

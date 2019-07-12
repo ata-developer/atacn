@@ -6,13 +6,17 @@
 package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -36,6 +40,10 @@ public class MarcaVehiculo implements Serializable {
     
     @Column(name = "marca", unique = true)
     private String marca;
+    
+    @Column(name="fecha_registro")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaRegistro;
 
     public Long getIdMarca() {
         return idMarca;
@@ -44,6 +52,9 @@ public class MarcaVehiculo implements Serializable {
     public void setIdMarca(Long idMarca) {
         this.idMarca = idMarca;
     }
+    
+    @Embedded
+    private GenericoEntidad genericoEntidad;
 
     @Override
     public int hashCode() {
@@ -82,6 +93,20 @@ public class MarcaVehiculo implements Serializable {
      */
     public void setMarca(String marca) {
         this.marca = marca;
+    }
+
+    /**
+     * @return the fechaRegistro
+     */
+    public Date getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    /**
+     * @param fechaRegistro the fechaRegistro to set
+     */
+    public void setFechaRegistro(Date fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
     }
     
 }

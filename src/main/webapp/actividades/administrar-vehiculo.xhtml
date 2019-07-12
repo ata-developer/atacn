@@ -10,64 +10,42 @@
             <h1>#{msj.administrarMarcaVehiculos}</h1>
             <p/>
             <p:fieldset legend="#{msj.agregarMarcaVehiculo}">
-                <p:panelGrid id="pngSeleccionarGrupoPrecioMarcaVehiculo" columns="2">
-                    
+                <p:panelGrid id="pngMarcaVehiculo" columns="2">
+
                     <p:outputLabel
                         for="@next"
-                        value="#{msj.descripcionGrupoPrecio}" />
-                    <p:selectOneMenu
-                        id="somSeleccionarGrupoPrecio"
-                        value="#{categoriaControlador.categoria.grupoPrecio}"
-                        required="true"
-                        converter="omnifaces.SelectItemsConverter">
-                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
-                        <f:selectItems value="#{categoriaControlador.generarSelectItemDeGrupoPrecio()}" />
-                        <p:ajax 
-                            event="change"
-                            process="@this"
-                            update="frmAdministrarMarcaVehiculo mensajeGeneral"
-                            listener="#{categoriaControlador.cargarListaMarcaVehiculoPorGrupoImpuesto()}" />
-                    </p:selectOneMenu>
-                </p:panelGrid>
-            </p:fieldset>
-            <p:fieldset legend="#{msj.agregarMarcaVehiculo}">
-                <p:panelGrid id="pngAdministrarMarcaVehiculo" columns="2">
-                    <p:outputLabel
-                        for="@next"
-                        value="#{msj.descripcionMarcaVehiculo}" />                    
+                        value="#{msj.marca}" />                    
                     <p:inputText
                         id="descripcionMarcaVehiculo"
                         required="true"
                         requiredMessage="#{msj.campoNecesario}"
-                        value="#{categoriaControlador.categoria.categoria}"
+                        value="#{vehiculoAdministracionControlador.marcaVehiculo.marca}"
                         onblur="value = value.toUpperCase()"/>
 
                     <p:commandButton
-                        id="btnGuardar" 
+                        id="btnGuardarVehculo" 
                         value="#{msj.guardar}"
-                        update="frmAdministrarMarcaVehiculo mensajeGeneral"
-                        action="#{categoriaControlador.guardar()}" />
+                        update="pngMarcaVehiculo tblListaMarcaVehiculo mensajeGeneral"
+                        action="#{vehiculoAdministracionControlador.guadarVehiculo()}" />
                     <p:outputLabel
                         value="" />
-
                 </p:panelGrid>
+                <p/>
+                <p:dataTable
+                    id="tblListaMarcaVehiculo"                
+                    var="marca" 
+                    value="#{vehiculoAdministracionControlador.listaMarcaVehiculo}">
+                    <f:facet name="header">
+                        #{msj.listaDeMarcaVehiculos}
+                    </f:facet>
+                    <p:column headerText="#{msj.codigoMarcaVehiculo}">
+                        <h:outputText value="#{marca.idMarca}" />
+                    </p:column>
+                    <p:column headerText="#{msj.marca}">
+                        <h:outputText value="#{marca.marca}" />
+                    </p:column>
+                </p:dataTable>
             </p:fieldset>
-            <p/>
-            <p:dataTable
-                id="tblListaMarcaVehiculo"                
-                var="categoria" 
-                value="#{categoriaControlador.listaMarcaVehiculo}">
-                <f:facet name="header">
-                    #{msj.listaDeMarcaVehiculos}
-                </f:facet>
-                <p:column headerText="#{msj.codigoMarcaVehiculo}">
-                    <h:outputText value="#{categoria.idMarcaVehiculo}" />
-                </p:column>
-
-                <p:column headerText="#{msj.descripcionMarcaVehiculo}">
-                    <h:outputText value="#{categoria.categoria}" />
-                </p:column>
-            </p:dataTable>
         </h:form>
     </ui:define>
 </ui:composition>
