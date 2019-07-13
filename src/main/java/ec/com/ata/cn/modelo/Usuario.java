@@ -66,7 +66,7 @@ public class Usuario implements Serializable {
     private String correo;
     
     @Column(name = "tipo_usuario", length = 60)
-    private String tipoEstado;
+    private String tipoUsuario;
     
     @Column(name = "usuario", length = 60, unique=true)
     private String usuario;
@@ -269,17 +269,17 @@ public class Usuario implements Serializable {
     }
 
     /**
-     * @return the tipoEstado
+     * @return the tipoUsuario
      */
-    public String getTipoEstado() {
-        return tipoEstado;
+    public String getTipoUsuario() {
+        return tipoUsuario;
     }
 
     /**
-     * @param tipoEstado the tipoEstado to set
+     * @param tipoUsuario the tipoUsuario to set
      */
-    public void setTipoEstado(String tipoEstado) {
-        this.tipoEstado = tipoEstado;
+    public void setTipoUsuario(String tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
     }
 
     
@@ -296,6 +296,20 @@ public class Usuario implements Serializable {
      */
     public void setIdUsuario(Long idUsuario) {
         this.idUsuario = idUsuario;
+    }
+
+    /**
+     * @return the genericoEntidad
+     */
+    public GenericoEntidad getGenericoEntidad() {
+        return genericoEntidad;
+    }
+
+    /**
+     * @param genericoEntidad the genericoEntidad to set
+     */
+    public void setGenericoEntidad(GenericoEntidad genericoEntidad) {
+        this.genericoEntidad = genericoEntidad;
     }
     
 }

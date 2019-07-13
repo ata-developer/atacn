@@ -26,7 +26,7 @@ import javax.persistence.Table;
 public class Parqueadero implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @SequenceGenerator(
             name = "parqueadero_seq",
@@ -40,12 +40,12 @@ public class Parqueadero implements Serializable {
 
     @Column(name = "parqueadero")
     private String parqueadero;
-    
+
     @Embedded
     private GenericoEntidad genericoEntidad;
-    
+
     @ManyToOne
-    @JoinColumn(name="id_establecimiento", referencedColumnName="id_establecimiento")
+    @JoinColumn(name = "id_establecimiento", referencedColumnName = "id_establecimiento")
     private Establecimiento establecimiento;
 
     public Long getIdEstablecimiento() {
@@ -106,7 +106,18 @@ public class Parqueadero implements Serializable {
         this.establecimiento = establecimiento;
     }
 
-   
+    /**
+     * @return the genericoEntidad
+     */
+    public GenericoEntidad getGenericoEntidad() {
+        return genericoEntidad;
+    }
 
-    
+    /**
+     * @param genericoEntidad the genericoEntidad to set
+     */
+    public void setGenericoEntidad(GenericoEntidad genericoEntidad) {
+        this.genericoEntidad = genericoEntidad;
+    }
+
 }

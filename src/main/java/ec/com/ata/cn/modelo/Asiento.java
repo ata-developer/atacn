@@ -98,5 +98,19 @@ public class Asiento implements Serializable {
     public void setIdAsiento(Long idAsiento) {
         this.idAsiento = idAsiento;
     }
+
+    /**
+     * @return the genericoEntidad
+     */
+    public GenericoEntidad getGenericoEntidad() {
+        return genericoEntidad;
+    }
+
+    /**
+     * @param genericoEntidad the genericoEntidad to set
+     */
+    public void setGenericoEntidad(GenericoEntidad genericoEntidad) {
+        this.genericoEntidad = genericoEntidad;
+    }
     
 }

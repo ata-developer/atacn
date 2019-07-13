@@ -46,6 +46,26 @@
                     </p:column>
                 </p:dataTable>
             </p:fieldset>
+            <!-- INICIO CONFIGURACION SELECCION GRUPO PRECIO -->
+            <p:fieldset legend="#{msj.configurarVehiculo}">
+                <p:panelGrid id="pngConfigurarVehiculo" columns="2">                    
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.selecccionarMarca}" />
+                    <p:selectOneMenu
+                        id="somSeleccionarGrupoPrecio"
+                        value="#{vehiculoAdministracionControlador.marcaVehiculoSeleccionado}"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{vehiculoAdministracionControlador.generarSelectItemDeMarcaVehiculo()}" />
+                        <p:ajax 
+                            event="change"
+                            update="frmAdministrarGrupoPrecio mensajeGeneral"
+                            listener="#{vehiculoAdministracionControlador.cargarListaDeVehiculos()}" />
+                    </p:selectOneMenu>
+                </p:panelGrid>
+            </p:fieldset>
+            <p/>
         </h:form>
     </ui:define>
 </ui:composition>

@@ -25,6 +25,20 @@ import javax.persistence.Table;
 @Table(name = "provincia_estado")
 public class ProvinciaEstado implements Serializable {
 
+    /**
+     * @return the genericoEntidad
+     */
+    public GenericoEntidad getGenericoEntidad() {
+        return genericoEntidad;
+    }
+
+    /**
+     * @param genericoEntidad the genericoEntidad to set
+     */
+    public void setGenericoEntidad(GenericoEntidad genericoEntidad) {
+        this.genericoEntidad = genericoEntidad;
+    }
+
     private static final long serialVersionUID = 1L;
     
     @Id
