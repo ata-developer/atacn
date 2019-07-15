@@ -38,6 +38,10 @@ public class VehiculoAdministracionControlador extends BaseControlador {
     private MarcaVehiculo marcaVehiculo;
     
     private MarcaVehiculo marcaVehiculoSeleccionado;
+    
+    private Vehiculo vehiculo;
+    
+    private Vehiculo vehiculoSeleccionado;
 
     private List<MarcaVehiculo> listaMarcaVehiculo;
     
@@ -50,7 +54,7 @@ public class VehiculoAdministracionControlador extends BaseControlador {
     }
     
     public void cargarListaDeVehiculos(){
-        setListaVehiculo(vehiculoBean.obtenerLista());
+        setListaVehiculo(vehiculoBean.obtenerListaPorMarca(marcaVehiculoSeleccionado));
     }
     
     
@@ -147,6 +151,34 @@ public class VehiculoAdministracionControlador extends BaseControlador {
      */
     public void setListaVehiculo(List<Vehiculo> listaVehiculo) {
         this.listaVehiculo = listaVehiculo;
+    }
+
+    /**
+     * @return the vehiculo
+     */
+    public Vehiculo getVehiculo() {
+        return vehiculo;
+    }
+
+    /**
+     * @param vehiculo the vehiculo to set
+     */
+    public void setVehiculo(Vehiculo vehiculo) {
+        this.vehiculo = vehiculo;
+    }
+
+    /**
+     * @return the vehiculoSeleccionado
+     */
+    public Vehiculo getVehiculoSeleccionado() {
+        return vehiculoSeleccionado;
+    }
+
+    /**
+     * @param vehiculoSeleccionado the vehiculoSeleccionado to set
+     */
+    public void setVehiculoSeleccionado(Vehiculo vehiculoSeleccionado) {
+        this.vehiculoSeleccionado = vehiculoSeleccionado;
     }
 
 }

@@ -66,6 +66,63 @@
                 </p:panelGrid>
             </p:fieldset>
             <p/>
+            <!-- FIN CONFIGURACION SELECCION GRUPO PRECIO -->
+            <!-- INICIO CONFIGURACION CATEGORIA -->
+            <p:fieldset legend="#{msj.agregarVehiculo}" rendered="#{vehiculoAdministracionControlador.marcaVehiculoSeleccionado.idMarca != null}" >
+                <p:panelGrid id="pngAdministrarVehiculo" columns="2">
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.descripcionVehiculo}" />                    
+                    <p:inputText
+                        id="descripcionVehiculo"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{vehiculoAdministracionControlador.vehiculo.modelo}"
+                        onblur="value = value.toUpperCase()"/>
+                    
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.numeroFilas}" />                    
+                    <p:inputText
+                        id="numeroFilasVehiculo"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{vehiculoAdministracionControlador.vehiculo.numeroDeFilas}"
+                        onblur="value = value.toUpperCase()">
+                        <p:ajax event="blur" update="out2" />
+                    </p:inputText>
+
+                    <p:commandButton
+                        id="btnGuardaCategoria"
+                        process="@this descripcionCategoria somSeleccionarGrupoPrecio"
+                        value="#{msj.guardar}"
+                        update="frmAdministrarGrupoPrecio  mensajeGeneral"
+                        action="#{grupoPrecioControlador.guardarCategoria()}" />
+                    <p:outputLabel
+                        value="" />
+
+                </p:panelGrid>
+                <p/>
+                <p:dataTable
+                    id="tblListaCategoria"                
+                    var="categoria" 
+                    style="width: 400px;"
+                    value="#{grupoPrecioControlador.listaCategoria}">
+                    <f:facet name="header">
+                        #{msj.listaDeCategorias}
+                    </f:facet>
+                    <p:column headerText="#{msj.codigoCategoria}">
+                        <h:outputText value="#{categoria.idCategoria}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.descripcionCategoria}">
+                        <h:outputText value="#{categoria.categoria}" />
+                    </p:column>
+                </p:dataTable>
+            </p:fieldset>
+            <p/>
+            <p/>
+            <!-- FIN CONFIGURACION CATEGORIA -->
         </h:form>
     </ui:define>
 </ui:composition>

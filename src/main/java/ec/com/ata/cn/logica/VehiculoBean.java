@@ -5,9 +5,10 @@
  */
 package ec.com.ata.cn.logica;
 
-
 import ec.com.ata.cn.logica.dao.VehiculoDao;
+import ec.com.ata.cn.modelo.MarcaVehiculo;
 import ec.com.ata.cn.modelo.Vehiculo;
+import java.util.HashMap;
 
 import java.util.List;
 import javax.ejb.Stateless;
@@ -19,15 +20,21 @@ import javax.inject.Inject;
  */
 @Stateless
 public class VehiculoBean {
-    
+
     @Inject
-    private VehiculoDao categoriaDao;
-    
-    public Vehiculo crear(Vehiculo categoriaEntrada) throws Exception{
-        return categoriaDao.crear(categoriaEntrada);
+    private VehiculoDao vehiculoDao;
+
+    public Vehiculo crear(Vehiculo categoriaEntrada) throws Exception {
+        return vehiculoDao.crear(categoriaEntrada);
     }
-    
-    public List<Vehiculo> obtenerLista(){
-        return categoriaDao.obtenerTodos();
+
+    public List<Vehiculo> obtenerLista() {
+        return vehiculoDao.obtenerTodos();
+    }
+
+    public List<Vehiculo> obtenerListaPorMarca(MarcaVehiculo marcaVehiculo) {
+        HashMap<String, Object> parametros = new HashMap<>();
+        parametros.put("marca", marcaVehiculo);
+        return vehiculoDao.obtenerListaPorParametros(parametros);
     }
 }
