@@ -23,19 +23,7 @@ import javax.persistence.Table;
 @Table(name = "tipo_documento")
 public class TipoDocumento implements Serializable {
 
-    /**
-     * @return the genericoEntidad
-     */
-    public GenericoEntidad getGenericoEntidad() {
-        return genericoEntidad;
-    }
-
-    /**
-     * @param genericoEntidad the genericoEntidad to set
-     */
-    public void setGenericoEntidad(GenericoEntidad genericoEntidad) {
-        this.genericoEntidad = genericoEntidad;
-    }
+   
 
     private static final long serialVersionUID = 1L;
 
@@ -137,6 +125,20 @@ public class TipoDocumento implements Serializable {
      */
     public void setEsCliente(Boolean esCliente) {
         this.esCliente = esCliente;
+    }
+    
+     /**
+     * @return the genericoEntidad
+     */
+    public GenericoEntidad getGenericoEntidad() {
+        return genericoEntidad;
+    }
+
+    /**
+     * @param genericoEntidad the genericoEntidad to set
+     */
+    public void setGenericoEntidad(GenericoEntidad genericoEntidad) {
+        this.genericoEntidad = genericoEntidad;
     }
 
 }

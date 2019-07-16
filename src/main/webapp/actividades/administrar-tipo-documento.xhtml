@@ -6,9 +6,10 @@
                 template="/WEB-INF/templateATA.xhtml">
 
     <ui:define name="content">
-        <h:form id="frmAdministrarTipoDocumento">
+        <h:form id="frmAdministrarCatalogos">
             <h1>#{msj.administrarTipoDocumento}</h1>
             <p/>
+            <!-- INICIO ADMINISTRACION TIPO DOCUMENTO -->
             <p:fieldset legend="#{msj.agregarTipoDocumento}">
                 <p:panelGrid id="pngAdministrarTipoDocumento" columns="2">
 
@@ -19,43 +20,95 @@
                         id="descripcionTipoDocumento"
                         required="true"
                         requiredMessage="#{msj.campoNecesario}"
-                        value="#{tipoDocumentoControlador.tipoNumeracionDocumento.tipoDocumento}"
+                        value="#{parametroControlador.tipoNumeracionDocumento.tipoDocumento}"
                         onblur="value = value.toUpperCase()"/>
-                    
+
                     <p:selectBooleanCheckbox
-                        value="#{tipoDocumentoControlador.tipoNumeracionDocumento.esCliente}"
+                        value="#{parametroControlador.tipoNumeracionDocumento.esCliente}"
                         itemLabel="#{msj.esCliente}"/>
-                    
+
                     <p:selectBooleanCheckbox
-                        value="#{tipoDocumentoControlador.tipoNumeracionDocumento.esSistema}"
+                        value="#{parametroControlador.tipoNumeracionDocumento.esSistema}"
                         itemLabel="#{msj.esSistema}"/>
-                    
-                    
+
+
 
                     <p:commandButton
                         id="btnGuardar" 
                         value="#{msj.guardar}"
                         update="pngAdministrarTipoDocumento tblListaTipoDocumento mensajeGeneral"
-                        action="#{tipoDocumentoControlador.guardar()}" />
+                        action="#{parametroControlador.guardar()}" />
                     <p:outputLabel
                         value="" />
 
                 </p:panelGrid>
+                <p/>
+                <p:dataTable
+                    id="tblListaTipoDocumento"                
+                    var="tipoDocumento"
+                    style="width: 400px;"
+                    value="#{parametroControlador.listaTipoNumeracionDocumento}">
+                    <f:facet name="header">
+                        #{msj.listaDeTipoDocumentos}
+                    </f:facet>
+
+                    <p:column headerText="#{msj.descripcionTipoDocumento}">
+                        <h:outputText value="#{tipoDocumento.tipoDocumento}" />
+                    </p:column>
+                </p:dataTable>
             </p:fieldset>
-            <p/>
-            <p:dataTable
-                id="tblListaTipoDocumento"                
-                var="tipoDocumento"
-                style="width: 400px;"
-                value="#{tipoDocumentoControlador.listaTipoNumeracionDocumento}">
-                <f:facet name="header">
-                    #{msj.listaDeTipoDocumentos}
-                </f:facet>
-               
-                <p:column headerText="#{msj.descripcionTipoDocumento}">
-                    <h:outputText value="#{tipoDocumento.tipoDocumento}" />
-                </p:column>
-            </p:dataTable>
+            <!-- FIN ADMINISTRACION TIPO DOCUMENTO -->
+            
+            <!-- INICIO ADMINISTRACION  TIPO FILA-->
+            <p:fieldset legend="#{msj.agregarTipoFila}">
+                <p:panelGrid id="pngAdministrarTipoFila" columns="2">
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.tipoFila}" />                    
+                    <p:inputText
+                        id="descripcionTipoFila"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{parametroControlador.tipoNumeracionDocumento.tipoDocumento}"
+                        onblur="value = value.toUpperCase()"/>
+
+                    <p:selectBooleanCheckbox
+                        value="#{parametroControlador.tipoNumeracionDocumento.esCliente}"
+                        itemLabel="#{msj.esCliente}"/>
+
+                    <p:selectBooleanCheckbox
+                        value="#{parametroControlador.tipoNumeracionDocumento.esSistema}"
+                        itemLabel="#{msj.esSistema}"/>
+
+
+
+                    <p:commandButton
+                        id="btnGuardar" 
+                        value="#{msj.guardar}"
+                        update="pngAdministrarTipoDocumento tblListaTipoDocumento mensajeGeneral"
+                        action="#{parametroControlador.guardar()}" />
+                    <p:outputLabel
+                        value="" />
+
+                </p:panelGrid>
+                <p/>
+                <p:dataTable
+                    id="tblListaTipoDocumento"                
+                    var="tipoDocumento"
+                    style="width: 400px;"
+                    value="#{parametroControlador.listaTipoNumeracionDocumento}">
+                    <f:facet name="header">
+                        #{msj.listaDeTipoDocumentos}
+                    </f:facet>
+
+                    <p:column headerText="#{msj.descripcionTipoDocumento}">
+                        <h:outputText value="#{tipoDocumento.tipoDocumento}" />
+                    </p:column>
+                </p:dataTable>
+            </p:fieldset>
+            <!-- FIN ADMINISTRACION TIPO DOCUMENTO -->
+
         </h:form>
     </ui:define>
 </ui:composition>

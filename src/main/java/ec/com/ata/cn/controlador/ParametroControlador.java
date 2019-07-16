@@ -24,7 +24,7 @@ import org.apache.commons.lang.exception.ExceptionUtils;
  */
 @ViewScoped
 @Named
-public class TipoDocumentoControlador extends BaseControlador {
+public class ParametroControlador extends BaseControlador {
 
     @Inject
     private TipoDocumentoBean tipoNumeracionDocumentoBean;

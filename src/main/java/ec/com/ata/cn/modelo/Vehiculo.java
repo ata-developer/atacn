@@ -6,6 +6,7 @@
 package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -49,6 +51,9 @@ public class Vehiculo implements Serializable {
     
     @ManyToOne
     private MarcaVehiculo marca;
+    
+    @OneToMany(mappedBy = "vehiculo")
+    private List<Fila> filasDeAsientos;
     
     private Long anioVehiculoDesde;
         
@@ -185,6 +190,20 @@ public class Vehiculo implements Serializable {
      */
     public void setGenericoEntidad(GenericoEntidad genericoEntidad) {
         this.genericoEntidad = genericoEntidad;
+    }
+
+    /**
+     * @return the filasDeAsientos
+     */
+    public List<Fila> getFilasDeAsientos() {
+        return filasDeAsientos;
+    }
+
+    /**
+     * @param filasDeAsientos the filasDeAsientos to set
+     */
+    public void setFilasDeAsientos(List<Fila> filasDeAsientos) {
+        this.filasDeAsientos = filasDeAsientos;
     }
 
    

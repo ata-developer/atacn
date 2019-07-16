@@ -33,6 +33,7 @@
                 <p/>
                 <p:dataTable
                     id="tblListaMarcaVehiculo"                
+                    style="width: 400px;"
                     var="marca" 
                     value="#{vehiculoAdministracionControlador.listaMarcaVehiculo}">
                     <f:facet name="header">
@@ -79,7 +80,7 @@
                         requiredMessage="#{msj.campoNecesario}"
                         value="#{vehiculoAdministracionControlador.vehiculo.modelo}"
                         onblur="value = value.toUpperCase()"/>
-                    
+
                     <p:outputLabel
                         for="@next"
                         value="#{msj.numeroFilas}" />                    
@@ -89,8 +90,29 @@
                         requiredMessage="#{msj.campoNecesario}"
                         value="#{vehiculoAdministracionControlador.vehiculo.numeroDeFilas}"
                         onblur="value = value.toUpperCase()">
-                        <p:ajax event="blur" update="out2" />
+                        <p:ajax event="blur" update="out2" listener#{vehiculoAdministracionControlador.generarFilas} />
                     </p:inputText>
+
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:dataTable
+                                id="tblListaFilas"                
+                                var="fila" 
+                                style="width: 400px;"
+                                value="#{vehiculoAdministracionControlador.filasDelVehiculo}">
+                                <f:facet name="header">
+                                    #{msj.listaDeCategorias}
+                                </f:facet>
+                                <p:column headerText="#{msj.codigoCategoria}">
+                                    <h:outputText value="#{categoria.idCategoria}" />
+                                </p:column>
+
+                                <p:column headerText="#{msj.descripcionCategoria}">
+                                    <h:outputText value="#{categoria.categoria}" />
+                                </p:column>
+                            </p:dataTable>
+                        </p:column>
+                    </p:row>
 
                     <p:commandButton
                         id="btnGuardaCategoria"

@@ -8,8 +8,10 @@ package ec.com.ata.cn.controlador;
 import ec.com.ata.cn.logica.MarcaVehiculoBean;
 import ec.com.ata.cn.logica.VehiculoBean;
 import ec.com.ata.cn.logica.util.gestor.Constante;
+import ec.com.ata.cn.modelo.Fila;
 import ec.com.ata.cn.modelo.MarcaVehiculo;
 import ec.com.ata.cn.modelo.Vehiculo;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -46,6 +48,8 @@ public class VehiculoAdministracionControlador extends BaseControlador {
     private List<MarcaVehiculo> listaMarcaVehiculo;
     
     private List<Vehiculo> listaVehiculo;
+    
+    private List<Fila> filasDelVehiculo;
 
     @PostConstruct
     public void init() {
@@ -53,10 +57,13 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         setListaMarcaVehiculo(getMarcaVehiculoBean().obtenerLista());
     }
     
-    public void cargarListaDeVehiculos(){
-        setListaVehiculo(vehiculoBean.obtenerListaPorMarca(marcaVehiculoSeleccionado));
+    public void generarFilas() {
+        setFilasDelVehiculo(new ArrayList<Fila>(vehiculoSeleccionado.getNumeroDeFilas()));
     }
     
+    public void cargarListaDeVehiculos(){
+        setListaVehiculo(vehiculoBean.obtenerListaPorMarca(marcaVehiculoSeleccionado));
+    }    
     
     public List<SelectItem> generarSelectItemDeMarcaVehiculo() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
@@ -179,6 +186,20 @@ public class VehiculoAdministracionControlador extends BaseControlador {
      */
     public void setVehiculoSeleccionado(Vehiculo vehiculoSeleccionado) {
         this.vehiculoSeleccionado = vehiculoSeleccionado;
+    }
+
+    /**
+     * @return the filasDelVehiculo
+     */
+    public List<Fila> getFilasDelVehiculo() {
+        return filasDelVehiculo;
+    }
+
+    /**
+     * @param filasDelVehiculo the filasDelVehiculo to set
+     */
+    public void setFilasDelVehiculo(List<Fila> filasDelVehiculo) {
+        this.filasDelVehiculo = filasDelVehiculo;
     }
 
 }
