@@ -21,7 +21,9 @@
                         required="true"
                         requiredMessage="#{msj.campoNecesario}"
                         value="#{parametroControlador.tipoNumeracionDocumento.tipoDocumento}"
-                        onblur="value = value.toUpperCase()"/>
+                        onblur="value = value.toUpperCase()">
+                        <f:converter converterId="trimConverter" />
+                    </p:inputText>
 
                     <p:selectBooleanCheckbox
                         value="#{parametroControlador.tipoNumeracionDocumento.esCliente}"
@@ -36,8 +38,9 @@
                     <p:commandButton
                         id="btnGuardar" 
                         value="#{msj.guardar}"
+                        process="@this descripcionTipoDocumento"
                         update="pngAdministrarTipoDocumento tblListaTipoDocumento mensajeGeneral"
-                        action="#{parametroControlador.guardar()}" />
+                        actionListener="#{parametroControlador.guardarTipoDocumento()}" />
                     <p:outputLabel
                         value="" />
 
@@ -58,7 +61,8 @@
                 </p:dataTable>
             </p:fieldset>
             <!-- FIN ADMINISTRACION TIPO DOCUMENTO -->
-            
+            <p/>
+            <p/>
             <!-- INICIO ADMINISTRACION  TIPO FILA-->
             <p:fieldset legend="#{msj.agregarTipoFila}">
                 <p:panelGrid id="pngAdministrarTipoFila" columns="2">
@@ -70,40 +74,48 @@
                         id="descripcionTipoFila"
                         required="true"
                         requiredMessage="#{msj.campoNecesario}"
-                        value="#{parametroControlador.tipoNumeracionDocumento.tipoDocumento}"
-                        onblur="value = value.toUpperCase()"/>
+                        value="#{parametroControlador.tipoFila.tipoFila}"
+                        onblur="value = value.toUpperCase()">
+                        <f:converter converterId="trimConverter" />
+                    </p:inputText>
 
-                    <p:selectBooleanCheckbox
-                        value="#{parametroControlador.tipoNumeracionDocumento.esCliente}"
-                        itemLabel="#{msj.esCliente}"/>
-
-                    <p:selectBooleanCheckbox
-                        value="#{parametroControlador.tipoNumeracionDocumento.esSistema}"
-                        itemLabel="#{msj.esSistema}"/>
-
-
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.numeroAsientos}" />                    
+                    <p:inputMask
+                        id="numeroAsientos"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{parametroControlador.tipoFila.numeroAsiento}"
+                        maxlength="2"
+                        mask="9?9"/>
 
                     <p:commandButton
-                        id="btnGuardar" 
+                        id="btnGuardarFilaAsientos" 
                         value="#{msj.guardar}"
-                        update="pngAdministrarTipoDocumento tblListaTipoDocumento mensajeGeneral"
-                        action="#{parametroControlador.guardar()}" />
+                        process="@this numeroAsientos descripcionTipoFila "
+                        update="pngAdministrarTipoFila tblListaTipoFila mensajeGeneral"
+                        action="#{parametroControlador.guardarTipoFila()}" />
                     <p:outputLabel
                         value="" />
 
                 </p:panelGrid>
                 <p/>
                 <p:dataTable
-                    id="tblListaTipoDocumento"                
-                    var="tipoDocumento"
+                    id="tblListaTipoFila"                
+                    var="tipoFila"
                     style="width: 400px;"
-                    value="#{parametroControlador.listaTipoNumeracionDocumento}">
+                    value="#{parametroControlador.listaTipoFila}">
                     <f:facet name="header">
-                        #{msj.listaDeTipoDocumentos}
+                        #{msj.listaTipoFila}
                     </f:facet>
 
-                    <p:column headerText="#{msj.descripcionTipoDocumento}">
-                        <h:outputText value="#{tipoDocumento.tipoDocumento}" />
+                    <p:column headerText="#{msj.descripcionTipoFila}">
+                        <h:outputText value="#{tipoFila.tipoFila}" />
+                    </p:column>
+                    
+                    <p:column headerText="#{msj.numeroAsientos}">
+                        <h:outputText value="#{tipoFila.numeroAsiento}" />
                     </p:column>
                 </p:dataTable>
             </p:fieldset>

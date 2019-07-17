@@ -61,7 +61,7 @@
                         <f:selectItems value="#{vehiculoAdministracionControlador.generarSelectItemDeMarcaVehiculo()}" />
                         <p:ajax 
                             event="change"
-                            update="frmAdministrarGrupoPrecio mensajeGeneral"
+                            update="frmAdministrarMarcaVehiculo mensajeGeneral"
                             listener="#{vehiculoAdministracionControlador.cargarListaDeVehiculos()}" />
                     </p:selectOneMenu>
                 </p:panelGrid>
@@ -90,7 +90,7 @@
                         requiredMessage="#{msj.campoNecesario}"
                         value="#{vehiculoAdministracionControlador.vehiculo.numeroDeFilas}"
                         onblur="value = value.toUpperCase()">
-                        <p:ajax event="blur" update="out2" listener#{vehiculoAdministracionControlador.generarFilas} />
+                        <p:ajax event="blur" update="tblListaFilas" listener="#{vehiculoAdministracionControlador.generarFilas}" />
                     </p:inputText>
 
                     <p:row>
