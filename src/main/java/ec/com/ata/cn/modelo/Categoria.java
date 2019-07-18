@@ -47,6 +47,10 @@ public class Categoria implements Serializable {
     @ManyToOne
     @JoinColumn(name="id_grupo_precio", referencedColumnName="id_grupo_precio")
     private GrupoPrecio grupoPrecio;
+    
+    public Categoria () {
+        genericoEntidad = new GenericoEntidad();
+    }
 
     public Long getIdCategoria() {
         return idCategoria;

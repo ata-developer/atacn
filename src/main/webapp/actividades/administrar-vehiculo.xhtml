@@ -3,6 +3,7 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
                 template="/WEB-INF/templateATA.xhtml">
 
     <ui:define name="content">
@@ -68,7 +69,7 @@
             </p:fieldset>
             <p/>
             <!-- FIN CONFIGURACION SELECCION GRUPO PRECIO -->
-            <!-- INICIO CONFIGURACION CATEGORIA -->
+            <!-- INICIO CONFIGURACION VEHICULO -->
             <p:fieldset legend="#{msj.agregarVehiculo}" rendered="#{vehiculoAdministracionControlador.marcaVehiculoSeleccionado.idMarca != null}" >
                 <p:panelGrid id="pngAdministrarVehiculo" columns="2">
                     <p:outputLabel
@@ -103,42 +104,48 @@
                                 <f:facet name="header">
                                     #{msj.listaDeCategorias}
                                 </f:facet>
-                                <p:column headerText="#{msj.codigoCategoria}">
-                                    <h:outputText value="#{categoria.idCategoria}" />
+                                <p:column headerText="#{msj.tipoFila}">
+                                    <p:selectOneMenu
+                                        id="somSeleccionarTipoFila"
+                                        value="#{fila.tipoFilaTmp}"
+                                        converter="omnifaces.SelectItemsConverter">
+                                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                                        <f:selectItems value="#{vehiculoAdministracionControlador.generarSelectItemDeTipoFilaDeAsiento()}" />
+                                        <p:ajax event="change" update="tblListaFilas"/>
+                                    </p:selectOneMenu>
                                 </p:column>
-
-                                <p:column headerText="#{msj.descripcionCategoria}">
-                                    <h:outputText value="#{categoria.categoria}" />
+                                <p:column headerText="#{msj.numeroAsientos}">
+                                    <p:outputLabel value="#{fila.numeroAsientos}"/>
                                 </p:column>
                             </p:dataTable>
                         </p:column>
                     </p:row>
 
                     <p:commandButton
-                        id="btnGuardaCategoria"
-                        process="@this descripcionCategoria somSeleccionarGrupoPrecio"
+                        id="btnGuardaVehiculo"
+                        process="@this tblListaFilas descripcionVehiculo numeroFilasVehiculo"
                         value="#{msj.guardar}"
-                        update="frmAdministrarGrupoPrecio  mensajeGeneral"
-                        action="#{grupoPrecioControlador.guardarCategoria()}" />
+                        update="tblListaVehiculos  mensajeGeneral"
+                        action="#{vehiculoAdministracionControlador.guadarVehiculo()}" />
                     <p:outputLabel
                         value="" />
 
                 </p:panelGrid>
                 <p/>
                 <p:dataTable
-                    id="tblListaCategoria"                
-                    var="categoria" 
+                    id="tblListaVehiculos"                
+                    var="vehiculo" 
                     style="width: 400px;"
-                    value="#{grupoPrecioControlador.listaCategoria}">
+                    value="#{vehiculoAdministracionControlador.listaVehiculo}">
                     <f:facet name="header">
-                        #{msj.listaDeCategorias}
+                        #{msj.listaDeVehiculos}
                     </f:facet>
-                    <p:column headerText="#{msj.codigoCategoria}">
-                        <h:outputText value="#{categoria.idCategoria}" />
+                    <p:column headerText="#{msj.descripcionModelo}">
+                        <h:outputText value="#{vehiculo.modelo}" />
                     </p:column>
 
-                    <p:column headerText="#{msj.descripcionCategoria}">
-                        <h:outputText value="#{categoria.categoria}" />
+                    <p:column headerText="#{msj.numeroFilas}">
+                        <h:outputText value="#{vehiculo.numeroDeFilas}" />
                     </p:column>
                 </p:dataTable>
             </p:fieldset>

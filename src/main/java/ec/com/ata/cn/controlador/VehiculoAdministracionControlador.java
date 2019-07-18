@@ -6,10 +6,13 @@
 package ec.com.ata.cn.controlador;
 
 import ec.com.ata.cn.logica.MarcaVehiculoBean;
+import ec.com.ata.cn.logica.TipoFilaBean;
 import ec.com.ata.cn.logica.VehiculoBean;
 import ec.com.ata.cn.logica.util.gestor.Constante;
 import ec.com.ata.cn.modelo.Fila;
+import ec.com.ata.cn.modelo.GrupoPrecio;
 import ec.com.ata.cn.modelo.MarcaVehiculo;
+import ec.com.ata.cn.modelo.TipoFila;
 import ec.com.ata.cn.modelo.Vehiculo;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,6 +39,9 @@ public class VehiculoAdministracionControlador extends BaseControlador {
     
     @Inject
     private VehiculoBean vehiculoBean;
+    
+    @Inject
+    private TipoFilaBean tipoFilaBean;
 
     private MarcaVehiculo marcaVehiculo;
     
@@ -50,11 +56,22 @@ public class VehiculoAdministracionControlador extends BaseControlador {
     private List<Vehiculo> listaVehiculo;
     
     private List<Fila> filasDelVehiculo;
+    
+    private List<TipoFila> tipoFilasAsiento;
 
     @PostConstruct
     public void init() {
         setMarcaVehiculo(new MarcaVehiculo());
         setListaMarcaVehiculo(getMarcaVehiculoBean().obtenerLista());
+        setTipoFilasAsiento(tipoFilaBean.obtenerLista());
+    }
+    
+    public List<SelectItem> generarSelectItemDeTipoFilaDeAsiento() {
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+        for (TipoFila tipoFilaAsientoTmp : getTipoFilasAsiento()) {
+            selectItemsBuilder.add(tipoFilaAsientoTmp, tipoFilaAsientoTmp.getTipoFila());
+        }
+        return selectItemsBuilder.buildList();
     }
     
     public void generarFilas() {
@@ -75,7 +92,7 @@ public class VehiculoAdministracionControlador extends BaseControlador {
 
     public void guadarVehiculo() {
         try {
-            marcaVehiculo.setFechaRegistro(new Date(System.currentTimeMillis()));
+            //marcaVehiculo.setFechaRegistro(new Date(System.currentTimeMillis()));
             getMarcaVehiculoBean().crear(marcaVehiculo);
             setListaMarcaVehiculo(getMarcaVehiculoBean().obtenerLista());
         } catch (Exception e) {
@@ -200,6 +217,20 @@ public class VehiculoAdministracionControlador extends BaseControlador {
      */
     public void setFilasDelVehiculo(List<Fila> filasDelVehiculo) {
         this.filasDelVehiculo = filasDelVehiculo;
+    }
+
+    /**
+     * @return the tipoFilasAsiento
+     */
+    public List<TipoFila> getTipoFilasAsiento() {
+        return tipoFilasAsiento;
+    }
+
+    /**
+     * @param tipoFilasAsiento the tipoFilasAsiento to set
+     */
+    public void setTipoFilasAsiento(List<TipoFila> tipoFilasAsiento) {
+        this.tipoFilasAsiento = tipoFilasAsiento;
     }
 
 }

@@ -28,6 +28,10 @@ public class AnioVehiculo implements Serializable {
     
     @Embedded
     private GenericoEntidad genericoEntidad;
+    
+    public AnioVehiculo () {
+        genericoEntidad = new GenericoEntidad();
+    }
 
     public Long getAnio() {
         return anio;

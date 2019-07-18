@@ -47,6 +47,10 @@ public class Barrio implements Serializable {
     
     @Embedded
     private GenericoEntidad genericoEntidad;
+    
+    public Barrio () {
+        genericoEntidad = new GenericoEntidad();
+    }
 
     public Long getIdBarrio() {
         return idBarrio;

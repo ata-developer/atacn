@@ -72,6 +72,10 @@ public class Objeto implements Serializable {
 
     @Transient
     private Long idObjectoPadre;
+    
+    public Objeto () {
+        genericoEntidad = new GenericoEntidad();
+    }
 
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "id_objeto_padre")

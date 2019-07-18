@@ -39,6 +39,10 @@ public class Rol implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
+    public Rol () {
+        genericoEntidad = new GenericoEntidad();
+    }
+    
     @Id
     @SequenceGenerator(
             name = "rol_seq",

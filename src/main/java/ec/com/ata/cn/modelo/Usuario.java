@@ -85,6 +85,10 @@ public class Usuario implements Serializable {
     @JoinColumn(name="id_ciudad", referencedColumnName="id_ciudad")
     private Ciudad ciudad;
 
+    public Usuario () {
+        genericoEntidad = new GenericoEntidad();
+    }
+    
     /**
      * @return the nombre
      */

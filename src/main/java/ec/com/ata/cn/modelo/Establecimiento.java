@@ -75,6 +75,10 @@ public class Establecimiento implements Serializable {
     @JoinColumn(name="id_grupo_precio", referencedColumnName="id_grupo_precio")
     private GrupoPrecio grupoPrecio;
     
+    public Establecimiento () {
+        genericoEntidad = new GenericoEntidad();
+    }
+    
     public String getNombre() {
         return nombre;
     }

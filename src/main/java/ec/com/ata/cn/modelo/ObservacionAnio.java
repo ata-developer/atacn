@@ -51,6 +51,10 @@ public class ObservacionAnio implements Serializable {
     
     @Embedded
     private GenericoEntidad genericoEntidad;
+    
+    public ObservacionAnio () {
+        genericoEntidad = new GenericoEntidad();
+    }
 
     public Long getIdObservacionAnio() {
         return idObservacionAnio;

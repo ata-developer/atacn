@@ -55,9 +55,7 @@ public class MarcaVehiculo implements Serializable {
     @Column(name = "marca", unique = true)
     private String marca;
     
-    @Column(name="fecha_registro")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaRegistro;
+   
 
     public Long getIdMarca() {
         return idMarca;
@@ -70,6 +68,10 @@ public class MarcaVehiculo implements Serializable {
     @Embedded
     private GenericoEntidad genericoEntidad;
 
+    public MarcaVehiculo () {
+        genericoEntidad = new GenericoEntidad();
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -109,18 +111,6 @@ public class MarcaVehiculo implements Serializable {
         this.marca = marca;
     }
 
-    /**
-     * @return the fechaRegistro
-     */
-    public Date getFechaRegistro() {
-        return fechaRegistro;
-    }
-
-    /**
-     * @param fechaRegistro the fechaRegistro to set
-     */
-    public void setFechaRegistro(Date fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
+    
     
 }

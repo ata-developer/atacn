@@ -36,6 +36,8 @@ public class Pais implements Serializable {
     public void setGenericoEntidad(GenericoEntidad genericoEntidad) {
         this.genericoEntidad = genericoEntidad;
     }
+    
+    
 
     private static final long serialVersionUID = 1L;
     @Id    
@@ -48,6 +50,10 @@ public class Pais implements Serializable {
             generator = "pais_seq")
     @Column(name = "id_pais")
     private Long idPais;
+    
+    public Pais () {
+        genericoEntidad = new GenericoEntidad();
+    }
     
     @Column(name = "pais")
     private String pais;

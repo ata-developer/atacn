@@ -47,6 +47,10 @@ public class Ciudad implements Serializable {
     @ManyToOne
     @JoinColumn(name="id_provincia_estado", referencedColumnName="id_provincia_estado")
     private ProvinciaEstado provinciaEstado;
+    
+    public Ciudad () {
+        genericoEntidad = new GenericoEntidad();
+    }
 
     public Long getIdCiudad() {
         return idCiudad;

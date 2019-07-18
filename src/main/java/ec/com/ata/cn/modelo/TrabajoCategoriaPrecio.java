@@ -51,6 +51,10 @@ public class TrabajoCategoriaPrecio implements Serializable {
     private BigDecimal precioVentaPublico;
 
     private BigDecimal precioDescuento;
+    
+    public TrabajoCategoriaPrecio () {
+        genericoEntidad = new GenericoEntidad();
+    }
 
     @Override
     public int hashCode() {

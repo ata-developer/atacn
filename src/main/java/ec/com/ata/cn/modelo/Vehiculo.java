@@ -59,6 +59,10 @@ public class Vehiculo implements Serializable {
         
     private Long anioVehiculoHasta;
     
+    public Vehiculo () {
+        genericoEntidad = new GenericoEntidad();
+    }
+    
     public Long getIdVehiculo() {
         return idVehiculo;
     }

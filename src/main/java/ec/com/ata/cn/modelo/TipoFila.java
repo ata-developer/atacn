@@ -33,7 +33,7 @@ public class TipoFila implements Serializable {
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
             generator = "tipo_fila_seq")
-    @Column(name = "id_fila_asiento")
+    @Column(name = "id_tipo_fila")
     private Long idTipoFila;
 
     @Column(name = "tipo_fila")
@@ -45,7 +45,8 @@ public class TipoFila implements Serializable {
     @Embedded
     private GenericoEntidad genericoEntidad;
 
-    public TipoFila() {
+    public TipoFila () {
+        genericoEntidad = new GenericoEntidad();
     }
 
    

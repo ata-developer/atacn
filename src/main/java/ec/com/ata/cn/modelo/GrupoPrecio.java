@@ -42,6 +42,10 @@ public class GrupoPrecio implements Serializable {
     @Embedded
     private GenericoEntidad genericoEntidad;
     
+    public GrupoPrecio () {
+        genericoEntidad = new GenericoEntidad();
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

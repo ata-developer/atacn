@@ -62,6 +62,10 @@ public class Material implements Serializable {
     
     @ManyToOne
     private TipoMaterial tipoMaterial;
+    
+    public Material () {
+        genericoEntidad = new GenericoEntidad();
+    }
 
     public Long getIdMaterial() {
         return idMaterial;

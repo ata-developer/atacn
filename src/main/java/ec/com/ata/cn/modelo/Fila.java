@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
@@ -63,13 +64,21 @@ public class Fila implements Serializable {
     
     private Integer numeroAsientos;
     
+    @Transient
+    private TipoFila tipoFilaTmp;
     
+    @ManyToOne
+    @JoinColumn(name="id_tipo_fila", referencedColumnName="id_tipo_fila")
+    private TipoFila tipoFila;
     
     @ManyToOne
     @JoinColumn(name="id_vehiculo", referencedColumnName="id_vehiculo")
     private Vehiculo vehiculo;
     
-
+    public Fila () {
+        genericoEntidad = new GenericoEntidad();
+    }
+    
     public Long getIdFila() {
         return idFila;
     }
@@ -143,6 +152,36 @@ public class Fila implements Serializable {
      */
     public void setNumeroAsientos(Integer numeroAsientos) {
         this.numeroAsientos = numeroAsientos;
+    }
+
+    /**
+     * @return the tipoFila
+     */
+    public TipoFila getTipoFila() {
+        return tipoFila;
+    }
+
+    /**
+     * @param tipoFila the tipoFila to set
+     */
+    public void setTipoFila(TipoFila tipoFila) {
+        this.tipoFila = tipoFila;
+    }
+
+    /**
+     * @return the tipoFilaTmp
+     */
+    public TipoFila getTipoFilaTmp() {
+        return tipoFilaTmp;
+    }
+
+    /**
+     * @param tipoFilaTmp the tipoFilaTmp to set
+     */
+    public void setTipoFilaTmp(TipoFila tipoFilaTmp) {
+        this.tipoFilaTmp = tipoFilaTmp;
+        this.tipoFila = tipoFilaTmp;
+        this.numeroAsientos = tipoFilaTmp.getNumeroAsiento();
     }
     
 }

@@ -61,6 +61,10 @@ public class Trabajo implements Serializable {
     @JoinColumn(name="id_grupo_precio", referencedColumnName="id_grupo_precio")
     private GrupoPrecio grupoPrecio;
     
+    public Trabajo () {
+        genericoEntidad = new GenericoEntidad();
+    }
+    
     public Long getIdTrabajo() {
         return idTrabajo;
     }

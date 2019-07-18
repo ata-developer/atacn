@@ -59,6 +59,10 @@ public class ProvinciaEstado implements Serializable {
     @JoinColumn(name="id_pais", referencedColumnName="id_pais")
     private Pais pais;
     
+    public ProvinciaEstado () {
+        genericoEntidad = new GenericoEntidad();
+    }
+    
     @Embedded
     private GenericoEntidad genericoEntidad;
 

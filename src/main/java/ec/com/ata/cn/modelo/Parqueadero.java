@@ -47,6 +47,10 @@ public class Parqueadero implements Serializable {
     @ManyToOne
     @JoinColumn(name = "id_establecimiento", referencedColumnName = "id_establecimiento")
     private Establecimiento establecimiento;
+    
+    public Parqueadero () {
+        genericoEntidad = new GenericoEntidad();
+    }
 
     public Long getIdEstablecimiento() {
         return idEstablecimiento;

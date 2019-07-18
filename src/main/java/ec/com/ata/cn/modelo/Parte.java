@@ -34,6 +34,11 @@ public class Parte implements Serializable {
             generator = "parte_seq")
     @Column(name = "id_parte")
     private Long idParte;
+    
+    
+    public Parte () {
+        genericoEntidad = new GenericoEntidad();
+    }
 
     public Long getIdParte() {
         return idParte;

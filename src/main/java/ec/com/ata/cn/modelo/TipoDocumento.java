@@ -49,10 +49,13 @@ public class TipoDocumento implements Serializable {
     
     @Embedded
     private GenericoEntidad genericoEntidad;
+    
+    
 
     public TipoDocumento() {
         setEsSistema(false);
         setEsCliente(false);
+        genericoEntidad = new GenericoEntidad();
     }
 
     public Long getIdTipoDocumento() {

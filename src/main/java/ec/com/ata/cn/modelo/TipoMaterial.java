@@ -55,6 +55,10 @@ public class TipoMaterial implements Serializable {
     
     @Embedded
     private GenericoEntidad genericoEntidad;
+    
+    public TipoMaterial () {
+        genericoEntidad = new GenericoEntidad();
+    }
 
     public Long getIdTipoMaterial() {
         return idTipoMaterial;

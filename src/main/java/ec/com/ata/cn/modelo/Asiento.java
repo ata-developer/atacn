@@ -45,6 +45,11 @@ public class Asiento implements Serializable {
     
     @OneToMany
     private List<Parte> partes;
+    
+    
+    public Asiento () {
+        genericoEntidad = new GenericoEntidad();
+    }
 
     @Override
     public int hashCode() {
