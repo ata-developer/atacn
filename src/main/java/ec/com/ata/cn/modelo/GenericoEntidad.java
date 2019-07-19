@@ -6,8 +6,11 @@
 package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -17,13 +20,14 @@ import javax.persistence.Embeddable;
 public class GenericoEntidad implements Serializable, Comparable<GenericoEntidad> {
 
     private static final long serialVersionUID = 600033366699901111L;
-    
+
     @Column(name = "documento_usuario")
     private String documentoUsuario;
-    
+
     @Column(name = "fecha_registro")
-    private String fechaRegistro;
-    
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaRegistro;
+
     @Column(name = "estado")
     private String estado;
 
@@ -49,14 +53,14 @@ public class GenericoEntidad implements Serializable, Comparable<GenericoEntidad
     /**
      * @return the fechaRegistro
      */
-    public String getFechaRegistro() {
+    public Date getFechaRegistro() {
         return fechaRegistro;
     }
 
     /**
      * @param fechaRegistro the fechaRegistro to set
      */
-    public void setFechaRegistro(String fechaRegistro) {
+    public void setFechaRegistro(Date fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
 
@@ -73,5 +77,5 @@ public class GenericoEntidad implements Serializable, Comparable<GenericoEntidad
     public void setEstado(String estado) {
         this.estado = estado;
     }
-    
+
 }

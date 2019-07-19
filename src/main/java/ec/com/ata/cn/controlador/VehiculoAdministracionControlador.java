@@ -62,7 +62,8 @@ public class VehiculoAdministracionControlador extends BaseControlador {
     @PostConstruct
     public void init() {
         setMarcaVehiculo(new MarcaVehiculo());
-        setListaMarcaVehiculo(getMarcaVehiculoBean().obtenerLista());
+        setVehiculo(new Vehiculo());
+        setListaMarcaVehiculo(marcaVehiculoBean.obtenerLista());
         setTipoFilasAsiento(tipoFilaBean.obtenerLista());
     }
     
@@ -75,7 +76,12 @@ public class VehiculoAdministracionControlador extends BaseControlador {
     }
     
     public void generarFilas() {
-        setFilasDelVehiculo(new ArrayList<Fila>(vehiculoSeleccionado.getNumeroDeFilas()));
+        System.err.println("--- generarFilas --");
+        List<Fila> listaFilasTemp = new ArrayList<>();
+        for (int i = 0; i < vehiculo.getNumeroDeFilas(); i++) {
+            listaFilasTemp.add(new Fila());
+        }
+        setFilasDelVehiculo(listaFilasTemp);
     }
     
     public void cargarListaDeVehiculos(){
@@ -92,9 +98,9 @@ public class VehiculoAdministracionControlador extends BaseControlador {
 
     public void guadarVehiculo() {
         try {
-            //marcaVehiculo.setFechaRegistro(new Date(System.currentTimeMillis()));
-            getMarcaVehiculoBean().crear(marcaVehiculo);
-            setListaMarcaVehiculo(getMarcaVehiculoBean().obtenerLista());
+            vehiculo.getGenericoEntidad().setFechaRegistro(new Date(System.currentTimeMillis()));
+            vehiculoBean.crear(vehiculo);
+            setListaMarcaVehiculo(marcaVehiculoBean.obtenerLista());
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
             if (null != root) {
@@ -149,19 +155,7 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         this.marcaVehiculoSeleccionado = marcaVehiculoSeleccionado;
     }
 
-    /**
-     * @return the marcaVehiculoBean
-     */
-    public MarcaVehiculoBean getMarcaVehiculoBean() {
-        return marcaVehiculoBean;
-    }
-
-    /**
-     * @param marcaVehiculoBean the marcaVehiculoBean to set
-     */
-    public void setMarcaVehiculoBean(MarcaVehiculoBean marcaVehiculoBean) {
-        this.marcaVehiculoBean = marcaVehiculoBean;
-    }
+    
 
     /**
      * @return the listaVehiculo

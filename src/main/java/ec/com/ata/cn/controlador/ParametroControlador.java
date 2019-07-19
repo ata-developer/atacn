@@ -46,6 +46,7 @@ public class ParametroControlador extends BaseControlador {
         setTipoFila(new TipoFila());
         setTipoNumeracionDocumento(new TipoDocumento());
         setListaTipoNumeracionDocumento(tipoNumeracionDocumentoBean.obtenerLista());
+        setListaTipoFila(tipoFilaBean.obtenerLista());
     }
 
     public List<TipoDocumento> obtenerListaTipoNumeracionDocumento() {

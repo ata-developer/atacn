@@ -6,7 +6,6 @@
 package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -15,8 +14,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 /**
  *
@@ -25,21 +22,7 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "marca_vehiculo")
 public class MarcaVehiculo implements Serializable {
-
-    /**
-     * @return the genericoEntidad
-     */
-    public GenericoEntidad getGenericoEntidad() {
-        return genericoEntidad;
-    }
-
-    /**
-     * @param genericoEntidad the genericoEntidad to set
-     */
-    public void setGenericoEntidad(GenericoEntidad genericoEntidad) {
-        this.genericoEntidad = genericoEntidad;
-    }
-
+    
     private static final long serialVersionUID = 1L;
     @Id
     @SequenceGenerator(
@@ -55,7 +38,12 @@ public class MarcaVehiculo implements Serializable {
     @Column(name = "marca", unique = true)
     private String marca;
     
-   
+   @Embedded
+    private GenericoEntidad genericoEntidad;
+
+    public MarcaVehiculo () {
+        genericoEntidad = new GenericoEntidad();
+    }
 
     public Long getIdMarca() {
         return idMarca;
@@ -65,12 +53,7 @@ public class MarcaVehiculo implements Serializable {
         this.idMarca = idMarca;
     }
     
-    @Embedded
-    private GenericoEntidad genericoEntidad;
-
-    public MarcaVehiculo () {
-        genericoEntidad = new GenericoEntidad();
-    }
+    
     
     @Override
     public int hashCode() {
@@ -112,5 +95,18 @@ public class MarcaVehiculo implements Serializable {
     }
 
     
-    
+    /**
+     * @return the genericoEntidad
+     */
+    public GenericoEntidad getGenericoEntidad() {
+        return genericoEntidad;
+    }
+
+    /**
+     * @param genericoEntidad the genericoEntidad to set
+     */
+    public void setGenericoEntidad(GenericoEntidad genericoEntidad) {
+        this.genericoEntidad = genericoEntidad;
+    }
+
 }
