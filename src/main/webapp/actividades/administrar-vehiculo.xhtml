@@ -11,7 +11,7 @@
             <h1>#{msj.administrarMarcaVehiculos}</h1>
             <p/>
             <p:fieldset legend="#{msj.agregarMarcaVehiculo}">
-                <p:panelGrid id="pngMarcaVehiculo" columns="2">
+                <p:panelGrid id="pngMarcaVehiculo" columns="2" style="width: 400px;">
 
                     <p:outputLabel
                         for="@next"
@@ -27,7 +27,7 @@
                         id="btnGuardarVehculo" 
                         value="#{msj.guardar}"
                         update="pngMarcaVehiculo somSeleccionarVehiculo tblListaMarcaVehiculo mensajeGeneral"
-                        action="#{vehiculoAdministracionControlador.guadarVehiculo()}" />
+                        action="#{vehiculoAdministracionControlador.guadarMarcaVehiculo()}" />
                     <p:outputLabel
                         value="" />
                 </p:panelGrid>
@@ -48,9 +48,11 @@
                     </p:column>
                 </p:dataTable>
             </p:fieldset>
+            <p/>
+            <p/>
             <!-- INICIO CONFIGURACION SELECCION VEHICULO -->
             <p:fieldset legend="#{msj.configurarVehiculo}">
-                <p:panelGrid id="pngConfigurarVehiculo" columns="2">                    
+                <p:panelGrid id="pngConfigurarVehiculo" columns="2" style="width: 400px;">                    
                     <p:outputLabel
                         for="@next"
                         value="#{msj.selecccionarMarca}" />
@@ -62,6 +64,7 @@
                         <f:selectItems value="#{vehiculoAdministracionControlador.generarSelectItemDeMarcaVehiculo()}" />
                         <p:ajax 
                             event="change"
+                            process="@this"
                             update="frmAdministrarMarcaVehiculo mensajeGeneral"
                             listener="#{vehiculoAdministracionControlador.cargarListaDeVehiculos()}" />
                     </p:selectOneMenu>
@@ -72,73 +75,94 @@
             <!-- FIN CONFIGURACION SELECCION VEHICULO -->
 
             <!-- INICIO MARCA SELECCIONADA -->
-            <p:fieldset legend="#{msj.agregarVehiculo}" rendered="#{vehiculoAdministracionControlador.marcaVehiculoSeleccionado.idMarca != null}" >
+            <p:fieldset rendered="#{vehiculoAdministracionControlador.marcaVehiculoSeleccionado.idMarca != null}" >
                 <p:outputLabel value="#{msj.marcaSeleccionada} #{vehiculoAdministracionControlador.marcaVehiculoSeleccionado.marca}" />
             </p:fieldset>
             <!-- FIN MARCA SELECCIONADA -->
-
-
+            <p/>
+            <p/>
             <!-- INICIO CONFIGURACION VEHICULO -->
             <p:fieldset legend="#{msj.agregarVehiculo}" rendered="#{vehiculoAdministracionControlador.marcaVehiculoSeleccionado.idMarca != null}" >
-                <p:panelGrid id="pngAdministrarVehiculo1" columns="2">
-                    <p:outputLabel
-                        for="@next"
-                        value="#{msj.descripcionVehiculo}" />                    
-                    <p:inputText
-                        id="descripcionVehiculo"
-                        required="true"
-                        requiredMessage="#{msj.campoNecesario}"
-                        value="#{vehiculoAdministracionControlador.vehiculo.modelo}"
-                        onblur="value = value.toUpperCase()"/>
+                <!-- INICIO DATOS DEL VEHICULO -->
+                <p:fieldset legend="#{msj.datosDelVehiculo}">
+                    <p:panelGrid id="pngAdministrarVehiculo1" columns="2" style="width: 400px;">
+                        <p:outputLabel
+                            for="@next"
+                            value="#{msj.modeloVehiculo}" />                    
+                        <p:inputText
+                            id="descripcionVehiculo"
+                            required="true"
+                            requiredMessage="#{msj.campoNecesario}"
+                            value="#{vehiculoAdministracionControlador.vehiculo.modelo}"
+                            onblur="value = value.toUpperCase()"/>
 
-                    <p:outputLabel
-                        for="@next"
-                        value="#{msj.numeroFilas}" />                    
-                    <p:inputText
-                        id="numeroFilasVehiculo"
-                        required="true"
-                        requiredMessage="#{msj.campoNecesario}"
-                        value="#{vehiculoAdministracionControlador.vehiculo.numeroDeFilas}"
-                        onblur="value = value.toUpperCase()">
-                        <p:ajax event="blur" update="tblListaFilas" listener="#{vehiculoAdministracionControlador.generarFilas}" />
-                    </p:inputText>
-                </p:panelGrid>
+                        <p:outputLabel
+                            for="@next"
+                            value="#{msj.numeroFilas}" />                    
+                        <p:inputText
+                            id="numeroFilasVehiculo"
+                            required="true"
+                            requiredMessage="#{msj.campoNecesario}"
+                            value="#{vehiculoAdministracionControlador.vehiculo.numeroDeFilas}"
+                            onblur="value = value.toUpperCase()">
+                            <p:ajax event="blur" update="tblListaFilas" listener="#{vehiculoAdministracionControlador.generarFilas}" />
+                        </p:inputText>
+                        
+                        <p:inputText
+                            id="numeroFilasVehiculo"
+                            required="true"
+                            requiredMessage="#{msj.campoNecesario}"
+                            value="#{vehiculoAdministracionControlador.vehiculo.numeroDeFilas}"
+                            onblur="value = value.toUpperCase()">
+                            <p:ajax event="blur" update="tblListaFilas" listener="#{vehiculoAdministracionControlador.generarFilas}" />
+                        </p:inputText>
+                        
+                        <p:inputText
+                            id="numeroFilasVehiculo"
+                            required="true"
+                            requiredMessage="#{msj.campoNecesario}"
+                            value="#{vehiculoAdministracionControlador.vehiculo.numeroDeFilas}"
+                            onblur="value = value.toUpperCase()">
+                            <p:ajax event="blur" update="tblListaFilas" listener="#{vehiculoAdministracionControlador.generarFilas}" />
+                        </p:inputText>
+                    </p:panelGrid>
 
+                    <p:dataTable
+                        id="tblListaFilas"                
+                        var="fila" 
+                        style="width: 400px;"
+                        value="#{vehiculoAdministracionControlador.filasDelVehiculo}">
+                        <f:facet name="header">
+                            #{msj.listaDeCategorias}
+                        </f:facet>
+                        <p:column headerText="#{msj.tipoFila}">
+                            <p:selectOneMenu
+                                id="somSeleccionarTipoFila"
+                                value="#{fila.tipoFilaTmp}"
+                                converter="omnifaces.SelectItemsConverter">
+                                <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                                <f:selectItems value="#{vehiculoAdministracionControlador.generarSelectItemDeTipoFilaDeAsiento()}" />
+                                <p:ajax event="change" update="tblListaFilas"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column headerText="#{msj.numeroAsientos}">
+                            <p:outputLabel value="#{fila.numeroAsientos}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <p:panelGrid id="pngAdministrarVehiculo2" columns="2" style="width: 400px;">
 
-                <p:dataTable
-                    id="tblListaFilas"                
-                    var="fila" 
-                    style="width: 400px;"
-                    value="#{vehiculoAdministracionControlador.filasDelVehiculo}">
-                    <f:facet name="header">
-                        #{msj.listaDeCategorias}
-                    </f:facet>
-                    <p:column headerText="#{msj.tipoFila}">
-                        <p:selectOneMenu
-                            id="somSeleccionarTipoFila"
-                            value="#{fila.tipoFilaTmp}"
-                            converter="omnifaces.SelectItemsConverter">
-                            <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
-                            <f:selectItems value="#{vehiculoAdministracionControlador.generarSelectItemDeTipoFilaDeAsiento()}" />
-                            <p:ajax event="change" update="tblListaFilas"/>
-                        </p:selectOneMenu>
-                    </p:column>
-                    <p:column headerText="#{msj.numeroAsientos}">
-                        <p:outputLabel value="#{fila.numeroAsientos}"/>
-                    </p:column>
-                </p:dataTable>
-                <p:panelGrid id="pngAdministrarVehiculo2" columns="2">
+                        <p:commandButton
+                            id="btnGuardaVehiculo"
+                            process="@this tblListaFilas descripcionVehiculo numeroFilasVehiculo"
+                            value="#{msj.guardar}"
+                            update="tblListaVehiculos  mensajeGeneral"
+                            action="#{vehiculoAdministracionControlador.guadarVehiculo()}" />
+                        <p:outputLabel
+                            value="" />
 
-                    <p:commandButton
-                        id="btnGuardaVehiculo"
-                        process="@this tblListaFilas descripcionVehiculo numeroFilasVehiculo"
-                        value="#{msj.guardar}"
-                        update="tblListaVehiculos  mensajeGeneral"
-                        action="#{vehiculoAdministracionControlador.guadarVehiculo()}" />
-                    <p:outputLabel
-                        value="" />
-
-                </p:panelGrid>
+                    </p:panelGrid>
+                </p:fieldset>
+                <!-- FIN DATOS DEL VEHICULO -->
                 <p/>
                 <p:dataTable
                     id="tblListaVehiculos"                

@@ -95,11 +95,11 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         }
         return selectItemsBuilder.buildList();
     }
-
-    public void guadarVehiculo() {
+    
+    public void guadarMarcaVehiculo() {
         try {
-            vehiculo.getGenericoEntidad().setFechaRegistro(new Date(System.currentTimeMillis()));
-            vehiculoBean.crear(vehiculo);
+            marcaVehiculo.getGenericoEntidad().setFechaRegistro(new Date(System.currentTimeMillis()));
+            marcaVehiculoBean.crear(marcaVehiculo);
             setListaMarcaVehiculo(marcaVehiculoBean.obtenerLista());
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
@@ -110,6 +110,24 @@ public class VehiculoAdministracionControlador extends BaseControlador {
             addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
         } finally {
             marcaVehiculo = new MarcaVehiculo();
+        }
+    }
+
+    public void guadarVehiculo() {
+        try {
+            vehiculo.getGenericoEntidad().setFechaRegistro(new Date(System.currentTimeMillis()));
+            vehiculo.setMarca(marcaVehiculoSeleccionado);
+            vehiculoBean.crear(vehiculo);
+            setListaVehiculo(vehiculoBean.obtenerListaPorMarca(marcaVehiculoSeleccionado));
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+        } finally {
+            vehiculo = new Vehiculo();
         }
     }
 
