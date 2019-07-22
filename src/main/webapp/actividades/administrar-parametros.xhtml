@@ -87,8 +87,8 @@
                         required="true"
                         requiredMessage="#{msj.campoNecesario}"
                         value="#{parametroControlador.tipoFila.numeroAsiento}"
-                        maxlength="2"
-                        mask="9?9"/>
+                        maxlength="1"
+                        mask="9"/>
 
                     <p:commandButton
                         id="btnGuardarFilaAsientos" 
@@ -121,6 +121,48 @@
             </p:fieldset>
             <!-- FIN ADMINISTRACION TIPO DOCUMENTO -->
 
+            <!-- INICIO ADMINISTRACION RANGO ANIOS-->
+            <p:fieldset legend="#{msj.configurarRangoAnios}">
+                <p:panelGrid id="pngAdministrarRangoAnios" columns="2">
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.anioInicialRango}" />                    
+                    <p:inputMask
+                        id="anioInicialRango"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{parametroControlador.anioInicial}"
+                        maxlength="4"
+                        mask="9999">
+                    </p:inputMask>
+                    
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.anioFinalRango}" />                    
+                    <p:inputMask
+                        id="anioFinalRango"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{parametroControlador.anioFinal}"
+                        maxlength="4"
+                        mask="9999">
+                    </p:inputMask>
+
+                    <p:commandButton
+                        id="btnGuardarFilaAsientos" 
+                        value="#{msj.guardar}"
+                        process="@this anioInicialRango anioFinalRango"
+                        update="pngAdministrarRangoAnios mensajeGeneral"
+                        action="#{parametroControlador.guardarTipoFila()}" />
+                    <p:outputLabel
+                        value="" />
+
+                </p:panelGrid>
+                
+            </p:fieldset>
+            <!-- FIN ADMINISTRACION TIPO DOCUMENTO -->
+            
         </h:form>
     </ui:define>
 </ui:composition>

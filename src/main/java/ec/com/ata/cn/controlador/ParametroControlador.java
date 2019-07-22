@@ -5,6 +5,7 @@
  */
 package ec.com.ata.cn.controlador;
 
+import ec.com.ata.cn.logica.ParametroBean;
 import ec.com.ata.cn.logica.TipoDocumentoBean;
 import ec.com.ata.cn.logica.TipoFilaBean;
 import ec.com.ata.cn.logica.util.gestor.Constante;
@@ -33,6 +34,10 @@ public class ParametroControlador extends BaseControlador {
     @Inject
     private TipoFilaBean tipoFilaBean;
 
+    @Inject
+    private ParametroBean parametroBean;
+    
+    
     private TipoDocumento tipoNumeracionDocumento;
 
     private List<TipoDocumento> listaTipoNumeracionDocumento;
@@ -40,6 +45,10 @@ public class ParametroControlador extends BaseControlador {
     private TipoFila tipoFila;
 
     private List<TipoFila> listaTipoFila;
+    
+    private String anioInicioLlave;
+    
+    private String anioFinalLlave;
 
     @PostConstruct
     public void init() {
@@ -51,6 +60,24 @@ public class ParametroControlador extends BaseControlador {
 
     public List<TipoDocumento> obtenerListaTipoNumeracionDocumento() {
         return tipoNumeracionDocumentoBean.obtenerLista();
+    }
+    
+    public void guardarRangoAnios() {
+        try {
+            System.out.println("ec.com.ata.cn.controlador.ParametroControlador.guardar()");
+            tipoFilaBean.crear(getTipoFila());
+            setListaTipoFila(tipoFilaBean.obtenerLista());
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+        } finally {
+            setTipoFila(new TipoFila());
+        }
     }
 
     public void guardarTipoFila() {
@@ -143,5 +170,35 @@ public class ParametroControlador extends BaseControlador {
      */
     public void setListaTipoFila(List<TipoFila> listaTipoFila) {
         this.listaTipoFila = listaTipoFila;
+    }
+
+    
+
+    /**
+     * @return the anioInicioLlave
+     */
+    public String getAnioInicioLlave() {
+        return anioInicioLlave;
+    }
+
+    /**
+     * @param anioInicioLlave the anioInicioLlave to set
+     */
+    public void setAnioInicioLlave(String anioInicioLlave) {
+        this.anioInicioLlave = anioInicioLlave;
+    }
+
+    /**
+     * @return the anioFinalLlave
+     */
+    public String getAnioFinalLlave() {
+        return anioFinalLlave;
+    }
+
+    /**
+     * @param anioFinalLlave the anioFinalLlave to set
+     */
+    public void setAnioFinalLlave(String anioFinalLlave) {
+        this.anioFinalLlave = anioFinalLlave;
     }
 }

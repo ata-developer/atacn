@@ -109,21 +109,19 @@
                         </p:inputText>
                         
                         <p:inputText
-                            id="numeroFilasVehiculo"
+                            id="anioDesde"
                             required="true"
                             requiredMessage="#{msj.campoNecesario}"
-                            value="#{vehiculoAdministracionControlador.vehiculo.numeroDeFilas}"
+                            value="#{vehiculoAdministracionControlador.vehiculo.anioVehiculoDesde}"
                             onblur="value = value.toUpperCase()">
-                            <p:ajax event="blur" update="tblListaFilas" listener="#{vehiculoAdministracionControlador.generarFilas}" />
                         </p:inputText>
                         
                         <p:inputText
-                            id="numeroFilasVehiculo"
+                            id="anioHasta"
                             required="true"
                             requiredMessage="#{msj.campoNecesario}"
-                            value="#{vehiculoAdministracionControlador.vehiculo.numeroDeFilas}"
+                            value="#{vehiculoAdministracionControlador.vehiculo.anioVehiculoHasta}"
                             onblur="value = value.toUpperCase()">
-                            <p:ajax event="blur" update="tblListaFilas" listener="#{vehiculoAdministracionControlador.generarFilas}" />
                         </p:inputText>
                     </p:panelGrid>
 
@@ -136,10 +134,11 @@
                             #{msj.listaDeCategorias}
                         </f:facet>
                         <p:column headerText="#{msj.tipoFila}">
-                            <p:selectOneMenu
+                            <p:selectOneMenu                                
                                 id="somSeleccionarTipoFila"
                                 value="#{fila.tipoFilaTmp}"
-                                converter="omnifaces.SelectItemsConverter">
+                                converter="omnifaces.SelectItemsConverter"
+                                style="width: 180px;">
                                 <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                                 <f:selectItems value="#{vehiculoAdministracionControlador.generarSelectItemDeTipoFilaDeAsiento()}" />
                                 <p:ajax event="change" update="tblListaFilas"/>

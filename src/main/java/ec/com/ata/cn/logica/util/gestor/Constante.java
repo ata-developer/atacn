@@ -78,4 +78,8 @@ public class Constante {
     public static final String TRABAJO_CATEGORIA = "TRABAJO/CATEGORIA";
 
     public static final String SALT = "Br6Jew==";
+    
+    public static final String ANIO_INICIO_RANGO = "ANIO_INICIO_RANGO";
+    public static final String ANIO_FIN_RANGO = "ANIO_FIN_RANGO";
+    
 }

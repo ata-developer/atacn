@@ -58,6 +58,10 @@ public class VehiculoAdministracionControlador extends BaseControlador {
     private List<Fila> filasDelVehiculo;
     
     private List<TipoFila> tipoFilasAsiento;
+    
+    private Integer anioInicioRango;
+    
+    private Integer anioFinRango;
 
     @PostConstruct
     public void init() {
@@ -69,6 +73,16 @@ public class VehiculoAdministracionControlador extends BaseControlador {
     
     public List<SelectItem> generarSelectItemDeTipoFilaDeAsiento() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+        for (TipoFila tipoFilaAsientoTmp : getTipoFilasAsiento()) {
+            selectItemsBuilder.add(tipoFilaAsientoTmp, tipoFilaAsientoTmp.getTipoFila());
+        }
+        return selectItemsBuilder.buildList();
+    }
+    
+    public List<SelectItem> generarSelectAnioInicial() {
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+        
+        
         for (TipoFila tipoFilaAsientoTmp : getTipoFilasAsiento()) {
             selectItemsBuilder.add(tipoFilaAsientoTmp, tipoFilaAsientoTmp.getTipoFila());
         }
@@ -243,6 +257,34 @@ public class VehiculoAdministracionControlador extends BaseControlador {
      */
     public void setTipoFilasAsiento(List<TipoFila> tipoFilasAsiento) {
         this.tipoFilasAsiento = tipoFilasAsiento;
+    }
+
+    /**
+     * @return the anioInicioRango
+     */
+    public Integer getAnioInicioRango() {
+        return anioInicioRango;
+    }
+
+    /**
+     * @param anioInicioRango the anioInicioRango to set
+     */
+    public void setAnioInicioRango(Integer anioInicioRango) {
+        this.anioInicioRango = anioInicioRango;
+    }
+
+    /**
+     * @return the anioFinRango
+     */
+    public Integer getAnioFinRango() {
+        return anioFinRango;
+    }
+
+    /**
+     * @param anioFinRango the anioFinRango to set
+     */
+    public void setAnioFinRango(Integer anioFinRango) {
+        this.anioFinRango = anioFinRango;
     }
 
 }
