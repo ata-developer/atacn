@@ -6,11 +6,11 @@
 package ec.com.ata.cn.controlador;
 
 import ec.com.ata.cn.logica.MarcaVehiculoBean;
+import ec.com.ata.cn.logica.ParametroBean;
 import ec.com.ata.cn.logica.TipoFilaBean;
 import ec.com.ata.cn.logica.VehiculoBean;
 import ec.com.ata.cn.logica.util.gestor.Constante;
 import ec.com.ata.cn.modelo.Fila;
-import ec.com.ata.cn.modelo.GrupoPrecio;
 import ec.com.ata.cn.modelo.MarcaVehiculo;
 import ec.com.ata.cn.modelo.TipoFila;
 import ec.com.ata.cn.modelo.Vehiculo;
@@ -42,6 +42,9 @@ public class VehiculoAdministracionControlador extends BaseControlador {
     
     @Inject
     private TipoFilaBean tipoFilaBean;
+    
+    @Inject
+    private ParametroBean parametroBean;
 
     private MarcaVehiculo marcaVehiculo;
     
@@ -59,9 +62,13 @@ public class VehiculoAdministracionControlador extends BaseControlador {
     
     private List<TipoFila> tipoFilasAsiento;
     
-    private Integer anioInicioRango;
+    private Integer anioDesdeRango;
     
-    private Integer anioFinRango;
+    private Integer anioHastaRango;
+    
+    private List<Integer> rangoAnioInicial;
+    
+    private List<Integer> rangoAnioFinal;
 
     @PostConstruct
     public void init() {
@@ -69,6 +76,24 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         setVehiculo(new Vehiculo());
         setListaMarcaVehiculo(marcaVehiculoBean.obtenerLista());
         setTipoFilasAsiento(tipoFilaBean.obtenerLista());
+        setAnioDesdeRango(new Integer(parametroBean.obtenerPorCodigo(Constante.ANIO_INICIO_RANGO) == null ? "0" : parametroBean.obtenerPorCodigo(Constante.ANIO_INICIO_RANGO).getValor()));
+        setAnioHastaRango(new Integer(parametroBean.obtenerPorCodigo(Constante.ANIO_FIN_RANGO) == null ? "0" : parametroBean.obtenerPorCodigo(Constante.ANIO_FIN_RANGO).getValor()));
+        setRangoAnioInicial(new ArrayList<Integer>());
+        setRangoAnioFinal(new ArrayList<Integer>());
+        inicializarRangoAnioInicial();
+        
+    }
+    
+    public void configurarRangoAnioFinal() {
+        for (int i = getAnioDesdeRango(); i <= getAnioHastaRango(); i++) {
+            getRangoAnioFinal().add(i);
+        }
+    }
+    
+    private void inicializarRangoAnioInicial() {
+        for (int i = getAnioDesdeRango(); i <= getAnioHastaRango(); i++) {
+            getRangoAnioInicial().add(i);
+        }
     }
     
     public List<SelectItem> generarSelectItemDeTipoFilaDeAsiento() {
@@ -260,31 +285,58 @@ public class VehiculoAdministracionControlador extends BaseControlador {
     }
 
     /**
-     * @return the anioInicioRango
+     * @return the anioDesdeRango
      */
-    public Integer getAnioInicioRango() {
-        return anioInicioRango;
+    public Integer getAnioDesdeRango() {
+        return anioDesdeRango;
     }
 
     /**
-     * @param anioInicioRango the anioInicioRango to set
+     * @param anioDesdeRango the anioDesdeRango to set
      */
-    public void setAnioInicioRango(Integer anioInicioRango) {
-        this.anioInicioRango = anioInicioRango;
+    public void setAnioDesdeRango(Integer anioDesdeRango) {
+        this.anioDesdeRango = anioDesdeRango;
     }
 
     /**
-     * @return the anioFinRango
+     * @return the anioHastaRango
      */
-    public Integer getAnioFinRango() {
-        return anioFinRango;
+    public Integer getAnioHastaRango() {
+        return anioHastaRango;
     }
 
     /**
-     * @param anioFinRango the anioFinRango to set
+     * @param anioHastaRango the anioHastaRango to set
      */
-    public void setAnioFinRango(Integer anioFinRango) {
-        this.anioFinRango = anioFinRango;
+    public void setAnioHastaRango(Integer anioHastaRango) {
+        this.anioHastaRango = anioHastaRango;
     }
 
+    /**
+     * @return the rangoAnioInicial
+     */
+    public List<Integer> getRangoAnioInicial() {
+        return rangoAnioInicial;
+    }
+
+    /**
+     * @param rangoAnioInicial the rangoAnioInicial to set
+     */
+    public void setRangoAnioInicial(List<Integer> rangoAnioInicial) {
+        this.rangoAnioInicial = rangoAnioInicial;
+    }
+
+    /**
+     * @return the rangoAnioFinal
+     */
+    public List<Integer> getRangoAnioFinal() {
+        return rangoAnioFinal;
+    }
+
+    /**
+     * @param rangoAnioFinal the rangoAnioFinal to set
+     */
+    public void setRangoAnioFinal(List<Integer> rangoAnioFinal) {
+        this.rangoAnioFinal = rangoAnioFinal;
+    }
 }

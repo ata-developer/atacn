@@ -9,6 +9,7 @@ import ec.com.ata.cn.logica.ParametroBean;
 import ec.com.ata.cn.logica.TipoDocumentoBean;
 import ec.com.ata.cn.logica.TipoFilaBean;
 import ec.com.ata.cn.logica.util.gestor.Constante;
+import ec.com.ata.cn.modelo.Parametro;
 import ec.com.ata.cn.modelo.TipoDocumento;
 import ec.com.ata.cn.modelo.TipoFila;
 
@@ -46,9 +47,10 @@ public class ParametroControlador extends BaseControlador {
 
     private List<TipoFila> listaTipoFila;
     
-    private String anioInicioLlave;
+    private Integer anioDesdeRango;
     
-    private String anioFinalLlave;
+    private Integer anioHastaRango;
+    
 
     @PostConstruct
     public void init() {
@@ -56,6 +58,9 @@ public class ParametroControlador extends BaseControlador {
         setTipoNumeracionDocumento(new TipoDocumento());
         setListaTipoNumeracionDocumento(tipoNumeracionDocumentoBean.obtenerLista());
         setListaTipoFila(tipoFilaBean.obtenerLista());
+        setAnioDesdeRango(new Integer(parametroBean.obtenerPorCodigo(Constante.ANIO_INICIO_RANGO) == null ? "0" : parametroBean.obtenerPorCodigo(Constante.ANIO_INICIO_RANGO).getValor()));
+        setAnioHastaRango(new Integer(parametroBean.obtenerPorCodigo(Constante.ANIO_FIN_RANGO) == null ? "0" : parametroBean.obtenerPorCodigo(Constante.ANIO_FIN_RANGO).getValor()));
+        
     }
 
     public List<TipoDocumento> obtenerListaTipoNumeracionDocumento() {
@@ -64,9 +69,16 @@ public class ParametroControlador extends BaseControlador {
     
     public void guardarRangoAnios() {
         try {
-            System.out.println("ec.com.ata.cn.controlador.ParametroControlador.guardar()");
-            tipoFilaBean.crear(getTipoFila());
-            setListaTipoFila(tipoFilaBean.obtenerLista());
+            Parametro parametroAnioInicioRango = new Parametro();
+            parametroAnioInicioRango.setParametro(Constante.ANIO_INICIO_RANGO);
+            parametroAnioInicioRango.setValor(anioDesdeRango.toString());            
+            parametroBean.modificar(parametroAnioInicioRango);
+            
+            Parametro parametroAnioFinRango = new Parametro();
+            parametroAnioFinRango.setParametro(Constante.ANIO_FIN_RANGO);
+            parametroAnioFinRango.setValor(anioHastaRango.toString());
+            parametroBean.modificar(parametroAnioFinRango);
+            
             addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
@@ -172,33 +184,31 @@ public class ParametroControlador extends BaseControlador {
         this.listaTipoFila = listaTipoFila;
     }
 
-    
-
     /**
-     * @return the anioInicioLlave
+     * @return the anioDesdeRango
      */
-    public String getAnioInicioLlave() {
-        return anioInicioLlave;
+    public Integer getAnioDesdeRango() {
+        return anioDesdeRango;
     }
 
     /**
-     * @param anioInicioLlave the anioInicioLlave to set
+     * @param anioDesdeRango the anioDesdeRango to set
      */
-    public void setAnioInicioLlave(String anioInicioLlave) {
-        this.anioInicioLlave = anioInicioLlave;
+    public void setAnioDesdeRango(Integer anioDesdeRango) {
+        this.anioDesdeRango = anioDesdeRango;
     }
 
     /**
-     * @return the anioFinalLlave
+     * @return the anioHastaRango
      */
-    public String getAnioFinalLlave() {
-        return anioFinalLlave;
+    public Integer getAnioHastaRango() {
+        return anioHastaRango;
     }
 
     /**
-     * @param anioFinalLlave the anioFinalLlave to set
+     * @param anioHastaRango the anioHastaRango to set
      */
-    public void setAnioFinalLlave(String anioFinalLlave) {
-        this.anioFinalLlave = anioFinalLlave;
+    public void setAnioHastaRango(Integer anioHastaRango) {
+        this.anioHastaRango = anioHastaRango;
     }
 }

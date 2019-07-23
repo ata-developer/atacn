@@ -107,15 +107,35 @@
                             onblur="value = value.toUpperCase()">
                             <p:ajax event="blur" update="tblListaFilas" listener="#{vehiculoAdministracionControlador.generarFilas}" />
                         </p:inputText>
-                        
-                        <p:inputText
+
+                        <p:outputLabel
+                            for="@next"
+                            value="#{msj.anioInicialRango}" />
+                        <p:selectOneMenu
                             id="anioDesde"
-                            required="true"
-                            requiredMessage="#{msj.campoNecesario}"
                             value="#{vehiculoAdministracionControlador.vehiculo.anioVehiculoDesde}"
-                            onblur="value = value.toUpperCase()">
-                        </p:inputText>
-                        
+                            panelStyle="width:180px"
+                            effect="fade"
+                            var="t" 
+                            style="width:160px" 
+                            filter="true" filterMatchMode="contains">
+                            <f:selectItems
+                                value="#{vehiculoAdministracionControlador.rangoAnioInicial}"
+                                var="anio"
+                                itemLabel="#{anio}"
+                                itemValue="#{anio}" />
+                            <p:column>
+                                <h:outputText value="#{t}" />
+                            </p:column>
+                            <p:ajax
+                                event="change"
+                                update="anioHasta"
+                                listener="#{vehiculoAdministracionControlador.configurarRangoAnioFinal()}" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel
+                            for="@next"
+                            value="#{msj.anioFinalRango}" />
                         <p:inputText
                             id="anioHasta"
                             required="true"

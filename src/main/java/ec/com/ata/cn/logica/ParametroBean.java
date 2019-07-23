@@ -24,4 +24,8 @@ public class ParametroBean {
     public Parametro obtenerPorCodigo(String codigo) {
         return parametroDao.obtenerPorCodigo(codigo);
     }
+    
+    public Parametro modificar (Parametro parametro) throws Exception {
+        return parametroDao.modificar(parametro);
+    }
 }

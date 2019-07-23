@@ -132,7 +132,7 @@
                         id="anioInicialRango"
                         required="true"
                         requiredMessage="#{msj.campoNecesario}"
-                        value="#{parametroControlador.anioInicial}"
+                        value="#{parametroControlador.anioDesdeRango}"
                         maxlength="4"
                         mask="9999">
                     </p:inputMask>
@@ -144,17 +144,17 @@
                         id="anioFinalRango"
                         required="true"
                         requiredMessage="#{msj.campoNecesario}"
-                        value="#{parametroControlador.anioFinal}"
+                        value="#{parametroControlador.anioHastaRango}"
                         maxlength="4"
                         mask="9999">
                     </p:inputMask>
 
                     <p:commandButton
-                        id="btnGuardarFilaAsientos" 
+                        id="btnGuardarRangoFechas" 
                         value="#{msj.guardar}"
                         process="@this anioInicialRango anioFinalRango"
                         update="pngAdministrarRangoAnios mensajeGeneral"
-                        action="#{parametroControlador.guardarTipoFila()}" />
+                        action="#{parametroControlador.guardarRangoAnios()}" />
                     <p:outputLabel
                         value="" />
 
