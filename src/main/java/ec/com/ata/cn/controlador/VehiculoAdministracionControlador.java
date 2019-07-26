@@ -25,6 +25,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.omnifaces.util.selectitems.SelectItemsBuilder;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -69,6 +70,8 @@ public class VehiculoAdministracionControlador extends BaseControlador {
     private List<Integer> rangoAnioInicial;
     
     private List<Integer> rangoAnioFinal;
+    
+    private List<UploadedFile> imagenes;
 
     @PostConstruct
     public void init() {
@@ -80,12 +83,14 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         setAnioHastaRango(new Integer(parametroBean.obtenerPorCodigo(Constante.ANIO_FIN_RANGO) == null ? "0" : parametroBean.obtenerPorCodigo(Constante.ANIO_FIN_RANGO).getValor()));
         setRangoAnioInicial(new ArrayList<Integer>());
         setRangoAnioFinal(new ArrayList<Integer>());
+        setImagenes(new ArrayList<UploadedFile>());
         inicializarRangoAnioInicial();
         
     }
     
     public void configurarRangoAnioFinal() {
-        for (int i = getAnioDesdeRango(); i <= getAnioHastaRango(); i++) {
+        setRangoAnioFinal(new ArrayList<Integer>());
+        for (int i = vehiculo.getAnioVehiculoDesde().intValue() ; i <= getAnioHastaRango(); i++) {
             getRangoAnioFinal().add(i);
         }
     }
@@ -140,6 +145,7 @@ public class VehiculoAdministracionControlador extends BaseControlador {
             marcaVehiculo.getGenericoEntidad().setFechaRegistro(new Date(System.currentTimeMillis()));
             marcaVehiculoBean.crear(marcaVehiculo);
             setListaMarcaVehiculo(marcaVehiculoBean.obtenerLista());
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
             if (null != root) {
@@ -156,8 +162,10 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         try {
             vehiculo.getGenericoEntidad().setFechaRegistro(new Date(System.currentTimeMillis()));
             vehiculo.setMarca(marcaVehiculoSeleccionado);
+            vehiculo.setFilasDeAsientos(filasDelVehiculo);
             vehiculoBean.crear(vehiculo);
             setListaVehiculo(vehiculoBean.obtenerListaPorMarca(marcaVehiculoSeleccionado));
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
             if (null != root) {
@@ -338,5 +346,19 @@ public class VehiculoAdministracionControlador extends BaseControlador {
      */
     public void setRangoAnioFinal(List<Integer> rangoAnioFinal) {
         this.rangoAnioFinal = rangoAnioFinal;
+    }
+    
+    /**
+     * @return the imagenes
+     */
+    public List<UploadedFile> getImagenes() {
+        return imagenes;
+    }
+
+    /**
+     * @param imagenes the imagenes to set
+     */
+    public void setImagenes(List<UploadedFile> imagenes) {
+        this.imagenes = imagenes;
     }
 }

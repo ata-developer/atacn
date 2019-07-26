@@ -6,6 +6,7 @@
 package ec.com.ata.cn.logica;
 
 import ec.com.ata.cn.logica.dao.VehiculoDao;
+import ec.com.ata.cn.modelo.Fila;
 import ec.com.ata.cn.modelo.MarcaVehiculo;
 import ec.com.ata.cn.modelo.Vehiculo;
 import java.util.HashMap;
@@ -23,10 +24,23 @@ public class VehiculoBean {
 
     @Inject
     private VehiculoDao vehiculoDao;
+    
+    @Inject
+    private FilaBean filaBean;
 
-    public Vehiculo crear(Vehiculo categoriaEntrada) throws Exception {
-        return vehiculoDao.crear(categoriaEntrada);
+    public Vehiculo crear(Vehiculo vehiculoEntrada) throws Exception {
+        Vehiculo vehiculoCreado = vehiculoDao.crear(vehiculoEntrada);
+        if (null != vehiculoEntrada.getFilasDeAsientos()){
+            List<Fila> filasDeAsientos = vehiculoEntrada.getFilasDeAsientos();
+            for (Fila filaDeAsiento : filasDeAsientos) {
+                filaDeAsiento.setVehiculo(vehiculoCreado);
+                filaBean.crear(filaDeAsiento);
+            }
+        }
+        return vehiculoCreado;
     }
+    
+    
 
     public List<Vehiculo> obtenerLista() {
         return vehiculoDao.obtenerTodos();

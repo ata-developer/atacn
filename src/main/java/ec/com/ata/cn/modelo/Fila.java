@@ -27,23 +27,7 @@ import javax.persistence.Transient;
 @Entity
 @Table
 public class Fila implements Serializable {
-
     
-
-    /**
-     * @return the genericoEntidad
-     */
-    public GenericoEntidad getGenericoEntidad() {
-        return genericoEntidad;
-    }
-
-    /**
-     * @param genericoEntidad the genericoEntidad to set
-     */
-    public void setGenericoEntidad(GenericoEntidad genericoEntidad) {
-        this.genericoEntidad = genericoEntidad;
-    }
-
     private static final long serialVersionUID = 1L;
     @Id
     @SequenceGenerator(
@@ -184,4 +168,17 @@ public class Fila implements Serializable {
         this.numeroAsientos = tipoFilaTmp.getNumeroAsiento();
     }
     
+    /**
+     * @return the genericoEntidad
+     */
+    public GenericoEntidad getGenericoEntidad() {
+        return genericoEntidad;
+    }
+
+    /**
+     * @param genericoEntidad the genericoEntidad to set
+     */
+    public void setGenericoEntidad(GenericoEntidad genericoEntidad) {
+        this.genericoEntidad = genericoEntidad;
+    }
 }
