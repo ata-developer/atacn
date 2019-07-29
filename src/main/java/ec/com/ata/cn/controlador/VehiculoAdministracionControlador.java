@@ -10,6 +10,7 @@ import ec.com.ata.cn.logica.ParametroBean;
 import ec.com.ata.cn.logica.TipoFilaBean;
 import ec.com.ata.cn.logica.VehiculoBean;
 import ec.com.ata.cn.logica.util.gestor.Constante;
+import ec.com.ata.cn.logica.util.gestor.UtilGeneral;
 import ec.com.ata.cn.modelo.Fila;
 import ec.com.ata.cn.modelo.MarcaVehiculo;
 import ec.com.ata.cn.modelo.TipoFila;
@@ -17,14 +18,19 @@ import ec.com.ata.cn.modelo.Vehiculo;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.omnifaces.util.selectitems.SelectItemsBuilder;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
 /**
@@ -86,6 +92,20 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         setImagenes(new ArrayList<UploadedFile>());
         inicializarRangoAnioInicial();
         
+    }
+    
+    public void manejadorCargarArchivo(FileUploadEvent event) {
+        try {
+            addInfoMessage(Constante.EXITO, "probando");
+            System.out.println("-->"+UtilGeneral.ImagenAByte(event.getFile()));
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+        }
     }
     
     public void configurarRangoAnioFinal() {

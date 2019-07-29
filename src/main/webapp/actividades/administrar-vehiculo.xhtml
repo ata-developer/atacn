@@ -86,10 +86,10 @@
                 <!-- INICIO DATOS DEL VEHICULO -->
                 <p:fieldset legend="#{msj.datosDelVehiculo}">
                     <p:panelGrid id="pngAdministrarVehiculo1" columns="2" style="width: 400px;">
-                        
-                        
 
-                        
+
+
+
                         <p:outputLabel
                             for="@next"
                             value="#{msj.anioInicialRango}" />
@@ -116,8 +116,8 @@
                                 listener="#{vehiculoAdministracionControlador.configurarRangoAnioFinal()}" />
                         </p:selectOneMenu>
 
-                        
-                        
+
+
                         <p:outputLabel
                             for="@next"
                             value="#{msj.anioFinalRango}" />
@@ -141,7 +141,7 @@
                             </p:column>
 
                         </p:selectOneMenu>
-                        
+
                         <p:outputLabel
                             for="@next"
                             value="#{msj.modeloVehiculo}" />                    
@@ -171,7 +171,7 @@
                     <p:dataTable
                         id="tblListaFilas"                
                         var="fila" 
-                        style="width: 400px;"
+                        style="width: 600px;"
                         value="#{vehiculoAdministracionControlador.filasDelVehiculo}">
                         <f:facet name="header">
                             #{msj.listaTipoFila}
@@ -196,7 +196,8 @@
                             <p:outputLabel value="#{fila.numeroAsientos}"/>
                         </p:column>
                         <p:column headerText="#{msj.imagenes}">
-                            <p:outputLabel value="#{fila.numeroAsientos}"/>
+                            <p:fileUpload fileUploadListener="#{vehiculoAdministracionControlador.manejadorCargarArchivo}" mode="advanced" dragDropSupport="false"
+                                          update="mensajeGeneral" sizeLimit="1000000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
                         </p:column>
                     </p:dataTable>
                     <p/>
