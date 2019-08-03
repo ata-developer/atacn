@@ -6,8 +6,8 @@
 package ec.com.ata.cn.logica.dao;
 
 import ec.com.ata.cn.logica.util.gestor.GenericoDaoUtil;
-import ec.com.ata.cn.modelo.FilaImagen;
-import ec.com.ata.cn.modelo.FilaImagenId;
+import ec.com.ata.cn.modelo.VehiculoImagen;
+import ec.com.ata.cn.modelo.VehiculoImagenId;
 import javax.ejb.Stateless;
 
 /**
@@ -15,10 +15,10 @@ import javax.ejb.Stateless;
  * @author ATA1
  */
 @Stateless
-public class FilaImagenDao extends GenericoDaoUtil<FilaImagen, FilaImagenId>{
+public class VehiculoImagenDao extends GenericoDaoUtil<VehiculoImagen, VehiculoImagenId>{
     
-    public FilaImagenDao() {
-        super(FilaImagen.class);
+    public VehiculoImagenDao() {
+        super(VehiculoImagen.class);
     }
     
 }

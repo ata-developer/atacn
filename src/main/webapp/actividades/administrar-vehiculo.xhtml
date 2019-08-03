@@ -4,6 +4,8 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:of="http://omnifaces.org/functions"
                 template="/WEB-INF/templateATA.xhtml">
 
     <ui:define name="content">
@@ -86,10 +88,6 @@
                 <!-- INICIO DATOS DEL VEHICULO -->
                 <p:fieldset legend="#{msj.datosDelVehiculo}">
                     <p:panelGrid id="pngAdministrarVehiculo1" columns="2" style="width: 400px;">
-
-
-
-
                         <p:outputLabel
                             for="@next"
                             value="#{msj.anioInicialRango}" />
@@ -196,10 +194,39 @@
                             <p:outputLabel value="#{fila.numeroAsientos}"/>
                         </p:column>
                         <p:column headerText="#{msj.imagenes}">
-                            <p:fileUpload fileUploadListener="#{vehiculoAdministracionControlador.manejadorCargarArchivo}" mode="advanced" dragDropSupport="false"
-                                          update="mensajeGeneral" sizeLimit="1000000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+
                         </p:column>
                     </p:dataTable>
+                    <p/>
+                    <!-- INICIO imagenes del vehiculo -->
+
+                    <p:panelGrid id="pngAdministrarImagenes" columns="1" style="width: 400px;">
+                        <p:fileUpload
+                            id="imagenCargador"
+                            fileUploadListener="#{vehiculoAdministracionControlador.manejadorCargarArchivo}"
+                            mode="simple"
+                            sizeLimit="1000000"
+                            allowTypes="/(\.|\/)(gif|jpe?g|png)$/">
+                        </p:fileUpload>
+                        <p:commandButton 
+                            id="botonCargarImagen"
+                            value="#{msj.cargarImagen}"
+                            inmediate="true"
+                            update="listaImagenes mensajeGeneral" 
+                            process="pngAdministrarImagenes"
+                            actionListener="#{vehiculoAdministracionControlador.cargarImagen()}"/>
+                        <p:dataTable
+                            id="listaImagenes"
+                            value="#{vehiculoAdministracionControlador.imagenesVehiculo}"
+                            var="imagen">
+                            <p:column headerText="#{msj.imagenes}">
+                                <p:outputLabel value="#{vehiculoAdministracionControlador.procesarImagen(imagen)}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panelGrid>
+
+
+                    <!-- FIN imagenes del vehiculo -->
                     <p/>
                     <p:panelGrid id="pngAdministrarVehiculoBoton" columns="2" style="width: 400px;">
 
@@ -235,6 +262,7 @@
             </p:fieldset>
             <p/>
             <p/>
+
             <!-- FIN CONFIGURACION CATEGORIA -->
         </h:form>
     </ui:define>

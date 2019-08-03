@@ -19,18 +19,18 @@ import javax.persistence.Table;
  * @author ATA1
  */
 @Entity
-@Table(name = "fila_imagen")
-public class FilaImagen implements Serializable {
+@Table(name = "vehiculo_imagen")
+public class VehiculoImagen implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @EmbeddedId
-    private FilaImagenId filaImagenId;
+    private VehiculoImagenId vehiculoImagenId;
 
-    @MapsId("idFila")
-    @JoinColumn(name = "id_fila", referencedColumnName = "id_fila")
+    @MapsId("idVehiculo")
+    @JoinColumn(name = "id_vehiculo", referencedColumnName = "id_vehiculo")
     @ManyToOne
-    private Fila fila;
+    private Vehiculo vehiculo;
 
     @MapsId("idImagen")
     @JoinColumn(name = "id_imagen", referencedColumnName = "id_imagen")
@@ -40,7 +40,7 @@ public class FilaImagen implements Serializable {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 29 * hash + Objects.hashCode(this.filaImagenId);
+        hash = 29 * hash + Objects.hashCode(this.vehiculoImagenId);
         return hash;
     }
 
@@ -55,30 +55,27 @@ public class FilaImagen implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final FilaImagen other = (FilaImagen) obj;
-        if (!Objects.equals(this.filaImagenId, other.filaImagenId)) {
-            return false;
-        }
-        return true;
+        final VehiculoImagen other = (VehiculoImagen) obj;
+        return Objects.equals(this.vehiculoImagenId, other.vehiculoImagenId);
     }
 
     @Override
     public String toString() {
-        return "FilaImagen{" + "filaImagenPrecioId=" + (filaImagenId == null ? null : filaImagenId.toString()) + "'}'";
+        return "VehiculoImagen{" + "vehiculoImagenPrecioId=" + (vehiculoImagenId == null ? null : vehiculoImagenId.toString()) + "'}'";
     }
     
     /**
-     * @return the fila
+     * @return the vehiculo
      */
-    public Fila getFila() {
-        return fila;
+    public Vehiculo getVehiculo() {
+        return vehiculo;
     }
 
     /**
-     * @param fila the fila to set
+     * @param vehiculo the vehiculo to set
      */
-    public void setFila(Fila fila) {
-        this.fila = fila;
+    public void setVehiculo(Vehiculo vehiculo) {
+        this.vehiculo = vehiculo;
     }
 
     /**
@@ -96,17 +93,17 @@ public class FilaImagen implements Serializable {
     }
 
     /**
-     * @return the filaImagenId
+     * @return the vehiculoImagenId
      */
-    public FilaImagenId getFilaImagenId() {
-        return filaImagenId;
+    public VehiculoImagenId getVehiculoImagenId() {
+        return vehiculoImagenId;
     }
 
     /**
-     * @param filaImagenId the filaImagenId to set
+     * @param vehiculoImagenId the vehiculoImagenId to set
      */
-    public void setFilaImagenId(FilaImagenId filaImagenId) {
-        this.filaImagenId = filaImagenId;
+    public void setVehiculoImagenId(VehiculoImagenId vehiculoImagenId) {
+        this.vehiculoImagenId = vehiculoImagenId;
     }
 
 }

@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -22,7 +23,7 @@ import javax.persistence.Table;
 @Entity
 @Table
 public class Imagen implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
     @Id
     @SequenceGenerator(
@@ -34,14 +35,24 @@ public class Imagen implements Serializable {
             generator = "imagen_seq")
     @Column(name = "id_imagen")
     private Long idImagen;
+
+    @Lob
+    @Column(name = "datos_imagen")
+    private byte[] datosImagen;
+
+    @Column(name = "nombre")
+    private String nombre;
     
+    @Column(name = "tiene_padre")
+    private Boolean tienePadre;
+
     @Embedded
     private GenericoEntidad genericoEntidad;
-    
-    public Imagen () {
+
+    public Imagen() {
         genericoEntidad = new GenericoEntidad();
     }
-    
+
     public Long getIdImagen() {
         return idImagen;
     }
@@ -75,8 +86,6 @@ public class Imagen implements Serializable {
         return "ec.com.ata.cn.modelo.Imagen[ id=" + idImagen + " ]";
     }
 
-    
-    
     /**
      * @return the genericoEntidad
      */
@@ -89,5 +98,47 @@ public class Imagen implements Serializable {
      */
     public void setGenericoEntidad(GenericoEntidad genericoEntidad) {
         this.genericoEntidad = genericoEntidad;
+    }
+
+    /**
+     * @return the datosImagen
+     */
+    public byte[] getDatosImagen() {
+        return datosImagen;
+    }
+
+    /**
+     * @param datosImagen the datosImagen to set
+     */
+    public void setDatosImagen(byte[] datosImagen) {
+        this.datosImagen = datosImagen;
+    }
+
+    /**
+     * @return the nombre
+     */
+    public String getNombre() {
+        return nombre;
+    }
+
+    /**
+     * @param nombre the nombre to set
+     */
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    /**
+     * @return the tienePadre
+     */
+    public Boolean getTienePadre() {
+        return tienePadre;
+    }
+
+    /**
+     * @param tienePadre the tienePadre to set
+     */
+    public void setTienePadre(Boolean tienePadre) {
+        this.tienePadre = tienePadre;
     }
 }

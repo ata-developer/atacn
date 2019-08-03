@@ -6,9 +6,9 @@
 package ec.com.ata.cn.logica;
 
 
-import ec.com.ata.cn.logica.dao.FilaImagenDao;
-import ec.com.ata.cn.modelo.FilaImagen;
-import ec.com.ata.cn.modelo.FilaImagenId;
+import ec.com.ata.cn.logica.dao.VehiculoImagenDao;
+import ec.com.ata.cn.modelo.VehiculoImagen;
+import ec.com.ata.cn.modelo.VehiculoImagenId;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -18,10 +18,10 @@ import javax.inject.Inject;
  * @author ATA1
  */
 @Stateless
-public class FilaImagenBean {
+public class VehiculoImagenBean {
 
     @Inject
-    private FilaImagenDao filaImagenDao;
+    private VehiculoImagenDao filaImagenDao;
 
     /*@Inject
     private TrabajoBean trabajoBean;
@@ -29,11 +29,11 @@ public class FilaImagenBean {
     @Inject
     private CategoriaBean categoriaBean;*/
 
-    public FilaImagen crear(FilaImagen filaImagenEntrada) throws Exception {
+    public VehiculoImagen crear(VehiculoImagen filaImagenEntrada) throws Exception {
         return filaImagenDao.crear(filaImagenEntrada);
     }
 
-    public FilaImagen guardar(FilaImagen filaImagenEntrada) throws Exception {
+    public VehiculoImagen guardar(VehiculoImagen filaImagenEntrada) throws Exception {
         //if (null != filaImagenEntrada.getFilaImagenId()) {
           //  return filaImagenDao.modificar(filaImagenEntrada);
         //} else {
@@ -41,15 +41,15 @@ public class FilaImagenBean {
         //}
     }
 
-    public List<FilaImagen> obtenerLista() {
+    public List<VehiculoImagen> obtenerLista() {
         return filaImagenDao.obtenerTodos();
     }
 
-    public FilaImagen obtenerPorId(FilaImagenId filaImagenId) {
+    public VehiculoImagen obtenerPorId(VehiculoImagenId filaImagenId) {
         return filaImagenDao.obtenerPorCodigo(filaImagenId);
     }
 
-    public FilaImagen modificar(FilaImagen filaImagenEntrada) throws Exception {
+    public VehiculoImagen modificar(VehiculoImagen filaImagenEntrada) throws Exception {
         return filaImagenDao.modificar(filaImagenEntrada);
     }
 
@@ -64,11 +64,11 @@ public class FilaImagenBean {
                 String clave = categoria.getCategoria();
                 Long idCategoria = categoria.getIdCategoria();
                 Long idTrabajo = trabajo.getIdTrabajo();
-                FilaImagenId filaImagenIdTmp = new FilaImagenId();
+                VehiculoImagenId filaImagenIdTmp = new VehiculoImagenId();
                 filaImagenIdTmp.setIdCategoria(idCategoria);
                 filaImagenIdTmp.setIdTrabajo(idTrabajo);
-                FilaImagen filaImagenTmp = filaImagenDao.obtenerPorCodigo(filaImagenIdTmp);
-                filaImagenTmp = (filaImagenTmp == null ? new FilaImagen() :filaImagenTmp);
+                VehiculoImagen filaImagenTmp = filaImagenDao.obtenerPorCodigo(filaImagenIdTmp);
+                filaImagenTmp = (filaImagenTmp == null ? new VehiculoImagen() :filaImagenTmp);
                 mapaFilaImagen.put(clave, filaImagenTmp);
             }
             listaFilaImagen.add(mapaFilaImagen);
@@ -89,12 +89,12 @@ public class FilaImagenBean {
                 Long idCategoria = categoria.getIdCategoria();
                 Long idTrabajo = trabajo.getIdTrabajo();
                 Long idGrupoPrecio = grupoPrecio.getIdGrupoPrecio();
-                FilaImagenId filaImagenIdTmp = new FilaImagenId();
+                VehiculoImagenId filaImagenIdTmp = new VehiculoImagenId();
                 filaImagenIdTmp.setIdCategoria(idCategoria);
                 filaImagenIdTmp.setIdTrabajo(idTrabajo);
                 filaImagenIdTmp.setIdGrupoPrecio(idGrupoPrecio);
-                FilaImagen filaImagenTmp = filaImagenDao.obtenerPorCodigo(filaImagenIdTmp);
-                filaImagenTmp = (filaImagenTmp == null ? new FilaImagen() :filaImagenTmp);
+                VehiculoImagen filaImagenTmp = filaImagenDao.obtenerPorCodigo(filaImagenIdTmp);
+                filaImagenTmp = (filaImagenTmp == null ? new VehiculoImagen() :filaImagenTmp);
                 mapaFilaImagen.put(clave, filaImagenTmp);
             }
             listaFilaImagen.add(mapaFilaImagen);

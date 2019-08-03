@@ -5,6 +5,7 @@
  */
 package ec.com.ata.cn.controlador;
 
+import ec.com.ata.cn.logica.ImagenBean;
 import ec.com.ata.cn.logica.MarcaVehiculoBean;
 import ec.com.ata.cn.logica.ParametroBean;
 import ec.com.ata.cn.logica.TipoFilaBean;
@@ -12,18 +13,19 @@ import ec.com.ata.cn.logica.VehiculoBean;
 import ec.com.ata.cn.logica.util.gestor.Constante;
 import ec.com.ata.cn.logica.util.gestor.UtilGeneral;
 import ec.com.ata.cn.modelo.Fila;
+import ec.com.ata.cn.modelo.Imagen;
 import ec.com.ata.cn.modelo.MarcaVehiculo;
 import ec.com.ata.cn.modelo.TipoFila;
 import ec.com.ata.cn.modelo.Vehiculo;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
 import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -31,6 +33,8 @@ import javax.inject.Named;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.omnifaces.util.selectitems.SelectItemsBuilder;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
 /**
@@ -43,41 +47,48 @@ public class VehiculoAdministracionControlador extends BaseControlador {
 
     @Inject
     private MarcaVehiculoBean marcaVehiculoBean;
-    
+
     @Inject
     private VehiculoBean vehiculoBean;
-    
+
     @Inject
     private TipoFilaBean tipoFilaBean;
-    
+
     @Inject
     private ParametroBean parametroBean;
 
+    @Inject
+    private ImagenBean imagenBean;
+
     private MarcaVehiculo marcaVehiculo;
-    
+
     private MarcaVehiculo marcaVehiculoSeleccionado;
-    
+
     private Vehiculo vehiculo;
-    
+
     private Vehiculo vehiculoSeleccionado;
 
     private List<MarcaVehiculo> listaMarcaVehiculo;
-    
+
     private List<Vehiculo> listaVehiculo;
-    
+
     private List<Fila> filasDelVehiculo;
-    
+
     private List<TipoFila> tipoFilasAsiento;
-    
+
     private Integer anioDesdeRango;
-    
+
     private Integer anioHastaRango;
-    
+
     private List<Integer> rangoAnioInicial;
-    
+
     private List<Integer> rangoAnioFinal;
-    
+
     private List<UploadedFile> imagenes;
+
+    private List<Imagen> imagenesVehiculo;
+
+    private UploadedFile imagen;
 
     @PostConstruct
     public void init() {
@@ -90,15 +101,23 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         setRangoAnioInicial(new ArrayList<Integer>());
         setRangoAnioFinal(new ArrayList<Integer>());
         setImagenes(new ArrayList<UploadedFile>());
+        setImagenesVehiculo(new ArrayList<Imagen>());
         inicializarRangoAnioInicial();
-        
+
     }
-    
-    public void manejadorCargarArchivo(FileUploadEvent event) {
+
+    public void cargarImagen() {
         try {
+
+            //System.out.println("-->"+new String(UtilGeneral.ImagenAByte(event.getFile())));
+            Imagen imagenTmp = new Imagen();
+            imagenTmp.setNombre(imagen.getFileName());
+            imagenTmp.setDatosImagen(UtilGeneral.ImagenAByte(imagen));
+            imagenBean.guardar(imagenTmp);
+            getImagenesVehiculo().add(imagenTmp);
             addInfoMessage(Constante.EXITO, "probando");
-            System.out.println("-->"+UtilGeneral.ImagenAByte(event.getFile()));
         } catch (Exception e) {
+            e.printStackTrace();
             final Throwable root = ExceptionUtils.getRootCause(e);
             if (null != root) {
                 addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
@@ -107,20 +126,56 @@ public class VehiculoAdministracionControlador extends BaseControlador {
             addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
         }
     }
-    
+
+    public StreamedContent procesarImagen(Imagen imagenEntrada) {
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+                return new DefaultStreamedContent();
+            } else {
+                return new DefaultStreamedContent(new ByteArrayInputStream(imagenEntrada.getDatosImagen()));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new DefaultStreamedContent();
+        }
+
+    }
+
+    public void manejadorCargarArchivo(FileUploadEvent event) {
+        try {
+            System.out.println("nombre: " + event.getFile().getFileName());
+            //System.out.println("-->"+new String(UtilGeneral.ImagenAByte(event.getFile())));
+            Imagen imagen = new Imagen();
+            imagen.setNombre(event.getFile().getFileName());
+            imagen.setDatosImagen(UtilGeneral.ImagenAByte(event.getFile()));
+            
+
+            addInfoMessage(Constante.EXITO, "probando");
+        } catch (Exception e) {
+            e.printStackTrace();
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+        }
+    }
+
     public void configurarRangoAnioFinal() {
         setRangoAnioFinal(new ArrayList<Integer>());
-        for (int i = vehiculo.getAnioVehiculoDesde().intValue() ; i <= getAnioHastaRango(); i++) {
+        for (int i = vehiculo.getAnioVehiculoDesde().intValue(); i <= getAnioHastaRango(); i++) {
             getRangoAnioFinal().add(i);
         }
     }
-    
+
     private void inicializarRangoAnioInicial() {
         for (int i = getAnioDesdeRango(); i <= getAnioHastaRango(); i++) {
             getRangoAnioInicial().add(i);
         }
     }
-    
+
     public List<SelectItem> generarSelectItemDeTipoFilaDeAsiento() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
         for (TipoFila tipoFilaAsientoTmp : getTipoFilasAsiento()) {
@@ -128,17 +183,16 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         }
         return selectItemsBuilder.buildList();
     }
-    
+
     public List<SelectItem> generarSelectAnioInicial() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
-        
-        
+
         for (TipoFila tipoFilaAsientoTmp : getTipoFilasAsiento()) {
             selectItemsBuilder.add(tipoFilaAsientoTmp, tipoFilaAsientoTmp.getTipoFila());
         }
         return selectItemsBuilder.buildList();
     }
-    
+
     public void generarFilas() {
         System.err.println("--- generarFilas --");
         List<Fila> listaFilasTemp = new ArrayList<>();
@@ -147,11 +201,11 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         }
         setFilasDelVehiculo(listaFilasTemp);
     }
-    
-    public void cargarListaDeVehiculos(){
+
+    public void cargarListaDeVehiculos() {
         setListaVehiculo(vehiculoBean.obtenerListaPorMarca(marcaVehiculoSeleccionado));
-    }    
-    
+    }
+
     public List<SelectItem> generarSelectItemDeMarcaVehiculo() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
         for (MarcaVehiculo marcaVehiculoTmp : getListaMarcaVehiculo()) {
@@ -159,7 +213,7 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         }
         return selectItemsBuilder.buildList();
     }
-    
+
     public void guadarMarcaVehiculo() {
         try {
             marcaVehiculo.getGenericoEntidad().setFechaRegistro(new Date(System.currentTimeMillis()));
@@ -239,8 +293,6 @@ public class VehiculoAdministracionControlador extends BaseControlador {
     public void setMarcaVehiculoSeleccionado(MarcaVehiculo marcaVehiculoSeleccionado) {
         this.marcaVehiculoSeleccionado = marcaVehiculoSeleccionado;
     }
-
-    
 
     /**
      * @return the listaVehiculo
@@ -367,7 +419,7 @@ public class VehiculoAdministracionControlador extends BaseControlador {
     public void setRangoAnioFinal(List<Integer> rangoAnioFinal) {
         this.rangoAnioFinal = rangoAnioFinal;
     }
-    
+
     /**
      * @return the imagenes
      */
@@ -380,5 +432,33 @@ public class VehiculoAdministracionControlador extends BaseControlador {
      */
     public void setImagenes(List<UploadedFile> imagenes) {
         this.imagenes = imagenes;
+    }
+
+    /**
+     * @return the imagenesVehiculo
+     */
+    public List<Imagen> getImagenesVehiculo() {
+        return imagenesVehiculo;
+    }
+
+    /**
+     * @param imagenesVehiculo the imagenesVehiculo to set
+     */
+    public void setImagenesVehiculo(List<Imagen> imagenesVehiculo) {
+        this.imagenesVehiculo = imagenesVehiculo;
+    }
+
+    /**
+     * @return the imagen
+     */
+    public UploadedFile getImagen() {
+        return imagen;
+    }
+
+    /**
+     * @param imagen the imagen to set
+     */
+    public void setImagen(UploadedFile imagen) {
+        this.imagen = imagen;
     }
 }

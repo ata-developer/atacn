@@ -14,35 +14,33 @@ import javax.persistence.Embeddable;
  * @author ATA1
  */
 @Embeddable
-public class FilaImagenId implements Serializable {
+public class VehiculoImagenId implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Column(name = "id_fila")
-    private Long idFila;
+    @Column(name = "id_vehiculo")
+    private Long idVehiculo;
     
     @Column(name = "id_imagen")
     private Long idImagen;
 
     @Override
     public String toString() {
-        return "FilaImagenId{" + "idFila=" + idFila + ", idImagen=" + idImagen + '}';
-    }
-    
-    
-
-    /**
-     * @return the idFila
-     */
-    public Long getIdFila() {
-        return idFila;
+        return "VehiculoImagenId{" + "idVehiculo=" + getIdVehiculo() + ", idImagen=" + getIdImagen() + '}';
     }
 
     /**
-     * @param idFila the idFila to set
+     * @return the idVehiculo
      */
-    public void setIdFila(Long idFila) {
-        this.idFila = idFila;
+    public Long getIdVehiculo() {
+        return idVehiculo;
+    }
+
+    /**
+     * @param idVehiculo the idVehiculo to set
+     */
+    public void setIdVehiculo(Long idVehiculo) {
+        this.idVehiculo = idVehiculo;
     }
 
     /**
@@ -58,5 +56,9 @@ public class FilaImagenId implements Serializable {
     public void setIdImagen(Long idImagen) {
         this.idImagen = idImagen;
     }
+    
+    
+
+   
    
 }
