@@ -149,7 +149,7 @@ public class VehiculoAdministracionControlador extends BaseControlador {
             Imagen imagen = new Imagen();
             imagen.setNombre(event.getFile().getFileName());
             imagen.setDatosImagen(UtilGeneral.ImagenAByte(event.getFile()));
-            
+            this.imagen = imagen;
 
             addInfoMessage(Constante.EXITO, "probando");
         } catch (Exception e) {
