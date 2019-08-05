@@ -146,11 +146,14 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         try {
             System.out.println("nombre: " + event.getFile().getFileName());
             //System.out.println("-->"+new String(UtilGeneral.ImagenAByte(event.getFile())));
-            Imagen imagen = new Imagen();
-            imagen.setNombre(event.getFile().getFileName());
-            imagen.setDatosImagen(UtilGeneral.ImagenAByte(event.getFile()));
-            this.imagen = imagen;
-
+            Imagen imagenTmp = new Imagen();
+            imagenTmp.setNombre(event.getFile().getFileName());
+            imagenTmp.setDatosImagen(UtilGeneral.ImagenAByte(event.getFile()));
+            imagenTmp.setTienePadre(false);
+            Imagen imagenTmp2 = imagenBean.guardar(imagenTmp);
+            Imagen imagenTpm3 = new Imagen();
+            imagenTpm3.setIdImagen(imagenTmp2.getIdImagen());
+            imagenesVehiculo.add(imagenTpm3);
             addInfoMessage(Constante.EXITO, "probando");
         } catch (Exception e) {
             e.printStackTrace();

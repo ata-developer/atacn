@@ -203,24 +203,21 @@
                     <p:panelGrid id="pngAdministrarImagenes" columns="1" style="width: 400px;">
                         <p:fileUpload
                             id="imagenCargador"
+                            update="mensajeGeneral listaImagenes"
                             fileUploadListener="#{vehiculoAdministracionControlador.manejadorCargarArchivo}"
                             mode="advanced"
                             sizeLimit="1000000"
                             allowTypes="/(\.|\/)(gif|jpe?g|png)$/">
                         </p:fileUpload>
-                        <p:commandButton 
-                            id="botonCargarImagen"
-                            value="#{msj.cargarImagen}"
-                            inmediate="true"
-                            update="listaImagenes mensajeGeneral" 
-                            process="pngAdministrarImagenes"
-                            actionListener="#{vehiculoAdministracionControlador.cargarImagen()}"/>
+
                         <p:dataTable
                             id="listaImagenes"
                             value="#{vehiculoAdministracionControlador.imagenesVehiculo}"
                             var="imagen">
                             <p:column headerText="#{msj.imagenes}">
-                                <p:outputLabel value="#{vehiculoAdministracionControlador.procesarImagen(imagen)}"/>
+                                <h:outputLink value="MostradorImagen?Image_id=#{imagen.idImagen}" target="_blank" >
+                                    <h:graphicImage value="MostradorImagen?Image_id=#{imagen.idImagen}" width="50" height="50"></h:graphicImage>
+                                </h:outputLink>
                             </p:column>
                         </p:dataTable>
                     </p:panelGrid>

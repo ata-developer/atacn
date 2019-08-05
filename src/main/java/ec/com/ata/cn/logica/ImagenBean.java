@@ -31,4 +31,8 @@ public class ImagenBean {
     public List<Imagen> obtenerLista() {
         return imagenDao.obtenerTodos();
     }
+    
+    public Imagen obtenerPorCodigo(Long idImagen){
+        return imagenDao.obtenerPorCodigo(idImagen);
+    }
 }
