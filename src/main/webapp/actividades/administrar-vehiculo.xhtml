@@ -203,24 +203,24 @@
                     <p:panelGrid id="pngAdministrarImagenes" columns="1" style="width: 400px;">
                         <p:fileUpload
                             id="imagenCargador"
-                            update="mensajeGeneral listaImagenes"
+                            update="mensajeGeneral pngAdministrarImagenes4"
                             fileUploadListener="#{vehiculoAdministracionControlador.manejadorCargarArchivo}"
                             mode="advanced"
                             sizeLimit="1000000"
+                            fileLimit="6"                            
                             allowTypes="/(\.|\/)(gif|jpe?g|png)$/">
                         </p:fileUpload>
 
-                        <p:dataTable
-                            id="listaImagenes"
-                            value="#{vehiculoAdministracionControlador.imagenesVehiculo}"
-                            var="imagen">
-                            <p:column headerText="#{msj.imagenes}">
-                                <h:outputLink value="MostradorImagen?Image_id=#{imagen.idImagen}" target="_blank" >
-                                    <h:graphicImage value="MostradorImagen?Image_id=#{imagen.idImagen}" width="50" height="50"></h:graphicImage>
-                                </h:outputLink>
-                            </p:column>
-                        </p:dataTable>
+
                     </p:panelGrid>
+                    <p:panelGrid id="pngAdministrarImagenes4" columns="2">
+                        <c:forEach var="imagen" items="#{vehiculoAdministracionControlador.imagenesVehiculo}">
+                            <h:outputLink value="MostradorImagen?Image_id=#{imagen.idImagen}" target="_blank" >
+                                <h:graphicImage value="MostradorImagen?Image_id=#{imagen.idImagen}" width="100" height="100"></h:graphicImage>
+                            </h:outputLink>
+                        </c:forEach>
+                    </p:panelGrid>
+
 
 
                     <!-- FIN imagenes del vehiculo -->
@@ -229,7 +229,7 @@
 
                         <p:commandButton
                             id="btnGuardaVehiculo"
-                            process="@this tblListaFilas descripcionVehiculo numeroFilasVehiculo"
+                            process="@this configurarVehiculo"
                             value="#{msj.guardar}"
                             update="configurarVehiculo  mensajeGeneral"
                             action="#{vehiculoAdministracionControlador.guadarVehiculo()}" />

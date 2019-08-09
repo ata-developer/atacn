@@ -126,6 +126,13 @@ public class GenericoDaoUtil<T, I extends Serializable> {
                     String parametroCadena = (String) parametros.get(field.getName().concat("IsNotNull"));
                     predicates.add(cb.and(cb.isNotNull(root.get(parametroCadena))));
                 }
+                if (parametros.containsKey(field.getName().concat("Like"))) {
+                    String parametroCadena = (String) parametros.get(field.getName().concat("Like"));
+                    String palabraSinLike = field.getName().concat("Like");
+                    String regex = "\\s*\\bLike\\b\\s*";
+                    palabraSinLike = palabraSinLike.replaceAll(regex, "");
+                    predicates.add(cb.and(cb.equal(root.get(palabraSinLike), parametroCadena)));
+                }
             }
             query.select(root).where(predicates.toArray(new Predicate[predicates.size()]));
             return em.createQuery(query).getResultList();

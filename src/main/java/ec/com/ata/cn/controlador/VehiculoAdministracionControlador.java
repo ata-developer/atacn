@@ -89,6 +89,8 @@ public class VehiculoAdministracionControlador extends BaseControlador {
     private List<Imagen> imagenesVehiculo;
 
     private UploadedFile imagen;
+    
+    private Integer contadorImagenes;
 
     @PostConstruct
     public void init() {
@@ -103,6 +105,7 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         setImagenes(new ArrayList<UploadedFile>());
         setImagenesVehiculo(new ArrayList<Imagen>());
         inicializarRangoAnioInicial();
+        setContadorImagenes(0);
 
     }
 
@@ -146,14 +149,13 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         try {
             System.out.println("nombre: " + event.getFile().getFileName());
             //System.out.println("-->"+new String(UtilGeneral.ImagenAByte(event.getFile())));
+            
             Imagen imagenTmp = new Imagen();
             imagenTmp.setNombre(event.getFile().getFileName());
             imagenTmp.setDatosImagen(UtilGeneral.ImagenAByte(event.getFile()));
             imagenTmp.setTienePadre(false);
             Imagen imagenTmp2 = imagenBean.guardar(imagenTmp);
-            Imagen imagenTpm3 = new Imagen();
-            imagenTpm3.setIdImagen(imagenTmp2.getIdImagen());
-            imagenesVehiculo.add(imagenTpm3);
+            imagenesVehiculo.add(imagenTmp2);
             addInfoMessage(Constante.EXITO, "probando");
         } catch (Exception e) {
             e.printStackTrace();
@@ -240,7 +242,7 @@ public class VehiculoAdministracionControlador extends BaseControlador {
             vehiculo.getGenericoEntidad().setFechaRegistro(new Date(System.currentTimeMillis()));
             vehiculo.setMarca(marcaVehiculoSeleccionado);
             vehiculo.setFilasDeAsientos(filasDelVehiculo);
-            vehiculoBean.crear(vehiculo);
+            vehiculoBean.crear(vehiculo,imagenesVehiculo);
             setListaVehiculo(vehiculoBean.obtenerListaPorMarca(marcaVehiculoSeleccionado));
             addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
@@ -463,5 +465,19 @@ public class VehiculoAdministracionControlador extends BaseControlador {
      */
     public void setImagen(UploadedFile imagen) {
         this.imagen = imagen;
+    }
+
+    /**
+     * @return the contadorImagenes
+     */
+    public Integer getContadorImagenes() {
+        return contadorImagenes;
+    }
+
+    /**
+     * @param contadorImagenes the contadorImagenes to set
+     */
+    public void setContadorImagenes(Integer contadorImagenes) {
+        this.contadorImagenes = contadorImagenes;
     }
 }
