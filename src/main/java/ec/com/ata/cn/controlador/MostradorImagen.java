@@ -47,7 +47,9 @@ public class MostradorImagen extends HttpServlet {
             response.setContentType("image/jpeg");
             response.getOutputStream().write(imagen.getDatosImagen());
         } catch (Exception e) {
-            e.printStackTrace();
+            response.reset();
+            response.setContentType("image/jpeg");
+            response.getOutputStream().write(new byte[0]);
         }
 
     }

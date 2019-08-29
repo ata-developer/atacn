@@ -10,6 +10,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,7 +19,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 /**
  *
@@ -48,10 +48,7 @@ public class Fila implements Serializable {
     
     private Integer numeroAsientos;
     
-    @Transient
-    private TipoFila tipoFilaTmp;
-    
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="id_tipo_fila", referencedColumnName="id_tipo_fila")
     private TipoFila tipoFila;
     
@@ -142,6 +139,7 @@ public class Fila implements Serializable {
      * @return the tipoFila
      */
     public TipoFila getTipoFila() {
+        System.out.println("entro a tipo fila");
         return tipoFila;
     }
 
@@ -150,24 +148,9 @@ public class Fila implements Serializable {
      */
     public void setTipoFila(TipoFila tipoFila) {
         this.tipoFila = tipoFila;
+        this.numeroAsientos = this.tipoFila == null ? 0 : this.tipoFila.getNumeroAsiento();
     }
 
-    /**
-     * @return the tipoFilaTmp
-     */
-    public TipoFila getTipoFilaTmp() {
-        return tipoFilaTmp;
-    }
-
-    /**
-     * @param tipoFilaTmp the tipoFilaTmp to set
-     */
-    public void setTipoFilaTmp(TipoFila tipoFilaTmp) {
-        this.tipoFilaTmp = tipoFilaTmp;
-        this.tipoFila = tipoFilaTmp;
-        this.numeroAsientos = tipoFilaTmp.getNumeroAsiento();
-    }
-    
     /**
      * @return the genericoEntidad
      */

@@ -30,4 +30,8 @@ public class TipoFilaBean {
     public List<TipoFila> obtenerLista(){
         return tipoFilaDao.obtenerTodos();
     }
+    
+    public TipoFila obtenerPorCodigo(Long idTipoFila){
+        return tipoFilaDao.obtenerPorCodigo(idTipoFila);
+    }
 }

@@ -6,6 +6,7 @@
 package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -47,6 +48,43 @@ public class TipoFila implements Serializable {
 
     public TipoFila () {
         genericoEntidad = new GenericoEntidad();
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 19 * hash + Objects.hashCode(this.idTipoFila);
+        hash = 19 * hash + Objects.hashCode(this.tipoFila);
+        hash = 19 * hash + Objects.hashCode(this.numeroAsiento);
+        hash = 19 * hash + Objects.hashCode(this.genericoEntidad);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final TipoFila other = (TipoFila) obj;
+        if (!Objects.equals(this.tipoFila, other.tipoFila)) {
+            return false;
+        }
+        if (!Objects.equals(this.idTipoFila, other.idTipoFila)) {
+            return false;
+        }
+        if (!Objects.equals(this.numeroAsiento, other.numeroAsiento)) {
+            return false;
+        }
+        if (!Objects.equals(this.genericoEntidad, other.genericoEntidad)) {
+            return false;
+        }
+        return true;
     }
 
    

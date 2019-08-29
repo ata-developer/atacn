@@ -81,5 +81,9 @@ public class Constante {
     
     public static final String ANIO_INICIO_RANGO = "ANIO_INICIO_RANGO";
     public static final String ANIO_FIN_RANGO = "ANIO_FIN_RANGO";
+    public static final String SIN_IMAGENES = "INGRESAR IMAGENES DEL VEHICULO";
+    
+    public static final String SUPERIOR = "SUPERIOR";
+    public static final String RANGO = "RANGO";
     
 }

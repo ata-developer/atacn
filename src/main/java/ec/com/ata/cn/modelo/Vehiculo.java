@@ -10,6 +10,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,9 +43,11 @@ public class Vehiculo implements Serializable {
     @Column(name = "modelo")
     private String modelo;
     
-    private String observacionAnio;
-    
+    @Column(name = "numero_filas")   
     private Integer numeroDeFilas;
+    
+    @Column(name = "tipo_rango")   
+    private String tipoRango;
     
     @Embedded
     private GenericoEntidad genericoEntidad;
@@ -52,12 +55,15 @@ public class Vehiculo implements Serializable {
     @ManyToOne
     private MarcaVehiculo marca;
     
-    @OneToMany(mappedBy = "vehiculo")
+    @OneToMany(mappedBy = "vehiculo",fetch = FetchType.EAGER)
     private List<Fila> filasDeAsientos;
     
-    private Long anioVehiculoDesde;
+    @Column(name = "anio_desde")
+    private Long anioDesde;
         
-    private Long anioVehiculoHasta;
+
+    @Column(name = "anio_hasta")
+    private Long anioHasta;
     
     public Vehiculo () {
         genericoEntidad = new GenericoEntidad();
@@ -93,8 +99,10 @@ public class Vehiculo implements Serializable {
 
     @Override
     public String toString() {
-        return "ec.com.ata.cn.modelo.Vehiculo[ id=" + idVehiculo + " ]";
+        return "Vehiculo{" + "idVehiculo=" + idVehiculo + ", modelo=" + modelo + ", numeroDeFilas=" + numeroDeFilas + ", tipoRango=" + tipoRango + ", marca=" + marca + ", anioVehiculoDesde=" + anioDesde + ", anioVehiculoHasta=" + anioHasta + '}';
     }
+
+    
 
     /**
      * @return the marca
@@ -127,45 +135,31 @@ public class Vehiculo implements Serializable {
     }
 
     /**
-     * @return the observacionAnio
+     * @return the anioDesde
      */
-    public String getObservacionAnio() {
-        return observacionAnio;
+    public Long getAnioDesde() {
+        return anioDesde;
     }
 
     /**
-     * @param observacionAnio the observacionAnio to set
+     * @param anioDesde the anioDesde to set
      */
-    public void setObservacionAnio(String observacionAnio) {
-        this.observacionAnio = observacionAnio;
+    public void setAnioDesde(Long anioDesde) {
+        this.anioDesde = anioDesde;
     }
 
     /**
-     * @return the anioVehiculoDesde
+     * @return the anioHasta
      */
-    public Long getAnioVehiculoDesde() {
-        return anioVehiculoDesde;
+    public Long getAnioHasta() {
+        return anioHasta;
     }
 
     /**
-     * @param anioVehiculoDesde the anioVehiculoDesde to set
+     * @param anioHasta the anioHasta to set
      */
-    public void setAnioVehiculoDesde(Long anioVehiculoDesde) {
-        this.anioVehiculoDesde = anioVehiculoDesde;
-    }
-
-    /**
-     * @return the anioVehiculoHasta
-     */
-    public Long getAnioVehiculoHasta() {
-        return anioVehiculoHasta;
-    }
-
-    /**
-     * @param anioVehiculoHasta the anioVehiculoHasta to set
-     */
-    public void setAnioVehiculoHasta(Long anioVehiculoHasta) {
-        this.anioVehiculoHasta = anioVehiculoHasta;
+    public void setAnioHasta(Long anioHasta) {
+        this.anioHasta = anioHasta;
     }
 
     /**
@@ -208,6 +202,20 @@ public class Vehiculo implements Serializable {
      */
     public void setFilasDeAsientos(List<Fila> filasDeAsientos) {
         this.filasDeAsientos = filasDeAsientos;
+    }
+
+    /**
+     * @return the tipoRango
+     */
+    public String getTipoRango() {
+        return tipoRango;
+    }
+
+    /**
+     * @param tipoRango the tipoRango to set
+     */
+    public void setTipoRango(String tipoRango) {
+        this.tipoRango = tipoRango;
     }
 
    

@@ -26,6 +26,10 @@
         <converter-id>establecimientoConvertidor</converter-id>
         <converter-class>ec.com.ata.cn.controlador.convertidor.EstablecimientoConvertidor</converter-class>
     </converter>
+    <converter>
+        <converter-id>tipoFilaConvertidor</converter-id>
+        <converter-class>ec.com.ata.cn.controlador.convertidor.TipoFilaConvertidor</converter-class>
+    </converter>
     
     
     <factory>

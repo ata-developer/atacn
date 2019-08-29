@@ -5,11 +5,13 @@
  */
 package ec.com.ata.cn.controlador;
 
+import ec.com.ata.cn.logica.FilaBean;
 import ec.com.ata.cn.logica.ImagenBean;
 import ec.com.ata.cn.logica.MarcaVehiculoBean;
 import ec.com.ata.cn.logica.ParametroBean;
 import ec.com.ata.cn.logica.TipoFilaBean;
 import ec.com.ata.cn.logica.VehiculoBean;
+import ec.com.ata.cn.logica.VehiculoImagenBean;
 import ec.com.ata.cn.logica.util.gestor.Constante;
 import ec.com.ata.cn.logica.util.gestor.UtilGeneral;
 import ec.com.ata.cn.modelo.Fila;
@@ -17,8 +19,9 @@ import ec.com.ata.cn.modelo.Imagen;
 import ec.com.ata.cn.modelo.MarcaVehiculo;
 import ec.com.ata.cn.modelo.TipoFila;
 import ec.com.ata.cn.modelo.Vehiculo;
+import ec.com.ata.cn.modelo.VehiculoImagen;
+import ec.com.ata.cn.modelo.VehiculoImagenId;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -52,6 +55,9 @@ public class VehiculoAdministracionControlador extends BaseControlador {
     private VehiculoBean vehiculoBean;
 
     @Inject
+    private VehiculoImagenBean vehiculoImagenBean;
+
+    @Inject
     private TipoFilaBean tipoFilaBean;
 
     @Inject
@@ -59,6 +65,9 @@ public class VehiculoAdministracionControlador extends BaseControlador {
 
     @Inject
     private ImagenBean imagenBean;
+
+    @Inject
+    private FilaBean filaBean;
 
     private MarcaVehiculo marcaVehiculo;
 
@@ -89,8 +98,12 @@ public class VehiculoAdministracionControlador extends BaseControlador {
     private List<Imagen> imagenesVehiculo;
 
     private UploadedFile imagen;
-    
+
     private Integer contadorImagenes;
+
+    private String modelo;
+
+    private Boolean modoEdicion;
 
     @PostConstruct
     public void init() {
@@ -106,7 +119,52 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         setImagenesVehiculo(new ArrayList<Imagen>());
         inicializarRangoAnioInicial();
         setContadorImagenes(0);
+        setModoEdicion(false);
+    }
 
+    public void eliminarImagen(Long imagenId) {
+        try {
+            VehiculoImagenId vehiculoImagenId = new VehiculoImagenId();
+            vehiculoImagenId.setIdImagen(imagenId);
+            vehiculoImagenId.setIdVehiculo(vehiculo.getIdVehiculo());
+            VehiculoImagen vehiculoImagenTmp = new VehiculoImagen();
+            vehiculoImagenTmp.setVehiculoImagenId(vehiculoImagenId);
+            vehiculoImagenBean.eliminar(vehiculoImagenTmp);
+            imagenBean.eliminar(imagenId);
+            this.imagenesVehiculo = vehiculoImagenBean.obtenerListaPorVehiculo(vehiculo);
+            setListaVehiculo(vehiculoBean.obtenerListaPorMarca(marcaVehiculoSeleccionado));
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+        } 
+
+    }
+
+    public void seleccionarVehiculo(Vehiculo vehiculoEntrada) {
+        setModoEdicion(true);
+        this.vehiculo = vehiculoEntrada;
+        configurarRangoAnioFinal();
+        this.imagenesVehiculo = vehiculoImagenBean.obtenerListaPorVehiculo(vehiculo);
+        this.filasDelVehiculo = filaBean.obtenerListaPorVehiculo(vehiculo);
+    }
+
+    public List<Fila> listaFila(Vehiculo vehiculo) {
+        return filaBean.obtenerListaPorVehiculo(vehiculo);
+    }
+
+    public List<Imagen> listaImagenes(Vehiculo vehiculoEntrada) {
+        return vehiculoImagenBean.obtenerListaPorVehiculo(vehiculoEntrada);
+    }
+
+    public List<String> autoCompletar(String consulta) {
+        System.out.println("modelo: " + consulta);
+        return vehiculoBean.obtenerModeloListaPorMarcaYPorModeloLike(marcaVehiculoSeleccionado, consulta);
     }
 
     public void cargarImagen() {
@@ -149,7 +207,7 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         try {
             System.out.println("nombre: " + event.getFile().getFileName());
             //System.out.println("-->"+new String(UtilGeneral.ImagenAByte(event.getFile())));
-            
+
             Imagen imagenTmp = new Imagen();
             imagenTmp.setNombre(event.getFile().getFileName());
             imagenTmp.setDatosImagen(UtilGeneral.ImagenAByte(event.getFile()));
@@ -158,7 +216,6 @@ public class VehiculoAdministracionControlador extends BaseControlador {
             imagenesVehiculo.add(imagenTmp2);
             addInfoMessage(Constante.EXITO, "probando");
         } catch (Exception e) {
-            e.printStackTrace();
             final Throwable root = ExceptionUtils.getRootCause(e);
             if (null != root) {
                 addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
@@ -170,9 +227,14 @@ public class VehiculoAdministracionControlador extends BaseControlador {
 
     public void configurarRangoAnioFinal() {
         setRangoAnioFinal(new ArrayList<Integer>());
-        for (int i = vehiculo.getAnioVehiculoDesde().intValue(); i <= getAnioHastaRango(); i++) {
+        for (int i = vehiculo.getAnioDesde().intValue(); i <= getAnioHastaRango(); i++) {
             getRangoAnioFinal().add(i);
         }
+        vehiculo.setTipoRango(Constante.SUPERIOR);
+    }
+
+    public void configurarRango() {
+        vehiculo.setTipoRango(Constante.RANGO);
     }
 
     private void inicializarRangoAnioInicial() {
@@ -187,6 +249,10 @@ public class VehiculoAdministracionControlador extends BaseControlador {
             selectItemsBuilder.add(tipoFilaAsientoTmp, tipoFilaAsientoTmp.getTipoFila());
         }
         return selectItemsBuilder.buildList();
+    }
+
+    public List<TipoFila> obtenerTodosTipoFila() {
+        return tipoFilaBean.obtenerLista();
     }
 
     public List<SelectItem> generarSelectAnioInicial() {
@@ -238,11 +304,24 @@ public class VehiculoAdministracionControlador extends BaseControlador {
     }
 
     public void guadarVehiculo() {
+        if (modoEdicion) {
+            modificar();
+        } else {
+            guardar();
+        }
+    }
+
+    public void guardar() {
+        if (imagenesVehiculo.isEmpty()) {
+            addErrorMessage(Constante.ERROR, Constante.SIN_IMAGENES);
+            return;
+        }
         try {
             vehiculo.getGenericoEntidad().setFechaRegistro(new Date(System.currentTimeMillis()));
             vehiculo.setMarca(marcaVehiculoSeleccionado);
             vehiculo.setFilasDeAsientos(filasDelVehiculo);
-            vehiculoBean.crear(vehiculo,imagenesVehiculo);
+            System.out.println("vehiculo: " + vehiculo.toString());
+            vehiculoBean.crear(vehiculo, imagenesVehiculo);
             setListaVehiculo(vehiculoBean.obtenerListaPorMarca(marcaVehiculoSeleccionado));
             addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
@@ -255,6 +334,30 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         } finally {
             vehiculo = new Vehiculo();
         }
+    }
+
+    public void modificar() {
+        if (imagenesVehiculo.isEmpty()) {
+            addErrorMessage(Constante.ERROR, Constante.SIN_IMAGENES);
+            return;
+        }
+        try {
+            vehiculo.getGenericoEntidad().setFechaRegistro(new Date(System.currentTimeMillis()));
+            vehiculo.setMarca(marcaVehiculoSeleccionado);
+            vehiculo.setFilasDeAsientos(filasDelVehiculo);
+            System.out.println("vehiculo modificar: " + vehiculo.toString());
+            vehiculoBean.actualizar(vehiculo, imagenesVehiculo);
+            setListaVehiculo(vehiculoBean.obtenerListaPorMarca(marcaVehiculoSeleccionado));
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+        } 
     }
 
     /**
@@ -479,5 +582,33 @@ public class VehiculoAdministracionControlador extends BaseControlador {
      */
     public void setContadorImagenes(Integer contadorImagenes) {
         this.contadorImagenes = contadorImagenes;
+    }
+
+    /**
+     * @return the modelo
+     */
+    public String getModelo() {
+        return modelo;
+    }
+
+    /**
+     * @param modelo the modelo to set
+     */
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
+
+    /**
+     * @return the modoEdicion
+     */
+    public Boolean getModoEdicion() {
+        return modoEdicion;
+    }
+
+    /**
+     * @param modoEdicion the modoEdicion to set
+     */
+    public void setModoEdicion(Boolean modoEdicion) {
+        this.modoEdicion = modoEdicion;
     }
 }

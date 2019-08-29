@@ -116,6 +116,8 @@ public class GenericoDaoUtil<T, I extends Serializable> {
             for (Field field : fields) {
                 parametro = parametros.get(field.getName());
                 if (null != parametro) {
+                    System.out.println("parametro:" + parametro);
+                    System.out.println("field.getName():" + field.getName());
                     predicates.add(cb.and(cb.equal(root.get(field.getName()), parametro)));
                 }
                 if (parametros.containsKey(field.getName().concat("IsNull"))) {
@@ -127,11 +129,13 @@ public class GenericoDaoUtil<T, I extends Serializable> {
                     predicates.add(cb.and(cb.isNotNull(root.get(parametroCadena))));
                 }
                 if (parametros.containsKey(field.getName().concat("Like"))) {
+                    System.out.println("like");
                     String parametroCadena = (String) parametros.get(field.getName().concat("Like"));
-                    String palabraSinLike = field.getName().concat("Like");
-                    String regex = "\\s*\\bLike\\b\\s*";
-                    palabraSinLike = palabraSinLike.replaceAll(regex, "");
-                    predicates.add(cb.and(cb.equal(root.get(palabraSinLike), parametroCadena)));
+                    System.out.println("parametroCadena: "+ parametroCadena);
+                    System.out.println("field.getName: "+ field.getName());
+                    predicates.add(cb.and(cb.like(
+                            cb.upper(root.<String>get(field.getName())),
+                            "%" + parametroCadena.toUpperCase() + "%")));
                 }
             }
             query.select(root).where(predicates.toArray(new Predicate[predicates.size()]));
