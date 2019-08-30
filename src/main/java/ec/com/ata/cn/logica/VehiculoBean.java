@@ -11,6 +11,7 @@ import ec.com.ata.cn.modelo.Imagen;
 import ec.com.ata.cn.modelo.MarcaVehiculo;
 import ec.com.ata.cn.modelo.Vehiculo;
 import ec.com.ata.cn.modelo.VehiculoImagen;
+import ec.com.ata.cn.modelo.VehiculoImagenId;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -50,8 +51,8 @@ public class VehiculoBean {
     }
 
     public Vehiculo actualizar(Vehiculo vehiculoEntrada, List<Imagen> listaImagenesVehiculo) throws Exception {
-        Vehiculo vehiculoCreado = vehiculoDao.modificar(vehiculoEntrada);        
-        filaBean.eliminarPorVehiculo(vehiculoEntrada);
+        Vehiculo vehiculoCreado = vehiculoDao.modificar(vehiculoEntrada);
+        /*filaBean.eliminarPorVehiculo(vehiculoEntrada);
         System.out.println("Elimnado filas");
         if (null != vehiculoEntrada.getFilasDeAsientos()) {
             List<Fila> filasDeAsientos = vehiculoEntrada.getFilasDeAsientos();
@@ -61,17 +62,31 @@ public class VehiculoBean {
                 filaBean.crear(filaDeAsiento);
                 System.out.println("crear vehiculo imagen");
             }
-        }
+        }*/
         //List<Imagen> listaImagen = vehiculoImagenBean.obtenerListaPorVehiculo(vehiculoEntrada);
         vehiculoImagenBean.eliminarPorVehiculo(vehiculoEntrada);
         System.out.println("Elimnado vehiculo imagen");
         //eliminarListaVehiculoImagen(listaImagen);
         if (null != listaImagenesVehiculo && !listaImagenesVehiculo.isEmpty()) {
             for (Imagen imagen : listaImagenesVehiculo) {
-                VehiculoImagen vehiculoImagen = new VehiculoImagen();
-                vehiculoImagen.setVehiculo(vehiculoCreado);
-                vehiculoImagen.setImagen(imagen);
-                vehiculoImagenBean.crear(vehiculoImagen);
+                VehiculoImagenId vehiculoImagenId = new VehiculoImagenId();
+                vehiculoImagenId.setIdImagen(imagen.getIdImagen());
+                vehiculoImagenId.setIdVehiculo(vehiculoEntrada.getIdVehiculo());                
+                VehiculoImagen vehiculoImagenTmp = vehiculoImagenBean.obtenerPorId(vehiculoImagenId);
+                System.out.println("getIdImagen: " + imagen.getIdImagen());
+                System.out.println("getIdVehiculo: " + vehiculoEntrada.getIdVehiculo());
+                System.out.println("vehiculoImagenTmp: " + vehiculoImagenTmp);
+                if (null == vehiculoImagenTmp) {
+                    VehiculoImagen vehiculoImagen = new VehiculoImagen();
+                    vehiculoImagen.setVehiculo(vehiculoCreado);
+                    vehiculoImagen.setImagen(imagen);
+
+                    System.out.println("getIdImagen2: " + vehiculoImagen.getImagen().getIdImagen());
+                    System.out.println("getIdVehiculo2: " + vehiculoImagen.getVehiculo().getIdVehiculo());
+                    System.out.println("vehiculoImagenTmp2: " + vehiculoImagenTmp);
+
+                    vehiculoImagenBean.crear(vehiculoImagen);
+                }
                 System.out.println("crear vehiculo imagen");
             }
         }

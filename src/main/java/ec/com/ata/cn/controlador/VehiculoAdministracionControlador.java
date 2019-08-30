@@ -129,7 +129,9 @@ public class VehiculoAdministracionControlador extends BaseControlador {
             vehiculoImagenId.setIdVehiculo(vehiculo.getIdVehiculo());
             VehiculoImagen vehiculoImagenTmp = new VehiculoImagen();
             vehiculoImagenTmp.setVehiculoImagenId(vehiculoImagenId);
-            vehiculoImagenBean.eliminar(vehiculoImagenTmp);
+            if (null != vehiculoImagenBean.obtenerPorId(vehiculoImagenId)) {
+                vehiculoImagenBean.eliminar(vehiculoImagenTmp);
+            }
             imagenBean.eliminar(imagenId);
             this.imagenesVehiculo = vehiculoImagenBean.obtenerListaPorVehiculo(vehiculo);
             setListaVehiculo(vehiculoBean.obtenerListaPorMarca(marcaVehiculoSeleccionado));
@@ -142,7 +144,7 @@ public class VehiculoAdministracionControlador extends BaseControlador {
                 return;
             }
             addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
-        } 
+        }
 
     }
 
@@ -332,7 +334,7 @@ public class VehiculoAdministracionControlador extends BaseControlador {
             }
             addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
         } finally {
-            vehiculo = new Vehiculo();
+            limpiarValoresDespuesDeGuardar();
         }
     }
 
@@ -357,7 +359,16 @@ public class VehiculoAdministracionControlador extends BaseControlador {
                 return;
             }
             addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
-        } 
+        } finally {
+            limpiarValoresDespuesDeGuardar();
+        }
+    }
+
+    public void limpiarValoresDespuesDeGuardar() {
+        this.vehiculo = new Vehiculo();
+        this.modoEdicion = false;
+        this.imagenesVehiculo = new ArrayList<>();
+        this.filasDelVehiculo = new ArrayList<>();
     }
 
     /**

@@ -72,6 +72,12 @@ public class GenericoDaoUtil<T, I extends Serializable> {
     public void eliminar(final I identificador) {
         T tablaEntidadEliminar = obtenerPorCodigo(identificador);
         em.remove(tablaEntidadEliminar);
+        em.flush();
+    }
+    
+     public void eliminar(final T tablaEntidadEliminar) {
+        em.remove(tablaEntidadEliminar);
+        em.flush();
     }
 
     /**
