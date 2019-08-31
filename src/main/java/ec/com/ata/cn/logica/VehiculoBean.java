@@ -52,7 +52,7 @@ public class VehiculoBean {
 
     public Vehiculo actualizar(Vehiculo vehiculoEntrada, List<Imagen> listaImagenesVehiculo) throws Exception {
         Vehiculo vehiculoCreado = vehiculoDao.modificar(vehiculoEntrada);
-        /*filaBean.eliminarPorVehiculo(vehiculoEntrada);
+        filaBean.eliminarPorVehiculo(vehiculoEntrada);
         System.out.println("Elimnado filas");
         if (null != vehiculoEntrada.getFilasDeAsientos()) {
             List<Fila> filasDeAsientos = vehiculoEntrada.getFilasDeAsientos();
@@ -62,11 +62,11 @@ public class VehiculoBean {
                 filaBean.crear(filaDeAsiento);
                 System.out.println("crear vehiculo imagen");
             }
-        }*/
-        //List<Imagen> listaImagen = vehiculoImagenBean.obtenerListaPorVehiculo(vehiculoEntrada);
+        }
+        List<Imagen> listaImagen = vehiculoImagenBean.obtenerListaPorVehiculo(vehiculoEntrada);
         vehiculoImagenBean.eliminarPorVehiculo(vehiculoEntrada);
         System.out.println("Elimnado vehiculo imagen");
-        //eliminarListaVehiculoImagen(listaImagen);
+        eliminarListaVehiculoImagen(listaImagen);
         if (null != listaImagenesVehiculo && !listaImagenesVehiculo.isEmpty()) {
             for (Imagen imagen : listaImagenesVehiculo) {
                 VehiculoImagenId vehiculoImagenId = new VehiculoImagenId();

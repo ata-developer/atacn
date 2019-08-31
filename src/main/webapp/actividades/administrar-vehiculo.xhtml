@@ -92,8 +92,13 @@
                     <f:facet name="header">
                         #{msj.listaDeVehiculos}
                     </f:facet>
+                    
                     <p:column headerText="#{msj.descripcionModelo}" >
                         <h:outputText value="#{vehiculo.modelo}" />
+                    </p:column>
+                    
+                    <p:column headerText="#{msj.descripcion}" >
+                        <h:outputText value="#{vehiculo.descripcion}" />
                     </p:column>
 
                     <p:column headerText="#{msj.numeroFilas}">
@@ -210,14 +215,13 @@
 
                         <p:outputLabel
                             for="@next"
-                            value="#{msj.modeloVehiculo}" />                    
-                        <p:autoComplete
+                            value="#{msj.descripcion}" />                    
+                        <p:inputTextarea 
                             id="descripcionVehiculo"
-                            minQueryLength="3"
+                            value="#{vehiculoAdministracionControlador.vehiculo.descripcion}"
+                            maxlength="254"
+                            rows="6" cols="22"
                             required="true"
-                            value="#{vehiculoAdministracionControlador.vehiculo.modelo}" 
-                            completeMethod="#{vehiculoAdministracionControlador.autoCompletar}"
-                            effect="fade"
                             onblur="value = value.toUpperCase()"/>
 
                     </p:panelGrid>

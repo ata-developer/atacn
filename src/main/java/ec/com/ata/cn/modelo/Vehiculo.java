@@ -43,6 +43,9 @@ public class Vehiculo implements Serializable {
     @Column(name = "modelo")
     private String modelo;
     
+    @Column(name = "descripcion")
+    private String descripcion;
+    
     @Column(name = "numero_filas")   
     private Integer numeroDeFilas;
     
@@ -216,6 +219,20 @@ public class Vehiculo implements Serializable {
      */
     public void setTipoRango(String tipoRango) {
         this.tipoRango = tipoRango;
+    }
+
+    /**
+     * @return the descripcion
+     */
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    /**
+     * @param descripcion the descripcion to set
+     */
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
    
