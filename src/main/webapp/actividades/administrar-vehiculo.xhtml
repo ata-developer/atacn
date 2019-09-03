@@ -212,6 +212,18 @@
                             id="rangoVehiculo"
                             disabled="true"
                             value="#{vehiculoAdministracionControlador.vehiculo.tipoRango}"/>
+                        
+                        <p:outputLabel
+                            for="@next"
+                            value="#{msj.modeloVehiculo}" />                    
+                        <p:autoComplete
+                            id="modeloVehiculo"
+                            minQueryLength="3"
+                            required="true"
+                            value="#{vehiculoAdministracionControlador.vehiculo.modelo}" 
+                            completeMethod="#{vehiculoAdministracionControlador.autoCompletar}"
+                            effect="fade"
+                            onblur="value = value.toUpperCase()"/>
 
                         <p:outputLabel
                             for="@next"
