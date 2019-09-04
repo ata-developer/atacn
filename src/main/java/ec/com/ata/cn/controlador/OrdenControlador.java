@@ -5,18 +5,23 @@
  */
 package ec.com.ata.cn.controlador;
 
-
+import ec.com.ata.cn.logica.CiudadBean;
+import ec.com.ata.cn.logica.TipoDocumentoBean;
 import ec.com.ata.cn.logica.UsuarioBean;
 import ec.com.ata.cn.logica.VehiculoBean;
+import ec.com.ata.cn.modelo.Ciudad;
+import ec.com.ata.cn.modelo.TipoDocumento;
 import ec.com.ata.cn.modelo.Usuario;
 import ec.com.ata.cn.modelo.Vehiculo;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-
+import org.omnifaces.util.selectitems.SelectItemsBuilder;
+import org.primefaces.event.FlowEvent;
 
 /**
  *
@@ -28,18 +33,24 @@ public class OrdenControlador extends BaseControlador {
 
     @Inject
     private VehiculoBean vehiculoBean;
-    
+
     @Inject
     private UsuarioBean usuarioBean;
     
+    @Inject
+    private CiudadBean ciudadBean;
+
+    @Inject
+    private TipoDocumentoBean tipoDocumentoBean;
+
     private Usuario clienteOrden;
-    
+
     private Usuario clienteFactura;
-    
+
     private List<Vehiculo> listaVehiculos;
-    
-    
-    
+
+    private boolean skip;
+
     @PostConstruct
     public void init() {
         setClienteOrden(new Usuario());
@@ -47,7 +58,29 @@ public class OrdenControlador extends BaseControlador {
         setListaVehiculos(new ArrayList<Vehiculo>());
     }
     
-    public void enFlujoProceso(){
+    public List<SelectItem> generarSelectItemDeCiudad() {
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+        for (Ciudad ciudadTmp : ciudadBean.obtenerLista()) {
+            selectItemsBuilder.add(ciudadTmp, ciudadTmp.getCiudad() + " - " + ciudadTmp.getProvinciaEstado().getProvinciaEstado() + " - " + ciudadTmp.getProvinciaEstado().getPais().getPais());
+        }
+        return selectItemsBuilder.buildList();
+    }
+
+    public List<SelectItem> generarSelectItemDeTipoDocumento() {
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+        for (TipoDocumento tipoDocumentoTmo : tipoDocumentoBean.obtenerListasCliente((Object) true)) {
+            selectItemsBuilder.add(tipoDocumentoTmo, tipoDocumentoTmo.getTipoDocumento());
+        }
+        return selectItemsBuilder.buildList();
+    }
+
+    public String enFlujoProceso(FlowEvent event) {
+        if (skip) {
+            skip = false;   //reset in case user goes back
+            return "confirm";
+        } else {
+            return event.getNewStep();
+        }
     }
 
     /**

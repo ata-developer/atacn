@@ -37,4 +37,10 @@ public class TipoDocumentoBean {
         parametros.put("esSistema", parametroEntrada);
         return tipoNumeracionDocumentoDao.obtenerListaPorParametros(parametros);
     }
+    
+    public List<TipoDocumento> obtenerListasCliente(Object parametroEntrada){
+        HashMap<String,Object> parametros = new HashMap<>();
+        parametros.put("esCliente", parametroEntrada);
+        return tipoNumeracionDocumentoDao.obtenerListaPorParametros(parametros);
+    }
 }

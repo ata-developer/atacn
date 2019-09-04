@@ -57,6 +57,8 @@ public class UsuarioControlador extends BaseControlador {
         }
         return selectItemsBuilder.buildList();
     }
+    
+    
 
     public List<Usuario> obtenerListaUsuario() {
         return usuarioBean.obtenerLista();

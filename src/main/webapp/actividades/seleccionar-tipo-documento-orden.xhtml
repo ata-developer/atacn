@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:outputLabel
+        for="@next"
+        rendered="#{ordenControlador.clienteOrden.tipoDocumento ne null}"
+        value="#{msj.numeroDocumento}" />
+    <p:autoComplete
+        id="atcCedula"
+        minQueryLength="3"
+        required="true"
+        rendered="#{ordenControlador.clienteOrden.tipoDocumento.tipoDocumento eq 'CÉDULA'}"
+        value="#{ordenControlador.clienteOrden.numeroDocumento}"
+        completeMethod="#{vehiculoAdministracionControlador.autoCompletar}"
+        effect="fade"
+        onblur="value = value.toUpperCase()">
+        <p:keyFilter regEx="/[\d\-]/"/>
+    </p:autoComplete>
+    <p:inputMask 
+        id="iMRuc" 
+        required="true"
+        rendered="#{ordenControlador.clienteOrden.tipoDocumento.tipoDocumento eq 'RUC'}"
+        value="#{ordenControlador.clienteOrden.numeroDocumento}" 
+        placeholder="#{msj.ejemploRuc}"
+        mask="9999999999999"/>
+    <p:inputText
+        id="iTPasaporte"
+        required="true"
+        rendered="#{ordenControlador.clienteOrden.tipoDocumento.tipoDocumento eq 'PASAPORTE'}"
+        requiredMessage="#{msj.campoNecesario}"
+        placeholder="#{msj.ejemploApellido}"
+        value="#{ordenControlador.clienteOrden.numeroDocumento}">
+        <f:converter converterId="trimConverter" />
+    </p:inputText>
+
+</ui:composition>

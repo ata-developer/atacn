@@ -38,7 +38,7 @@
                     <p:commandButton
                         id="btnGuardar" 
                         value="#{msj.guardar}"
-                        process="@this descripcionTipoDocumento"
+                        process="@this pngAdministrarTipoDocumento"
                         update="pngAdministrarTipoDocumento tblListaTipoDocumento mensajeGeneral"
                         actionListener="#{parametroControlador.guardarTipoDocumento()}" />
                     <p:outputLabel
@@ -57,7 +57,18 @@
 
                     <p:column headerText="#{msj.descripcionTipoDocumento}">
                         <h:outputText value="#{tipoDocumento.tipoDocumento}" />
+                    </p:column>   
+                    
+                    <p:column headerText="#{msj.esCliente}">
+                        <h:outputText value="#{tipoDocumento.esCliente}" />
                     </p:column>
+                    
+                    <p:column headerText="#{msj.esSistema}">
+                        <h:outputText value="#{tipoDocumento.esSistema}" />
+                    </p:column>
+                    
+                    
+                    
                 </p:dataTable>
             </p:fieldset>
             <!-- FIN ADMINISTRACION TIPO DOCUMENTO -->
