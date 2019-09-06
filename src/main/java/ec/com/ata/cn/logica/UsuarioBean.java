@@ -10,6 +10,7 @@ import ec.com.ata.cn.logica.dao.UsuarioDao;
 import ec.com.ata.cn.logica.util.gestor.Constante;
 import ec.com.ata.cn.logica.util.gestor.HashCreadorUtil;
 import ec.com.ata.cn.modelo.Usuario;
+import java.util.HashMap;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,5 +36,26 @@ public class UsuarioBean {
     
     public List<Usuario> obtenerLista(){
         return usuarioDao.obtenerTodos();
+    }
+    
+    public List<Usuario> obtenerModeloListaPorNumeroDocumentoLike(String numeroDocumento) {
+        HashMap<String, Object> parametros = new HashMap<>();
+        parametros.put("numeroDocumentoLike", numeroDocumento);
+        return usuarioDao.obtenerListaPorParametros(parametros);
+    }
+    
+    public Usuario obtenerPorCodigo(Long idUsuario){
+        return usuarioDao.obtenerPorCodigo(idUsuario);
+    }
+    
+    public Usuario obtenerPorNumeroDocumento(String numeroDocumento){
+        HashMap<String, Object> parametros = new HashMap<>();
+        parametros.put("numeroDocumento", numeroDocumento);
+        List<Usuario> listaUsuario = usuarioDao.obtenerListaPorParametros(parametros);
+        if ( listaUsuario.isEmpty() ){
+            return new Usuario();
+        } else { 
+            return listaUsuario.get(0);
+        }
     }
 }

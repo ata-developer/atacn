@@ -6,6 +6,7 @@
 package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -16,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
@@ -74,6 +76,9 @@ public class Usuario implements Serializable {
     @Column(name = "contrasenia", length = 100)
     private String contrasenia;
     
+    @Transient
+    private String documentoYNombres;
+    
     @Embedded
     private GenericoEntidad genericoEntidad;
     
@@ -88,6 +93,50 @@ public class Usuario implements Serializable {
     public Usuario () {
         genericoEntidad = new GenericoEntidad();
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 97 * hash + Objects.hashCode(this.idUsuario);
+        hash = 97 * hash + Objects.hashCode(this.numeroDocumento);
+        hash = 97 * hash + Objects.hashCode(this.nombre);
+        hash = 97 * hash + Objects.hashCode(this.apellido);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Usuario other = (Usuario) obj;
+        if (!Objects.equals(this.numeroDocumento, other.numeroDocumento)) {
+            return false;
+        }
+        if (!Objects.equals(this.nombre, other.nombre)) {
+            return false;
+        }
+        if (!Objects.equals(this.apellido, other.apellido)) {
+            return false;
+        }
+        if (!Objects.equals(this.idUsuario, other.idUsuario)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" + "idUsuario=" + idUsuario + ", numeroDocumento=" + numeroDocumento + ", nombre=" + nombre + ", apellido=" + apellido + '}';
+    }
+    
+    
     
     /**
      * @return the nombre
@@ -314,6 +363,21 @@ public class Usuario implements Serializable {
      */
     public void setGenericoEntidad(GenericoEntidad genericoEntidad) {
         this.genericoEntidad = genericoEntidad;
+    }
+
+    /**
+     * @return the documentoYNombres
+     */
+    public String getDocumentoYNombres() {
+        documentoYNombres = numeroDocumento + " - " + nombre + " - " + apellido;
+        return documentoYNombres;
+    }
+
+    /**
+     * @param documentoYNombres the documentoYNombres to set
+     */
+    public void setDocumentoYNombres(String documentoYNombres) {
+        this.documentoYNombres = documentoYNombres;
     }
     
 }

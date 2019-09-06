@@ -16,12 +16,14 @@ import ec.com.ata.cn.modelo.Vehiculo;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.omnifaces.util.selectitems.SelectItemsBuilder;
 import org.primefaces.event.FlowEvent;
+import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -50,12 +52,31 @@ public class OrdenControlador extends BaseControlador {
     private List<Vehiculo> listaVehiculos;
 
     private boolean skip;
+    
+    private String numeroDocumento;
+    
+    private List<Usuario> listaClientes;
 
     @PostConstruct
     public void init() {
         setClienteOrden(new Usuario());
         setClienteFactura(new Usuario());
         setListaVehiculos(new ArrayList<Vehiculo>());
+        setListaClientes(new ArrayList<Usuario>());
+    }
+    
+    public void actualizarClienteOrden(){
+        System.out.println("actualizarClienteOrdeon: ");
+    }
+    
+    public List<Usuario> autoCompletar(String consulta) {
+        listaClientes = usuarioBean.obtenerModeloListaPorNumeroDocumentoLike(consulta);
+        return listaClientes;
+    }
+    
+    public void onItemSelect() {
+        System.out.println("onItemSelect");
+        clienteOrden = usuarioBean.obtenerPorNumeroDocumento(numeroDocumento);
     }
     
     public List<SelectItem> generarSelectItemDeCiudad() {
@@ -123,5 +144,33 @@ public class OrdenControlador extends BaseControlador {
      */
     public void setListaVehiculos(List<Vehiculo> listaVehiculos) {
         this.listaVehiculos = listaVehiculos;
+    }
+
+    /**
+     * @return the numeroDocumento
+     */
+    public String getNumeroDocumento() {
+        return numeroDocumento;
+    }
+
+    /**
+     * @param numeroDocumento the numeroDocumento to set
+     */
+    public void setNumeroDocumento(String numeroDocumento) {
+        this.numeroDocumento = numeroDocumento;
+    }
+
+    /**
+     * @return the listaClientes
+     */
+    public List<Usuario> getListaClientes() {
+        return listaClientes;
+    }
+
+    /**
+     * @param listaClientes the listaClientes to set
+     */
+    public void setListaClientes(List<Usuario> listaClientes) {
+        this.listaClientes = listaClientes;
     }
 }

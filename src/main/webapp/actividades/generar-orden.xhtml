@@ -7,7 +7,7 @@
                 template="/WEB-INF/templateATA.xhtml">
 
     <ui:define name="content">
-        <h:form id="frmAdministrarMarcaVehiculo">
+        <h:form id="frmGenerarOrden">
             <p:wizard flowListener="#{ordenControlador.enFlujoProceso}">
                 <p:tab id="idDetallesCliente" title="#{msj.detallesCliente}">
                     <p:panel header="#{msj.detallesCliente}">
@@ -23,19 +23,32 @@
                                 converter="omnifaces.SelectItemsConverter">
                                 <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                                 <f:selectItems value="#{ordenControlador.generarSelectItemDeTipoDocumento()}" />
-                                <p:ajax event="change" update="pngDetallesCliente"/>
+                                <p:ajax event="change" update="pngDetallesCliente" />
                             </p:selectOneMenu>
 
                             <ui:include src="seleccionar-tipo-documento-orden.xhtml" />
 
                             <p:outputLabel
                                 for="@next"
-                                value="#{msj.cliente}" />                    
+                                value="#{msj.nombre}" />                    
                             <p:inputText
                                 id="iTNombre"
                                 required="true"
                                 value="#{ordenControlador.clienteOrden.nombre}"
                                 placeholder="#{msj.ejemploNombre}"
+                                onblur="value = value.toUpperCase()">
+                                <p:keyFilter regEx="/[a-zA-ZáéíñóúüÁÉÍÑÓÚÜ\s]/"/>
+                                <f:converter converterId="trimConverter" />
+                            </p:inputText>
+
+                            <p:outputLabel
+                                for="@next"
+                                value="#{msj.apellido}" />                    
+                            <p:inputText
+                                id="iTApellido"
+                                required="true"
+                                value="#{ordenControlador.clienteOrden.apellido}"
+                                placeholder="#{msj.ejemploApellido}"
                                 onblur="value = value.toUpperCase()">
                                 <p:keyFilter regEx="/[a-zA-ZáéíñóúüÁÉÍÑÓÚÜ\s]/"/>
                                 <f:converter converterId="trimConverter" />
@@ -55,15 +68,39 @@
                                 <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                                 <f:selectItems value="#{ordenControlador.generarSelectItemDeCiudad()}" />
                             </p:selectOneMenu>
-
+                            
                             <p:outputLabel
                                 for="@next"
-                                value="#{msj.direccion}" />                    
+                                value="#{msj.callePrincipal}" />                    
                             <p:inputText
                                 id="iTCallePrincipal"
                                 required="true"
                                 value="#{ordenControlador.clienteOrden.callePrincipal}"
                                 placeholder="#{msj.ejemploCalle}"
+                                onblur="value = value.toUpperCase()">
+                                <f:converter converterId="trimConverter" />
+                            </p:inputText>
+
+                            <p:outputLabel
+                                for="@next"
+                                value="#{msj.numeracion}" />                    
+                            <p:inputText
+                                id="iTnumeracion"
+                                required="true"
+                                value="#{ordenControlador.clienteOrden.numeracion}"
+                                placeholder="#{msj.ejemploNumeracion}"
+                                onblur="value = value.toUpperCase()">
+                                <f:converter converterId="trimConverter" />
+                            </p:inputText>
+
+                            <p:outputLabel
+                                for="@next"
+                                value="#{msj.calleSecundaria}" />                    
+                            <p:inputText
+                                id="iTCalleSecundaria"
+                                required="true"
+                                value="#{ordenControlador.clienteOrden.calleSecundaria}"
+                                placeholder="#{msj.ejemploSecundaria}"
                                 onblur="value = value.toUpperCase()">
                                 <f:converter converterId="trimConverter" />
                             </p:inputText>

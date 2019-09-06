@@ -1,6 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:o="http://omnifaces.org/ui"
                 xmlns:p="http://primefaces.org/ui">
 
     <p:outputLabel
@@ -9,14 +11,18 @@
         value="#{msj.numeroDocumento}" />
     <p:autoComplete
         id="atcCedula"
-        minQueryLength="3"
+        onkeypress="if (event.which &lt; 48 || event.which &gt; 57) return false;"
+        minQueryLength="4"
         required="true"
         rendered="#{ordenControlador.clienteOrden.tipoDocumento.tipoDocumento eq 'CÉDULA'}"
-        value="#{ordenControlador.clienteOrden.numeroDocumento}"
-        completeMethod="#{vehiculoAdministracionControlador.autoCompletar}"
         effect="fade"
-        onblur="value = value.toUpperCase()">
-        <p:keyFilter regEx="/[\d\-]/"/>
+        value="#{ordenControlador.clienteOrden}"
+        completeMethod="#{ordenControlador.autoCompletar}"
+        converter="usuarioConvertidor"
+        var="cliente"
+        itemValue="#{cliente}"
+        itemLabel="#{cliente.numeroDocumento}">
+        <p:ajax event="change" listener="#{ordenControlador.actualizarClienteOrden}" process="atcCedula"/> 
     </p:autoComplete>
     <p:inputMask 
         id="iMRuc" 
