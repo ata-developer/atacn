@@ -1,0 +1,28 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"                
+                xmlns:p="http://primefaces.org/ui">
+    <p:panel header="#{msj.seleccionarEstablecimiento}">
+        <p:messages />
+        <p:panelGrid id="pngSeleccionarEstablecimiento" columns="2">
+            <p:outputLabel
+                for="@next"
+                value="#{msj.establecimiento}" />
+            <p:selectOneMenu
+                id="somEstablecimiento"
+                value="#{ordenControlador.establecimiento}"
+                required="true"
+                converter="omnifaces.SelectItemsConverter">
+                <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                <f:selectItems value="#{ordenControlador.generarSelectItemDeEstablecimento()}" />
+                <p:ajax 
+                    event="change"
+                    process="@this"
+                    update="mensajeGeneral"
+                    listener="#{ordenControlador.seleccionarEstablecimiento()}" />
+            </p:selectOneMenu>
+        </p:panelGrid>
+    </p:panel>
+</ui:composition>

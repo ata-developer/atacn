@@ -9,6 +9,9 @@
     <ui:define name="content">
         <h:form id="frmGenerarOrden">
             <p:wizard flowListener="#{ordenControlador.enFlujoProceso}">
+                <p:tab id="idEstablecimiento" title="#{msj.establecimiento}">
+                    <ui:include src="seleccionar-esteblecimiento-para-orden.xhtml" />
+                </p:tab>
                 <p:tab id="idDetallesCliente" title="#{msj.detallesCliente}">
                     <p:panel header="#{msj.detallesCliente}">
                         <p:messages />

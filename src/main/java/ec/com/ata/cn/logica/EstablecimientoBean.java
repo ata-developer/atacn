@@ -9,6 +9,7 @@ package ec.com.ata.cn.logica;
 import ec.com.ata.cn.logica.dao.EstablecimientoDao;
 import ec.com.ata.cn.modelo.Establecimiento;
 import ec.com.ata.cn.modelo.GrupoPrecio;
+import java.util.HashMap;
 
 import java.util.List;
 import javax.ejb.Stateless;
@@ -47,4 +48,11 @@ public class EstablecimientoBean {
     public List<Establecimiento> obtenerListaPorGrupoPrecio(GrupoPrecio grupoPrecio){
         return establecimientoDao.obtenerListaPorGrupoPrecio(grupoPrecio);
     }
+    
+    public List<Establecimiento> obtenerModeloListaPorNombreLike(String nombre) {
+        HashMap<String, Object> parametros = new HashMap<>();
+        parametros.put("nombreLike", nombre);
+        return establecimientoDao.obtenerListaPorParametros(parametros);
+    }
+    
 }

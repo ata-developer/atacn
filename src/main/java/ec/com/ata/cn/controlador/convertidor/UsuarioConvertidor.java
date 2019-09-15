@@ -7,18 +7,20 @@ package ec.com.ata.cn.controlador.convertidor;
 
 import ec.com.ata.cn.logica.UsuarioBean;
 import ec.com.ata.cn.modelo.Usuario;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 /**
  *
  * @author ATA1
  */
-@FacesConverter(value = "usuarioConvertidor")
+@Named
+@RequestScoped
 public class UsuarioConvertidor implements Converter{
      
     @Inject

@@ -6,10 +6,13 @@
 package ec.com.ata.cn.controlador;
 
 import ec.com.ata.cn.logica.CiudadBean;
+import ec.com.ata.cn.logica.EstablecimientoBean;
 import ec.com.ata.cn.logica.TipoDocumentoBean;
 import ec.com.ata.cn.logica.UsuarioBean;
 import ec.com.ata.cn.logica.VehiculoBean;
+import ec.com.ata.cn.logica.util.gestor.Constante;
 import ec.com.ata.cn.modelo.Ciudad;
+import ec.com.ata.cn.modelo.Establecimiento;
 import ec.com.ata.cn.modelo.TipoDocumento;
 import ec.com.ata.cn.modelo.Usuario;
 import ec.com.ata.cn.modelo.Vehiculo;
@@ -23,7 +26,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import org.omnifaces.util.selectitems.SelectItemsBuilder;
 import org.primefaces.event.FlowEvent;
-import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -38,12 +40,17 @@ public class OrdenControlador extends BaseControlador {
 
     @Inject
     private UsuarioBean usuarioBean;
-    
+
     @Inject
     private CiudadBean ciudadBean;
 
     @Inject
     private TipoDocumentoBean tipoDocumentoBean;
+
+    @Inject
+    private EstablecimientoBean establecimientoBean;
+
+    private Establecimiento establecimiento;
 
     private Usuario clienteOrden;
 
@@ -52,33 +59,53 @@ public class OrdenControlador extends BaseControlador {
     private List<Vehiculo> listaVehiculos;
 
     private boolean skip;
-    
+
     private String numeroDocumento;
-    
+
     private List<Usuario> listaClientes;
+
+    private List<Establecimiento> listaEstablecimiento;
 
     @PostConstruct
     public void init() {
+        setEstablecimiento(new Establecimiento());
         setClienteOrden(new Usuario());
         setClienteFactura(new Usuario());
         setListaVehiculos(new ArrayList<Vehiculo>());
         setListaClientes(new ArrayList<Usuario>());
     }
     
-    public void actualizarClienteOrden(){
-        System.out.println("actualizarClienteOrdeon: ");
+    public void seleccionarEstablecimiento() {
+        addInfoMessage(Constante.EXITO, Constante.EXITO_ESTABLECIMIENTO);
     }
-    
+
+    public List<SelectItem> generarSelectItemDeEstablecimento() {
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+        for (Establecimiento establecimientoTmp : establecimientoBean.obtenerLista()) {
+            selectItemsBuilder.add(establecimientoTmp, establecimientoTmp.getNombre());
+        }
+        return selectItemsBuilder.buildList();
+    }
+
+    public void actualizarClienteOrden(AjaxBehaviorEvent event) {
+        System.out.println("actualizarClienteOrdeon: " + this.clienteOrden.getNumeroDocumento());
+    }
+
+    public List<Establecimiento> autoCompletarEstablecimiento(String consulta) {
+        listaEstablecimiento = establecimientoBean.obtenerModeloListaPorNombreLike(consulta);
+        return listaEstablecimiento;
+    }
+
     public List<Usuario> autoCompletar(String consulta) {
         listaClientes = usuarioBean.obtenerModeloListaPorNumeroDocumentoLike(consulta);
         return listaClientes;
     }
-    
+
     public void onItemSelect() {
         System.out.println("onItemSelect");
         clienteOrden = usuarioBean.obtenerPorNumeroDocumento(numeroDocumento);
     }
-    
+
     public List<SelectItem> generarSelectItemDeCiudad() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
         for (Ciudad ciudadTmp : ciudadBean.obtenerLista()) {
@@ -172,5 +199,33 @@ public class OrdenControlador extends BaseControlador {
      */
     public void setListaClientes(List<Usuario> listaClientes) {
         this.listaClientes = listaClientes;
+    }
+
+    /**
+     * @return the establecimiento
+     */
+    public Establecimiento getEstablecimiento() {
+        return establecimiento;
+    }
+
+    /**
+     * @param establecimiento the establecimiento to set
+     */
+    public void setEstablecimiento(Establecimiento establecimiento) {
+        this.establecimiento = establecimiento;
+    }
+
+    /**
+     * @return the listaEstablecimiento
+     */
+    public List<Establecimiento> getListaEstablecimiento() {
+        return listaEstablecimiento;
+    }
+
+    /**
+     * @param listaEstablecimiento the listaEstablecimiento to set
+     */
+    public void setListaEstablecimiento(List<Establecimiento> listaEstablecimiento) {
+        this.listaEstablecimiento = listaEstablecimiento;
     }
 }
