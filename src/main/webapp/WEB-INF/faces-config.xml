@@ -31,6 +31,10 @@
         <converter-class>ec.com.ata.cn.controlador.convertidor.UsuarioConvertidor</converter-class>
     </converter>
     <converter>
+        <converter-id>vehiculoConvertidor</converter-id>
+        <converter-class>ec.com.ata.cn.controlador.convertidor.VehiculoConvertidor</converter-class>
+    </converter>
+    <converter>
         <converter-id>tipoFilaConvertidor</converter-id>
         <converter-class>ec.com.ata.cn.controlador.convertidor.TipoFilaConvertidor</converter-class>
     </converter>

@@ -65,6 +65,14 @@ public class OrdenControlador extends BaseControlador {
     private List<Usuario> listaClientes;
 
     private List<Establecimiento> listaEstablecimiento;
+    
+    private Boolean mismosDatosOrden;
+    
+    private Boolean llenarEsteMomento;
+    
+    private List<Vehiculo> vehiculosCliente;
+    
+    private Vehiculo vehiculoSeleccionado;
 
     @PostConstruct
     public void init() {
@@ -73,6 +81,45 @@ public class OrdenControlador extends BaseControlador {
         setClienteFactura(new Usuario());
         setListaVehiculos(new ArrayList<Vehiculo>());
         setListaClientes(new ArrayList<Usuario>());
+        setMismosDatosOrden(false);
+        setLlenarEsteMomento(false);
+        setVehiculosCliente(new ArrayList<Vehiculo>());
+    }
+    
+    public void seleccionarVehiculo() {
+        System.out.println("agregarVehiculo: "+vehiculoSeleccionado.getDescripcionDetallada());
+    }
+    
+    public List<Vehiculo> autoCompletarVehiculo(String consulta) {
+        return vehiculoBean.obtenerModeloListaPorModeloLike(consulta);
+    }
+    
+    public void agregarVehiculo () {
+        System.out.println("agregarVehiculo");
+        getVehiculosCliente().add(vehiculoSeleccionado);
+    } 
+    
+    public void llenarEsteMomentoOrden() {
+        System.out.println("llenarEsteMomentoOrden: "+llenarEsteMomento);
+    }
+    
+    public void mismosDatosParaFactura(){
+        System.out.println("mismosDatosParaFactura: "+mismosDatosOrden);
+        if (mismosDatosOrden){
+            clienteFactura.setApellido(clienteOrden.getApellido());
+            clienteFactura.setCallePrincipal(clienteOrden.getCallePrincipal());
+            clienteFactura.setCalleSecundaria(clienteOrden.getCalleSecundaria());
+            clienteFactura.setCelular(clienteOrden.getCelular());
+            clienteFactura.setContrasenia(clienteOrden.getContrasenia());
+            clienteFactura.setCorreo(clienteOrden.getCorreo());            
+            clienteFactura.setGenericoEntidad(clienteOrden.getGenericoEntidad());
+            clienteFactura.setNombre(clienteOrden.getNombre());
+            clienteFactura.setNumeracion(clienteOrden.getNumeracion());
+            clienteFactura.setNumeroDocumento(clienteOrden.getNumeroDocumento());
+            clienteFactura.setTelefono(clienteOrden.getTelefono());
+        } else {
+            clienteFactura = new Usuario();
+        }
     }
     
     public void seleccionarEstablecimiento() {
@@ -89,6 +136,10 @@ public class OrdenControlador extends BaseControlador {
 
     public void actualizarClienteOrden(AjaxBehaviorEvent event) {
         System.out.println("actualizarClienteOrdeon: " + this.clienteOrden.getNumeroDocumento());
+    }
+    
+    public void actualizarClienteFactura(AjaxBehaviorEvent event) {
+        System.out.println("actualizarClienteFactura: " + this.clienteFactura.getNumeroDocumento());
     }
 
     public List<Establecimiento> autoCompletarEstablecimiento(String consulta) {
@@ -227,5 +278,61 @@ public class OrdenControlador extends BaseControlador {
      */
     public void setListaEstablecimiento(List<Establecimiento> listaEstablecimiento) {
         this.listaEstablecimiento = listaEstablecimiento;
+    }
+
+    /**
+     * @return the mismosDatosOrden
+     */
+    public Boolean getMismosDatosOrden() {
+        return mismosDatosOrden;
+    }
+
+    /**
+     * @param mismosDatosOrden the mismosDatosOrden to set
+     */
+    public void setMismosDatosOrden(Boolean mismosDatosOrden) {
+        this.mismosDatosOrden = mismosDatosOrden;
+    }
+
+    /**
+     * @return the llenarEsteMomento
+     */
+    public Boolean getLlenarEsteMomento() {
+        return llenarEsteMomento;
+    }
+
+    /**
+     * @param llenarEsteMomento the llenarEsteMomento to set
+     */
+    public void setLlenarEsteMomento(Boolean llenarEsteMomento) {
+        this.llenarEsteMomento = llenarEsteMomento;
+    }
+
+    /**
+     * @return the vehiculosCliente
+     */
+    public List<Vehiculo> getVehiculosCliente() {
+        return vehiculosCliente;
+    }
+
+    /**
+     * @param vehiculosCliente the vehiculosCliente to set
+     */
+    public void setVehiculosCliente(List<Vehiculo> vehiculosCliente) {
+        this.vehiculosCliente = vehiculosCliente;
+    }
+
+    /**
+     * @return the vehiculoSeleccionado
+     */
+    public Vehiculo getVehiculoSeleccionado() {
+        return vehiculoSeleccionado;
+    }
+
+    /**
+     * @param vehiculoSeleccionado the vehiculoSeleccionado to set
+     */
+    public void setVehiculoSeleccionado(Vehiculo vehiculoSeleccionado) {
+        this.vehiculoSeleccionado = vehiculoSeleccionado;
     }
 }

@@ -5,13 +5,16 @@
  */
 package ec.com.ata.cn.controlador;
 
+import ec.com.ata.cn.logica.LugarVehiculoTrabajoBean;
 import ec.com.ata.cn.logica.ParametroBean;
 import ec.com.ata.cn.logica.TipoDocumentoBean;
 import ec.com.ata.cn.logica.TipoFilaBean;
 import ec.com.ata.cn.logica.util.gestor.Constante;
+import ec.com.ata.cn.modelo.LugarVehiculoTrabajo;
 import ec.com.ata.cn.modelo.Parametro;
 import ec.com.ata.cn.modelo.TipoDocumento;
 import ec.com.ata.cn.modelo.TipoFila;
+import java.util.ArrayList;
 
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -38,7 +41,9 @@ public class ParametroControlador extends BaseControlador {
     @Inject
     private ParametroBean parametroBean;
     
-    
+    @Inject
+    private LugarVehiculoTrabajoBean lugarVehiculoTrabajoBean;
+       
     private TipoDocumento tipoNumeracionDocumento;
 
     private List<TipoDocumento> listaTipoNumeracionDocumento;
@@ -51,6 +56,9 @@ public class ParametroControlador extends BaseControlador {
     
     private Integer anioHastaRango;
     
+    private LugarVehiculoTrabajo lugarVehiculoTrabajo;
+    
+    private List<LugarVehiculoTrabajo> listaLugarVehiculoTrabajo;
 
     @PostConstruct
     public void init() {
@@ -60,7 +68,8 @@ public class ParametroControlador extends BaseControlador {
         setListaTipoFila(tipoFilaBean.obtenerLista());
         setAnioDesdeRango(new Integer(parametroBean.obtenerPorCodigo(Constante.ANIO_INICIO_RANGO) == null ? "0" : parametroBean.obtenerPorCodigo(Constante.ANIO_INICIO_RANGO).getValor()));
         setAnioHastaRango(new Integer(parametroBean.obtenerPorCodigo(Constante.ANIO_FIN_RANGO) == null ? "0" : parametroBean.obtenerPorCodigo(Constante.ANIO_FIN_RANGO).getValor()));
-        
+        setLugarVehiculoTrabajo(new LugarVehiculoTrabajo());
+        setListaLugarVehiculoTrabajo(lugarVehiculoTrabajoBean.obtenerLista());
     }
 
     public List<TipoDocumento> obtenerListaTipoNumeracionDocumento() {
@@ -107,6 +116,24 @@ public class ParametroControlador extends BaseControlador {
             addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
         } finally {
             setTipoFila(new TipoFila());
+        }
+    }
+    
+    public void guardarLugarVehiculoTrabajo() {
+        try {
+            System.out.println("ec.com.ata.cn.controlador.ParametroControlador.guardarLugarVehiculoTrabajo()");
+            lugarVehiculoTrabajoBean.crear(getLugarVehiculoTrabajo());
+            setListaLugarVehiculoTrabajo(lugarVehiculoTrabajoBean.obtenerLista());
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+        } finally {
+            setLugarVehiculoTrabajo(new LugarVehiculoTrabajo());
         }
     }
     
@@ -210,5 +237,33 @@ public class ParametroControlador extends BaseControlador {
      */
     public void setAnioHastaRango(Integer anioHastaRango) {
         this.anioHastaRango = anioHastaRango;
+    }
+
+    /**
+     * @return the lugarVehiculoTrabajo
+     */
+    public LugarVehiculoTrabajo getLugarVehiculoTrabajo() {
+        return lugarVehiculoTrabajo;
+    }
+
+    /**
+     * @param lugarVehiculoTrabajo the lugarVehiculoTrabajo to set
+     */
+    public void setLugarVehiculoTrabajo(LugarVehiculoTrabajo lugarVehiculoTrabajo) {
+        this.lugarVehiculoTrabajo = lugarVehiculoTrabajo;
+    }
+
+    /**
+     * @return the listaLugarVehiculoTrabajo
+     */
+    public List<LugarVehiculoTrabajo> getListaLugarVehiculoTrabajo() {
+        return listaLugarVehiculoTrabajo;
+    }
+
+    /**
+     * @param listaLugarVehiculoTrabajo the listaLugarVehiculoTrabajo to set
+     */
+    public void setListaLugarVehiculoTrabajo(List<LugarVehiculoTrabajo> listaLugarVehiculoTrabajo) {
+        this.listaLugarVehiculoTrabajo = listaLugarVehiculoTrabajo;
     }
 }

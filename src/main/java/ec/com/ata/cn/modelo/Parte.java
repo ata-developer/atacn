@@ -9,12 +9,15 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
@@ -23,7 +26,7 @@ import javax.persistence.Table;
 @Entity
 @Table
 public class Parte implements Serializable {
-    
+
     @Id
     @SequenceGenerator(
             name = "parte_seq",
@@ -34,9 +37,8 @@ public class Parte implements Serializable {
             generator = "parte_seq")
     @Column(name = "id_parte")
     private Long idParte;
-    
-    
-    public Parte () {
+
+    public Parte() {
         genericoEntidad = new GenericoEntidad();
     }
 
@@ -46,10 +48,17 @@ public class Parte implements Serializable {
 
     @Column(name = "parte")
     private String parte;
-    
+
+    @Transient
+    private Long idPartePadre;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "id_parte_padre")
+    private Parte padre;
+
     @Embedded
     private GenericoEntidad genericoEntidad;
-    
+
     @ManyToOne
     private Material material;
 
@@ -122,6 +131,34 @@ public class Parte implements Serializable {
      */
     public void setGenericoEntidad(GenericoEntidad genericoEntidad) {
         this.genericoEntidad = genericoEntidad;
+    }
+
+    /**
+     * @return the idPartePadre
+     */
+    public Long getIdPartePadre() {
+        return idPartePadre;
+    }
+
+    /**
+     * @param idPartePadre the idPartePadre to set
+     */
+    public void setIdPartePadre(Long idPartePadre) {
+        this.idPartePadre = idPartePadre;
+    }
+
+    /**
+     * @return the padre
+     */
+    public Parte getPadre() {
+        return padre;
+    }
+
+    /**
+     * @param padre the padre to set
+     */
+    public void setPadre(Parte padre) {
+        this.padre = padre;
     }
 
 }

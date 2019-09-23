@@ -149,5 +149,14 @@ public class VehiculoBean {
         }
         return listaDescripcion;
     }
+    
+    public List<Vehiculo> obtenerModeloListaPorModeloLike(String modelo) {
+        HashMap<String, Object> parametros = new HashMap<>();
+        parametros.put("modeloLike", modelo);
+        return  vehiculoDao.obtenerListaPorParametros(parametros);
+    }
 
+    public Vehiculo obtenerPorCodigo(Long idVehiculo){
+        return vehiculoDao.obtenerPorCodigo(idVehiculo);
+    }
 }

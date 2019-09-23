@@ -18,17 +18,18 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
  * @author ATA1
  */
 @Entity
-@Table( name = "vehiculo")
+@Table(name = "vehiculo")
 public class Vehiculo implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @SequenceGenerator(
             name = "vehiculo_seq",
@@ -39,39 +40,41 @@ public class Vehiculo implements Serializable {
             generator = "vehiculo_seq")
     @Column(name = "id_vehiculo")
     private Long idVehiculo;
-       
+
     @Column(name = "modelo")
     private String modelo;
-    
+
     @Column(name = "descripcion")
     private String descripcion;
-    
-    @Column(name = "numero_filas")   
+
+    @Column(name = "numero_filas")
     private Integer numeroDeFilas;
-    
-    @Column(name = "tipo_rango")   
+
+    @Column(name = "tipo_rango")
     private String tipoRango;
-    
+
+    @Transient
+    private String descripcionDetallada;
+
     @Embedded
     private GenericoEntidad genericoEntidad;
-    
+
     @ManyToOne
     private MarcaVehiculo marca;
-    
-    @OneToMany(mappedBy = "vehiculo",fetch = FetchType.EAGER)
+
+    @OneToMany(mappedBy = "vehiculo", fetch = FetchType.EAGER)
     private List<Fila> filasDeAsientos;
-    
+
     @Column(name = "anio_desde")
     private Long anioDesde;
-        
 
     @Column(name = "anio_hasta")
     private Long anioHasta;
-    
-    public Vehiculo () {
+
+    public Vehiculo() {
         genericoEntidad = new GenericoEntidad();
     }
-    
+
     public Long getIdVehiculo() {
         return idVehiculo;
     }
@@ -105,8 +108,6 @@ public class Vehiculo implements Serializable {
         return "Vehiculo{" + "idVehiculo=" + idVehiculo + ", modelo=" + modelo + ", numeroDeFilas=" + numeroDeFilas + ", tipoRango=" + tipoRango + ", marca=" + marca + ", anioVehiculoDesde=" + anioDesde + ", anioVehiculoHasta=" + anioHasta + '}';
     }
 
-    
-
     /**
      * @return the marca
      */
@@ -120,8 +121,6 @@ public class Vehiculo implements Serializable {
     public void setMarca(MarcaVehiculo marca) {
         this.marca = marca;
     }
-
-    
 
     /**
      * @return the modelo
@@ -235,5 +234,27 @@ public class Vehiculo implements Serializable {
         this.descripcion = descripcion;
     }
 
-   
+    /**
+     * @return the descripcionDetallada
+     */
+    public String getDescripcionDetallada() {
+        String modeloResultado = getModelo();
+        String anioDesdeTmp = getAnioDesde() == null ? "" : " - " + getAnioDesde().toString();
+        String anioHastaTmp = getAnioHasta() == null ? "" : " - " + getAnioHasta().toString();
+        List<Fila> filas = getFilasDeAsientos();
+        String descripcionFilas = "";
+        for (Fila fila : filas) {
+            descripcionFilas = descripcionFilas + " - " + fila.getTipoFila().getTipoFila() + "\n";
+        }
+        descripcionDetallada = modeloResultado + anioDesdeTmp + anioHastaTmp + descripcionFilas;
+        return descripcionDetallada;
+    }
+
+    /**
+     * @param descripcionDetallada the descripcionDetallada to set
+     */
+    public void setDescripcionDetallada(String descripcionDetallada) {
+        this.descripcionDetallada = descripcionDetallada;
+    }
+
 }

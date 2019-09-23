@@ -130,8 +130,54 @@
                     </p:column>
                 </p:dataTable>
             </p:fieldset>
-            <!-- FIN ADMINISTRACION TIPO DOCUMENTO -->
+            <!-- FIN ADMINISTRACION TIPO FILA -->
+            <p/>
+            <!-- INICIO ADMINISTRACION LUGAR VEHICULO TRABAJO-->
+            <p:fieldset legend="#{msj.administrarVehiculoTrabajo}">
+                <p:panelGrid id="pngAdministrarLugarVehiculoTrabajo" columns="2">
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.lugarVehiculoTrabajo}" />                    
+                    <p:inputText
+                        id="descripcionLugarVehiculoTrabajo"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{parametroControlador.lugarVehiculoTrabajo.lugarVehiculoTrabajo}"
+                        onblur="value = value.toUpperCase()">
+                        <f:converter converterId="trimConverter" />
+                    </p:inputText>
 
+                    <p:commandButton
+                        id="btnGuardarLugarVehiculoTrabajo" 
+                        value="#{msj.guardar}"
+                        process="@this descripcionLugarVehiculoTrabajo "
+                        update="pngAdministrarLugarVehiculoTrabajo tblListaLugarVehiculoTrabajo mensajeGeneral"
+                        action="#{parametroControlador.guardarLugarVehiculoTrabajo()}" />
+                    <p:outputLabel
+                        value="" />
+
+                </p:panelGrid>
+                <p/>
+                <p:dataTable
+                    id="tblListaLugarVehiculoTrabajo"                
+                    var="lugarVehiculoTrabajo"
+                    style="width: 400px;"
+                    value="#{parametroControlador.listaLugarVehiculoTrabajo}">
+                    <f:facet name="header">
+                        #{msj.listaLugarVehiculoTrabajo}
+                    </f:facet>
+
+                    <p:column headerText="#{msj.codigo}">
+                        <h:outputText value="#{lugarVehiculoTrabajo.idLugarVehiculoTrabajo}" />
+                    </p:column>
+                    
+                    <p:column headerText="#{msj.numeroAsientos}">
+                        <h:outputText value="#{lugarVehiculoTrabajo.lugarVehiculoTrabajo}" />
+                    </p:column>
+                </p:dataTable>
+            </p:fieldset>
+            <!-- FIN ADMINISTRACION TIPO FILA -->
+            <p/>
             <!-- INICIO ADMINISTRACION RANGO ANIOS-->
             <p:fieldset legend="#{msj.configurarRangoAnios}">
                 <p:panelGrid id="pngAdministrarRangoAnios" columns="2">
