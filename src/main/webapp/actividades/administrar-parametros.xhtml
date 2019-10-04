@@ -58,17 +58,17 @@
                     <p:column headerText="#{msj.descripcionTipoDocumento}">
                         <h:outputText value="#{tipoDocumento.tipoDocumento}" />
                     </p:column>   
-                    
+
                     <p:column headerText="#{msj.esCliente}">
                         <h:outputText value="#{tipoDocumento.esCliente}" />
                     </p:column>
-                    
+
                     <p:column headerText="#{msj.esSistema}">
                         <h:outputText value="#{tipoDocumento.esSistema}" />
                     </p:column>
-                    
-                    
-                    
+
+
+
                 </p:dataTable>
             </p:fieldset>
             <!-- FIN ADMINISTRACION TIPO DOCUMENTO -->
@@ -124,7 +124,7 @@
                     <p:column headerText="#{msj.descripcionTipoFila}">
                         <h:outputText value="#{tipoFila.tipoFila}" />
                     </p:column>
-                    
+
                     <p:column headerText="#{msj.numeroAsientos}">
                         <h:outputText value="#{tipoFila.numeroAsiento}" />
                     </p:column>
@@ -170,13 +170,106 @@
                     <p:column headerText="#{msj.codigo}">
                         <h:outputText value="#{lugarVehiculoTrabajo.idLugarVehiculoTrabajo}" />
                     </p:column>
-                    
+
                     <p:column headerText="#{msj.numeroAsientos}">
                         <h:outputText value="#{lugarVehiculoTrabajo.lugarVehiculoTrabajo}" />
                     </p:column>
                 </p:dataTable>
             </p:fieldset>
             <!-- FIN ADMINISTRACION TIPO FILA -->
+            <p/>
+            <!-- INICIO ADMINISTRACION PARTE -->
+            <p:fieldset legend="#{msj.administrarPartes}">
+                <p:panelGrid id="pngAdministrarPartes" columns="2">
+                    
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.esPartePrincipal}" />
+                    <p:selectOneRadio
+                        id="sorPartePrincipal"
+                        required="true"
+                        value="#{parametroControlador.partePrincipal}">
+                        <f:selectItem itemLabel="#{msj.si}" itemValue="true" />
+                        <f:selectItem itemLabel="#{msj.no}" itemValue="false" />
+                        <p:ajax 
+                            update="pngAdministrarPartes" listener="#{parametroControlador.seleccionarPartePrincipal}"/>
+                    </p:selectOneRadio>
+
+                    <p:outputLabel
+                        for="@next"
+                        rendered="#{!parametroControlador.partePrincipal}"
+                        value="#{msj.partesParaSelecccionar}" />
+                    <p:tree
+                        id="tPartePrincipal"
+                        value="#{parametroControlador.nodoPrincipal}"
+                        rendered="#{!parametroControlador.partePrincipal}"
+                        required="true"
+                        selectionMode="single"
+                        var="parte" 
+                        selection="#{parametroControlador.nodoSeleccionado}">
+                        <p:ajax
+                            event="select"
+                            update=":frmAdministrarCatalogos:parteSeleccionada"
+                            listener="#{parametroControlador.nodoSeleccionadoPartePadre}" />
+                        <p:treeNode>
+                            <h:outputText value="#{parte.parte}" />
+                        </p:treeNode>
+                    </p:tree>
+                    
+                    <p:outputLabel
+                        for="@next"
+                        rendered="#{!parametroControlador.partePrincipal}"
+                        value="#{msj.partePrincipalSeleccionada}" />
+                    <p:inputText
+                        id="parteSeleccionada"
+                        rendered="#{!parametroControlador.partePrincipal}"
+                        disabled="true"
+                        value="#{parametroControlador.parteSeleccionada.parte}">
+                    </p:inputText>
+                    
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.parte}" />                    
+                    <p:inputText
+                        id="descripcionParte"
+                        required="true"
+                        value="#{parametroControlador.parte.parte}"
+                        onblur="value = value.toUpperCase()">
+                        <f:converter converterId="trimConverter" />
+                    </p:inputText>
+                    
+                    
+
+                    <p:commandButton
+                        id="btnParte" 
+                        value="#{msj.guardar}"
+                        process="@this descripcionParte sorPartePrincipal"
+                        update="pngAdministrarPartes tblListaParte mensajeGeneral"
+                        action="#{parametroControlador.guardarParte()}" />
+                    <p:outputLabel
+                        value="" />
+
+                </p:panelGrid>
+                <p/>
+                <p:dataTable
+                    id="tblListaParte"                
+                    var="parte"
+                    style="width: 400px;"
+                    value="#{parametroControlador.listaParte}">
+                    <f:facet name="header">
+                        #{msj.listaParteVehiculo}
+                    </f:facet>
+
+                    <p:column headerText="#{msj.codigo}">
+                        <h:outputText value="#{parte.idParte}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.descripcion}">
+                        <h:outputText value="#{parte.parte}" />
+                    </p:column>
+                </p:dataTable>
+            </p:fieldset>
+            <!-- FIN ADMINISTRACION PARTE -->
             <p/>
             <!-- INICIO ADMINISTRACION RANGO ANIOS-->
             <p:fieldset legend="#{msj.configurarRangoAnios}">
@@ -193,7 +286,7 @@
                         maxlength="4"
                         mask="9999">
                     </p:inputMask>
-                    
+
                     <p:outputLabel
                         for="@next"
                         value="#{msj.anioFinalRango}" />                    
@@ -216,10 +309,10 @@
                         value="" />
 
                 </p:panelGrid>
-                
+
             </p:fieldset>
             <!-- FIN ADMINISTRACION TIPO DOCUMENTO -->
-            
+
         </h:form>
     </ui:define>
 </ui:composition>

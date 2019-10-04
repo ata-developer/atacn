@@ -120,8 +120,9 @@ public class GenericoDaoUtil<T, I extends Serializable> {
 
             Field[] fields = tablaEntidad.getDeclaredFields();
             for (Field field : fields) {
-                parametro = parametros.get(field.getName());
-                if (null != parametro) {
+                
+                if (parametros.containsKey(field.getName())) {
+                    parametro = parametros.get(field.getName());
                     predicates.add(cb.and(cb.equal(root.get(field.getName()), parametro)));
                 }
                 if (parametros.containsKey(field.getName().concat("IsNull"))) {

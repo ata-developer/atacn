@@ -73,6 +73,8 @@ public class OrdenControlador extends BaseControlador {
     private List<Vehiculo> vehiculosCliente;
     
     private Vehiculo vehiculoSeleccionado;
+    
+    
 
     @PostConstruct
     public void init() {
@@ -84,6 +86,10 @@ public class OrdenControlador extends BaseControlador {
         setMismosDatosOrden(false);
         setLlenarEsteMomento(false);
         setVehiculosCliente(new ArrayList<Vehiculo>());
+    }
+    
+    public void cargarTree() {
+        
     }
     
     public void seleccionarVehiculo() {
@@ -335,4 +341,6 @@ public class OrdenControlador extends BaseControlador {
     public void setVehiculoSeleccionado(Vehiculo vehiculoSeleccionado) {
         this.vehiculoSeleccionado = vehiculoSeleccionado;
     }
+
+    
 }

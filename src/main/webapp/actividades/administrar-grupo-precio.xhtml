@@ -217,7 +217,7 @@
                             event="change"
                             process="@this somSeleccionarTrabajo"
                             update="frmAdministrarGrupoPrecio mensajeGeneral"
-                            listener="#{grupoPrecioControlador.limpiarTrabajo()}" />
+                            listener="#{grupoPrecioControlador.limpiarParaCategoria()}" />
                     </h:selectOneMenu>
 
                     <p:outputLabel
@@ -232,6 +232,22 @@
                         <p:ajax 
                             event="change"
                             process="@this somSeleccionarCategoriaConfiguracion"
+                            update="frmAdministrarGrupoPrecio mensajeGeneral"
+                            listener="#{grupoPrecioControlador.limpiarParaTrabajo()}" />
+                    </h:selectOneMenu>
+                    
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.partePrincipal}" />
+                    <h:selectOneMenu
+                        id="somPartePrincipal"
+                        value="#{grupoPrecioControlador.partePrincipalSeleccionada}"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{grupoPrecioControlador.generarSelectItemDePartesPrincipales()}" />
+                        <p:ajax 
+                            event="change"
+                            process="@this somSeleccionarTrabajo"
                             update="frmAdministrarGrupoPrecio mensajeGeneral"
                             listener="#{grupoPrecioControlador.cargarPrecio()}" />
                     </h:selectOneMenu>

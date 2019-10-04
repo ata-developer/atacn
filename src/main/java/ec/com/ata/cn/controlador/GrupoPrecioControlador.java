@@ -9,6 +9,7 @@ package ec.com.ata.cn.controlador;
 import ec.com.ata.cn.logica.CategoriaBean;
 import ec.com.ata.cn.logica.EstablecimientoBean;
 import ec.com.ata.cn.logica.GrupoPrecioBean;
+import ec.com.ata.cn.logica.ParteBean;
 import ec.com.ata.cn.logica.TrabajoBean;
 import ec.com.ata.cn.logica.TrabajoCategoriaPrecioBean;
 import ec.com.ata.cn.logica.util.gestor.Constante;
@@ -16,6 +17,7 @@ import ec.com.ata.cn.modelo.Categoria;
 import ec.com.ata.cn.modelo.Establecimiento;
 import ec.com.ata.cn.modelo.Trabajo;
 import ec.com.ata.cn.modelo.GrupoPrecio;
+import ec.com.ata.cn.modelo.Parte;
 import ec.com.ata.cn.modelo.TrabajoCategoriaPrecio;
 import ec.com.ata.cn.modelo.TrabajoCategoriaPrecioId;
 import java.math.BigDecimal;
@@ -62,6 +64,9 @@ public class GrupoPrecioControlador extends BaseControlador {
 
     @Inject
     private EstablecimientoBean establecimientoBean;
+    
+    @Inject
+    private ParteBean parteBean;
 
     private GrupoPrecio grupoPrecio;
 
@@ -94,6 +99,10 @@ public class GrupoPrecioControlador extends BaseControlador {
     private List<Establecimiento> establecimientosOrigen;
 
     private List<Establecimiento> establecimientosDestino;
+    
+    private List<Parte> listaPartePrincipal;
+    
+    private Parte partePrincipalSeleccionada;
 
     private DualListModel<Establecimiento> listaEstablecimientos;
 
@@ -115,6 +124,8 @@ public class GrupoPrecioControlador extends BaseControlador {
 
         setTrabajoCategoriaPrecio(new TrabajoCategoriaPrecio());
         setListaMapaTrabajoCategoriaPrecio(new ArrayList<HashMap<String, Object>>());
+        setListaPartePrincipal(parteBean.obtenerListaPorPadre(null));
+        
     }
 
     public void guardarConfiguracionEstablecimiento() {
@@ -220,6 +231,7 @@ public class GrupoPrecioControlador extends BaseControlador {
             trabajoCategoriaPrecio.setCategoria(getCategoriaSeleccionado());
             trabajoCategoriaPrecio.setTrabajo(getTrabajoSeleccionado());
             trabajoCategoriaPrecio.setGrupoPrecio(getGrupoPrecioSeccionado());
+            trabajoCategoriaPrecio.setParte(getPartePrincipalSeleccionada());
             trabajoCategoriaPrecio.setPrecioDescuento(getPrecioDescuento());
             trabajoCategoriaPrecio.setPrecioVentaPublico(getPrecioVentaPublico());
             trabajoCategoriaTrabajoBean.guardar(trabajoCategoriaPrecio);
@@ -244,11 +256,13 @@ public class GrupoPrecioControlador extends BaseControlador {
                 trabajoCategoriaPrecioId.setIdCategoria(categoriaSeleccionado.getIdCategoria());
                 trabajoCategoriaPrecioId.setIdTrabajo(trabajoSeleccionado.getIdTrabajo());
                 trabajoCategoriaPrecioId.setIdGrupoPrecio(grupoPrecioSeccionado.getIdGrupoPrecio());
+                
                 TrabajoCategoriaPrecio trabajoCategoriaPrecioTmp = trabajoCategoriaTrabajoBean.obtenerPorId(trabajoCategoriaPrecioId);
                 setListaMapaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecio(grupoPrecioSeccionado));
                 if (null != trabajoCategoriaPrecioTmp) {
                     setPrecioVentaPublico(trabajoCategoriaPrecioTmp.getPrecioVentaPublico());
                     setPrecioDescuento(trabajoCategoriaPrecioTmp.getPrecioDescuento());
+                    
                     addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
                     return;
                 } else {
@@ -283,11 +297,26 @@ public class GrupoPrecioControlador extends BaseControlador {
         }
         return selectItemsBuilder.buildList();
     }
+    
+    public List<SelectItem> generarSelectItemDePartesPrincipales() {
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+        for (Parte parteTmp : parteBean.obtenerListaPorPadre(null)) {
+            selectItemsBuilder.add(parteTmp, parteTmp.getParte());
+        }
+        return selectItemsBuilder.buildList();
+    }
 
-    public void limpiarTrabajo() {
-        trabajoSeleccionado = new Trabajo();
-        precioVentaPublico = null;
-        precioDescuento = null;
+    public void limpiarParaCategoria() {
+        setTrabajoSeleccionado( new Trabajo());
+        setPartePrincipalSeleccionada(new Parte());
+        setPrecioVentaPublico(null);        
+        setPrecioDescuento(null);
+    }
+    
+    public void limpiarParaTrabajo() {        
+        setPartePrincipalSeleccionada(new Parte());
+        setPrecioVentaPublico(null);        
+        setPrecioDescuento(null);
     }
 
     public void cargarListaCategoriaYTrabajos() {
@@ -602,6 +631,34 @@ public class GrupoPrecioControlador extends BaseControlador {
      */
     public void setListaEstablecimientos(DualListModel<Establecimiento> listaEstablecimientos) {
         this.listaEstablecimientos = listaEstablecimientos;
+    }
+
+    /**
+     * @return the listaPartePrincipal
+     */
+    public List<Parte> getListaPartePrincipal() {
+        return listaPartePrincipal;
+    }
+
+    /**
+     * @param listaPartePrincipal the listaPartePrincipal to set
+     */
+    public void setListaPartePrincipal(List<Parte> listaPartePrincipal) {
+        this.listaPartePrincipal = listaPartePrincipal;
+    }
+
+    /**
+     * @return the partePrincipalSeleccionada
+     */
+    public Parte getPartePrincipalSeleccionada() {
+        return partePrincipalSeleccionada;
+    }
+
+    /**
+     * @param partePrincipalSeleccionada the partePrincipalSeleccionada to set
+     */
+    public void setPartePrincipalSeleccionada(Parte partePrincipalSeleccionada) {
+        this.partePrincipalSeleccionada = partePrincipalSeleccionada;
     }
 
 }

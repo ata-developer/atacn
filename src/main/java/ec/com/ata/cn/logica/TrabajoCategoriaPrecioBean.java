@@ -107,4 +107,6 @@ public class TrabajoCategoriaPrecioBean {
         }
         return listaTrabajoCategoriaPrecio;
     }
+    
+    
 }

@@ -8,10 +8,13 @@ package ec.com.ata.cn.logica;
 
 import ec.com.ata.cn.logica.dao.ParteDao;
 import ec.com.ata.cn.modelo.Parte;
+import java.util.HashMap;
 
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import org.primefaces.model.DefaultTreeNode;
+import org.primefaces.model.TreeNode;
 
 /**
  *
@@ -34,4 +37,29 @@ public class ParteBean {
     public Parte obtenerPorCodigo(Long idParte){
         return parteDao.obtenerPorCodigo(idParte);
     }
+    
+    public List<Parte> obtenerListaPorPadre(Parte padre){
+        HashMap<String, Object> parametros = new HashMap<>();
+        parametros.put("padre", padre);
+        return parteDao.obtenerListaPorParametros(parametros);
+    }
+    
+    public TreeNode cargarNodoPrincipal (){
+        TreeNode nodoPrincipal = new DefaultTreeNode();
+        List<Parte> listaParte = obtenerListaPorPadre(null);
+        for (Parte parte : listaParte) {
+            nodoPrincipal.getChildren().add(crearNuevoYCargarHijos(parte));
+        }
+        return nodoPrincipal;
+    }
+    
+    public TreeNode crearNuevoYCargarHijos(Parte parte){
+        TreeNode hijo = new DefaultTreeNode(parte);
+        List<Parte> listaParteHijos = this.obtenerListaPorPadre(parte);
+        for (Parte parteTmp : listaParteHijos) {
+            hijo.getChildren().add(crearNuevoYCargarHijos(parteTmp));
+        }
+        return hijo;
+    }
+    
 }

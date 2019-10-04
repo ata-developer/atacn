@@ -44,6 +44,11 @@ public class TrabajoCategoriaPrecio implements Serializable {
     @ManyToOne
     private GrupoPrecio grupoPrecio;
     
+    @MapsId("idParte")
+    @JoinColumn(name = "id_parte", referencedColumnName = "id_parte")
+    @ManyToOne
+    private Parte parte;
+    
     @Embedded
     private GenericoEntidad genericoEntidad;
     
@@ -184,6 +189,20 @@ public class TrabajoCategoriaPrecio implements Serializable {
      */
     public void setGenericoEntidad(GenericoEntidad genericoEntidad) {
         this.genericoEntidad = genericoEntidad;
+    }
+
+    /**
+     * @return the parte
+     */
+    public Parte getParte() {
+        return parte;
+    }
+
+    /**
+     * @param parte the parte to set
+     */
+    public void setParte(Parte parte) {
+        this.parte = parte;
     }
 
 }
