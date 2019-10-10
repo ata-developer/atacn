@@ -100,6 +100,9 @@ public class TrabajoCategoriaPrecioBean {
                 trabajoCategoriaPrecioIdTmp.setIdTrabajo(idTrabajo);
                 trabajoCategoriaPrecioIdTmp.setIdGrupoPrecio(idGrupoPrecio);
                 TrabajoCategoriaPrecio trabajoCategoriaPrecioTmp = trabajoCategoriaPrecioDao.obtenerPorCodigo(trabajoCategoriaPrecioIdTmp);
+                if ( trabajoCategoriaPrecioTmp != null ) {
+                    System.out.println("trabajoCategoriaPrecioTmp: "+trabajoCategoriaPrecioTmp.getPrecioVentaPublico());
+                }
                 trabajoCategoriaPrecioTmp = (trabajoCategoriaPrecioTmp == null ? new TrabajoCategoriaPrecio() :trabajoCategoriaPrecioTmp);
                 mapaTrabajoCategoriaPrecio.put(clave, trabajoCategoriaPrecioTmp);
             }

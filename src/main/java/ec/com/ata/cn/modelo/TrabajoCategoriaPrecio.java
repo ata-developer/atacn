@@ -44,7 +44,6 @@ public class TrabajoCategoriaPrecio implements Serializable {
     @ManyToOne
     private GrupoPrecio grupoPrecio;
     
-    @MapsId("idParte")
     @JoinColumn(name = "id_parte", referencedColumnName = "id_parte")
     @ManyToOne
     private Parte parte;

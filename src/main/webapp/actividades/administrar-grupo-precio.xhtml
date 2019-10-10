@@ -107,9 +107,9 @@
                 </p:panelGrid>
             </p:fieldset>
             <!-- FIN CONFIGURACION GRUPO PRECIO -->
-
+            <p></p>
             <!-- INICIO CONFIGURACION CATEGORIA -->
-            <p:fieldset legend="#{msj.agregarCategoria}" rendered="#{grupoPrecioControlador.grupoPrecioSeccionado.idGrupoPrecio != null}" >
+            <p:fieldset id="fsAdministrarCategoria" legend="#{msj.agregarCategoria}" rendered="#{grupoPrecioControlador.grupoPrecioSeccionado.idGrupoPrecio != null}" >
                 <p:panelGrid id="pngAdministrarCategoria" columns="2">
                     <p:outputLabel
                         for="@next"
@@ -125,7 +125,7 @@
                         id="btnGuardaCategoria"
                         process="@this descripcionCategoria somSeleccionarGrupoPrecio"
                         value="#{msj.guardar}"
-                        update="frmAdministrarGrupoPrecio  mensajeGeneral"
+                        update="fsAdministrarCategoria  mensajeGeneral"
                         action="#{grupoPrecioControlador.guardarCategoria()}" />
                     <p:outputLabel
                         value="" />
@@ -305,6 +305,16 @@
                             id="pngPrecio"
                             columns="2" 
                             rendered="#{categoria.categoria != 'TRABAJO/CATEGORIA'}">
+                            <p:outputLabel
+                                for="@next"
+                                value="categoria " />
+                            <p:outputLabel
+                                value="#{mapaTrabajoCategoriaPrecio[categoria.categoria]}" />
+                            <p:outputLabel
+                                for="@next"
+                                value="clave: " />
+                            <p:outputLabel
+                                value="#{mapaTrabajoCategoriaPrecio[categoria.categoria].trabajoCategoriaPrecioId}" />
                             <p:outputLabel
                                 for="@next"
                                 value="#{msj.precioVentaPublico}" />
