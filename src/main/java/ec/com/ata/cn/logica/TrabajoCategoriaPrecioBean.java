@@ -10,6 +10,7 @@ import ec.com.ata.cn.logica.dao.TrabajoCategoriaPrecioDao;
 import ec.com.ata.cn.logica.util.gestor.Constante;
 import ec.com.ata.cn.modelo.Categoria;
 import ec.com.ata.cn.modelo.GrupoPrecio;
+import ec.com.ata.cn.modelo.Parte;
 import ec.com.ata.cn.modelo.Trabajo;
 import ec.com.ata.cn.modelo.TrabajoCategoriaPrecio;
 import ec.com.ata.cn.modelo.TrabajoCategoriaPrecioId;
@@ -109,6 +110,45 @@ public class TrabajoCategoriaPrecioBean {
             listaTrabajoCategoriaPrecio.add(mapaTrabajoCategoriaPrecio);
         }
         return listaTrabajoCategoriaPrecio;
+    }
+    
+    public List<HashMap<String, Object>> obtenerListaMapaTrabajoCategoriaPrecioYParte(GrupoPrecio grupoPrecio, Parte parte) {
+        List<HashMap<String, Object>> listaTrabajoCategoriaPrecio = new ArrayList<>();       
+        List<Trabajo> listaTrabajo = trabajoBean.obtenerListaPorGrupoPrecio(grupoPrecio);
+        List<Categoria> listaCategoria = categoriaBean.obtenerListaPorGrupoPrecio(grupoPrecio);
+        for (Trabajo trabajo : listaTrabajo) {
+             HashMap<String, Object> mapaTrabajoCategoriaPrecio = new HashMap<>();
+             mapaTrabajoCategoriaPrecio.put(Constante.TRABAJO_CATEGORIA, trabajo.getDescripcion());
+            for (Categoria categoria : listaCategoria) {
+                String clave = categoria.getCategoria();
+                Long idCategoria = categoria.getIdCategoria();
+                Long idTrabajo = trabajo.getIdTrabajo();
+                Long idGrupoPrecio = grupoPrecio.getIdGrupoPrecio();
+                TrabajoCategoriaPrecioId trabajoCategoriaPrecioIdTmp = new TrabajoCategoriaPrecioId();
+                trabajoCategoriaPrecioIdTmp.setIdCategoria(idCategoria);
+                trabajoCategoriaPrecioIdTmp.setIdTrabajo(idTrabajo);
+                trabajoCategoriaPrecioIdTmp.setIdGrupoPrecio(idGrupoPrecio);
+                TrabajoCategoriaPrecio trabajoCategoriaPrecioTmp = obtenerPorCodigoYParte(trabajoCategoriaPrecioIdTmp, parte);
+                if ( trabajoCategoriaPrecioTmp != null ) {
+                    System.out.println("trabajoCategoriaPrecioTmp: "+trabajoCategoriaPrecioTmp.getPrecioVentaPublico());
+                }
+                trabajoCategoriaPrecioTmp = (trabajoCategoriaPrecioTmp == null ? new TrabajoCategoriaPrecio() :trabajoCategoriaPrecioTmp);
+                mapaTrabajoCategoriaPrecio.put(clave, trabajoCategoriaPrecioTmp);
+            }
+            listaTrabajoCategoriaPrecio.add(mapaTrabajoCategoriaPrecio);
+        }
+        return listaTrabajoCategoriaPrecio;
+    }
+    
+    public TrabajoCategoriaPrecio obtenerPorCodigoYParte(TrabajoCategoriaPrecioId trabajoCategoriaPrecioIdEntrada, Parte parte){
+        HashMap<String, Object> parametros = new HashMap<>();
+        parametros.put("trabajoCategoriaPrecioId", trabajoCategoriaPrecioIdEntrada);
+        parametros.put("parte", parte);
+        List<TrabajoCategoriaPrecio> listaTrabajoCategoriaPrecio = trabajoCategoriaPrecioDao.obtenerListaPorParametros(parametros);
+        if (!listaTrabajoCategoriaPrecio.isEmpty()) {
+            return trabajoCategoriaPrecioDao.obtenerListaPorParametros(parametros).get(0);
+        }
+        return null;
     }
     
     

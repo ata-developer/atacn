@@ -72,10 +72,8 @@
                     </p:selectOneMenu>
                 </p:panelGrid>
             </p:fieldset>
-            <p/>
-            <p/>
             <!-- FIN CONFIGURACION SELECCION GRUPO PRECIO -->
-
+            <p/>
             <!-- INICIO CONFIGURACION GRUPO PRECIO ESTABLECIMIENTO-->
             <p:fieldset legend="#{msj.configurarPrecioEstablecimiento}" rendered="#{grupoPrecioControlador.grupoPrecioSeccionado.idGrupoPrecio != null}">
                 <p:panelGrid id="pngConfigurarPrecioEstablecimiento" columns="1">
@@ -305,16 +303,6 @@
                             id="pngPrecio"
                             columns="2" 
                             rendered="#{categoria.categoria != 'TRABAJO/CATEGORIA'}">
-                            <p:outputLabel
-                                for="@next"
-                                value="categoria " />
-                            <p:outputLabel
-                                value="#{mapaTrabajoCategoriaPrecio[categoria.categoria]}" />
-                            <p:outputLabel
-                                for="@next"
-                                value="clave: " />
-                            <p:outputLabel
-                                value="#{mapaTrabajoCategoriaPrecio[categoria.categoria].trabajoCategoriaPrecioId}" />
                             <p:outputLabel
                                 for="@next"
                                 value="#{msj.precioVentaPublico}" />
