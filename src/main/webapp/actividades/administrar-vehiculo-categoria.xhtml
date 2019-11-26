@@ -50,11 +50,15 @@
                     <f:facet name="header">
                         #{msj.listaDeVehiculos}
                     </f:facet>
-                    
+
+                    <p:column headerText="#{msj.codigo}" >
+                        <h:outputText value="#{vehiculo.idVehiculo}" />
+                    </p:column>
+
                     <p:column headerText="#{msj.descripcionModelo}" >
                         <h:outputText value="#{vehiculo.modelo}" />
                     </p:column>
-                    
+
                     <p:column headerText="#{msj.descripcion}" >
                         <h:outputText value="#{vehiculo.descripcion}" />
                     </p:column>
@@ -91,7 +95,7 @@
                     <p:column headerText="#{msj.acciones}">
                         <p:commandButton
                             id="btnEditarVehiculo"
-                            process="@this tblListaVehiculos2"
+                            process="@this tblListaVehiculos2 "
                             value="#{msj.editar}"
                             update=":frmVehiculoCategoria mensajeGeneral"
                             action="#{vehiculoCategoriaAdministracionControlador.seleccionarVehiculo(vehiculo)}" />
@@ -99,32 +103,132 @@
 
                 </p:dataTable>
                 <p/>
+                <p:fieldset legend="#{msj.seleccionarPrecioGrupo}" rendered="#{vehiculoCategoriaAdministracionControlador.vehiculoSeleccionado.idVehiculo != null}">
+                    <p:panelGrid id="pngSeleccionarGrupoPrecio" columns="2">                    
+                        <p:outputLabel
+                            for="@next"
+                            value="#{msj.descripcionGrupoPrecio}" />
+                        <p:selectOneMenu
+                            id="somSeleccionarGrupoPrecioVehiculo"
+                            value="#{vehiculoCategoriaAdministracionControlador.grupoPrecioSeccionado}"
+                            converter="omnifaces.SelectItemsConverter">
+                            <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                            <f:selectItems value="#{vehiculoCategoriaAdministracionControlador.generarSelectItemDeGrupoPrecio()}" />
+                            <p:ajax                             
+                                event="change"
+                                update=":frmVehiculoCategoria mensajeGeneral"
+                                listener="#{vehiculoCategoriaAdministracionControlador.cargarListaCategoria()}" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel
+                            for="@next"
+                            value="#{msj.partePrincipal}" />
+                        <p:selectOneMenu
+                            id="somPartePrincipalVehiculo"                        
+                            value="#{vehiculoCategoriaAdministracionControlador.partePrincipalSeleccionada}"
+                            disabled="#{vehiculoCategoriaAdministracionControlador.grupoPrecioSeccionado.idGrupoPrecio == null}"
+                            converter="omnifaces.SelectItemsConverter">
+                            <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                            <f:selectItems value="#{vehiculoCategoriaAdministracionControlador.generarSelectItemDePartesPrincipales()}" />
+                            <p:ajax                             
+                                event="change"
+                                process="@this somSeleccionarGrupoPrecioVehiculo"
+                                update=":frmVehiculoCategoria mensajeGeneral"
+                                />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel
+                            for="@next"
+                            value="#{msj.seleccionarCategoria}" />
+                        <p:selectOneMenu
+                            id="somSeleccionarCategoriaParaVehiculo"
+                            value="#{vehiculoCategoriaAdministracionControlador.categoriaSeleccionado}"
+                            disabled="#{vehiculoCategoriaAdministracionControlador.partePrincipalSeleccionada.idParte == null}"
+                            converter="omnifaces.SelectItemsConverter">
+                            <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                            <f:selectItems value="#{vehiculoCategoriaAdministracionControlador.generarSelectItemDeCategorias()}" />
+                            <p:ajax 
+                                event="change"
+                                process="@this somPartePrincipalVehiculo somSeleccionarGrupoPrecioVehiculo"
+                                update=":frmVehiculoCategoria mensajeGeneral"
+                                listener="#{vehiculoCategoriaAdministracionControlador.cargarListaPrecio()}"/>
+                        </p:selectOneMenu>
+
+                    </p:panelGrid>
+                    <p></p>
+                    <p:dataTable
+                        id="dtListaMapaPrecio"                
+                        var="mapaTrabajoCategoriaPrecio" 
+                        value="#{vehiculoCategoriaAdministracionControlador.listaMapaTrabajoCategoriaPrecio}">
+                        <c:forEach var="categoria" items="#{vehiculoCategoriaAdministracionControlador.listaCategoriasTemporal()}">
+                            <p:column>
+                                <f:facet name="header" >
+                                    <h:outputText value="#{categoria.categoria}" />
+                                </f:facet>
+                                <p:outputLabel
+                                    rendered="#{categoria.categoria == 'TRABAJO/CATEGORIA'}"
+                                    value="#{mapaTrabajoCategoriaPrecio[categoria.categoria]}" />
+                                <p:panelGrid 
+                                    id="pngPrecio"
+                                    columns="2" 
+                                    rendered="#{categoria.categoria != 'TRABAJO/CATEGORIA'}">
+                                    <p:outputLabel
+                                        for="@next"
+                                        value="#{msj.precioVentaPublico}" />
+                                    <p:outputLabel
+                                        value="#{mapaTrabajoCategoriaPrecio[categoria.categoria].precioVentaPublico}" />
+                                    <p:outputLabel
+                                        for="@next"
+                                        value="#{msj.precioDescuento}" />
+                                    <p:outputLabel
+                                        value="#{mapaTrabajoCategoriaPrecio[categoria.categoria].precioDescuento}" />
+                                </p:panelGrid>
+
+                            </p:column>
+
+
+                        </c:forEach>
+                    </p:dataTable>
+                </p:fieldset>
+                <p/>
+                <p:commandButton
+                    id="btnAgregarCategoriaVehiculo" 
+                    value="#{msj.agregar}" 
+                    update=":frmVehiculoCategoria mensajeGeneral"
+                    rendered="#{vehiculoCategoriaAdministracionControlador.vehiculoSeleccionado.idVehiculo != null}"
+                    actionListener="#{vehiculoCategoriaAdministracionControlador.agregarGrupoTrabajoAVehiculo()}"/>
+                <p/>
                 <!-- INICIO DATOS DEL VEHICULO -->
                 <p:dataTable
-                    id="tblListaVehiculosSeleccionados"                
+                    id="tblListaVehiculosSeleccionados"       
+                    rendered="#{vehiculoCategoriaAdministracionControlador.grupoPrecioSeccionado.idGrupoPrecio != null}"
                     var="vehiculo" 
                     value="#{vehiculoCategoriaAdministracionControlador.listaVehiculoSeleccionado}">
                     <f:facet name="header">
                         #{msj.listaDeVehiculos}
                     </f:facet>
-                    
+
+                    <p:column headerText="#{msj.codigo}" style="width: 50px;">
+                        <h:outputText value="#{vehiculo.idVehiculo}" />
+                    </p:column>
+
                     <p:column headerText="#{msj.descripcionModelo}" >
                         <h:outputText value="#{vehiculo.modelo}" />
                     </p:column>
-                    
+
                     <p:column headerText="#{msj.descripcion}" >
                         <h:outputText value="#{vehiculo.descripcion}" />
                     </p:column>
 
-                    <p:column headerText="#{msj.numeroFilas}">
+                    <p:column headerText="#{msj.numeroFilas}" style="width: 60px;">
                         <h:outputText value="#{vehiculo.numeroDeFilas}" />
                     </p:column>
 
-                    <p:column headerText="#{msj.anioInicialRango}">
+                    <p:column headerText="#{msj.anioInicialRango}" style="width: 60px;">
                         <h:outputText value="#{vehiculo.anioDesde}" />
                     </p:column>
 
-                    <p:column headerText="#{msj.anioFinalRango}">
+                    <p:column headerText="#{msj.anioFinalRango}" style="width: 60px;">
                         <h:outputText value="#{vehiculo.anioHasta}" />
                     </p:column>
 
@@ -148,39 +252,66 @@
                 </p:dataTable>
                 <!-- FIN DATOS DEL VEHICULO -->
                 <p/>
+                <p:dataTable
+                    id="dtCategorias"                
+                    var="grupoPrecioParteCategoriaVehiculo"
+                    value="#{vehiculoCategoriaAdministracionControlador.generarListaGrupoVehiculo()}">
+                    <p:column 
+                        headerText="#{msj.descripcion}">
+                        <p:outputLabel
+                            value="#{grupoPrecioParteCategoriaVehiculo.parte.parte}" />
+
+                    </p:column>
+                    <p:column>
+                        <p:commandButton
+                            id="btnEliminarCategoria" 
+                            value="#{msj.eliminar}"
+                            actionListener="#{vehiculoCategoriaAdministracionControlador.eliminarGrupoParteTrabajo(categoriaVehiculo)}"/>
+                    </p:column>
+
+                </p:dataTable>
+                <p/>
+                <!-- INICIO PRECIOS CARGADOS VEHICULO-->
+                <p:dataTable
+                    id="dtValoresCargados"                
+                    var="mapaTrabajoCategoriaPrecio1"
+                    rendered="#{vehiculoCategoriaAdministracionControlador.grupoPrecioSeccionado.idGrupoPrecio != null}"
+                    value="#{vehiculoCategoriaAdministracionControlador.listaMapaTrabajoCategoriaPrecioVehiculoSeleccionado}">
+                    <c:forEach var="categoria1" items="#{vehiculoCategoriaAdministracionControlador.listaCategoriasPorGrupoPrecioYVehiculo()}">
+                        <p:column>
+                            <f:facet name="header" >
+                                <h:outputText value="#{categoria1.categoria}" />
+                            </f:facet>
+                            <p:outputLabel
+                                rendered="#{categoria1.categoria == 'TRABAJO/CATEGORIA'}"
+                                value="#{mapaTrabajoCategoriaPrecio1[categoria1.categoria]}" />
+                            <p:panelGrid 
+                                id="pngPrecio"
+                                columns="2" 
+                                rendered="#{categoria1.categoria != 'TRABAJO/CATEGORIA'}">
+                                <p:outputLabel
+                                    for="@next"
+                                    value="#{msj.precioVentaPublico}" />
+                                <p:outputLabel
+                                    value="#{mapaTrabajoCategoriaPrecio1[categoria1.categoria].precioVentaPublico}" />
+                                <p:outputLabel
+                                    for="@next"
+                                    value="#{msj.precioDescuento}" />
+                                <p:outputLabel
+                                    value="#{mapaTrabajoCategoriaPrecio1[categoria1.categoria].precioDescuento}" />
+                            </p:panelGrid>
+
+                        </p:column>
+
+
+                    </c:forEach>
+                </p:dataTable>
+                <!-- INICIO PRECIOS CARGADOS VEHICULO-->
             </p:fieldset>
             <p/>            
             <!-- FIN CONFIGURACION CATEGORIA -->
             <!-- INICIO CONFIGURACION SELECCION GRUPO PRECIO -->
-            <p:fieldset legend="#{msj.configurarGrupoPrecio}" rendered="#{vehiculoCategoriaAdministracionControlador.vehiculoSeleccionado.idVehiculo != null}">
-                <p:panelGrid id="pngSeleccionarGrupoPrecio" columns="2">                    
-                    <p:outputLabel
-                        for="@next"
-                        value="#{msj.descripcionGrupoPrecio}" />
-                    <p:selectOneMenu
-                        id="somSeleccionarGrupoPrecioVehiculo"
-                        value="#{vehiculoCategoriaAdministracionControlador.grupoPrecioSeccionado}"
-                        converter="omnifaces.SelectItemsConverter">
-                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
-                        <f:selectItems value="#{vehiculoCategoriaAdministracionControlador.generarSelectItemDeGrupoPrecio()}" />                        
-                    </p:selectOneMenu>
-                    <p:outputLabel
-                        for="@next"
-                        value="#{msj.partePrincipal}" />
-                    <h:selectOneMenu
-                        id="somPartePrincipal"
-                        value="#{vehiculoCategoriaAdministracionControlador.partePrincipalSeleccionada}"
-                        converter="omnifaces.SelectItemsConverter">
-                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
-                        <f:selectItems value="#{vehiculoCategoriaAdministracionControlador.generarSelectItemDePartesPrincipales()}" />
-                        <p:ajax 
-                            event="change"
-                            process="@this somSeleccionarGrupoPrecioVehiculo"
-                            update=":frmVehiculoCategoria mensajeGeneral"
-                            listener="#{grupoPrecioControlador.cargarPrecio()}" />
-                    </h:selectOneMenu>
-                </p:panelGrid>
-            </p:fieldset>
+
             <!-- FIN CONFIGURACION SELECCION GRUPO PRECIO -->
         </h:form>
     </ui:define>

@@ -5,15 +5,16 @@
  */
 package ec.com.ata.cn.logica;
 
-
 import ec.com.ata.cn.logica.dao.TrabajoCategoriaPrecioDao;
 import ec.com.ata.cn.logica.util.gestor.Constante;
 import ec.com.ata.cn.modelo.Categoria;
 import ec.com.ata.cn.modelo.GrupoPrecio;
+import ec.com.ata.cn.modelo.GrupoPrecioParteCategoriaVehiculo;
 import ec.com.ata.cn.modelo.Parte;
 import ec.com.ata.cn.modelo.Trabajo;
 import ec.com.ata.cn.modelo.TrabajoCategoriaPrecio;
 import ec.com.ata.cn.modelo.TrabajoCategoriaPrecioId;
+import ec.com.ata.cn.modelo.Vehiculo;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,15 +37,18 @@ public class TrabajoCategoriaPrecioBean {
     @Inject
     private CategoriaBean categoriaBean;
 
+    @Inject
+    private GrupoPrecioParteCategoriaVehiculoBean grupoPrecioParteCategoriaVehiculoBean;
+
     public TrabajoCategoriaPrecio crear(TrabajoCategoriaPrecio trabajoCategoriaPrecioEntrada) throws Exception {
         return trabajoCategoriaPrecioDao.crear(trabajoCategoriaPrecioEntrada);
     }
 
     public TrabajoCategoriaPrecio guardar(TrabajoCategoriaPrecio trabajoCategoriaPrecioEntrada) throws Exception {
         //if (null != trabajoCategoriaPrecioEntrada.getTrabajoCategoriaPrecioId()) {
-          //  return trabajoCategoriaPrecioDao.modificar(trabajoCategoriaPrecioEntrada);
+        //  return trabajoCategoriaPrecioDao.modificar(trabajoCategoriaPrecioEntrada);
         //} else {
-            return trabajoCategoriaPrecioDao.crear(trabajoCategoriaPrecioEntrada);
+        return trabajoCategoriaPrecioDao.crear(trabajoCategoriaPrecioEntrada);
         //}
     }
 
@@ -61,12 +65,12 @@ public class TrabajoCategoriaPrecioBean {
     }
 
     public List<HashMap<String, Object>> obtenerListaMapaTrabajoCategoriaPrecio() {
-        List<HashMap<String, Object>> listaTrabajoCategoriaPrecio = new ArrayList<>();       
+        List<HashMap<String, Object>> listaTrabajoCategoriaPrecio = new ArrayList<>();
         List<Trabajo> listaTrabajo = trabajoBean.obtenerLista();
         List<Categoria> listaCategoria = categoriaBean.obtenerLista();
         for (Trabajo trabajo : listaTrabajo) {
-             HashMap<String, Object> mapaTrabajoCategoriaPrecio = new HashMap<>();
-             mapaTrabajoCategoriaPrecio.put(Constante.TRABAJO_CATEGORIA, trabajo.getDescripcion());
+            HashMap<String, Object> mapaTrabajoCategoriaPrecio = new HashMap<>();
+            mapaTrabajoCategoriaPrecio.put(Constante.TRABAJO_CATEGORIA, trabajo.getDescripcion());
             for (Categoria categoria : listaCategoria) {
                 String clave = categoria.getCategoria();
                 Long idCategoria = categoria.getIdCategoria();
@@ -75,7 +79,7 @@ public class TrabajoCategoriaPrecioBean {
                 trabajoCategoriaPrecioIdTmp.setIdCategoria(idCategoria);
                 trabajoCategoriaPrecioIdTmp.setIdTrabajo(idTrabajo);
                 TrabajoCategoriaPrecio trabajoCategoriaPrecioTmp = trabajoCategoriaPrecioDao.obtenerPorCodigo(trabajoCategoriaPrecioIdTmp);
-                trabajoCategoriaPrecioTmp = (trabajoCategoriaPrecioTmp == null ? new TrabajoCategoriaPrecio() :trabajoCategoriaPrecioTmp);
+                trabajoCategoriaPrecioTmp = (trabajoCategoriaPrecioTmp == null ? new TrabajoCategoriaPrecio() : trabajoCategoriaPrecioTmp);
                 mapaTrabajoCategoriaPrecio.put(clave, trabajoCategoriaPrecioTmp);
             }
             listaTrabajoCategoriaPrecio.add(mapaTrabajoCategoriaPrecio);
@@ -83,14 +87,14 @@ public class TrabajoCategoriaPrecioBean {
 
         return listaTrabajoCategoriaPrecio;
     }
-    
+
     public List<HashMap<String, Object>> obtenerListaMapaTrabajoCategoriaPrecio(GrupoPrecio grupoPrecio) {
-        List<HashMap<String, Object>> listaTrabajoCategoriaPrecio = new ArrayList<>();       
+        List<HashMap<String, Object>> listaTrabajoCategoriaPrecio = new ArrayList<>();
         List<Trabajo> listaTrabajo = trabajoBean.obtenerListaPorGrupoPrecio(grupoPrecio);
         List<Categoria> listaCategoria = categoriaBean.obtenerListaPorGrupoPrecio(grupoPrecio);
         for (Trabajo trabajo : listaTrabajo) {
-             HashMap<String, Object> mapaTrabajoCategoriaPrecio = new HashMap<>();
-             mapaTrabajoCategoriaPrecio.put(Constante.TRABAJO_CATEGORIA, trabajo.getDescripcion());
+            HashMap<String, Object> mapaTrabajoCategoriaPrecio = new HashMap<>();
+            mapaTrabajoCategoriaPrecio.put(Constante.TRABAJO_CATEGORIA, trabajo.getDescripcion());
             for (Categoria categoria : listaCategoria) {
                 String clave = categoria.getCategoria();
                 Long idCategoria = categoria.getIdCategoria();
@@ -101,24 +105,24 @@ public class TrabajoCategoriaPrecioBean {
                 trabajoCategoriaPrecioIdTmp.setIdTrabajo(idTrabajo);
                 trabajoCategoriaPrecioIdTmp.setIdGrupoPrecio(idGrupoPrecio);
                 TrabajoCategoriaPrecio trabajoCategoriaPrecioTmp = trabajoCategoriaPrecioDao.obtenerPorCodigo(trabajoCategoriaPrecioIdTmp);
-                if ( trabajoCategoriaPrecioTmp != null ) {
-                    System.out.println("trabajoCategoriaPrecioTmp: "+trabajoCategoriaPrecioTmp.getPrecioVentaPublico());
+                if (trabajoCategoriaPrecioTmp != null) {
+                    System.out.println("trabajoCategoriaPrecioTmp: " + trabajoCategoriaPrecioTmp.getPrecioVentaPublico());
                 }
-                trabajoCategoriaPrecioTmp = (trabajoCategoriaPrecioTmp == null ? new TrabajoCategoriaPrecio() :trabajoCategoriaPrecioTmp);
+                trabajoCategoriaPrecioTmp = (trabajoCategoriaPrecioTmp == null ? new TrabajoCategoriaPrecio() : trabajoCategoriaPrecioTmp);
                 mapaTrabajoCategoriaPrecio.put(clave, trabajoCategoriaPrecioTmp);
             }
             listaTrabajoCategoriaPrecio.add(mapaTrabajoCategoriaPrecio);
         }
         return listaTrabajoCategoriaPrecio;
     }
-    
+
     public List<HashMap<String, Object>> obtenerListaMapaTrabajoCategoriaPrecioYParte(GrupoPrecio grupoPrecio, Parte parte) {
-        List<HashMap<String, Object>> listaTrabajoCategoriaPrecio = new ArrayList<>();       
+        List<HashMap<String, Object>> listaTrabajoCategoriaPrecio = new ArrayList<>();
         List<Trabajo> listaTrabajo = trabajoBean.obtenerListaPorGrupoPrecio(grupoPrecio);
         List<Categoria> listaCategoria = categoriaBean.obtenerListaPorGrupoPrecio(grupoPrecio);
         for (Trabajo trabajo : listaTrabajo) {
-             HashMap<String, Object> mapaTrabajoCategoriaPrecio = new HashMap<>();
-             mapaTrabajoCategoriaPrecio.put(Constante.TRABAJO_CATEGORIA, trabajo.getDescripcion());
+            HashMap<String, Object> mapaTrabajoCategoriaPrecio = new HashMap<>();
+            mapaTrabajoCategoriaPrecio.put(Constante.TRABAJO_CATEGORIA, trabajo.getDescripcion());
             for (Categoria categoria : listaCategoria) {
                 String clave = categoria.getCategoria();
                 Long idCategoria = categoria.getIdCategoria();
@@ -129,18 +133,84 @@ public class TrabajoCategoriaPrecioBean {
                 trabajoCategoriaPrecioIdTmp.setIdTrabajo(idTrabajo);
                 trabajoCategoriaPrecioIdTmp.setIdGrupoPrecio(idGrupoPrecio);
                 TrabajoCategoriaPrecio trabajoCategoriaPrecioTmp = obtenerPorCodigoYParte(trabajoCategoriaPrecioIdTmp, parte);
-                if ( trabajoCategoriaPrecioTmp != null ) {
-                    System.out.println("trabajoCategoriaPrecioTmp: "+trabajoCategoriaPrecioTmp.getPrecioVentaPublico());
+                if (trabajoCategoriaPrecioTmp != null) {
+                    System.out.println("trabajoCategoriaPrecioTmp: " + trabajoCategoriaPrecioTmp.getPrecioVentaPublico());
                 }
-                trabajoCategoriaPrecioTmp = (trabajoCategoriaPrecioTmp == null ? new TrabajoCategoriaPrecio() :trabajoCategoriaPrecioTmp);
+                trabajoCategoriaPrecioTmp = (trabajoCategoriaPrecioTmp == null ? new TrabajoCategoriaPrecio() : trabajoCategoriaPrecioTmp);
                 mapaTrabajoCategoriaPrecio.put(clave, trabajoCategoriaPrecioTmp);
             }
             listaTrabajoCategoriaPrecio.add(mapaTrabajoCategoriaPrecio);
         }
         return listaTrabajoCategoriaPrecio;
     }
-    
-    public TrabajoCategoriaPrecio obtenerPorCodigoYParte(TrabajoCategoriaPrecioId trabajoCategoriaPrecioIdEntrada, Parte parte){
+
+    public List<HashMap<String, Object>> obtenerListaMapaTrabajoCategoriaPrecioYParte(GrupoPrecio grupoPrecio, Parte parte, Categoria categoriaTmp) {
+        List<HashMap<String, Object>> listaTrabajoCategoriaPrecio = new ArrayList<>();
+        List<Trabajo> listaTrabajo = trabajoBean.obtenerListaPorGrupoPrecio(grupoPrecio);
+        List<Categoria> listaCategoria = categoriaBean.obtenerListaPorGrupoPrecio(grupoPrecio);
+        for (Trabajo trabajo : listaTrabajo) {
+            HashMap<String, Object> mapaTrabajoCategoriaPrecio = new HashMap<>();
+            mapaTrabajoCategoriaPrecio.put(Constante.TRABAJO_CATEGORIA, trabajo.getDescripcion());
+            for (Categoria categoria : listaCategoria) {
+                if (categoria.getIdCategoria().equals(categoriaTmp.getIdCategoria())) {
+                    String clave = categoria.getCategoria();
+                    Long idCategoria = categoria.getIdCategoria();
+                    Long idTrabajo = trabajo.getIdTrabajo();
+                    Long idGrupoPrecio = grupoPrecio.getIdGrupoPrecio();
+                    TrabajoCategoriaPrecioId trabajoCategoriaPrecioIdTmp = new TrabajoCategoriaPrecioId();
+                    trabajoCategoriaPrecioIdTmp.setIdCategoria(idCategoria);
+                    trabajoCategoriaPrecioIdTmp.setIdTrabajo(idTrabajo);
+                    trabajoCategoriaPrecioIdTmp.setIdGrupoPrecio(idGrupoPrecio);
+                    TrabajoCategoriaPrecio trabajoCategoriaPrecioTmp = obtenerPorCodigoYParte(trabajoCategoriaPrecioIdTmp, parte);
+                    trabajoCategoriaPrecioTmp = (trabajoCategoriaPrecioTmp == null ? new TrabajoCategoriaPrecio() : trabajoCategoriaPrecioTmp);
+                    mapaTrabajoCategoriaPrecio.put(clave, trabajoCategoriaPrecioTmp);
+                }
+            }
+            listaTrabajoCategoriaPrecio.add(mapaTrabajoCategoriaPrecio);
+        }
+        return listaTrabajoCategoriaPrecio;
+    }
+
+    public List<HashMap<String, Object>> obtenerListaMapaTrabajoCategoriaPrecioYVehiculo(GrupoPrecio grupoPrecio, Vehiculo vehiculo) {
+        System.out.println(" obtenerListaMapaTrabajoCategoriaPrecioYVehiculo ");
+        List<HashMap<String, Object>> listaTrabajoCategoriaPrecio = new ArrayList<>();
+        List<GrupoPrecioParteCategoriaVehiculo> listaGPPCV = grupoPrecioParteCategoriaVehiculoBean.obtenerListaPorVehiculoYCategoria(grupoPrecio, vehiculo);
+        System.out.println(" listaGPPCV.size: " + listaGPPCV.size());
+        List<Trabajo> listaTrabajo = trabajoBean.obtenerListaPorGrupoPrecio(grupoPrecio);
+        List<Categoria> listaCategoria = categoriaBean.obtenerListaPorGrupoPrecio(grupoPrecio);
+        if (!listaGPPCV.isEmpty()) {
+            System.out.println("entro");
+            for (Trabajo trabajo : listaTrabajo) {
+                HashMap<String, Object> mapaTrabajoCategoriaPrecio = new HashMap<>();
+                mapaTrabajoCategoriaPrecio.put(Constante.TRABAJO_CATEGORIA, trabajo.getDescripcion());
+                for (Categoria categoria : listaCategoria) {
+                    for (GrupoPrecioParteCategoriaVehiculo grupoPrecioParteCategoriaVehiculo : listaGPPCV) {
+                        
+                        if (grupoPrecioParteCategoriaVehiculo.getCategoria().getIdCategoria().equals(categoria.getIdCategoria())) {
+                            String clave = categoria.getCategoria();
+                            Long idCategoria = categoria.getIdCategoria();
+                            Long idTrabajo = trabajo.getIdTrabajo();
+                            Long idGrupoPrecio = grupoPrecio.getIdGrupoPrecio();
+                            TrabajoCategoriaPrecioId trabajoCategoriaPrecioIdTmp = new TrabajoCategoriaPrecioId();
+                            trabajoCategoriaPrecioIdTmp.setIdCategoria(idCategoria);
+                            trabajoCategoriaPrecioIdTmp.setIdTrabajo(idTrabajo);
+                            trabajoCategoriaPrecioIdTmp.setIdGrupoPrecio(idGrupoPrecio);
+                            TrabajoCategoriaPrecio trabajoCategoriaPrecioTmp = trabajoCategoriaPrecioDao.obtenerPorCodigo(trabajoCategoriaPrecioIdTmp);
+                            if (trabajoCategoriaPrecioTmp != null) {
+                                System.out.println("***>: " + trabajoCategoriaPrecioTmp.getPrecioVentaPublico());
+                            }
+                            trabajoCategoriaPrecioTmp = (trabajoCategoriaPrecioTmp == null ? new TrabajoCategoriaPrecio() : trabajoCategoriaPrecioTmp);
+                            mapaTrabajoCategoriaPrecio.put(clave, trabajoCategoriaPrecioTmp);
+                        }
+                    }
+                }
+                listaTrabajoCategoriaPrecio.add(mapaTrabajoCategoriaPrecio);
+            }
+        }
+        return listaTrabajoCategoriaPrecio;
+    }
+
+    public TrabajoCategoriaPrecio obtenerPorCodigoYParte(TrabajoCategoriaPrecioId trabajoCategoriaPrecioIdEntrada, Parte parte) {
         HashMap<String, Object> parametros = new HashMap<>();
         parametros.put("trabajoCategoriaPrecioId", trabajoCategoriaPrecioIdEntrada);
         parametros.put("parte", parte);
@@ -150,6 +220,11 @@ public class TrabajoCategoriaPrecioBean {
         }
         return null;
     }
-    
-    
+
+    public List<TrabajoCategoriaPrecio> obtenerPorCategoria(Categoria categoria) {
+        HashMap<String, Object> parametros = new HashMap<>();
+        parametros.put("categoria", categoria);
+        return trabajoCategoriaPrecioDao.obtenerListaPorParametros(parametros);
+    }
+
 }

@@ -5,8 +5,10 @@
  */
 package ec.com.ata.cn.controlador;
 
+import ec.com.ata.cn.logica.CategoriaBean;
 import ec.com.ata.cn.logica.FilaBean;
 import ec.com.ata.cn.logica.GrupoPrecioBean;
+import ec.com.ata.cn.logica.GrupoPrecioParteCategoriaVehiculoBean;
 import ec.com.ata.cn.logica.ImagenBean;
 import ec.com.ata.cn.logica.MarcaVehiculoBean;
 import ec.com.ata.cn.logica.ParametroBean;
@@ -17,8 +19,11 @@ import ec.com.ata.cn.logica.VehiculoBean;
 import ec.com.ata.cn.logica.VehiculoImagenBean;
 import ec.com.ata.cn.logica.util.gestor.Constante;
 import ec.com.ata.cn.logica.util.gestor.UtilGeneral;
+import ec.com.ata.cn.modelo.Categoria;
 import ec.com.ata.cn.modelo.Fila;
 import ec.com.ata.cn.modelo.GrupoPrecio;
+import ec.com.ata.cn.modelo.GrupoPrecioParteCategoriaVehiculo;
+import ec.com.ata.cn.modelo.GrupoPrecioParteCategoriaVehiculoId;
 import ec.com.ata.cn.modelo.Imagen;
 import ec.com.ata.cn.modelo.MarcaVehiculo;
 import ec.com.ata.cn.modelo.Parte;
@@ -54,6 +59,23 @@ import org.primefaces.model.UploadedFile;
 @Named
 public class VehiculoCategoriaAdministracionControlador extends BaseControlador {
 
+    /**
+     * @return the categoriaSeleccionado
+     */
+    public Categoria getCategoriaSeleccionado() {
+        return categoriaSeleccionado;
+    }
+
+    /**
+     * @param categoriaSeleccionado the categoriaSeleccionado to set
+     */
+    public void setCategoriaSeleccionado(Categoria categoriaSeleccionado) {
+        this.categoriaSeleccionado = categoriaSeleccionado;
+    }
+    
+    @Inject
+    private CategoriaBean categoriaBean;
+
     @Inject
     private MarcaVehiculoBean marcaVehiculoBean;
 
@@ -83,6 +105,9 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
 
     @Inject
     private TrabajoCategoriaPrecioBean trabajoCategoriaTrabajoBean;
+    
+    @Inject
+    private GrupoPrecioParteCategoriaVehiculoBean grupoPrecioParteCategoriaVehiculoBean;
 
     private MarcaVehiculo marcaVehiculo;
 
@@ -125,11 +150,24 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
     private GrupoPrecio grupoPrecioSeccionado;
 
     private Parte partePrincipalSeleccionada;
+    
+    private List<Categoria> listaCategoriaTmp;
+    
+    private List<Categoria> listaCategoria;
+    
+    private Categoria categoriaSeleccionado;
 
     private List<HashMap<String, Object>> listaMapaTrabajoCategoriaPrecio;
+    
+    private List<HashMap<String, Object>> listaMapaTrabajoCategoriaPrecioVehiculoSeleccionado;
+    
+    private List<GrupoPrecioParteCategoriaVehiculo> listaGrupoPrecioParteCategoriaVehiculo;
 
     @PostConstruct
     public void init() {
+        
+        this.listaCategoriaTmp = new ArrayList<>();
+        
         setMarcaVehiculo(new MarcaVehiculo());
         setVehiculo(new Vehiculo());
         setListaMarcaVehiculo(marcaVehiculoBean.obtenerLista());
@@ -140,15 +178,112 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
         setRangoAnioFinal(new ArrayList<Integer>());
         setImagenes(new ArrayList<UploadedFile>());
         setImagenesVehiculo(new ArrayList<Imagen>());
+        setListaCategoria(new ArrayList<Categoria>());
+        setVehiculoSeleccionado(new Vehiculo());
+        
         inicializarRangoAnioInicial();
         setContadorImagenes(0);
         setModoEdicion(false);
         setGrupoPrecioSeccionado(new GrupoPrecio());
     }
+    
+    public void eliminarGrupoParteTrabajo (Categoria categoriaEntrada) {
+        
+        System.out.println("eliminarAutoParte");
+    }
+    
+    public void agregarGrupoTrabajoAVehiculo() {
+        System.out.println("agregarGrupoTrabajoAVehiculo");
+        try {
+            GrupoPrecioParteCategoriaVehiculo grupoPrecioParteCategoriaVehiculo = new GrupoPrecioParteCategoriaVehiculo();
+            grupoPrecioParteCategoriaVehiculo.setGrupoPrecio(grupoPrecioSeccionado);
+            grupoPrecioParteCategoriaVehiculo.setParte(partePrincipalSeleccionada);
+            grupoPrecioParteCategoriaVehiculo.setCategoria(categoriaSeleccionado);
+            grupoPrecioParteCategoriaVehiculo.setVehiculo(vehiculoSeleccionado);
+            this.grupoPrecioParteCategoriaVehiculoBean.crear(grupoPrecioParteCategoriaVehiculo);
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_PRECIOS_CONTROLADOR_GUARDAR_ROOT + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_PRECIOS_CONTROLADOR_GUARDAR_EX + ":" + e.getMessage());
+        } finally {
+
+        }
+    }
+    
+    public List<SelectItem> generarSelectItemDeCategorias() {
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+        for (Categoria categoriaTmp : listaCategoria) {
+            selectItemsBuilder.add(categoriaTmp, categoriaTmp.getCategoria());
+        }
+        return selectItemsBuilder.buildList();
+    }
+    
+    
+    public void cargarListaCategoria(){
+        
+        System.out.println("cargarListaCategoria: "+grupoPrecioSeccionado.getNombre());
+        
+        setListaCategoria(categoriaBean.obtenerListaPorGrupoPrecio(grupoPrecioSeccionado));
+        System.out.println("listaCategoria.size: "+listaCategoria.size());
+        System.out.println("listaCategoria: "+listaCategoria);
+        System.out.println("grupoPrecioSeccionado: "+grupoPrecioSeccionado);
+        System.out.println("vehiculoSeleccionado: "+vehiculoSeleccionado);
+        setListaMapaTrabajoCategoriaPrecioVehiculoSeleccionado(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecioYVehiculo(grupoPrecioSeccionado, vehiculoSeleccionado));
+        
+    }
+
+    public List<Categoria> listaCategoriasTemporal() {
+
+        listaCategoriaTmp = new ArrayList<>();
+        Categoria categoriaTmp = new Categoria();
+        categoriaTmp.setCategoria(Constante.TRABAJO_CATEGORIA);
+        listaCategoriaTmp.add(categoriaTmp);
+        listaCategoriaTmp.add(categoriaSeleccionado);
+        return listaCategoriaTmp;
+    }
+    
+    public List<Categoria> listaCategoriasTodas() {
+
+        listaCategoriaTmp = new ArrayList<>();
+        Categoria categoriaTmp = new Categoria();
+        categoriaTmp.setCategoria(Constante.TRABAJO_CATEGORIA);
+        listaCategoriaTmp.add(categoriaTmp);
+        listaCategoriaTmp.addAll(categoriaBean.obtenerListaPorGrupoPrecio(grupoPrecioSeccionado));
+        return listaCategoriaTmp;
+    }
+    
+    public List<Categoria> listaCategoriasPorGrupoPrecioYVehiculo() {
+
+        listaCategoriaTmp = new ArrayList<>();
+        Categoria categoriaTmp = new Categoria();
+        categoriaTmp.setCategoria(Constante.TRABAJO_CATEGORIA);
+        listaCategoriaTmp.add(categoriaTmp);
+        listaCategoriaTmp.addAll(categoriaBean.obtenerListaPorGrupoPrecioYVehiculo(grupoPrecioSeccionado, vehiculoSeleccionado));
+        return listaCategoriaTmp;
+    }
+    
+    
+    public List<GrupoPrecioParteCategoriaVehiculo> generarListaGrupoVehiculo() {
+        return grupoPrecioParteCategoriaVehiculoBean.obtenerListaPorVehiculoYCategoria(grupoPrecioSeccionado, vehiculoSeleccionado);
+    }
+    
+    public List<SelectItem> generarSelectItemDeCategoriasTodas() {
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+        for (Categoria categoriaTmp : categoriaBean.obtenerListaPorGrupoPrecio(grupoPrecioSeccionado)) {
+            selectItemsBuilder.add(categoriaTmp, categoriaTmp.getCategoria());
+        }
+        return selectItemsBuilder.buildList();
+    }
 
     public void cargarListaPrecio() {
         try {
-            setListaMapaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecioYParte(grupoPrecioSeccionado,partePrincipalSeleccionada));
+            System.out.println("grupoPrecioSeccionado: " + grupoPrecioSeccionado.getNombre());
+            System.out.println("partePrincipalSeleccionada: " + partePrincipalSeleccionada.getParte());
+            setListaMapaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecioYParte(grupoPrecioSeccionado, partePrincipalSeleccionada,categoriaSeleccionado));
             addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
@@ -206,8 +341,13 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
 
     public void seleccionarVehiculo(Vehiculo vehiculoEntrada) {
         setListaVehiculoSeleccionado(new ArrayList<Vehiculo>());
+        setListaMapaTrabajoCategoriaPrecioVehiculoSeleccionado(new ArrayList<HashMap<String, Object>>());
         this.vehiculoSeleccionado = vehiculoEntrada;
+        setGrupoPrecioSeccionado(new GrupoPrecio());
+        setPartePrincipalSeleccionada(new Parte());
+        setCategoriaSeleccionado(new Categoria());
         getListaVehiculoSeleccionado().add(vehiculoEntrada);
+        
     }
 
     public List<Fila> listaFila(Vehiculo vehiculo) {
@@ -732,5 +872,47 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
      */
     public void setListaMapaTrabajoCategoriaPrecio(List<HashMap<String, Object>> listaMapaTrabajoCategoriaPrecio) {
         this.listaMapaTrabajoCategoriaPrecio = listaMapaTrabajoCategoriaPrecio;
+    }
+
+    /**
+     * @return the listaCategoria
+     */
+    public List<Categoria> getListaCategoria() {
+        return listaCategoria;
+    }
+
+    /**
+     * @param listaCategoria the listaCategoria to set
+     */
+    public void setListaCategoria(List<Categoria> listaCategoria) {
+        this.listaCategoria = listaCategoria;
+    }
+
+    /**
+     * @return the listaMapaTrabajoCategoriaPrecioVehiculoSeleccionado
+     */
+    public List<HashMap<String, Object>> getListaMapaTrabajoCategoriaPrecioVehiculoSeleccionado() {
+        return listaMapaTrabajoCategoriaPrecioVehiculoSeleccionado;
+    }
+
+    /**
+     * @param listaMapaTrabajoCategoriaPrecioVehiculoSeleccionado the listaMapaTrabajoCategoriaPrecioVehiculoSeleccionado to set
+     */
+    public void setListaMapaTrabajoCategoriaPrecioVehiculoSeleccionado(List<HashMap<String, Object>> listaMapaTrabajoCategoriaPrecioVehiculoSeleccionado) {
+        this.listaMapaTrabajoCategoriaPrecioVehiculoSeleccionado = listaMapaTrabajoCategoriaPrecioVehiculoSeleccionado;
+    }
+
+    /**
+     * @return the listaGrupoPrecioParteCategoriaVehiculo
+     */
+    public List<GrupoPrecioParteCategoriaVehiculo> getListaGrupoPrecioParteCategoriaVehiculo() {
+        return listaGrupoPrecioParteCategoriaVehiculo;
+    }
+
+    /**
+     * @param listaGrupoPrecioParteCategoriaVehiculo the listaGrupoPrecioParteCategoriaVehiculo to set
+     */
+    public void setListaGrupoPrecioParteCategoriaVehiculo(List<GrupoPrecioParteCategoriaVehiculo> listaGrupoPrecioParteCategoriaVehiculo) {
+        this.listaGrupoPrecioParteCategoriaVehiculo = listaGrupoPrecioParteCategoriaVehiculo;
     }
 }

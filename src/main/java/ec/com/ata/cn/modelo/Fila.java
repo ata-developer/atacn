@@ -139,7 +139,6 @@ public class Fila implements Serializable {
      * @return the tipoFila
      */
     public TipoFila getTipoFila() {
-        System.out.println("entro a tipo fila");
         return tipoFila;
     }
 
