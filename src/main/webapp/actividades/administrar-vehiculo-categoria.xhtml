@@ -1,11 +1,11 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"                
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
                 xmlns:o="http://omnifaces.org/ui"
                 xmlns:of="http://omnifaces.org/functions"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="/WEB-INF/templateATA.xhtml">
 
     <ui:define name="content">
@@ -255,7 +255,9 @@
                 <p:dataTable
                     id="dtCategorias"                
                     var="grupoPrecioParteCategoriaVehiculo"
-                    value="#{vehiculoCategoriaAdministracionControlador.generarListaGrupoVehiculo()}">
+                    rendered="#{vehiculoCategoriaAdministracionControlador.vehiculoSeleccionado.idVehiculo != null}"
+                    value="#{vehiculoCategoriaAdministracionControlador.listaGrupoPrecioParteCategoriaVehiculo}">
+
                     <p:column 
                         headerText="#{msj.descripcion}">
                         <p:outputLabel
@@ -266,46 +268,49 @@
                         <p:commandButton
                             id="btnEliminarCategoria" 
                             value="#{msj.eliminar}"
-                            actionListener="#{vehiculoCategoriaAdministracionControlador.eliminarGrupoParteTrabajo(categoriaVehiculo)}"/>
+                            actionListener="#{vehiculoCategoriaAdministracionControlador.eliminarGrupoParteTrabajo(grupoPrecioParteCategoriaVehiculo)}"/>
+                    </p:column>
+
+                </p:dataTable>
+                
+                <p/>
+                
+                <p:dataTable
+                    id="dtCategorias2"                
+                    var="trabajoCategoriaPrecio"
+                    rendered="#{vehiculoCategoriaAdministracionControlador.vehiculoSeleccionado.idVehiculo != null}"
+                    value="#{vehiculoCategoriaAdministracionControlador.listaTrabajoCategoriaPrecio}">
+                    <p:column 
+                        headerText="#{msj.descripcionCategoria}">
+                        <p:outputLabel
+                            value="#{trabajoCategoriaPrecio.categoria.categoria}" />
+                    </p:column>
+                    <p:column 
+                        headerText="#{msj.parte}">
+                        <p:outputLabel
+                            value="#{trabajoCategoriaPrecio.parte.parte}" />
+                    </p:column>
+                    <p:column 
+                        headerText="#{msj.descripcion}">
+                        <p:outputLabel
+                            value="#{trabajoCategoriaPrecio.trabajo.descripcion}" />
+                    </p:column>
+                    
+                    <p:column 
+                        headerText="#{msj.precioVentaPublico}">
+                        <p:outputLabel
+                            value="#{trabajoCategoriaPrecio.precioVentaPublico}" />
+                    </p:column>
+                    <p:column 
+                        headerText="#{msj.precioDescuento}">
+                        <p:outputLabel
+                            value="#{trabajoCategoriaPrecio.precioDescuento}" />
                     </p:column>
 
                 </p:dataTable>
                 <p/>
                 <!-- INICIO PRECIOS CARGADOS VEHICULO-->
-                <p:dataTable
-                    id="dtValoresCargados"                
-                    var="mapaTrabajoCategoriaPrecio1"
-                    rendered="#{vehiculoCategoriaAdministracionControlador.grupoPrecioSeccionado.idGrupoPrecio != null}"
-                    value="#{vehiculoCategoriaAdministracionControlador.listaMapaTrabajoCategoriaPrecioVehiculoSeleccionado}">
-                    <c:forEach var="categoria1" items="#{vehiculoCategoriaAdministracionControlador.listaCategoriasPorGrupoPrecioYVehiculo()}">
-                        <p:column>
-                            <f:facet name="header" >
-                                <h:outputText value="#{categoria1.categoria}" />
-                            </f:facet>
-                            <p:outputLabel
-                                rendered="#{categoria1.categoria == 'TRABAJO/CATEGORIA'}"
-                                value="#{mapaTrabajoCategoriaPrecio1[categoria1.categoria]}" />
-                            <p:panelGrid 
-                                id="pngPrecio"
-                                columns="2" 
-                                rendered="#{categoria1.categoria != 'TRABAJO/CATEGORIA'}">
-                                <p:outputLabel
-                                    for="@next"
-                                    value="#{msj.precioVentaPublico}" />
-                                <p:outputLabel
-                                    value="#{mapaTrabajoCategoriaPrecio1[categoria1.categoria].precioVentaPublico}" />
-                                <p:outputLabel
-                                    for="@next"
-                                    value="#{msj.precioDescuento}" />
-                                <p:outputLabel
-                                    value="#{mapaTrabajoCategoriaPrecio1[categoria1.categoria].precioDescuento}" />
-                            </p:panelGrid>
-
-                        </p:column>
-
-
-                    </c:forEach>
-                </p:dataTable>
+                
                 <!-- INICIO PRECIOS CARGADOS VEHICULO-->
             </p:fieldset>
             <p/>            

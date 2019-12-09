@@ -39,6 +39,24 @@ public class TrabajoCategoriaPrecioBean {
 
     @Inject
     private GrupoPrecioParteCategoriaVehiculoBean grupoPrecioParteCategoriaVehiculoBean;
+    
+    public List<TrabajoCategoriaPrecio> conseguirListaTrabajoCategoriaPrecio (GrupoPrecio grupoPrecioEntrada, Categoria categoriaEntrada ) {
+        HashMap<String, Object> parametros = new HashMap<>();
+        parametros.put("grupoPrecio", grupoPrecioEntrada);
+        parametros.put("categoria", categoriaEntrada);
+        return trabajoCategoriaPrecioDao.obtenerListaPorParametros(parametros);
+    }
+    
+    public List<TrabajoCategoriaPrecio> generarListaCompletaTrabajoCategoriaPrecioPorVehiculo(List<GrupoPrecioParteCategoriaVehiculo> listaGrupoPrecioParteCategoriaVehiculo){
+        List<TrabajoCategoriaPrecio> listaTrabajoCompleto = new ArrayList<>();
+        for (GrupoPrecioParteCategoriaVehiculo grupoPrecioParteCategoriaVehiculo : listaGrupoPrecioParteCategoriaVehiculo) {
+            List<TrabajoCategoriaPrecio> listaTemporal = conseguirListaTrabajoCategoriaPrecio(grupoPrecioParteCategoriaVehiculo.getGrupoPrecio(),grupoPrecioParteCategoriaVehiculo.getCategoria());
+            for (TrabajoCategoriaPrecio trabajoCategoriaPrecio : listaTemporal) {
+                listaTrabajoCompleto.add(trabajoCategoriaPrecio);
+            }
+        }
+        return listaTrabajoCompleto;
+    }
 
     public TrabajoCategoriaPrecio crear(TrabajoCategoriaPrecio trabajoCategoriaPrecioEntrada) throws Exception {
         return trabajoCategoriaPrecioDao.crear(trabajoCategoriaPrecioEntrada);

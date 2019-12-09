@@ -5,6 +5,7 @@
  */
 package ec.com.ata.cn.controlador;
 
+import com.sun.javafx.scene.control.skin.VirtualFlow;
 import ec.com.ata.cn.logica.CategoriaBean;
 import ec.com.ata.cn.logica.FilaBean;
 import ec.com.ata.cn.logica.GrupoPrecioBean;
@@ -23,11 +24,11 @@ import ec.com.ata.cn.modelo.Categoria;
 import ec.com.ata.cn.modelo.Fila;
 import ec.com.ata.cn.modelo.GrupoPrecio;
 import ec.com.ata.cn.modelo.GrupoPrecioParteCategoriaVehiculo;
-import ec.com.ata.cn.modelo.GrupoPrecioParteCategoriaVehiculoId;
 import ec.com.ata.cn.modelo.Imagen;
 import ec.com.ata.cn.modelo.MarcaVehiculo;
 import ec.com.ata.cn.modelo.Parte;
 import ec.com.ata.cn.modelo.TipoFila;
+import ec.com.ata.cn.modelo.TrabajoCategoriaPrecio;
 import ec.com.ata.cn.modelo.Vehiculo;
 import ec.com.ata.cn.modelo.VehiculoImagen;
 import ec.com.ata.cn.modelo.VehiculoImagenId;
@@ -58,6 +59,20 @@ import org.primefaces.model.UploadedFile;
 @ViewScoped
 @Named
 public class VehiculoCategoriaAdministracionControlador extends BaseControlador {
+
+    /**
+     * @return the listaTrabajoCategoriaPrecio
+     */
+    public List<TrabajoCategoriaPrecio> getListaTrabajoCategoriaPrecio() {
+        return listaTrabajoCategoriaPrecio;
+    }
+
+    /**
+     * @param listaTrabajoCategoriaPrecio the listaTrabajoCategoriaPrecio to set
+     */
+    public void setListaTrabajoCategoriaPrecio(List<TrabajoCategoriaPrecio> listaTrabajoCategoriaPrecio) {
+        this.listaTrabajoCategoriaPrecio = listaTrabajoCategoriaPrecio;
+    }
 
     /**
      * @return the categoriaSeleccionado
@@ -162,6 +177,8 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
     private List<HashMap<String, Object>> listaMapaTrabajoCategoriaPrecioVehiculoSeleccionado;
     
     private List<GrupoPrecioParteCategoriaVehiculo> listaGrupoPrecioParteCategoriaVehiculo;
+    
+    private List<TrabajoCategoriaPrecio> listaTrabajoCategoriaPrecio;
 
     @PostConstruct
     public void init() {
@@ -187,7 +204,14 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
         setGrupoPrecioSeccionado(new GrupoPrecio());
     }
     
-    public void eliminarGrupoParteTrabajo (Categoria categoriaEntrada) {
+    public List<TrabajoCategoriaPrecio> generarTrabajoCategoriaPrecioParaAuto(GrupoPrecioParteCategoriaVehiculo grupoPrecioParteCategoriaVehiculo){
+        
+        System.out.println("***grupoPrecioParteCategoriaVehiculo:"+grupoPrecioParteCategoriaVehiculo);
+        //return trabajoCategoriaTrabajoBean.conseguirListaTrabajoCategoriaPrecio(grupoPrecioParteCategoriaVehiculo.getGrupoPrecio(), grupoPrecioParteCategoriaVehiculo.getCategoria());
+        return new ArrayList<>();
+    }
+    
+    public void eliminarGrupoParteTrabajo (GrupoPrecioParteCategoriaVehiculo grupoPrecioParteCategoriaVehiculo) {
         
         System.out.println("eliminarAutoParte");
     }
@@ -233,7 +257,12 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
         System.out.println("grupoPrecioSeccionado: "+grupoPrecioSeccionado);
         System.out.println("vehiculoSeleccionado: "+vehiculoSeleccionado);
         setListaMapaTrabajoCategoriaPrecioVehiculoSeleccionado(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecioYVehiculo(grupoPrecioSeccionado, vehiculoSeleccionado));
+        setListaGrupoPrecioParteCategoriaVehiculo(generarListaGrupoVehiculo());
+        setListaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.generarListaCompletaTrabajoCategoriaPrecioPorVehiculo(getListaGrupoPrecioParteCategoriaVehiculo()));
         
+    }
+    
+    public void consultarListaTrabajo() {
     }
 
     public List<Categoria> listaCategoriasTemporal() {
@@ -268,7 +297,9 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
     
     
     public List<GrupoPrecioParteCategoriaVehiculo> generarListaGrupoVehiculo() {
-        return grupoPrecioParteCategoriaVehiculoBean.obtenerListaPorVehiculoYCategoria(grupoPrecioSeccionado, vehiculoSeleccionado);
+        List<GrupoPrecioParteCategoriaVehiculo> listaTemp = grupoPrecioParteCategoriaVehiculoBean.obtenerListaPorVehiculoYCategoria(grupoPrecioSeccionado, vehiculoSeleccionado);
+        System.out.println("tamaño listaTemp: "+listaTemp.size());
+        return listaTemp;
     }
     
     public List<SelectItem> generarSelectItemDeCategoriasTodas() {
@@ -347,6 +378,7 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
         setPartePrincipalSeleccionada(new Parte());
         setCategoriaSeleccionado(new Categoria());
         getListaVehiculoSeleccionado().add(vehiculoEntrada);
+        setListaTrabajoCategoriaPrecio(new ArrayList<TrabajoCategoriaPrecio>());
         
     }
 
