@@ -1,4 +1,4 @@
-                                                                                                                                                                                                                                                                               <ui:composition xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
@@ -11,10 +11,13 @@
             <p:wizard flowListener="#{ordenControlador.enFlujoProceso}">
                 <p:tab id="idEstablecimiento" title="#{msj.establecimiento}">
                     <ui:include src="seleccionar-esteblecimiento-para-orden.xhtml" />
-                </p:tab>
+                </p:tab>                
                 <p:tab id="idDetallesCliente" title="#{msj.detallesCliente}">
-                    <ui:include src="llenar-cliente-factura.xhtml" />
+                    <ui:include src="llenar-cliente.xhtml" />
                 </p:tab>
+
+                
+
                 <p:tab id="idSeleccionVehiculo" title="#{msj.seleccionVehiculo}">
                     <ui:include src="seleccionar-vehiculos-clientes.xhtml" />
                 </p:tab>

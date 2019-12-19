@@ -92,6 +92,8 @@ public class Usuario implements Serializable {
 
     public Usuario () {
         genericoEntidad = new GenericoEntidad();
+        ciudad = new Ciudad();
+        tipoDocumento = new TipoDocumento();
     }
 
     @Override
@@ -133,8 +135,10 @@ public class Usuario implements Serializable {
 
     @Override
     public String toString() {
-        return "Usuario{" + "idUsuario=" + idUsuario + ", numeroDocumento=" + numeroDocumento + ", nombre=" + nombre + ", apellido=" + apellido + '}';
+        return "Usuario{" + "idUsuario=" + idUsuario + ", numeroDocumento=" + numeroDocumento + ", nombre=" + nombre + ", apellido=" + apellido + ", callePrincipal=" + callePrincipal + ", numeracion=" + numeracion + ", calleSecundaria=" + calleSecundaria + ", celular=" + celular + ", telefono=" + telefono + ", correo=" + correo + ", tipoUsuario=" + tipoUsuario + ", usuario=" + usuario + ", contrasenia=" + contrasenia + ", documentoYNombres=" + documentoYNombres + ", genericoEntidad=" + genericoEntidad + ", tipoDocumento=" + tipoDocumento + ", ciudad=" + ciudad + '}';
     }
+
+    
     
     
     

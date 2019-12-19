@@ -13,71 +13,46 @@
         id="atcCedula"
         onkeypress="if (event.which &lt; 48 || event.which &gt; 57) return false;"
         minQueryLength="4"
-        required="true"
         rendered="#{ordenControlador.clienteOrden.tipoDocumento.tipoDocumento eq 'CÉDULA'}"
         effect="fade"
-        value="#{ordenControlador.clienteOrden}"
-        completeMethod="#{ordenControlador.autoCompletar}"
-        converter="usuarioConvertidor"
-        var="cliente"
-        itemValue="#{cliente}"
-        itemLabel="#{cliente.numeroDocumento}">
-        <p:ajax
-            event="itemSelect"
-            listener="#{ordenControlador.actualizarClienteOrden}"
-            process="atcCedula"
-            update="pngDetallesCliente"
-            />
-        <p:column>
-            <h:outputText value="#{cliente.documentoYNombres}" />
-        </p:column>
+        value="#{ordenControlador.numeroDocumentoOrden}"
+        completeMethod="#{ordenControlador.autoCompletarSoloTexto}"
+        >
+        <p:ajax event="itemSelect" listener="#{ordenControlador.actualizarClienteOrden}" resetValues ="true" update="pngDetallesCliente"/>
+        
+        
     </p:autoComplete>
         
     <p:autoComplete
         id="iMRuc"
         onkeypress="if (event.which &lt; 48 || event.which &gt; 57) return false;"
         minQueryLength="4"
-        required="true"
         rendered="#{ordenControlador.clienteOrden.tipoDocumento.tipoDocumento eq 'RUC'}"
         effect="fade"
-        value="#{ordenControlador.clienteOrden}"
-        completeMethod="#{ordenControlador.autoCompletar}"
-        converter="usuarioConvertidor"
-        var="cliente"
-        itemValue="#{cliente}"
-        itemLabel="#{cliente.numeroDocumento}">
+        value="#{ordenControlador.numeroDocumentoOrden}"
+        completeMethod="#{ordenControlador.autoCompletarSoloTexto}"
+        >
         <p:ajax
             event="itemSelect"
             listener="#{ordenControlador.actualizarClienteOrden}"
-            process="iMRuc"
+            resetValues ="true"
             update="pngDetallesCliente"
             />
-        <p:column>
-            <h:outputText value="#{cliente.documentoYNombres}" />
-        </p:column>
+        
     </p:autoComplete>
     
     <p:autoComplete
         id="iTPasaporte"
         minQueryLength="4"
-        required="true"
+        
         rendered="#{ordenControlador.clienteOrden.tipoDocumento.tipoDocumento eq 'PASAPORTE'}"
         effect="fade"
-        value="#{ordenControlador.clienteOrden}"
-        completeMethod="#{ordenControlador.autoCompletar}"
-        converter="usuarioConvertidor"
-        var="cliente"
-        itemValue="#{cliente}"
-        itemLabel="#{cliente.numeroDocumento}">
-        <p:ajax
-            event="itemSelect"
-            listener="#{ordenControlador.actualizarClienteOrden}"
-            process="iTPasaporte"
-            update="pngDetallesCliente"
-            />
-        <p:column>
-            <h:outputText value="#{cliente.documentoYNombres}" />
-        </p:column>
+        value="#{ordenControlador.numeroDocumentoOrden}"
+        completeMethod="#{ordenControlador.autoCompletarSoloTexto}"
+        >
+        <p:ajax event="itemSelect" listener="#{ordenControlador.actualizarClienteOrden}" resetValues ="true" update="pngDetallesCliente" />
+        
+        
     </p:autoComplete>
 
 </ui:composition>

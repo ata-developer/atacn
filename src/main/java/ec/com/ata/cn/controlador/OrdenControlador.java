@@ -35,6 +35,34 @@ import org.primefaces.event.FlowEvent;
 @Named
 public class OrdenControlador extends BaseControlador {
 
+    /**
+     * @return the clienteConsulta
+     */
+    public Usuario getClienteConsulta() {
+        return clienteConsulta;
+    }
+
+    /**
+     * @param clienteConsulta the clienteConsulta to set
+     */
+    public void setClienteConsulta(Usuario clienteConsulta) {
+        this.clienteConsulta = clienteConsulta;
+    }
+
+    /**
+     * @return the listaSiNo
+     */
+    public List<SelectItem> getListaSiNo() {
+        return listaSiNo;
+    }
+
+    /**
+     * @param listaSiNo the listaSiNo to set
+     */
+    public void setListaSiNo(List<SelectItem> listaSiNo) {
+        this.listaSiNo = listaSiNo;
+    }
+
     @Inject
     private VehiculoBean vehiculoBean;
 
@@ -55,6 +83,8 @@ public class OrdenControlador extends BaseControlador {
     private Usuario clienteOrden;
 
     private Usuario clienteFactura;
+    
+    private Usuario clienteConsulta;
 
     private List<Vehiculo> listaVehiculos;
 
@@ -65,69 +95,90 @@ public class OrdenControlador extends BaseControlador {
     private List<Usuario> listaClientes;
 
     private List<Establecimiento> listaEstablecimiento;
-    
+
     private Boolean mismosDatosOrden;
-    
+
     private Boolean llenarEsteMomento;
-    
+
     private List<Vehiculo> vehiculosCliente;
-    
+
     private Vehiculo vehiculoSeleccionado;
-    
-    
+
+    private List<SelectItem> listaSiNo;
+
+    private String numeroDocumentoOrden;
+
+    private String numeroDocumentoFactura;
 
     @PostConstruct
     public void init() {
         setEstablecimiento(new Establecimiento());
         setClienteOrden(new Usuario());
         setClienteFactura(new Usuario());
+        setClienteConsulta(new Usuario());
         setListaVehiculos(new ArrayList<Vehiculo>());
         setListaClientes(new ArrayList<Usuario>());
-        setMismosDatosOrden(false);
-        setLlenarEsteMomento(false);
+        setMismosDatosOrden(null);
+        setLlenarEsteMomento(null);
         setVehiculosCliente(new ArrayList<Vehiculo>());
+        setListaSiNo(new ArrayList<SelectItem>());
+        generarSeleccionSino();
+        setNumeroDocumento(new String());
+        setNumeroDocumentoOrden(new String());
+        setNumeroDocumentoFactura(new String());
     }
-    
+
+    public void generarSeleccionSino() {
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+        selectItemsBuilder.add(Boolean.TRUE, "Si");
+        selectItemsBuilder.add(Boolean.FALSE, "No");
+        setListaSiNo(selectItemsBuilder.buildList());
+    }
+
     public void cargarTree() {
-        
+
     }
-    
+
     public void seleccionarVehiculo() {
-        System.out.println("agregarVehiculo: "+vehiculoSeleccionado.getDescripcionDetallada());
+        System.out.println("agregarVehiculo: " + vehiculoSeleccionado.getDescripcionDetallada());
     }
-    
+
     public List<Vehiculo> autoCompletarVehiculo(String consulta) {
         return vehiculoBean.obtenerModeloListaPorModeloLike(consulta);
     }
-    
-    public void agregarVehiculo () {
+
+    public void agregarVehiculo() {
         System.out.println("agregarVehiculo");
         getVehiculosCliente().add(vehiculoSeleccionado);
-    } 
-    
-    public void llenarEsteMomentoOrden() {
-        System.out.println("llenarEsteMomentoOrden: "+llenarEsteMomento);
     }
-    
-    public void mismosDatosParaFactura(){
-        System.out.println("mismosDatosParaFactura: "+mismosDatosOrden);
-        if (mismosDatosOrden){
+
+    public void llenarEsteMomentoOrden() {
+        System.out.println("llenarEsteMomentoOrden: " + llenarEsteMomento);
+    }
+
+    public void mismosDatosParaFactura() {
+        System.out.println("mismosDatosParaFactura: " + mismosDatosOrden);
+        if (mismosDatosOrden) {
+            clienteFactura = new Usuario();
             clienteFactura.setApellido(clienteOrden.getApellido());
             clienteFactura.setCallePrincipal(clienteOrden.getCallePrincipal());
             clienteFactura.setCalleSecundaria(clienteOrden.getCalleSecundaria());
             clienteFactura.setCelular(clienteOrden.getCelular());
+            System.out.println("clienteOrden.getCiudad() ---> : " + clienteOrden.getCiudad());
+            clienteFactura.setCiudad(clienteOrden.getCiudad());
             clienteFactura.setContrasenia(clienteOrden.getContrasenia());
-            clienteFactura.setCorreo(clienteOrden.getCorreo());            
+            clienteFactura.setCorreo(clienteOrden.getCorreo());
             clienteFactura.setGenericoEntidad(clienteOrden.getGenericoEntidad());
             clienteFactura.setNombre(clienteOrden.getNombre());
             clienteFactura.setNumeracion(clienteOrden.getNumeracion());
             clienteFactura.setNumeroDocumento(clienteOrden.getNumeroDocumento());
             clienteFactura.setTelefono(clienteOrden.getTelefono());
+            clienteFactura.setTipoDocumento(clienteOrden.getTipoDocumento());
         } else {
             clienteFactura = new Usuario();
         }
     }
-    
+
     public void seleccionarEstablecimiento() {
         addInfoMessage(Constante.EXITO, Constante.EXITO_ESTABLECIMIENTO);
     }
@@ -141,9 +192,22 @@ public class OrdenControlador extends BaseControlador {
     }
 
     public void actualizarClienteOrden(AjaxBehaviorEvent event) {
-        System.out.println("actualizarClienteOrdeon: " + this.clienteOrden.getNumeroDocumento());
+        String numeroDocumento = "";
+        System.out.println("actualizarClienteOrdeon: " + this.numeroDocumentoOrden);
+        if (numeroDocumentoOrden != null) {
+            String[] resultado = numeroDocumentoOrden.split("-");
+            if (resultado.length > 0) {
+                numeroDocumento = resultado[0].trim();
+                this.clienteOrden = usuarioBean.obtenerPorNumeroDocumento(numeroDocumento);
+                numeroDocumentoOrden = numeroDocumento;
+            } else {
+                System.out.println("vacio");
+
+            }
+        }
+
     }
-    
+
     public void actualizarClienteFactura(AjaxBehaviorEvent event) {
         System.out.println("actualizarClienteFactura: " + this.clienteFactura.getNumeroDocumento());
     }
@@ -156,6 +220,24 @@ public class OrdenControlador extends BaseControlador {
     public List<Usuario> autoCompletar(String consulta) {
         listaClientes = usuarioBean.obtenerModeloListaPorNumeroDocumentoLike(consulta);
         return listaClientes;
+    }
+
+    public List<SelectItem> autoCompletarSoloTexto2(String consulta) {
+        List<SelectItem> listaSelectItem = new ArrayList<>();
+        listaClientes = usuarioBean.obtenerModeloListaPorNumeroDocumentoLike(consulta);
+        for (Usuario usuario : listaClientes) {
+            listaSelectItem.add(new SelectItem(usuario.getDocumentoYNombres(), usuario.getNumeroDocumento()));
+        }
+        return listaSelectItem;
+    }
+
+    public List<String> autoCompletarSoloTexto(String consulta) {
+        List<String> listaSelectItem = new ArrayList<>();
+        listaClientes = usuarioBean.obtenerModeloListaPorNumeroDocumentoLike(consulta);
+        for (Usuario usuario : listaClientes) {
+            listaSelectItem.add(usuario.getDocumentoYNombres());
+        }
+        return listaSelectItem;
     }
 
     public void onItemSelect() {
@@ -342,5 +424,32 @@ public class OrdenControlador extends BaseControlador {
         this.vehiculoSeleccionado = vehiculoSeleccionado;
     }
 
-    
+    /**
+     * @return the numeroDocumentoOrden
+     */
+    public String getNumeroDocumentoOrden() {
+        return numeroDocumentoOrden;
+    }
+
+    /**
+     * @param numeroDocumentoOrden the numeroDocumentoOrden to set
+     */
+    public void setNumeroDocumentoOrden(String numeroDocumentoOrden) {
+        this.numeroDocumentoOrden = numeroDocumentoOrden;
+    }
+
+    /**
+     * @return the numeroDocumentoFactura
+     */
+    public String getNumeroDocumentoFactura() {
+        return numeroDocumentoFactura;
+    }
+
+    /**
+     * @param numeroDocumentoFactura the numeroDocumentoFactura to set
+     */
+    public void setNumeroDocumentoFactura(String numeroDocumentoFactura) {
+        this.numeroDocumentoFactura = numeroDocumentoFactura;
+    }
+
 }

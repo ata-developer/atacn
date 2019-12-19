@@ -87,7 +87,7 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
     public void setCategoriaSeleccionado(Categoria categoriaSeleccionado) {
         this.categoriaSeleccionado = categoriaSeleccionado;
     }
-    
+
     @Inject
     private CategoriaBean categoriaBean;
 
@@ -120,7 +120,7 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
 
     @Inject
     private TrabajoCategoriaPrecioBean trabajoCategoriaTrabajoBean;
-    
+
     @Inject
     private GrupoPrecioParteCategoriaVehiculoBean grupoPrecioParteCategoriaVehiculoBean;
 
@@ -165,26 +165,26 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
     private GrupoPrecio grupoPrecioSeccionado;
 
     private Parte partePrincipalSeleccionada;
-    
+
     private List<Categoria> listaCategoriaTmp;
-    
+
     private List<Categoria> listaCategoria;
-    
+
     private Categoria categoriaSeleccionado;
 
     private List<HashMap<String, Object>> listaMapaTrabajoCategoriaPrecio;
-    
+
     private List<HashMap<String, Object>> listaMapaTrabajoCategoriaPrecioVehiculoSeleccionado;
-    
+
     private List<GrupoPrecioParteCategoriaVehiculo> listaGrupoPrecioParteCategoriaVehiculo;
-    
+
     private List<TrabajoCategoriaPrecio> listaTrabajoCategoriaPrecio;
 
     @PostConstruct
     public void init() {
-        
+
         this.listaCategoriaTmp = new ArrayList<>();
-        
+
         setMarcaVehiculo(new MarcaVehiculo());
         setVehiculo(new Vehiculo());
         setListaMarcaVehiculo(marcaVehiculoBean.obtenerLista());
@@ -197,25 +197,28 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
         setImagenesVehiculo(new ArrayList<Imagen>());
         setListaCategoria(new ArrayList<Categoria>());
         setVehiculoSeleccionado(new Vehiculo());
-        
+
         inicializarRangoAnioInicial();
         setContadorImagenes(0);
         setModoEdicion(false);
         setGrupoPrecioSeccionado(new GrupoPrecio());
     }
-    
-    public List<TrabajoCategoriaPrecio> generarTrabajoCategoriaPrecioParaAuto(GrupoPrecioParteCategoriaVehiculo grupoPrecioParteCategoriaVehiculo){
-        
-        System.out.println("***grupoPrecioParteCategoriaVehiculo:"+grupoPrecioParteCategoriaVehiculo);
+
+    public List<TrabajoCategoriaPrecio> generarTrabajoCategoriaPrecioParaAuto(GrupoPrecioParteCategoriaVehiculo grupoPrecioParteCategoriaVehiculo) {
+
+        System.out.println("***grupoPrecioParteCategoriaVehiculo:" + grupoPrecioParteCategoriaVehiculo);
         //return trabajoCategoriaTrabajoBean.conseguirListaTrabajoCategoriaPrecio(grupoPrecioParteCategoriaVehiculo.getGrupoPrecio(), grupoPrecioParteCategoriaVehiculo.getCategoria());
         return new ArrayList<>();
     }
-    
-    public void eliminarGrupoParteTrabajo (GrupoPrecioParteCategoriaVehiculo grupoPrecioParteCategoriaVehiculo) {
-        
+
+    public void eliminarGrupoParteTrabajo(GrupoPrecioParteCategoriaVehiculo grupoPrecioParteCategoriaVehiculo) {
+        grupoPrecioParteCategoriaVehiculoBean.eliminar(grupoPrecioParteCategoriaVehiculo);
+        setListaMapaTrabajoCategoriaPrecioVehiculoSeleccionado(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecioYVehiculo(grupoPrecioSeccionado, vehiculoSeleccionado));
+        setListaGrupoPrecioParteCategoriaVehiculo(generarListaGrupoVehiculo());
+        setListaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.generarListaCompletaTrabajoCategoriaPrecioPorVehiculo(getListaGrupoPrecioParteCategoriaVehiculo()));
         System.out.println("eliminarAutoParte");
     }
-    
+
     public void agregarGrupoTrabajoAVehiculo() {
         System.out.println("agregarGrupoTrabajoAVehiculo");
         try {
@@ -225,6 +228,9 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
             grupoPrecioParteCategoriaVehiculo.setCategoria(categoriaSeleccionado);
             grupoPrecioParteCategoriaVehiculo.setVehiculo(vehiculoSeleccionado);
             this.grupoPrecioParteCategoriaVehiculoBean.crear(grupoPrecioParteCategoriaVehiculo);
+            setListaMapaTrabajoCategoriaPrecioVehiculoSeleccionado(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecioYVehiculo(grupoPrecioSeccionado, vehiculoSeleccionado));
+            setListaGrupoPrecioParteCategoriaVehiculo(generarListaGrupoVehiculo());
+            setListaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.generarListaCompletaTrabajoCategoriaPrecioPorVehiculo(getListaGrupoPrecioParteCategoriaVehiculo()));
             addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
@@ -237,7 +243,7 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
 
         }
     }
-    
+
     public List<SelectItem> generarSelectItemDeCategorias() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
         for (Categoria categoriaTmp : listaCategoria) {
@@ -245,23 +251,22 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
         }
         return selectItemsBuilder.buildList();
     }
-    
-    
-    public void cargarListaCategoria(){
-        
-        System.out.println("cargarListaCategoria: "+grupoPrecioSeccionado.getNombre());
-        
+
+    public void cargarListaCategoria() {
+
+        System.out.println("cargarListaCategoria: " + grupoPrecioSeccionado.getNombre());
+
         setListaCategoria(categoriaBean.obtenerListaPorGrupoPrecio(grupoPrecioSeccionado));
-        System.out.println("listaCategoria.size: "+listaCategoria.size());
-        System.out.println("listaCategoria: "+listaCategoria);
-        System.out.println("grupoPrecioSeccionado: "+grupoPrecioSeccionado);
-        System.out.println("vehiculoSeleccionado: "+vehiculoSeleccionado);
+        System.out.println("listaCategoria.size: " + listaCategoria.size());
+        System.out.println("listaCategoria: " + listaCategoria);
+        System.out.println("grupoPrecioSeccionado: " + grupoPrecioSeccionado);
+        System.out.println("vehiculoSeleccionado: " + vehiculoSeleccionado);
         setListaMapaTrabajoCategoriaPrecioVehiculoSeleccionado(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecioYVehiculo(grupoPrecioSeccionado, vehiculoSeleccionado));
         setListaGrupoPrecioParteCategoriaVehiculo(generarListaGrupoVehiculo());
         setListaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.generarListaCompletaTrabajoCategoriaPrecioPorVehiculo(getListaGrupoPrecioParteCategoriaVehiculo()));
-        
+
     }
-    
+
     public void consultarListaTrabajo() {
     }
 
@@ -274,7 +279,7 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
         listaCategoriaTmp.add(categoriaSeleccionado);
         return listaCategoriaTmp;
     }
-    
+
     public List<Categoria> listaCategoriasTodas() {
 
         listaCategoriaTmp = new ArrayList<>();
@@ -284,7 +289,7 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
         listaCategoriaTmp.addAll(categoriaBean.obtenerListaPorGrupoPrecio(grupoPrecioSeccionado));
         return listaCategoriaTmp;
     }
-    
+
     public List<Categoria> listaCategoriasPorGrupoPrecioYVehiculo() {
 
         listaCategoriaTmp = new ArrayList<>();
@@ -294,14 +299,13 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
         listaCategoriaTmp.addAll(categoriaBean.obtenerListaPorGrupoPrecioYVehiculo(grupoPrecioSeccionado, vehiculoSeleccionado));
         return listaCategoriaTmp;
     }
-    
-    
+
     public List<GrupoPrecioParteCategoriaVehiculo> generarListaGrupoVehiculo() {
         List<GrupoPrecioParteCategoriaVehiculo> listaTemp = grupoPrecioParteCategoriaVehiculoBean.obtenerListaPorVehiculoYCategoria(grupoPrecioSeccionado, vehiculoSeleccionado);
-        System.out.println("tamaño listaTemp: "+listaTemp.size());
+        System.out.println("tamaño listaTemp: " + listaTemp.size());
         return listaTemp;
     }
-    
+
     public List<SelectItem> generarSelectItemDeCategoriasTodas() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
         for (Categoria categoriaTmp : categoriaBean.obtenerListaPorGrupoPrecio(grupoPrecioSeccionado)) {
@@ -314,7 +318,7 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
         try {
             System.out.println("grupoPrecioSeccionado: " + grupoPrecioSeccionado.getNombre());
             System.out.println("partePrincipalSeleccionada: " + partePrincipalSeleccionada.getParte());
-            setListaMapaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecioYParte(grupoPrecioSeccionado, partePrincipalSeleccionada,categoriaSeleccionado));
+            setListaMapaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecioYParte(grupoPrecioSeccionado, partePrincipalSeleccionada, categoriaSeleccionado));
             addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
@@ -379,7 +383,7 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
         setCategoriaSeleccionado(new Categoria());
         getListaVehiculoSeleccionado().add(vehiculoEntrada);
         setListaTrabajoCategoriaPrecio(new ArrayList<TrabajoCategoriaPrecio>());
-        
+
     }
 
     public List<Fila> listaFila(Vehiculo vehiculo) {
@@ -928,7 +932,8 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
     }
 
     /**
-     * @param listaMapaTrabajoCategoriaPrecioVehiculoSeleccionado the listaMapaTrabajoCategoriaPrecioVehiculoSeleccionado to set
+     * @param listaMapaTrabajoCategoriaPrecioVehiculoSeleccionado the
+     * listaMapaTrabajoCategoriaPrecioVehiculoSeleccionado to set
      */
     public void setListaMapaTrabajoCategoriaPrecioVehiculoSeleccionado(List<HashMap<String, Object>> listaMapaTrabajoCategoriaPrecioVehiculoSeleccionado) {
         this.listaMapaTrabajoCategoriaPrecioVehiculoSeleccionado = listaMapaTrabajoCategoriaPrecioVehiculoSeleccionado;
@@ -942,7 +947,8 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
     }
 
     /**
-     * @param listaGrupoPrecioParteCategoriaVehiculo the listaGrupoPrecioParteCategoriaVehiculo to set
+     * @param listaGrupoPrecioParteCategoriaVehiculo the
+     * listaGrupoPrecioParteCategoriaVehiculo to set
      */
     public void setListaGrupoPrecioParteCategoriaVehiculo(List<GrupoPrecioParteCategoriaVehiculo> listaGrupoPrecioParteCategoriaVehiculo) {
         this.listaGrupoPrecioParteCategoriaVehiculo = listaGrupoPrecioParteCategoriaVehiculo;

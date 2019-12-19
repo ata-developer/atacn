@@ -79,7 +79,7 @@ public class Ciudad implements Serializable {
 
     @Override
     public String toString() {
-        return "ec.com.ata.cn.modelo.Categoria[ id=" + idCiudad + " ]";
+        return "Ciudad{" + "idCiudad=" + idCiudad + ", ciudad=" + ciudad + ", genericoEntidad=" + genericoEntidad + ", provinciaEstado=" + provinciaEstado + '}';
     }
 
     /**

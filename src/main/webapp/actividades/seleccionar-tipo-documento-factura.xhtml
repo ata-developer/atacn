@@ -20,12 +20,12 @@
         completeMethod="#{ordenControlador.autoCompletar}"
         converter="usuarioConvertidor"
         var="cliente"
+         requiredMessage="Data can not be blank."
         itemValue="#{cliente}"
         itemLabel="#{cliente.numeroDocumento}">
         <p:ajax
             event="itemSelect"
-            listener="#{ordenControlador.actualizarClienteOrden}"
-            process="atcCedula"
+            listener="#{ordenControlador.actualizarClienteFactura}"
             update="pngDetallesFactura"/>
         <p:column>
             <h:outputText value="#{cliente.documentoYNombres}" />
@@ -48,7 +48,6 @@
         <p:ajax
             event="itemSelect"
             listener="#{ordenControlador.actualizarClienteOrden}"
-            process="iMRuc"
             update="pngDetallesFactura"
             />
         <p:column>
@@ -71,7 +70,6 @@
         <p:ajax
             event="itemSelect"
             listener="#{ordenControlador.actualizarClienteOrden}"
-            process="iTPasaporte"
             update="pngDetallesFactura"
             />
         <p:column>

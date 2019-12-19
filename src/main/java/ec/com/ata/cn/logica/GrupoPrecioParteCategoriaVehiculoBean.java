@@ -8,9 +8,7 @@ package ec.com.ata.cn.logica;
 import ec.com.ata.cn.logica.dao.GrupoPrecioParteCategoriaVehiculoDao;
 import ec.com.ata.cn.modelo.GrupoPrecio;
 import ec.com.ata.cn.modelo.GrupoPrecioParteCategoriaVehiculo;
-import ec.com.ata.cn.modelo.GrupoPrecioParteCategoriaVehiculoId;
 import ec.com.ata.cn.modelo.Vehiculo;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -24,14 +22,14 @@ import javax.inject.Inject;
 public class GrupoPrecioParteCategoriaVehiculoBean {
 
     @Inject
-    private GrupoPrecioParteCategoriaVehiculoDao GrupoPrecioParteCategoriaVehiculoDao;
+    private GrupoPrecioParteCategoriaVehiculoDao grupoPrecioParteCategoriaVehiculoDao;
     
      public GrupoPrecioParteCategoriaVehiculo crear(GrupoPrecioParteCategoriaVehiculo grupoPrecioParteCategoriaVehiculo) throws Exception {
-        return GrupoPrecioParteCategoriaVehiculoDao.crear(grupoPrecioParteCategoriaVehiculo);
+        return grupoPrecioParteCategoriaVehiculoDao.crear(grupoPrecioParteCategoriaVehiculo);
     }
     
     public List<GrupoPrecioParteCategoriaVehiculo> obtenerLista(){
-        return GrupoPrecioParteCategoriaVehiculoDao.obtenerTodos();
+        return grupoPrecioParteCategoriaVehiculoDao.obtenerTodos();
     }
     
     public List<GrupoPrecioParteCategoriaVehiculo> obtenerListaPorVehiculoYCategoria(GrupoPrecio grupoPrecio, Vehiculo vehiculo) {
@@ -41,7 +39,12 @@ public class GrupoPrecioParteCategoriaVehiculoBean {
         HashMap<String, Object> parametros = new HashMap<>();
         parametros.put("vehiculo", vehiculo);
         parametros.put("grupoPrecio", grupoPrecio);
-        return GrupoPrecioParteCategoriaVehiculoDao.obtenerListaPorParametros(parametros);
+        return grupoPrecioParteCategoriaVehiculoDao.obtenerListaPorParametros(parametros);
+    }
+    
+    public void eliminar(GrupoPrecioParteCategoriaVehiculo grupoPrecioParteCategoriaVehiculoEntrada){
+        GrupoPrecioParteCategoriaVehiculo grupoPrecioParteCategoriaVehiculoEntradaTMP = grupoPrecioParteCategoriaVehiculoDao.obtenerPorCodigo(grupoPrecioParteCategoriaVehiculoEntrada.getGrupoPrecioParteCategoriaVehiculoId());
+        grupoPrecioParteCategoriaVehiculoDao.eliminar(grupoPrecioParteCategoriaVehiculoEntradaTMP);
     }
 
 }
