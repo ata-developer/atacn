@@ -35,33 +35,7 @@ import org.primefaces.event.FlowEvent;
 @Named
 public class OrdenControlador extends BaseControlador {
 
-    /**
-     * @return the clienteConsulta
-     */
-    public Usuario getClienteConsulta() {
-        return clienteConsulta;
-    }
-
-    /**
-     * @param clienteConsulta the clienteConsulta to set
-     */
-    public void setClienteConsulta(Usuario clienteConsulta) {
-        this.clienteConsulta = clienteConsulta;
-    }
-
-    /**
-     * @return the listaSiNo
-     */
-    public List<SelectItem> getListaSiNo() {
-        return listaSiNo;
-    }
-
-    /**
-     * @param listaSiNo the listaSiNo to set
-     */
-    public void setListaSiNo(List<SelectItem> listaSiNo) {
-        this.listaSiNo = listaSiNo;
-    }
+    
 
     @Inject
     private VehiculoBean vehiculoBean;
@@ -109,6 +83,8 @@ public class OrdenControlador extends BaseControlador {
     private String numeroDocumentoOrden;
 
     private String numeroDocumentoFactura;
+    
+    private String seleccionConsulta;
 
     @PostConstruct
     public void init() {
@@ -126,6 +102,12 @@ public class OrdenControlador extends BaseControlador {
         setNumeroDocumento(new String());
         setNumeroDocumentoOrden(new String());
         setNumeroDocumentoFactura(new String());
+    }
+    
+    public void generarRuc(){
+        if (clienteFactura.getNumeroDocumento().length() == 10 ){
+            clienteFactura.setNumeroDocumento(clienteFactura.getNumeroDocumento()+"001");
+        }
     }
 
     public void generarSeleccionSino() {
@@ -218,6 +200,7 @@ public class OrdenControlador extends BaseControlador {
     }
 
     public List<Usuario> autoCompletar(String consulta) {
+        System.out.println("seleccion consulta: "+seleccionConsulta);
         listaClientes = usuarioBean.obtenerModeloListaPorNumeroDocumentoLike(consulta);
         return listaClientes;
     }
@@ -450,6 +433,48 @@ public class OrdenControlador extends BaseControlador {
      */
     public void setNumeroDocumentoFactura(String numeroDocumentoFactura) {
         this.numeroDocumentoFactura = numeroDocumentoFactura;
+    }
+    
+    /**
+     * @return the seleccionConsulta
+     */
+    public String getSeleccionConsulta() {
+        return seleccionConsulta;
+    }
+
+    /**
+     * @param seleccionConsulta the seleccionConsulta to set
+     */
+    public void setSeleccionConsulta(String seleccionConsulta) {
+        this.seleccionConsulta = seleccionConsulta;
+    }
+
+    /**
+     * @return the clienteConsulta
+     */
+    public Usuario getClienteConsulta() {
+        return clienteConsulta;
+    }
+
+    /**
+     * @param clienteConsulta the clienteConsulta to set
+     */
+    public void setClienteConsulta(Usuario clienteConsulta) {
+        this.clienteConsulta = clienteConsulta;
+    }
+
+    /**
+     * @return the listaSiNo
+     */
+    public List<SelectItem> getListaSiNo() {
+        return listaSiNo;
+    }
+
+    /**
+     * @param listaSiNo the listaSiNo to set
+     */
+    public void setListaSiNo(List<SelectItem> listaSiNo) {
+        this.listaSiNo = listaSiNo;
     }
 
 }

@@ -1,80 +1,33 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:o="http://omnifaces.org/ui"
-                xmlns:h="http://java.sun.com/jsf/html"                
                 xmlns:p="http://primefaces.org/ui">
 
     <p:outputLabel
         for="@next"
-        rendered="#{ordenControlador.clienteFactura.tipoDocumento ne null}"
         value="#{msj.numeroDocumento}" />
-    <p:autoComplete
-        id="atcCedulaFactura"
-        onkeypress="if (event.which &lt; 48 || event.which &gt; 57) return false;"
-        minQueryLength="4"
-        required="true"
+
+    <p:inputText
+        id="clienteFacturaPasaporte" 
+        rendered="#{ordenControlador.clienteFactura.tipoDocumento.tipoDocumento eq null }"
+        value="#{ordenControlador.clienteFactura.numeroDocumento}"/>
+
+    <p:inputMask
+        id="clienteFacturaCedula"
+        mask="9999999999"
         rendered="#{ordenControlador.clienteFactura.tipoDocumento.tipoDocumento eq 'CÉDULA'}"
-        effect="fade"
-        value="#{ordenControlador.clienteFactura}"
-        completeMethod="#{ordenControlador.autoCompletar}"
-        converter="usuarioConvertidor"
-        var="cliente"
-         requiredMessage="Data can not be blank."
-        itemValue="#{cliente}"
-        itemLabel="#{cliente.numeroDocumento}">
-        <p:ajax
-            event="itemSelect"
-            listener="#{ordenControlador.actualizarClienteFactura}"
-            update="pngDetallesFactura"/>
-        <p:column>
-            <h:outputText value="#{cliente.documentoYNombres}" />
-        </p:column>
-    </p:autoComplete>
-        
-    <p:autoComplete
-        id="iMRucFactura"
-        onkeypress="if (event.which &lt; 48 || event.which &gt; 57) return false;"
-        minQueryLength="4"
-        required="true"
+        value="#{ordenControlador.clienteFactura.numeroDocumento}"
+        />
+    <p:inputMask
+        id="clienteFacturaRuc"
+        mask="9999999999999"
         rendered="#{ordenControlador.clienteFactura.tipoDocumento.tipoDocumento eq 'RUC'}"
-        effect="fade"
-        value="#{ordenControlador.clienteFactura}"
-        completeMethod="#{ordenControlador.autoCompletar}"
-        converter="usuarioConvertidor"
-        var="cliente"
-        itemValue="#{cliente}"
-        itemLabel="#{cliente.numeroDocumento}">
-        <p:ajax
-            event="itemSelect"
-            listener="#{ordenControlador.actualizarClienteOrden}"
-            update="pngDetallesFactura"
-            />
-        <p:column>
-            <h:outputText value="#{cliente.documentoYNombres}" />
-        </p:column>
-    </p:autoComplete>
-    
-    <p:autoComplete
-        id="iTPasaporteFactura"
-        minQueryLength="4"
-        required="true"
+        value="#{ordenControlador.clienteFactura.numeroDocumento}"
+        />
+    <p:inputText
+        id="clienteFacturaPasaporte" 
         rendered="#{ordenControlador.clienteFactura.tipoDocumento.tipoDocumento eq 'PASAPORTE'}"
-        effect="fade"
-        value="#{ordenControlador.clienteFactura}"
-        completeMethod="#{ordenControlador.autoCompletar}"
-        converter="usuarioConvertidor"
-        var="cliente"
-        itemValue="#{cliente}"
-        itemLabel="#{cliente.numeroDocumento}">
-        <p:ajax
-            event="itemSelect"
-            listener="#{ordenControlador.actualizarClienteOrden}"
-            update="pngDetallesFactura"
-            />
-        <p:column>
-            <h:outputText value="#{cliente.documentoYNombres}" />
-        </p:column>
-    </p:autoComplete>
+        value="#{ordenControlador.clienteFactura.numeroDocumento}"/>
+
+
 
 </ui:composition>

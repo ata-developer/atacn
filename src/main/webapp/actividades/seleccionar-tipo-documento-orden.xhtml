@@ -16,9 +16,10 @@
         rendered="#{ordenControlador.clienteOrden.tipoDocumento.tipoDocumento eq 'CÉDULA'}"
         effect="fade"
         value="#{ordenControlador.numeroDocumentoOrden}"
-        completeMethod="#{ordenControlador.autoCompletarSoloTexto}"
-        >
-        <p:ajax event="itemSelect" listener="#{ordenControlador.actualizarClienteOrden}" resetValues ="true" update="pngDetallesCliente"/>
+        completeMethod="#{ordenControlador.autoCompletarSoloTexto}">
+        <p:ajax event="itemSelect"
+                resetValues ="true" 
+                update="pngDetallesCliente"/>
         
         
     </p:autoComplete>

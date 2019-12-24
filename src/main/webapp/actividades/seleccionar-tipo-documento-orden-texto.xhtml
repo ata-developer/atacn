@@ -4,45 +4,28 @@
                 xmlns:o="http://omnifaces.org/ui"
                 xmlns:h="http://java.sun.com/jsf/html"                
                 xmlns:p="http://primefaces.org/ui">
+    
+        <p:outputLabel
+            rendered="#{ordenControlador.clienteOrden.tipoDocumento.tipoDocumento ne null }"
+            value="#{msj.numeroDocumento}" />
+    
 
-    <p:outputLabel
-        for="@next"
-        rendered="#{ordenControlador.clienteOrden.tipoDocumento.tipoDocumento ne null}"
-        value="#{msj.numeroDocumento}" />
-    <p:column rendered="#{ordenControlador.clienteOrden.tipoDocumento.tipoDocumento eq 'CÉDULA'}">
-        <p:panelGrid columns="2">
-            <p:inputMask id="atcCedula"
-                         mask="9999999999"
-                         value="#{ordenControlador.numeroDocumentoOrden}"
-                         />
-            <p:commandButton value="#{msj.buscar}" oncomplete="PF('dlg').show()"/>    
-        </p:panelGrid>
-
-
-    </p:column>
-
-
-    <p:column rendered="#{ordenControlador.clienteOrden.tipoDocumento.tipoDocumento eq 'RUC'}">
-        <p:panelGrid columns="2">
-            <p:inputMask
-                id="iMRuc"
-                mask="9999999999"
-                value="#{ordenControlador.numeroDocumentoOrden}"
-                />
-            <p:commandButton value="#{msj.buscar}" oncomplete="PF('dlg').show()"/>
-        </p:panelGrid>
-
-    </p:column>
-
-
-    <p:column rendered="#{ordenControlador.clienteOrden.tipoDocumento.tipoDocumento eq 'PASAPORTE'}">
-        <p:panelGrid columns="2">
-            <p:inputText id="iTPasaporte" 
-
-                         value="#{ordenControlador.numeroDocumentoOrden}"/>
-            <p:commandButton value="#{msj.buscar}" oncomplete="PF('dlg').show()"/>
-        </p:panelGrid>
-    </p:column>
-
-
+    
+        <p:inputMask
+            id="atcCedula"
+            mask="9999999999"
+            rendered="#{ordenControlador.clienteOrden.tipoDocumento.tipoDocumento eq 'CÉDULA'}"
+            value="#{ordenControlador.clienteOrden.numeroDocumento}"
+            />
+        <p:inputMask
+            id="iMRuc"
+            mask="9999999999999"
+            rendered="#{ordenControlador.clienteOrden.tipoDocumento.tipoDocumento eq 'RUC'}"
+            value="#{ordenControlador.clienteOrden.numeroDocumento}"
+            />
+        <p:inputText
+            id="iTPasaporte" 
+            rendered="#{ordenControlador.clienteOrden.tipoDocumento.tipoDocumento eq 'PASAPORTE'}"
+            value="#{ordenControlador.clienteOrden.numeroDocumento}"/>
+    
 </ui:composition>

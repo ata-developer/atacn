@@ -7,6 +7,38 @@
 
     <p:messages />
     <p:panel id="pnlDatosOrdenFactura" header="#{msj.detallesCliente}">
+        <p:fieldset id="fbBuscarCliente" legend="#{msj.buscar}">
+            <p:panelGrid id="pngBuscar" columns="2"> 
+                <p:selectOneMenu id="console" value="#{ordenControlador.seleccionConsulta}" style="width:125px">
+                    <f:selectItem itemLabel="Seleccionar..." itemValue="#{null}" noSelectionOption="false" />
+                    <f:selectItem itemLabel="CÉDULA/RUC/PASAPORTE" itemValue="CÉDULA" />
+                    <f:selectItem itemLabel="NOMBRE Y APELLIDOS" itemValue="NOMBRESAPELLIDOS" />
+                    <p:ajax event="change" update="atcCedula2" />
+                    <p:ajax event="itemSelect" update="atcCedula2" />
+                </p:selectOneMenu>
+                <p:autoComplete
+                    id="atcCedula2"
+                    minQueryLength="4"
+                    effect="fade"
+                    value="#{ordenControlador.clienteOrden}"
+                    completeMethod="#{ordenControlador.autoCompletar}"
+                    converter="usuarioConvertidor"
+                    var="cliente"
+                    disabled="#{ordenControlador.seleccionConsulta eq null}"
+                    itemValue="#{cliente}"
+                    itemLabel="#{cliente.numeroDocumento}">
+                    <p:ajax
+                        event="itemSelect"
+                        resetValues="true"
+                        update="fdDatosOrden mensajeGeneral"/>
+                    <p:column>
+                        <h:outputText value="#{cliente.documentoYNombres}" />
+                    </p:column>
+                </p:autoComplete>
+            </p:panelGrid>
+        </p:fieldset>
+
+        <p/>
         <p:fieldset id="fdDatosOrden" legend="#{msj.datosParaOrden}">
             <p:panelGrid id="pngDetallesCliente" columns="2">
                 <p:outputLabel
@@ -19,8 +51,8 @@
                     converter="omnifaces.SelectItemsConverter">
                     <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                     <f:selectItems value="#{ordenControlador.generarSelectItemDeTipoDocumento()}" />
-                    <p:ajax event="change" update="pngDetallesCliente" />
-                    <p:ajax event="itemSelect" update="pngDetallesCliente" />
+                    <p:ajax event="change" update="pngDetallesCliente" listener="#{ordenControlador.generarRuc()}"/>
+                    <p:ajax event="itemSelect" update="pngDetallesCliente" listener="#{ordenControlador.generarRuc()}"/>
                 </p:selectOneMenu>
 
                 <ui:include src="seleccionar-tipo-documento-orden-texto.xhtml" />
@@ -144,255 +176,5 @@
         <p/>
     </p:panel>
     <p/>
-    <p:panel id="pnlDatosFactura" header="#{msj.detallesFactura}">        
-        <p:panelGrid columns="2">
-            <p:outputLabel
-                for="@next"
-                value="#{msj.deseaLlenarDatos}" />
-            <p:selectOneMenu
-                id="sorFacturaDatosEsteMomento"
-                value="#{ordenControlador.llenarEsteMomento}"
-                required="true"
-                converter="omnifaces.SelectItemsConverter">
-                <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
-                <f:selectItems value="#{ordenControlador.listaSiNo}" />
-                <p:ajax
-                    update="pnlDatosFactura"
-                    listener="#{ordenControlador.llenarEsteMomentoOrden}"/>
-            </p:selectOneMenu>
-            <p:column id="columnLabelDatosFactura" rendered="#{ordenControlador.llenarEsteMomento}">
-                <p:outputLabel                
-                    for="sorTieneDatosFactura"
-                    value="#{msj.llenarDatosFactura}"/>
-            </p:column>
-            <p:column id="columnLabelEntradaFactura" rendered="#{ordenControlador.llenarEsteMomento}">
-                <p:selectOneMenu
-                    id="sorTieneDatosFactura"
-                    value="#{ordenControlador.mismosDatosOrden}"
-                    required="true"
-                    converter="omnifaces.SelectItemsConverter">
-                    <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
-                    <f:selectItems value="#{ordenControlador.listaSiNo}" />
-                    <p:ajax update="pnlDatosFactura"
-                            listener="#{ordenControlador.mismosDatosParaFactura}"/>
-                </p:selectOneMenu>
-            </p:column>
-        </p:panelGrid>
-        <p/>
-        <p:panel id="pnlParaLlenarDatosFactura" rendered="#{ordenControlador.llenarEsteMomento eq true}">
-            <p:fieldset id="fieldDatosOrdenFactura" legend="#{msj.detallesFactura}" >
-                <p:panelGrid id="pngDetallesFactura" columns="2">
-                    <p:outputLabel
-                        for="@next"
-                        value="#{msj.descripcionTipoDocumento}" />
-                    <p:selectOneMenu
-                        id="somSeleccionarTipoDocumentoFactura"
-                        value="#{ordenControlador.clienteFactura.tipoDocumento}"
-                        required="true"
-                        converter="omnifaces.SelectItemsConverter">
-                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
-                        <f:selectItems value="#{ordenControlador.generarSelectItemDeTipoDocumento()}" />
-                        <p:ajax event="change" update="pngDetallesFactura" />
-                    </p:selectOneMenu>
-
-                    <ui:include src="seleccionar-tipo-documento-factura.xhtml" />
-
-                    <p:outputLabel
-                        for="@next"
-                        value="#{msj.nombre}" />                    
-                    <p:inputText
-                        id="iTNombreFactura"
-                        required="true"
-                        value="#{ordenControlador.clienteFactura.nombre}"
-                        placeholder="#{msj.ejemploNombre}"
-                        onblur="value = value.toUpperCase()">
-                        <p:keyFilter regEx="/[a-zA-ZáéíñóúüÁÉÍÑÓÚÜ\s]/"/>
-                        <f:converter converterId="trimConverter" />
-                    </p:inputText>
-
-                    <p:outputLabel
-                        for="@next"
-                        value="#{msj.apellido}" />                    
-                    <p:inputText
-                        id="iTApellidoFactura"
-                        required="true"
-                        value="#{ordenControlador.clienteFactura.apellido}"
-                        placeholder="#{msj.ejemploApellido}"
-                        onblur="value = value.toUpperCase()">
-                        <p:keyFilter regEx="/[a-zA-ZáéíñóúüÁÉÍÑÓÚÜ\s]/"/>
-                        <f:converter converterId="trimConverter" />
-                    </p:inputText>
-
-                    <p:outputLabel
-                        for="@next"
-                        value="#{msj.ciudad}" />                    
-                    <p:selectOneMenu
-                        id="somSeleccionarCiudadFactura"
-                        value="#{ordenControlador.clienteFactura.ciudad}"
-                        filter="true" 
-                        filterMatchMode="contains"
-                        required="true"
-                        requiredMessage="#{msj.campoNecesario}"
-                        converter="omnifaces.SelectItemsConverter">
-                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
-                        <f:selectItems value="#{ordenControlador.generarSelectItemDeCiudad()}" />
-                    </p:selectOneMenu>
-
-                    <p:outputLabel
-                        for="@next"
-                        value="#{msj.callePrincipal}" />                    
-                    <p:inputText
-                        id="iTCallePrincipalFactura"
-                        required="true"
-                        value="#{ordenControlador.clienteFactura.callePrincipal}"
-                        placeholder="#{msj.ejemploCalle}"
-                        onblur="value = value.toUpperCase()">
-                        <f:converter converterId="trimConverter" />
-                    </p:inputText>
-
-                    <p:outputLabel
-                        for="@next"
-                        value="#{msj.numeracion}" />                    
-                    <p:inputText
-                        id="iTnumeracionFactura"
-                        required="true"
-                        value="#{ordenControlador.clienteFactura.numeracion}"
-                        placeholder="#{msj.ejemploNumeracion}"
-                        onblur="value = value.toUpperCase()">
-                        <f:converter converterId="trimConverter" />
-                    </p:inputText>
-
-                    <p:outputLabel
-                        for="@next"
-                        value="#{msj.calleSecundaria}" />                    
-                    <p:inputText
-                        id="iTCalleSecundariaFactura"
-                        required="true"
-                        value="#{ordenControlador.clienteFactura.calleSecundaria}"
-                        placeholder="#{msj.ejemploSecundaria}"
-                        onblur="value = value.toUpperCase()">
-                        <f:converter converterId="trimConverter" />
-                    </p:inputText>
-
-                    <p:outputLabel
-                        for="@next"
-                        value="#{msj.telefono}" />                    
-                    <p:inputMask
-                        id="iTTelefonoFactura"
-                        required="true"
-                        value="#{ordenControlador.clienteFactura.telefono}"
-                        mask="999-9999"
-                        placeholder="#{msj.mascaraEjemploTelefono}"
-                        validatorMessage="#{msj.telefonoInvalido}">
-                    </p:inputMask>
-
-                    <p:outputLabel
-                        for="@next"
-                        value="#{msj.celular}" />                    
-                    <p:inputMask
-                        id="ITCelularFactura"
-                        required="true"
-                        value="#{ordenControlador.clienteFactura.celular}"
-                        mask="999-999-9999"
-                        placeholder="#{msj.mascaraEjemploCelular}"
-                        validatorMessage="#{msj.celularInvalido}">
-                    </p:inputMask>
-
-                    <p:outputLabel
-                        for="@next"
-                        value="#{msj.correoElectronico}" />                    
-                    <p:inputText
-                        id="iTCorreoFactura"
-                        required="true"
-                        value="#{ordenControlador.clienteFactura.correo}"
-                        placeholder="#{msj.ejemploCorreo}"
-                        validatorMessage="#{msj.emailInvalido}">
-                        <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
-                        <f:converter converterId="trimConverter" />
-                    </p:inputText>
-                </p:panelGrid>
-            </p:fieldset>
-        </p:panel>
-        <p:dialog header="Buscar" resizable="false" showEffect="fade" widgetVar="dlg">
-            <p:panelGrid id="output" columns="2" columnClasses="label, value">
-                <p:autoComplete
-                    id="atcCedula"
-                    minQueryLength="4"
-                    effect="fade"
-                    value="#{ordenControlador.numeroDocumentoOrden}"
-                    completeMethod="#{ordenControlador.autoCompletarSoloTexto}"
-                    >
-                    <p:ajax event="itemSelect" listener="#{ordenControlador.actualizarClienteOrden}" resetValues ="true" update="pngDetallesCliente"/>
-
-
-                </p:autoComplete>
-                <p:commandButton value="#{msj.buscar}" />    
-                <p:outputLabel
-                    for="@next"
-                    value="#{msj.descripcionTipoDocumento}" />
-                <p:inputText
-                    value="#{ordenControlador.clienteOrden.tipoDocumento.tipoDocumento}"/>
-
-                <p:outputLabel
-                    for="@next"
-                    value="#{msj.numeroDocumento}" />
-                <p:inputText
-                    value="#{ordenControlador.clienteOrden.numeroDocumento}"/>
-
-                <p:outputLabel
-                    for="@next"
-                    value="#{msj.nombre}" />                    
-                <p:inputText
-                    value="#{ordenControlador.clienteOrden.nombre}"/>
-
-                <p:outputLabel
-                    for="@next"
-                    value="#{msj.apellido}" />                    
-                <p:inputText
-                    value="#{ordenControlador.clienteOrden.apellido}"/>
-
-                <p:outputLabel
-                    for="@next"
-                    value="#{msj.ciudad}" />                    
-                <p:inputText
-                    value="#{ordenControlador.clienteOrden.ciudad.ciudad}"/>
-
-                <p:outputLabel
-                    for="@next"
-                    value="#{msj.callePrincipal}" />                    
-                <p:inputText
-                    value="#{ordenControlador.clienteOrden.callePrincipal}"/>
-
-                <p:outputLabel
-                    for="@next"
-                    value="#{msj.numeracion}" />                    
-                <p:inputText                   
-                    value="#{ordenControlador.clienteOrden.numeracion}"/>
-
-                <p:outputLabel
-                    for="@next"
-                    value="#{msj.calleSecundaria}" />                    
-                <p:inputText
-                    value="#{ordenControlador.clienteOrden.calleSecundaria}"/>
-
-                <p:outputLabel
-                    for="@next"
-                    value="#{msj.telefono}" />                    
-                <p:inputText
-                    value="#{ordenControlador.clienteOrden.telefono}"/>
-
-                <p:outputLabel
-                    for="@next"
-                    value="#{msj.celular}" />                    
-                <p:inputText
-                    value="#{ordenControlador.clienteOrden.celular}"/>
-
-                <p:outputLabel
-                    for="@next"
-                    value="#{msj.correoElectronico}" />                    
-                <p:inputText
-                    value="#{ordenControlador.clienteOrden.correo}"/>
-            </p:panelGrid>
-        </p:dialog>
-    </p:panel>
+    
 </ui:composition>
