@@ -6,6 +6,7 @@
 package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -71,8 +72,12 @@ public class Vehiculo implements Serializable {
     @Column(name = "anio_hasta")
     private Long anioHasta;
 
+    
+    
+
     public Vehiculo() {
         genericoEntidad = new GenericoEntidad();
+        filasDeAsientos = new ArrayList<> ();
     }
 
     public Long getIdVehiculo() {
@@ -256,5 +261,7 @@ public class Vehiculo implements Serializable {
     public void setDescripcionDetallada(String descripcionDetallada) {
         this.descripcionDetallada = descripcionDetallada;
     }
+
+   
 
 }

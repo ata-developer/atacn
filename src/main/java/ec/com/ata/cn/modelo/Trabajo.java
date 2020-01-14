@@ -25,20 +25,6 @@ import javax.persistence.Table;
 @Entity
 @Table
 public class Trabajo implements Serializable {
-
-    /**
-     * @return the genericoEntidad
-     */
-    public GenericoEntidad getGenericoEntidad() {
-        return genericoEntidad;
-    }
-
-    /**
-     * @param genericoEntidad the genericoEntidad to set
-     */
-    public void setGenericoEntidad(GenericoEntidad genericoEntidad) {
-        this.genericoEntidad = genericoEntidad;
-    }
     
     @Id
     @SequenceGenerator(
@@ -117,10 +103,24 @@ public class Trabajo implements Serializable {
     }
 
     /**
-     * @param GrupoPrecio the GrupoPrecio to set
+     * @param grupoPrecio the GrupoPrecio to set
      */
     public void setGrupoPrecio(GrupoPrecio grupoPrecio) {
         this.grupoPrecio = grupoPrecio;
     }
     
+    
+    /**
+     * @return the genericoEntidad
+     */
+    public GenericoEntidad getGenericoEntidad() {
+        return genericoEntidad;
+    }
+
+    /**
+     * @param genericoEntidad the genericoEntidad to set
+     */
+    public void setGenericoEntidad(GenericoEntidad genericoEntidad) {
+        this.genericoEntidad = genericoEntidad;
+    }
 }

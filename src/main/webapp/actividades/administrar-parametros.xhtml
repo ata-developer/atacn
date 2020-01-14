@@ -271,6 +271,46 @@
             </p:fieldset>
             <!-- FIN ADMINISTRACION PARTE -->
             <p/>
+            <!-- INICIO ADMINISTRACION MATERIALES -->
+            <p:fieldset legend="#{msj.administrarMateriales}">
+                <p:panelGrid id="pngAdministrarTipoMaterial" columns="2">
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.tipoMaterial}" />
+                    <p:inputText
+                        id="tipoMaterialEntrada"
+                        value="#{parametroControlador.tipoMaterial.tipo}">
+                    </p:inputText>
+                    <p:commandButton
+                        id="btnTipoMaterial" 
+                        value="#{msj.guardar}"
+                        process="@this tipoMaterialEntrada"
+                        update="pngAdministrarTipoMaterial tblListaParte mensajeGeneral"
+                        action="#{parametroControlador.guardarParte()}" />
+                    <p:outputLabel
+                        value="" />
+                </p:panelGrid>
+                <p/>
+                <p:dataTable
+                    id="tblListaParte"                
+                    var="parte"
+                    style="width: 400px;"
+                    value="#{parametroControlador.listaParte}">
+                    <f:facet name="header">
+                        #{msj.listaParteVehiculo}
+                    </f:facet>
+
+                    <p:column headerText="#{msj.codigo}">
+                        <h:outputText value="#{parte.idParte}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.descripcion}">
+                        <h:outputText value="#{parte.parte}" />
+                    </p:column>
+                </p:dataTable>
+            </p:fieldset>
+            <!-- FIN ADMINISTRACION PARTE -->
+            <p/>
             <!-- INICIO ADMINISTRACION RANGO ANIOS-->
             <p:fieldset legend="#{msj.configurarRangoAnios}">
                 <p:panelGrid id="pngAdministrarRangoAnios" columns="2">

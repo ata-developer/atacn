@@ -10,12 +10,14 @@ import ec.com.ata.cn.logica.ParametroBean;
 import ec.com.ata.cn.logica.ParteBean;
 import ec.com.ata.cn.logica.TipoDocumentoBean;
 import ec.com.ata.cn.logica.TipoFilaBean;
+import ec.com.ata.cn.logica.TipoMaterialBean;
 import ec.com.ata.cn.logica.util.gestor.Constante;
 import ec.com.ata.cn.modelo.LugarVehiculoTrabajo;
 import ec.com.ata.cn.modelo.Parametro;
 import ec.com.ata.cn.modelo.Parte;
 import ec.com.ata.cn.modelo.TipoDocumento;
 import ec.com.ata.cn.modelo.TipoFila;
+import ec.com.ata.cn.modelo.TipoMaterial;
 
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -34,7 +36,7 @@ import org.primefaces.model.TreeNode;
  */
 @ViewScoped
 @Named
-public class ParametroControlador extends BaseControlador {
+public class ParametroControlador extends BaseControlador {    
     
     @Inject
     private TipoDocumentoBean tipoNumeracionDocumentoBean;
@@ -50,6 +52,9 @@ public class ParametroControlador extends BaseControlador {
     
     @Inject
     private ParteBean parteBean;
+    
+    @Inject
+    private TipoMaterialBean tipoMaterialBean;
     
     private TipoDocumento tipoNumeracionDocumento;
     
@@ -79,6 +84,8 @@ public class ParametroControlador extends BaseControlador {
     
     private Parte parteSeleccionada;
     
+    private TipoMaterial tipoMaterial;
+    
     @PostConstruct
     public void init() {
         setTipoFila(new TipoFila());
@@ -95,6 +102,7 @@ public class ParametroControlador extends BaseControlador {
         setNodoSeleccionado(new DefaultTreeNode());
         //cargarArbolPrincipal();
         setPartePrincipal(false);
+        setTipoMaterial(new TipoMaterial());
     }
     
     public void cargarArbolPrincipal() {
@@ -186,6 +194,26 @@ public class ParametroControlador extends BaseControlador {
             addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
         } finally {
             setLugarVehiculoTrabajo(new LugarVehiculoTrabajo());
+        }
+    }
+    
+    public void guardarTipoMaterial() {
+        try {
+            System.out.println("ec.com.ata.cn.controlador.ParametroControlador.guardarTipoMaterial()");
+            //getParte().setPadre(getParteSeleccionada());
+            parteBean.crear(getParte());
+            setListaParte(parteBean.obtenerLista());
+            setNodoPrincipal(parteBean.cargarNodoPrincipal());
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+        } finally {
+            setParte(new Parte());
         }
     }
     
@@ -422,5 +450,19 @@ public class ParametroControlador extends BaseControlador {
      */
     public void setParteSeleccionada(Parte parteSeleccionada) {
         this.parteSeleccionada = parteSeleccionada;
+    }
+    
+    /**
+     * @return the tipoMaterial
+     */
+    public TipoMaterial getTipoMaterial() {
+        return tipoMaterial;
+    }
+
+    /**
+     * @param tipoMaterial the tipoMaterial to set
+     */
+    public void setTipoMaterial(TipoMaterial tipoMaterial) {
+        this.tipoMaterial = tipoMaterial;
     }
 }
