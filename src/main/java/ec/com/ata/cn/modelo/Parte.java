@@ -26,7 +26,7 @@ import javax.persistence.Transient;
 @Entity
 @Table
 public class Parte implements Serializable {
-
+    
     @Id
     @SequenceGenerator(
             name = "parte_seq",
@@ -36,19 +36,14 @@ public class Parte implements Serializable {
             strategy = GenerationType.SEQUENCE,
             generator = "parte_seq")
     @Column(name = "id_parte")
-    private Long idParte;
-
-    public Parte() {
-        genericoEntidad = new GenericoEntidad();
-    }
-
-    public Long getIdParte() {
-        return idParte;
-    }
-
+    private Long idParte;   
+    
     @Column(name = "parte")
     private String parte;
 
+    @Column(name = "distintivo")
+    private String distintivo;
+    
     @Transient
     private Long idPartePadre;
 
@@ -62,9 +57,18 @@ public class Parte implements Serializable {
     @ManyToOne
     private Material material;
 
+    public Parte() {
+        genericoEntidad = new GenericoEntidad();
+    }
+    
     public void setIdParte(Long idParte) {
         this.idParte = idParte;
     }
+    
+    public Long getIdParte() {
+        return idParte;
+    }
+
 
     @Override
     public int hashCode() {
@@ -159,6 +163,20 @@ public class Parte implements Serializable {
      */
     public void setPadre(Parte padre) {
         this.padre = padre;
+    }
+    
+    /**
+     * @return the distintivo
+     */
+    public String getDistintivo() {
+        return distintivo;
+    }
+
+    /**
+     * @param distintivo the distintivo to set
+     */
+    public void setDistintivo(String distintivo) {
+        this.distintivo = distintivo;
     }
 
 }

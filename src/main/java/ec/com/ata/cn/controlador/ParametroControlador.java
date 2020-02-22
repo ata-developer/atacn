@@ -18,6 +18,7 @@ import ec.com.ata.cn.modelo.Parte;
 import ec.com.ata.cn.modelo.TipoDocumento;
 import ec.com.ata.cn.modelo.TipoFila;
 import ec.com.ata.cn.modelo.TipoMaterial;
+import java.util.ArrayList;
 
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -37,6 +38,8 @@ import org.primefaces.model.TreeNode;
 @ViewScoped
 @Named
 public class ParametroControlador extends BaseControlador {    
+
+   
     
     @Inject
     private TipoDocumentoBean tipoNumeracionDocumentoBean;
@@ -86,6 +89,8 @@ public class ParametroControlador extends BaseControlador {
     
     private TipoMaterial tipoMaterial;
     
+    private List<TipoMaterial> listaTipoMaterial;
+    
     @PostConstruct
     public void init() {
         setTipoFila(new TipoFila());
@@ -103,6 +108,7 @@ public class ParametroControlador extends BaseControlador {
         //cargarArbolPrincipal();
         setPartePrincipal(false);
         setTipoMaterial(new TipoMaterial());
+        setListaTipoMaterial(tipoMaterialBean.obtenerLista());
     }
     
     public void cargarArbolPrincipal() {
@@ -201,9 +207,8 @@ public class ParametroControlador extends BaseControlador {
         try {
             System.out.println("ec.com.ata.cn.controlador.ParametroControlador.guardarTipoMaterial()");
             //getParte().setPadre(getParteSeleccionada());
-            parteBean.crear(getParte());
-            setListaParte(parteBean.obtenerLista());
-            setNodoPrincipal(parteBean.cargarNodoPrincipal());
+            tipoMaterialBean.crear(getTipoMaterial());
+            setListaTipoMaterial(tipoMaterialBean.obtenerLista());
             addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
@@ -213,7 +218,7 @@ public class ParametroControlador extends BaseControlador {
             }
             addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
         } finally {
-            setParte(new Parte());
+            setTipoMaterial(new TipoMaterial());
         }
     }
     
@@ -464,5 +469,19 @@ public class ParametroControlador extends BaseControlador {
      */
     public void setTipoMaterial(TipoMaterial tipoMaterial) {
         this.tipoMaterial = tipoMaterial;
+    }
+    
+     /**
+     * @return the listaTipoMaterial
+     */
+    public List<TipoMaterial> getListaTipoMaterial() {
+        return listaTipoMaterial;
+    }
+
+    /**
+     * @param listaTipoMaterial the listaTipoMaterial to set
+     */
+    public void setListaTipoMaterial(List<TipoMaterial> listaTipoMaterial) {
+        this.listaTipoMaterial = listaTipoMaterial;
     }
 }

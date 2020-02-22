@@ -8,6 +8,7 @@ package ec.com.ata.cn.controlador;
 import ec.com.ata.cn.logica.CiudadBean;
 import ec.com.ata.cn.logica.EstablecimientoBean;
 import ec.com.ata.cn.logica.GrupoPrecioParteCategoriaVehiculoBean;
+import ec.com.ata.cn.logica.ParteBean;
 import ec.com.ata.cn.logica.TipoDocumentoBean;
 import ec.com.ata.cn.logica.TrabajoCategoriaPrecioBean;
 import ec.com.ata.cn.logica.UsuarioBean;
@@ -19,8 +20,10 @@ import ec.com.ata.cn.modelo.GrupoPrecio;
 import ec.com.ata.cn.modelo.GrupoPrecioParteCategoriaVehiculo;
 import ec.com.ata.cn.modelo.MarcaVehiculo;
 import ec.com.ata.cn.modelo.OrdenVehiculo;
+import ec.com.ata.cn.modelo.Parte;
 import ec.com.ata.cn.modelo.TipoDocumento;
 import ec.com.ata.cn.modelo.TrabajoCategoriaPrecio;
+import ec.com.ata.cn.modelo.TrabajoParte;
 import ec.com.ata.cn.modelo.Usuario;
 import ec.com.ata.cn.modelo.Vehiculo;
 import ec.com.ata.cn.modelo.VehiculoTrabajo;
@@ -45,6 +48,20 @@ import org.primefaces.event.FlowEvent;
 @Named
 public class OrdenControlador extends BaseControlador {
 
+    /**
+     * @return the listaTrabajosPorParte
+     */
+    public List<SelectItem> getListaTrabajosPorParte() {
+        return listaTrabajosPorParte;
+    }
+
+    /**
+     * @param listaTrabajosPorParte the listaTrabajosPorParte to set
+     */
+    public void setListaTrabajosPorParte(List<SelectItem> listaTrabajosPorParte) {
+        this.listaTrabajosPorParte = listaTrabajosPorParte;
+    }
+
     @Inject
     private VehiculoBean vehiculoBean;
 
@@ -65,6 +82,9 @@ public class OrdenControlador extends BaseControlador {
 
     @Inject
     private GrupoPrecioParteCategoriaVehiculoBean grupoPrecioParteCategoriaVehiculoBean;
+    
+    @Inject
+    private ParteBean parteBean;
 
     private Establecimiento establecimiento;
 
@@ -113,6 +133,8 @@ public class OrdenControlador extends BaseControlador {
     private List<GrupoPrecioParteCategoriaVehiculo> listaGrupoPrecioParteCategoriaVehiculo;
 
     private List<VehiculoTrabajo> listaVehiculoTrabajo;
+    
+    private List<SelectItem> listaTrabajosPorParte;
 
     @PostConstruct
     public void init() {
@@ -137,6 +159,14 @@ public class OrdenControlador extends BaseControlador {
         setListaVehiculoTrabajo(new ArrayList<VehiculoTrabajo>());
 
     }
+    
+    public List<SelectItem> generarSelectItemPartesAsiento() {
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+        for (TrabajoCategoriaPrecio trabajoCategoriaPrecioTmp : getListaTrabajoCategoriaPrecioTmp()) {
+            selectItemsBuilder.add(trabajoCategoriaPrecioTmp, trabajoCategoriaPrecioTmp.getTrabajo().getDescripcion() + " - " + trabajoCategoriaPrecioTmp.getPrecioVentaPublico() + " - " + trabajoCategoriaPrecioTmp.getPrecioDescuento());
+        }
+        return selectItemsBuilder.buildList();
+    }
 
     public void eliminarVehiculoOrden() {
         System.out.println("eliminarVehiculoOrden");
@@ -152,6 +182,27 @@ public class OrdenControlador extends BaseControlador {
         vehiculoTrabajo.setPrecioDescuento(trabajoCategoriaPrecio.getPrecioDescuento());
         vehiculoTrabajo.setVehiculoDescripcion(vehiculoParaTrabajos.getVehiculo().getDescripcion());
         vehiculoTrabajo.setTrabajoDescripcion(trabajoCategoriaPrecio.getTrabajo().getDescripcion());
+        vehiculoTrabajo.setPartePrincipal(trabajoCategoriaPrecio.getParte());
+        HashMap<String, Object> parametros = new HashMap<>();
+        parametros.put("padre", trabajoCategoriaPrecio.getParte());
+        parametros.put("distintivo","INICIALIZAR");
+        List<Parte> listaPartes = parteBean.obtenerListaPorParametros(parametros);
+        List<TrabajoParte> listaTrabajoPartesTmp = new ArrayList<>();
+        for (Parte parteTmp : listaPartes) {
+            TrabajoParte trabajoParte = new TrabajoParte();
+            trabajoParte.setPartePadre(trabajoCategoriaPrecio.getParte());
+            trabajoParte.setParte(parteTmp);
+            listaTrabajoPartesTmp.add(trabajoParte);
+        }
+        parametros = new HashMap<>();
+        parametros.put("padre", trabajoCategoriaPrecio.getParte());
+        List<Parte> listaPartesTrabajo = parteBean.obtenerListaPorParametros(parametros);
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+        for (Parte parte : listaPartesTrabajo) {
+            selectItemsBuilder.add(parte, parte.getParte());
+        }
+        listaTrabajosPorParte = selectItemsBuilder.buildList();
+        vehiculoTrabajo.setListaTrabajoParte(listaTrabajoPartesTmp);
         listaVehiculoTrabajo.add(vehiculoTrabajo);
         
     }

@@ -181,7 +181,7 @@
             <!-- INICIO ADMINISTRACION PARTE -->
             <p:fieldset legend="#{msj.administrarPartes}">
                 <p:panelGrid id="pngAdministrarPartes" columns="2">
-                    
+
                     <p:outputLabel
                         for="@next"
                         value="#{msj.esPartePrincipal}" />
@@ -215,7 +215,7 @@
                             <h:outputText value="#{parte.parte}" />
                         </p:treeNode>
                     </p:tree>
-                    
+
                     <p:outputLabel
                         for="@next"
                         rendered="#{!parametroControlador.partePrincipal}"
@@ -226,24 +226,43 @@
                         disabled="true"
                         value="#{parametroControlador.parteSeleccionada.parte}">
                     </p:inputText>
-                    
+
                     <p:outputLabel
                         for="@next"
                         value="#{msj.parte}" />                    
                     <p:inputText
                         id="descripcionParte"
                         required="true"
+                        requiredMessage="#{msj.campoNecesario}"
                         value="#{parametroControlador.parte.parte}"
                         onblur="value = value.toUpperCase()">
                         <f:converter converterId="trimConverter" />
                     </p:inputText>
-                    
-                    
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.distintivo}" />
+                    <p:selectOneMenu
+                        id="distintivoSelectOne"
+                        value="#{parametroControlador.parte.distintivo}"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        style="width:125px">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItem itemLabel="INICIALIZAR" itemValue="INICIALIZAR" />
+                        <f:selectItem itemLabel="ESTANDAR" itemValue="ESTANDAR" />                        
+                        <f:facet name="footer">
+                            <p:separator />
+                            <h:outputText value="Valor" style="font-weight:bold;"/>
+                        </f:facet>
+                    </p:selectOneMenu>
+
+
 
                     <p:commandButton
                         id="btnParte" 
                         value="#{msj.guardar}"
-                        process="@this descripcionParte sorPartePrincipal"
+                        process="@this descripcionParte sorPartePrincipal distintivoSelectOne"
                         update="pngAdministrarPartes tblListaParte mensajeGeneral"
                         action="#{parametroControlador.guardarParte()}" />
                     <p:outputLabel
@@ -254,7 +273,7 @@
                 <p:dataTable
                     id="tblListaParte"                
                     var="parte"
-                    style="width: 400px;"
+                    style="width: 600px;"
                     value="#{parametroControlador.listaParte}">
                     <f:facet name="header">
                         #{msj.listaParteVehiculo}
@@ -267,11 +286,19 @@
                     <p:column headerText="#{msj.descripcion}">
                         <h:outputText value="#{parte.parte}" />
                     </p:column>
+                    
+                    <p:column headerText="#{msj.partePrincipal}">
+                        <h:outputText value="#{parte.padre.parte}" />
+                    </p:column>
+                    
+                    <p:column headerText="#{msj.distintivo}">
+                        <h:outputText value="#{parte.distintivo}" />
+                    </p:column>
                 </p:dataTable>
             </p:fieldset>
             <!-- FIN ADMINISTRACION PARTE -->
             <p/>
-            <!-- INICIO ADMINISTRACION MATERIALES -->
+            <!-- INICIO ADMINISTRACION TIPO MATERIALES -->
             <p:fieldset legend="#{msj.administrarMateriales}">
                 <p:panelGrid id="pngAdministrarTipoMaterial" columns="2">
                     <p:outputLabel
@@ -285,31 +312,71 @@
                         id="btnTipoMaterial" 
                         value="#{msj.guardar}"
                         process="@this tipoMaterialEntrada"
-                        update="pngAdministrarTipoMaterial tblListaParte mensajeGeneral"
-                        action="#{parametroControlador.guardarParte()}" />
+                        update="pngAdministrarTipoMaterial tblListaTipoMateriales mensajeGeneral"
+                        action="#{parametroControlador.guardarTipoMaterial()}" />
                     <p:outputLabel
                         value="" />
                 </p:panelGrid>
                 <p/>
                 <p:dataTable
-                    id="tblListaParte"                
-                    var="parte"
+                    id="tblListaTipoMateriales"                
+                    var="tipoMaterial"
                     style="width: 400px;"
-                    value="#{parametroControlador.listaParte}">
+                    value="#{parametroControlador.listaTipoMaterial}">
                     <f:facet name="header">
-                        #{msj.listaParteVehiculo}
+                        #{msj.listaTipoMaterial}
                     </f:facet>
 
                     <p:column headerText="#{msj.codigo}">
-                        <h:outputText value="#{parte.idParte}" />
+                        <h:outputText value="#{tipoMaterial.idTipoMaterial}" />
                     </p:column>
 
                     <p:column headerText="#{msj.descripcion}">
-                        <h:outputText value="#{parte.parte}" />
+                        <h:outputText value="#{tipoMaterial.tipo}" />
                     </p:column>
                 </p:dataTable>
             </p:fieldset>
-            <!-- FIN ADMINISTRACION PARTE -->
+            <!-- FIN ADMINISTRACION TIPO MATERIAL -->
+            <p/>
+            <!-- INICIO ADMINISTRACION DETALLES -->
+            <p:fieldset legend="#{msj.administrarDetalle}">
+                <p:panelGrid id="pngAdministrarDetalle" columns="2">
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.detalle}" />
+                    <p:inputText
+                        id="entradaDetalle"
+                        value="#{parametroControlador.tipoMaterial.tipo}">
+                    </p:inputText>
+                    <p:commandButton
+                        id="btnTipoMaterial" 
+                        value="#{msj.guardar}"
+                        process="@this tipoMaterialEntrada"
+                        update="pngAdministrarTipoMaterial tblListaTipoMateriales mensajeGeneral"
+                        action="#{parametroControlador.guardarTipoMaterial()}" />
+                    <p:outputLabel
+                        value="" />
+                </p:panelGrid>
+                <p/>
+                <p:dataTable
+                    id="tblListaTipoMateriales"                
+                    var="tipoMaterial"
+                    style="width: 400px;"
+                    value="#{parametroControlador.listaTipoMaterial}">
+                    <f:facet name="header">
+                        #{msj.listaTipoMaterial}
+                    </f:facet>
+
+                    <p:column headerText="#{msj.codigo}">
+                        <h:outputText value="#{tipoMaterial.idTipoMaterial}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.descripcion}">
+                        <h:outputText value="#{tipoMaterial.tipo}" />
+                    </p:column>
+                </p:dataTable>
+            </p:fieldset>
+            <!-- FIN ADMINISTRACION DETALLES -->
             <p/>
             <!-- INICIO ADMINISTRACION RANGO ANIOS-->
             <p:fieldset legend="#{msj.configurarRangoAnios}">

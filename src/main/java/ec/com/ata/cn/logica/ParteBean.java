@@ -7,6 +7,8 @@ package ec.com.ata.cn.logica;
 
 
 import ec.com.ata.cn.logica.dao.ParteDao;
+import ec.com.ata.cn.modelo.Barrio;
+import ec.com.ata.cn.modelo.Ciudad;
 import ec.com.ata.cn.modelo.Parte;
 import java.util.HashMap;
 
@@ -36,6 +38,10 @@ public class ParteBean {
     
     public Parte obtenerPorCodigo(Long idParte){
         return parteDao.obtenerPorCodigo(idParte);
+    }
+    
+    public List<Parte> obtenerListaPorParametros(HashMap<String, Object> parametros){
+        return parteDao.obtenerListaPorParametros(parametros);
     }
     
     public List<Parte> obtenerListaPorPadre(Parte padre){
