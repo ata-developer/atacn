@@ -12,7 +12,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -22,23 +21,23 @@ import javax.persistence.Table;
  */
 @Entity
 @Table
-public class Material implements Serializable {
+public class Color implements Serializable {
 
     
     private static final long serialVersionUID = 1L;
     @Id
     @SequenceGenerator(
-            name = "material_seq",
-            sequenceName = "material_seq",
+            name = "color_seq",
+            sequenceName = "color_seq",
             allocationSize = 1)
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "material_seq")
-    @Column(name = "id_material")
-    private Long idMaterial;
+            generator = "color_seq")
+    @Column(name = "id_color")
+    private Long idColor;
     
-    @Column(name = "codigo")
-    private String codigo;
+    @Column(name = "color")
+    private String color;
     
     @Column(name = "descripcion")
     private String descripcion;
@@ -46,36 +45,35 @@ public class Material implements Serializable {
     @Embedded
     private GenericoEntidad genericoEntidad;
     
-    @ManyToOne
-    private TipoMaterial tipoMaterial;
     
-    public Material () {
+    
+    public Color () {
         genericoEntidad = new GenericoEntidad();
     }
 
-    public Long getIdMaterial() {
-        return idMaterial;
+    public Long getIdColor() {
+        return idColor;
     }
 
-    public void setIdMaterial(Long idMaterial) {
-        this.idMaterial = idMaterial;
+    public void setIdColor(Long idColor) {
+        this.idColor = idColor;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idMaterial != null ? idMaterial.hashCode() : 0);
+        hash += (idColor != null ? idColor.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the idMaterial fields are not set
-        if (!(object instanceof Material)) {
+        // TODO: Warning - this method won't work in the case the idColor fields are not set
+        if (!(object instanceof Color)) {
             return false;
         }
-        Material other = (Material) object;
-        if ((this.idMaterial == null && other.idMaterial != null) || (this.idMaterial != null && !this.idMaterial.equals(other.idMaterial))) {
+        Color other = (Color) object;
+        if ((this.idColor == null && other.idColor != null) || (this.idColor != null && !this.idColor.equals(other.idColor))) {
             return false;
         }
         return true;
@@ -83,7 +81,7 @@ public class Material implements Serializable {
 
     @Override
     public String toString() {
-        return "ec.com.ata.cn.modelo.Material[ id=" + idMaterial + " ]";
+        return "ec.com.ata.cn.modelo.Color[ id=" + idColor + " ]";
     }
 
     /**
@@ -100,32 +98,20 @@ public class Material implements Serializable {
         this.descripcion = descripcion;
     }
 
+    
+
     /**
-     * @return the tipoMaterial
+     * @return the color
      */
-    public TipoMaterial getTipoMaterial() {
-        return tipoMaterial;
+    public String getColor() {
+        return color;
     }
 
     /**
-     * @param tipoMaterial the tipoMaterial to set
+     * @param color the color to set
      */
-    public void setTipoMaterial(TipoMaterial tipoMaterial) {
-        this.tipoMaterial = tipoMaterial;
-    }
-
-    /**
-     * @return the codigo
-     */
-    public String getCodigo() {
-        return codigo;
-    }
-
-    /**
-     * @param codigo the codigo to set
-     */
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
+    public void setColor(String color) {
+        this.color = color;
     }
     
     

@@ -5,14 +5,18 @@
  */
 package ec.com.ata.cn.controlador;
 
+import ec.com.ata.cn.logica.DetalleBean;
 import ec.com.ata.cn.logica.LugarVehiculoTrabajoBean;
+import ec.com.ata.cn.logica.MaterialBean;
 import ec.com.ata.cn.logica.ParametroBean;
 import ec.com.ata.cn.logica.ParteBean;
 import ec.com.ata.cn.logica.TipoDocumentoBean;
 import ec.com.ata.cn.logica.TipoFilaBean;
 import ec.com.ata.cn.logica.TipoMaterialBean;
 import ec.com.ata.cn.logica.util.gestor.Constante;
+import ec.com.ata.cn.modelo.Detalle;
 import ec.com.ata.cn.modelo.LugarVehiculoTrabajo;
+import ec.com.ata.cn.modelo.Material;
 import ec.com.ata.cn.modelo.Parametro;
 import ec.com.ata.cn.modelo.Parte;
 import ec.com.ata.cn.modelo.TipoDocumento;
@@ -22,11 +26,13 @@ import java.util.ArrayList;
 
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.omnifaces.util.selectitems.SelectItemsBuilder;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -39,8 +45,34 @@ import org.primefaces.model.TreeNode;
 @Named
 public class ParametroControlador extends BaseControlador {    
 
-   
-    
+    /**
+     * @return the material
+     */
+    public Material getMaterial() {
+        return material;
+    }
+
+    /**
+     * @param material the material to set
+     */
+    public void setMaterial(Material material) {
+        this.material = material;
+    }
+
+    /**
+     * @return the listaMaterial
+     */
+    public List<Material> getListaMaterial() {
+        return listaMaterial;
+    }
+
+    /**
+     * @param listaMaterial the listaMaterial to set
+     */
+    public void setListaMaterial(List<Material> listaMaterial) {
+        this.listaMaterial = listaMaterial;
+    }
+
     @Inject
     private TipoDocumentoBean tipoNumeracionDocumentoBean;
     
@@ -58,6 +90,12 @@ public class ParametroControlador extends BaseControlador {
     
     @Inject
     private TipoMaterialBean tipoMaterialBean;
+    
+    @Inject
+    private DetalleBean detalleBean;
+    
+    @Inject
+    private MaterialBean materialBean;
     
     private TipoDocumento tipoNumeracionDocumento;
     
@@ -91,6 +129,14 @@ public class ParametroControlador extends BaseControlador {
     
     private List<TipoMaterial> listaTipoMaterial;
     
+    private Detalle detalle;
+    
+    private List<Detalle> listaDetalle;
+    
+    private Material material;
+    
+    private List<Material> listaMaterial;
+    
     @PostConstruct
     public void init() {
         setTipoFila(new TipoFila());
@@ -109,6 +155,18 @@ public class ParametroControlador extends BaseControlador {
         setPartePrincipal(false);
         setTipoMaterial(new TipoMaterial());
         setListaTipoMaterial(tipoMaterialBean.obtenerLista());
+        setDetalle(new Detalle());
+        setListaDetalle(new ArrayList<Detalle>());
+        setMaterial(new Material());
+        setListaMaterial(new ArrayList<Material>());
+    }
+    
+    public List<SelectItem> generarSelectItemDeTipoMaterial() {
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+        for (TipoMaterial tipoMaterialTmp : tipoMaterialBean.obtenerLista()) {
+            selectItemsBuilder.add(tipoMaterialTmp, tipoMaterialTmp.getTipo());
+        }
+        return selectItemsBuilder.buildList();
     }
     
     public void cargarArbolPrincipal() {
@@ -218,7 +276,25 @@ public class ParametroControlador extends BaseControlador {
             }
             addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
         } finally {
-            setTipoMaterial(new TipoMaterial());
+            setDetalle(new Detalle());
+        }
+    }
+    
+    public void guardarMaterial() {
+        try {
+            System.out.println("ec.com.ata.cn.controlador.ParametroControlador.guardarMaterial()");
+            materialBean.crear(getMaterial());
+            setListaMaterial(materialBean.obtenerLista());
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_MATERIAL + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_MATERIAL + ":" + e.getMessage());
+        } finally {
+            setMaterial(new Material());
         }
     }
     
@@ -229,6 +305,27 @@ public class ParametroControlador extends BaseControlador {
             parteBean.crear(getParte());
             setListaParte(parteBean.obtenerLista());
             setNodoPrincipal(parteBean.cargarNodoPrincipal());
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+        } finally {
+            setParte(new Parte());
+        }
+    }
+    
+    
+    public void guardarDetalle() {
+        try {
+            System.out.println("ec.com.ata.cn.controlador.ParametroControlador.guardarDetalle()");
+            //getParte().setPadre(getParteSeleccionada());
+            detalleBean.crear(getDetalle());
+            setListaDetalle(detalleBean.obtenerLista());
+            //setNodoPrincipal(parteBean.cargarNodoPrincipal());
             addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
@@ -483,5 +580,33 @@ public class ParametroControlador extends BaseControlador {
      */
     public void setListaTipoMaterial(List<TipoMaterial> listaTipoMaterial) {
         this.listaTipoMaterial = listaTipoMaterial;
+    }
+
+    /**
+     * @return the detalle
+     */
+    public Detalle getDetalle() {
+        return detalle;
+    }
+
+    /**
+     * @param detalle the detalle to set
+     */
+    public void setDetalle(Detalle detalle) {
+        this.detalle = detalle;
+    }
+    
+    /**
+     * @return the listaDetalle
+     */
+    public List<Detalle> getListaDetalle() {
+        return listaDetalle;
+    }
+
+    /**
+     * @param listaDetalle the listaDetalle to set
+     */
+    public void setListaDetalle(List<Detalle> listaDetalle) {
+        this.listaDetalle = listaDetalle;
     }
 }

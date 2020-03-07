@@ -346,33 +346,33 @@
                         value="#{msj.detalle}" />
                     <p:inputText
                         id="entradaDetalle"
-                        value="#{parametroControlador.tipoMaterial.tipo}">
+                        value="#{parametroControlador.detalle.detalle}">
                     </p:inputText>
                     <p:commandButton
-                        id="btnTipoMaterial" 
+                        id="btnDetalle" 
                         value="#{msj.guardar}"
-                        process="@this tipoMaterialEntrada"
-                        update="pngAdministrarTipoMaterial tblListaTipoMateriales mensajeGeneral"
-                        action="#{parametroControlador.guardarTipoMaterial()}" />
+                        process="@this pngAdministrarDetalle"
+                        update="pngAdministrarDetalle tblListaDetalle mensajeGeneral"
+                        action="#{parametroControlador.guardarDetalle()}" />
                     <p:outputLabel
                         value="" />
                 </p:panelGrid>
                 <p/>
                 <p:dataTable
-                    id="tblListaTipoMateriales"                
-                    var="tipoMaterial"
+                    id="tblListaDetalle"                
+                    var="detalle"
                     style="width: 400px;"
-                    value="#{parametroControlador.listaTipoMaterial}">
+                    value="#{parametroControlador.listaDetalle}">
                     <f:facet name="header">
-                        #{msj.listaTipoMaterial}
+                        #{msj.listaDetalle}
                     </f:facet>
 
                     <p:column headerText="#{msj.codigo}">
-                        <h:outputText value="#{tipoMaterial.idTipoMaterial}" />
+                        <h:outputText value="#{detalle.idDetalle}" />
                     </p:column>
 
                     <p:column headerText="#{msj.descripcion}">
-                        <h:outputText value="#{tipoMaterial.tipo}" />
+                        <h:outputText value="#{detalle.detalle}" />
                     </p:column>
                 </p:dataTable>
             </p:fieldset>

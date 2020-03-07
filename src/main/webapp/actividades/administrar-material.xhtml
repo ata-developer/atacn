@@ -1,0 +1,97 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templateATA.xhtml">
+
+    <ui:define name="content">
+        <h:form id="frmAdministrarMateriales">
+            <h1>#{msj.administrarMateriales}</h1>
+            <p/>
+            <!-- INICIO ADMINISTRACION TIPO DOCUMENTO -->
+            <p:fieldset legend="#{msj.agregarTipoDocumento}">
+                <p:panelGrid id="pngAdministrarTipoDocumento" columns="2">
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.codigo}" />                    
+                    <p:inputText
+                        id="entradaCodigoMaterial"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{parametroControlador.material.codigo}"
+                        onblur="value = value.toUpperCase()">
+                        <f:converter converterId="trimConverter" />
+                    </p:inputText>
+                    
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.descripcion}" />                    
+                    <p:inputText
+                        id="entradaDescripcionMaterial"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{parametroControlador.material.descripcion}"
+                        onblur="value = value.toUpperCase()">
+                        <f:converter converterId="trimConverter" />
+                    </p:inputText>
+                    
+                    
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.tipoMaterial}" />
+                    <p:selectOneMenu
+                        id="somSeleccionarTipoMaterial"
+                        value="#{parametroControlador.material.tipoMaterial}"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{parametroControlador.generarSelectItemDeTipoMaterial()}" />
+                        <p:ajax 
+                            event="change"
+                            update="frmAdministrarMateriales mensajeGeneral" />
+                    </p:selectOneMenu>
+
+                    <p:commandButton
+                        id="btnGuardarMaterial" 
+                        value="#{msj.guardar}"
+                        process="@this frmAdministrarMateriales"
+                        update="frmAdministrarMateriales mensajeGeneral"
+                        actionListener="#{parametroControlador.guardarMaterial()}" />
+                    <p:outputLabel
+                        value="" />
+
+                </p:panelGrid>
+                <p/>
+                <p:dataTable
+                    id="tblListaMaterial"                
+                    var="material"
+                    style="width: 400px;"
+                    value="#{parametroControlador.listaMaterial}">
+                    <f:facet name="header">
+                        #{msj.listaMaterial}
+                    </f:facet>
+
+                    <p:column headerText="#{msj.codigo}">
+                        <h:outputText value="#{material.codigo}" />
+                    </p:column>   
+
+                    <p:column headerText="#{msj.descripcion}">
+                        <h:outputText value="#{material.descripcion}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.tipoMaterial}">
+                        <h:outputText value="#{material.tipoMaterial.tipo}" />
+                    </p:column>
+
+
+
+                </p:dataTable>
+            </p:fieldset>
+            <!-- FIN ADMINISTRACION TIPO DOCUMENTO -->
+            <p/>
+            
+
+        </h:form>
+    </ui:define>
+</ui:composition>
