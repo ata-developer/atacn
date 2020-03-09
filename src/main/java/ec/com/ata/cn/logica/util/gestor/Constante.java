@@ -76,6 +76,7 @@ public class Constante {
     public static final String ERROR_PRECIOS_CONTROLADOR_GUARDAR_EX = " 004 ";
     public static final String ERROR_PRECIOS_CONTROLADOR_GUARDAR_ROOT = " 005 ";
     public static final String ERROR_MATERIAL = " 006 ";
+    public static final String ERROR_COLOR = " 007 ";
 
     public static final String TRABAJO_CATEGORIA = "TRABAJO/CATEGORIA";
 

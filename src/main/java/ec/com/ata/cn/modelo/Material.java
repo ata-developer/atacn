@@ -49,6 +49,10 @@ public class Material implements Serializable {
     @ManyToOne
     private TipoMaterial tipoMaterial;
     
+    @ManyToOne
+    private Color color;
+    
+    
     public Material () {
         genericoEntidad = new GenericoEntidad();
     }
@@ -142,6 +146,20 @@ public class Material implements Serializable {
     public void setGenericoEntidad(GenericoEntidad genericoEntidad) {
         this.genericoEntidad = genericoEntidad;
     }
+    
+    
+    /**
+     * @return the color
+     */
+    public Color getColor() {
+        return color;
+    }
 
+    /**
+     * @param color the color to set
+     */
+    public void setColor(Color color) {
+        this.color = color;
+    }
     
 }

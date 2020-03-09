@@ -378,6 +378,53 @@
             </p:fieldset>
             <!-- FIN ADMINISTRACION DETALLES -->
             <p/>
+            <!-- INICIO ADMINISTRACION COLOR -->
+            <p:fieldset legend="#{msj.administrarColor}">
+                <p:panelGrid id="pngAdministrarColor" columns="2">
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.color}" />
+                    <p:inputText
+                        id="entradaColor"
+                        value="#{parametroControlador.color.color}">
+                    </p:inputText>
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.descripcion}" />
+                    <p:inputText
+                        id="entradaDescripcion"
+                        value="#{parametroControlador.color.descripcion}">
+                    </p:inputText>
+                    <p:commandButton
+                        id="btnColor" 
+                        value="#{msj.guardar}"
+                        process="@this pngAdministrarColor"
+                        update="pngAdministrarColor tblListaColor mensajeGeneral"
+                        action="#{parametroControlador.guardarColor()}" />
+                    <p:outputLabel
+                        value="" />
+                </p:panelGrid>
+                <p/>
+                <p:dataTable
+                    id="tblListaColor"                
+                    var="color"
+                    style="width: 400px;"
+                    value="#{parametroControlador.listaColor}">
+                    <f:facet name="header">
+                        #{msj.listaColor}
+                    </f:facet>
+
+                    <p:column headerText="#{msj.color}">
+                        <h:outputText value="#{color.color}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.descripcion}">
+                        <h:outputText value="#{color.descripcion}" />
+                    </p:column>
+                </p:dataTable>
+            </p:fieldset>
+            <!-- FIN ADMINISTRACION COLOR -->
+            <p/>
             <!-- INICIO ADMINISTRACION RANGO ANIOS-->
             <p:fieldset legend="#{msj.configurarRangoAnios}">
                 <p:panelGrid id="pngAdministrarRangoAnios" columns="2">

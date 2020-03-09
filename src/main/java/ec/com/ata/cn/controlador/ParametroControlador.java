@@ -5,6 +5,7 @@
  */
 package ec.com.ata.cn.controlador;
 
+import ec.com.ata.cn.logica.ColorBean;
 import ec.com.ata.cn.logica.DetalleBean;
 import ec.com.ata.cn.logica.LugarVehiculoTrabajoBean;
 import ec.com.ata.cn.logica.MaterialBean;
@@ -14,6 +15,7 @@ import ec.com.ata.cn.logica.TipoDocumentoBean;
 import ec.com.ata.cn.logica.TipoFilaBean;
 import ec.com.ata.cn.logica.TipoMaterialBean;
 import ec.com.ata.cn.logica.util.gestor.Constante;
+import ec.com.ata.cn.modelo.Color;
 import ec.com.ata.cn.modelo.Detalle;
 import ec.com.ata.cn.modelo.LugarVehiculoTrabajo;
 import ec.com.ata.cn.modelo.Material;
@@ -45,34 +47,8 @@ import org.primefaces.model.TreeNode;
 @Named
 public class ParametroControlador extends BaseControlador {    
 
-    /**
-     * @return the material
-     */
-    public Material getMaterial() {
-        return material;
-    }
-
-    /**
-     * @param material the material to set
-     */
-    public void setMaterial(Material material) {
-        this.material = material;
-    }
-
-    /**
-     * @return the listaMaterial
-     */
-    public List<Material> getListaMaterial() {
-        return listaMaterial;
-    }
-
-    /**
-     * @param listaMaterial the listaMaterial to set
-     */
-    public void setListaMaterial(List<Material> listaMaterial) {
-        this.listaMaterial = listaMaterial;
-    }
-
+    
+    
     @Inject
     private TipoDocumentoBean tipoNumeracionDocumentoBean;
     
@@ -96,6 +72,9 @@ public class ParametroControlador extends BaseControlador {
     
     @Inject
     private MaterialBean materialBean;
+    
+    @Inject
+    private ColorBean colorBean;
     
     private TipoDocumento tipoNumeracionDocumento;
     
@@ -137,6 +116,10 @@ public class ParametroControlador extends BaseControlador {
     
     private List<Material> listaMaterial;
     
+    private Color color;
+    
+    private List<Color> listaColor;
+    
     @PostConstruct
     public void init() {
         setTipoFila(new TipoFila());
@@ -165,6 +148,14 @@ public class ParametroControlador extends BaseControlador {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
         for (TipoMaterial tipoMaterialTmp : tipoMaterialBean.obtenerLista()) {
             selectItemsBuilder.add(tipoMaterialTmp, tipoMaterialTmp.getTipo());
+        }
+        return selectItemsBuilder.buildList();
+    }
+    
+    public List<SelectItem> generarSelectItemDeColor() {
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+        for (Color colorTmp : colorBean.obtenerLista()) {
+            selectItemsBuilder.add(colorTmp, colorTmp.getColor());
         }
         return selectItemsBuilder.buildList();
     }
@@ -336,6 +327,26 @@ public class ParametroControlador extends BaseControlador {
             addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
         } finally {
             setParte(new Parte());
+        }
+    }
+    
+    public void guardarColor() {
+        try {
+            System.out.println("ec.com.ata.cn.controlador.ParametroControlador.guardarColor()");
+            //getParte().setPadre(getParteSeleccionada());
+            colorBean.crear(getColor());
+            setListaColor(colorBean.obtenerLista());
+            //setNodoPrincipal(parteBean.cargarNodoPrincipal());
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_COLOR + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_COLOR + ":" + e.getMessage());
+        } finally {
+            setColor(new Color());
         }
     }
     
@@ -609,4 +620,62 @@ public class ParametroControlador extends BaseControlador {
     public void setListaDetalle(List<Detalle> listaDetalle) {
         this.listaDetalle = listaDetalle;
     }
+    
+    /**
+     * @return the material
+     */
+    public Material getMaterial() {
+        return material;
+    }
+
+    /**
+     * @param material the material to set
+     */
+    public void setMaterial(Material material) {
+        this.material = material;
+    }
+
+    /**
+     * @return the listaMaterial
+     */
+    public List<Material> getListaMaterial() {
+        return listaMaterial;
+    }
+
+    /**
+     * @param listaMaterial the listaMaterial to set
+     */
+    public void setListaMaterial(List<Material> listaMaterial) {
+        this.listaMaterial = listaMaterial;
+    }
+    
+    /**
+     * @return the color
+     */
+    public Color getColor() {
+        return color;
+    }
+
+    /**
+     * @param color the color to set
+     */
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    /**
+     * @return the listaColor
+     */
+    public List<Color> getListaColor() {
+        return listaColor;
+    }
+
+    /**
+     * @param listaColor the listaColor to set
+     */
+    public void setListaColor(List<Color> listaColor) {
+        this.listaColor = listaColor;
+    }
+
+
 }

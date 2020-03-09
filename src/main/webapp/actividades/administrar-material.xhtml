@@ -37,6 +37,20 @@
                         <f:converter converterId="trimConverter" />
                     </p:inputText>
                     
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.color}" />
+                    <p:selectOneMenu
+                        id="somSeleccionarColor"
+                        value="#{parametroControlador.material.color}"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{parametroControlador.generarSelectItemDeColor()}" />
+                        <p:ajax 
+                            event="change"
+                            update="frmAdministrarMateriales mensajeGeneral" />
+                    </p:selectOneMenu>
+                    
                     
                     <p:outputLabel
                         for="@next"

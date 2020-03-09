@@ -5,7 +5,7 @@
  */
 package ec.com.ata.cn.controlador;
 
-import com.sun.javafx.scene.control.skin.VirtualFlow;
+
 import ec.com.ata.cn.logica.CategoriaBean;
 import ec.com.ata.cn.logica.FilaBean;
 import ec.com.ata.cn.logica.GrupoPrecioBean;
