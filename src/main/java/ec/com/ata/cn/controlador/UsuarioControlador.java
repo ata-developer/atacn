@@ -42,7 +42,7 @@ public class UsuarioControlador extends BaseControlador {
     @Inject
     private TipoDocumentoBean tipoDocumentoBean;
 
-    private Usuario usuario;
+    private Usuario usuario;    
 
     private List<Usuario> listaUsuario;
     
@@ -53,6 +53,8 @@ public class UsuarioControlador extends BaseControlador {
     private Equipo equipoSeleccionado;
     
     private List<Equipo> listaEquipo;
+    
+    private Usuario usuarioSeleccionado;
     
     @PostConstruct
     public void init() {

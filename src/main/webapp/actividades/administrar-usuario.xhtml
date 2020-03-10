@@ -249,6 +249,18 @@
                         value="#{msj.elemento.seleccionado}" />
                     <p:outputLabel
                         value="#{usuarioControlador.equipoSeleccionado.equipo}" />
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.usuario}" />
+                    <p:selectOneMenu
+                        id="somSeleccionarCategoria"
+                        value="#{usuarioControlador.equipoSeleccionado}"
+                        required="true"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{usuarioControlador.generarSelectItemDeEquipo()}" />
+                        <p:ajax event="change" update="pngAdministrarEquipoSeleccionado"/>
+                    </p:selectOneMenu>
                 </p:panelGrid>
             </p:fieldset>
 
