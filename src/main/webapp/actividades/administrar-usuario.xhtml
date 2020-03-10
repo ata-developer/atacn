@@ -11,7 +11,7 @@
             <p/>
             <p:fieldset legend="#{msj.agregarUsuario}">
                 <p:panelGrid id="pngAdministrarUsuario" columns="2">
-                    
+
                     <p:outputLabel
                         for="@next"
                         value="#{msj.descripcionTipoDocumento}" />
@@ -26,7 +26,7 @@
                     </p:selectOneMenu>
 
                     <ui:include src="seleccionar-tipo-documento.xhtml" />
-                    
+
                     <p:outputLabel
                         for="@next"
                         value="#{msj.nombre}" />                    
@@ -173,31 +173,85 @@
                         value="" />
 
                 </p:panelGrid>
+                <p/>
+                <p:dataTable
+                    id="tblListaUsuario"                
+                    var="usuario" 
+                    value="#{usuarioControlador.listaUsuario}">
+                    <f:facet name="header">
+                        #{msj.listaUsuario}
+                    </f:facet>
+                    <p:column headerText="#{msj.numeroDocumento}">
+                        <h:outputText value="#{usuario.numeroDocumento}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.usuario}">
+                        <h:outputText value="#{usuario.usuario}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.nombre}">
+                        <h:outputText value="#{usuario.nombre}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.apellido}">
+                        <h:outputText value="#{usuario.apellido}" />
+                    </p:column>
+                </p:dataTable>
             </p:fieldset>
             <p/>
-            <p:dataTable
-                id="tblListaUsuario"                
-                var="usuario" 
-                value="#{usuarioControlador.listaUsuario}">
-                <f:facet name="header">
-                    #{msj.listaUsuario}
-                </f:facet>
-                <p:column headerText="#{msj.numeroDocumento}">
-                    <h:outputText value="#{usuario.numeroDocumento}" />
-                </p:column>
+            <p:fieldset legend="#{msj.administrarEquipo}">
+                <p:panelGrid id="pngAdministrarEquipo" columns="2"> 
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.equipo}" />                    
+                    <p:inputText
+                        id="entradaEquipo"
+                        required="true"
+                        value="#{usuarioControlador.equipo.equipo}"
+                        onblur="value = value.toUpperCase()">
+                        <f:converter converterId="trimConverter" />
+                    </p:inputText>
+                    <p:commandButton
+                        id="btnGuardarEquipo" 
+                        value="#{msj.guardar}"
+                        update="pngAdministrarEquipo tblListaEquipos mensajeGeneral"
+                        action="#{usuarioControlador.guardarEquipo()}" />
+                    <p:outputLabel
+                        value="" />
+                </p:panelGrid>
+                <p/>
+                <p:dataTable
+                    id="tblListaEquipos"                
+                    var="equipo" 
+                    value="#{usuarioControlador.listaEquipo}">
+                    <f:facet name="header">
+                        #{msj.listaEquipo}
+                    </f:facet>
+                    <p:column headerText="#{msj.equipo}">
+                        <h:outputText value="#{equipo.equipo}" />
+                    </p:column>
+                </p:dataTable>
+                <p:panelGrid id="pngAdministrarEquipoSeleccionado" columns="2">
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.equipo}" />
+                    <p:selectOneMenu
+                        id="somSeleccionarCategoria"
+                        value="#{usuarioControlador.equipoSeleccionado}"
+                        required="true"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{usuarioControlador.generarSelectItemDeEquipo()}" />
+                        <p:ajax event="change" update="pngAdministrarEquipoSeleccionado"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.elemento.seleccionado}" />
+                    <p:outputLabel
+                        value="#{usuarioControlador.equipoSeleccionado.equipo}" />
+                </p:panelGrid>
+            </p:fieldset>
 
-                <p:column headerText="#{msj.usuario}">
-                    <h:outputText value="#{usuario.usuario}" />
-                </p:column>
-                
-                <p:column headerText="#{msj.nombre}">
-                    <h:outputText value="#{usuario.nombre}" />
-                </p:column>
-                
-                <p:column headerText="#{msj.apellido}">
-                    <h:outputText value="#{usuario.apellido}" />
-                </p:column>
-            </p:dataTable>
         </h:form>
     </ui:define>
 </ui:composition>
