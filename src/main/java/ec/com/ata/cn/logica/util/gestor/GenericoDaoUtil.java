@@ -61,7 +61,9 @@ public class GenericoDaoUtil<T, I extends Serializable> {
      * @return tabla de tipo entidad con registro modificado
      */
     public T modificar(final T tablaEntidad) throws Exception{
-        return em.merge(tablaEntidad);
+        T tablaEntidadTemp = em.merge(tablaEntidad);
+        em.flush();
+        return tablaEntidadTemp;
     }
 
     /**

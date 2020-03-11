@@ -7,6 +7,14 @@
         for="@next"
         rendered="#{usuarioControlador.usuario.tipoDocumento ne null}"
         value="#{msj.numeroDocumento}" />
+    <p:inputText
+        id="entradaTemporal"
+        rendered="#{(usuarioControlador.usuario.tipoDocumento.tipoDocumento eq null )}"
+        disabled="true"
+        requiredMessage="#{msj.campoNecesario}"
+        placeholder="#{msj.numeroDocumento}">
+        <f:converter converterId="trimConverter" />
+    </p:inputText>
 
     <p:inputMask 
         id="iMCedula" 

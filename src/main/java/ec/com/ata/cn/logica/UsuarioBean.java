@@ -58,4 +58,8 @@ public class UsuarioBean {
             return listaUsuario.get(0);
         }
     }
+    
+    public Usuario modificar(Usuario usuarioEntrada) throws Exception {
+        return usuarioDao.modificar(usuarioEntrada);
+    }
 }

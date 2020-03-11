@@ -25,7 +25,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table( name = "usuario")
-public class Usuario implements Serializable {
+public class Usuario implements Serializable {    
 
     private static final long serialVersionUID = 1L;
     
@@ -89,6 +89,10 @@ public class Usuario implements Serializable {
     @ManyToOne
     @JoinColumn(name="id_ciudad", referencedColumnName="id_ciudad")
     private Ciudad ciudad;
+    
+    @ManyToOne
+    @JoinColumn(name="id_equipo", referencedColumnName="id_equipo")
+    private Equipo equipo;
 
     public Usuario () {
         genericoEntidad = new GenericoEntidad();
@@ -382,6 +386,20 @@ public class Usuario implements Serializable {
      */
     public void setDocumentoYNombres(String documentoYNombres) {
         this.documentoYNombres = documentoYNombres;
+    }
+    
+    /**
+     * @return the equipo
+     */
+    public Equipo getEquipo() {
+        return equipo;
+    }
+
+    /**
+     * @param equipo the equipo to set
+     */
+    public void setEquipo(Equipo equipo) {
+        this.equipo = equipo;
     }
     
 }

@@ -33,6 +33,8 @@ import org.omnifaces.util.selectitems.SelectItemsBuilder;
 @Named
 public class UsuarioControlador extends BaseControlador {
 
+   
+
     @Inject
     private UsuarioBean usuarioBean;
     
@@ -82,6 +84,14 @@ public class UsuarioControlador extends BaseControlador {
         return selectItemsBuilder.buildList();
     }
     
+    public List<SelectItem> generarSelectItemDeUsuarios() {
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+        for (Usuario usuarioTemp : usuarioBean.obtenerLista()) {
+            selectItemsBuilder.add(usuarioTemp, usuarioTemp.getDocumentoYNombres());
+        }
+        return selectItemsBuilder.buildList();
+    }
+    
     
 
     public List<Usuario> obtenerListaUsuario() {
@@ -111,6 +121,24 @@ public class UsuarioControlador extends BaseControlador {
             
             equipoBean.crear(getEquipo());
             setListaEquipo(equipoBean.obtenerLista());
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+        } finally {
+            setEquipo(new Equipo());
+        }
+    }
+    
+    public void actualizarEquipoUsuario(){
+        try {
+            getUsuarioSeleccionado().setEquipo(getEquipoSeleccionado());
+            usuarioBean.modificar(getUsuarioSeleccionado());
+            setEquipoSeleccionado(equipoBean.obtenerPorCodigo(getEquipoSeleccionado().getIdEquipo()));
             addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
@@ -206,5 +234,19 @@ public class UsuarioControlador extends BaseControlador {
      */
     public void setEquipoSeleccionado(Equipo equipoSeleccionado) {
         this.equipoSeleccionado = equipoSeleccionado;
+    }
+    
+     /**
+     * @return the usuarioSeleccionado
+     */
+    public Usuario getUsuarioSeleccionado() {
+        return usuarioSeleccionado;
+    }
+
+    /**
+     * @param usuarioSeleccionado the usuarioSeleccionado to set
+     */
+    public void setUsuarioSeleccionado(Usuario usuarioSeleccionado) {
+        this.usuarioSeleccionado = usuarioSeleccionado;
     }
 }

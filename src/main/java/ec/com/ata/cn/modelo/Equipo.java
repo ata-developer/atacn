@@ -6,12 +6,15 @@
 package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -22,7 +25,7 @@ import javax.persistence.Table;
 @Entity
 @Table
 public class Equipo implements Serializable {
-
+   
     private static final long serialVersionUID = 1L;
     
     @Id
@@ -41,6 +44,9 @@ public class Equipo implements Serializable {
     
     @Embedded
     private GenericoEntidad genericoEntidad;
+    
+    @OneToMany(mappedBy = "equipo", fetch = FetchType.LAZY)
+    private List<Usuario> listaUsuario;
     
     
     public Equipo () {
@@ -106,5 +112,20 @@ public class Equipo implements Serializable {
     public void setGenericoEntidad(GenericoEntidad genericoEntidad) {
         this.genericoEntidad = genericoEntidad;
     }
+    
+     /**
+     * @return the listaUsuario
+     */
+    public List<Usuario> getListaUsuario() {
+        return listaUsuario;
+    }
+
+    /**
+     * @param listaUsuario the listaUsuario to set
+     */
+    public void setListaUsuario(List<Usuario> listaUsuario) {
+        this.listaUsuario = listaUsuario;
+    }
+
 
 }

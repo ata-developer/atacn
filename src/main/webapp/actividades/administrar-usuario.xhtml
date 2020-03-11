@@ -55,6 +55,22 @@
 
                     <p:outputLabel
                         for="@next"
+                        value="#{msj.ciudad}" />                    
+                    <p:selectOneMenu
+                        id="somSeleccionarCiudadUsuario"
+                        value="#{usuarioControlador.usuario.ciudad}"
+                        filter="true" 
+                        filterMatchMode="contains"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{ordenControlador.generarSelectItemDeCiudad()}" />
+                        <f:ajax event="itemSelect" listener="#{ordenControlador.actualizarClienteOrden}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel
+                        for="@next"
                         value="#{msj.callePrincipal}" />                    
                     <p:inputText
                         id="iTCallePrincipal"
@@ -167,6 +183,7 @@
                     <p:commandButton
                         id="btnGuardar" 
                         value="#{msj.guardar}"
+                        process="pngAdministrarUsuario"
                         update="pngAdministrarUsuario tblListaUsuario mensajeGeneral"
                         action="#{usuarioControlador.guardar()}" />
                     <p:outputLabel
@@ -214,7 +231,8 @@
                     <p:commandButton
                         id="btnGuardarEquipo" 
                         value="#{msj.guardar}"
-                        update="pngAdministrarEquipo tblListaEquipos mensajeGeneral"
+                        process="pngAdministrarEquipo"
+                        update="pngAdministrarEquipo pngAdministrarEquipoPersona tblListaEquipos mensajeGeneral"
                         action="#{usuarioControlador.guardarEquipo()}" />
                     <p:outputLabel
                         value="" />
@@ -230,38 +248,60 @@
                     <p:column headerText="#{msj.equipo}">
                         <h:outputText value="#{equipo.equipo}" />
                     </p:column>
-                </p:dataTable>
-                <p:panelGrid id="pngAdministrarEquipoSeleccionado" columns="2">
+                </p:dataTable>                
+            </p:fieldset>
+            <p/>
+            <p:fieldset legend="#{msj.administrarEquipoPersona}">
+                <p:panelGrid id="pngAdministrarEquipoPersona" columns="2">
                     <p:outputLabel
                         for="@next"
                         value="#{msj.equipo}" />
                     <p:selectOneMenu
-                        id="somSeleccionarCategoria"
+                        id="somSeleccionarEquipoPersona"
                         value="#{usuarioControlador.equipoSeleccionado}"
                         required="true"
                         converter="omnifaces.SelectItemsConverter">
                         <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                         <f:selectItems value="#{usuarioControlador.generarSelectItemDeEquipo()}" />
-                        <p:ajax event="change" update="pngAdministrarEquipoSeleccionado"/>
                     </p:selectOneMenu>
                     <p:outputLabel
                         for="@next"
-                        value="#{msj.elemento.seleccionado}" />
+                        value="#{msj.elementoSeleccionado}" />
                     <p:outputLabel
                         value="#{usuarioControlador.equipoSeleccionado.equipo}" />
                     <p:outputLabel
                         for="@next"
                         value="#{msj.usuario}" />
                     <p:selectOneMenu
-                        id="somSeleccionarCategoria"
-                        value="#{usuarioControlador.equipoSeleccionado}"
+                        id="somSeleccionarUsuarioEquipo"
+                        value="#{usuarioControlador.usuarioSeleccionado}"
                         required="true"
                         converter="omnifaces.SelectItemsConverter">
                         <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
-                        <f:selectItems value="#{usuarioControlador.generarSelectItemDeEquipo()}" />
-                        <p:ajax event="change" update="pngAdministrarEquipoSeleccionado"/>
+                        <f:selectItems value="#{usuarioControlador.generarSelectItemDeUsuarios()}" />
                     </p:selectOneMenu>
+
+                    <p:commandButton
+                        id="btnGuardarEquipoUsuario" 
+                        value="#{msj.guardar}"
+                        process="pngAdministrarEquipoPersona"
+                        update="pngAdministrarEquipoPersona tblListaEquipoUsuario mensajeGeneral"
+                        action="#{usuarioControlador.actualizarEquipoUsuario()}" />
+                    <p:outputLabel
+                        value="" />
                 </p:panelGrid>
+                <p/>
+                <p:dataTable
+                    id="tblListaEquipoUsuario"                
+                    var="usuario" 
+                    value="#{usuarioControlador.equipoSeleccionado.listaUsuario}">
+                    <f:facet name="header">
+                        #{msj.listaEquipo}
+                    </f:facet>
+                    <p:column headerText="#{msj.equipo}">
+                        <h:outputText value="#{usuario.documentoYNombres}" />
+                    </p:column>
+                </p:dataTable>
             </p:fieldset>
 
         </h:form>
