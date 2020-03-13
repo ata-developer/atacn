@@ -46,9 +46,6 @@
                         converter="omnifaces.SelectItemsConverter">
                         <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                         <f:selectItems value="#{parametroControlador.generarSelectItemDeColor()}" />
-                        <p:ajax 
-                            event="change"
-                            update="frmAdministrarMateriales mensajeGeneral" />
                     </p:selectOneMenu>
                     
                     
@@ -61,9 +58,6 @@
                         converter="omnifaces.SelectItemsConverter">
                         <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                         <f:selectItems value="#{parametroControlador.generarSelectItemDeTipoMaterial()}" />
-                        <p:ajax 
-                            event="change"
-                            update="frmAdministrarMateriales mensajeGeneral" />
                     </p:selectOneMenu>
 
                     <p:commandButton
@@ -92,6 +86,10 @@
 
                     <p:column headerText="#{msj.descripcion}">
                         <h:outputText value="#{material.descripcion}" />
+                    </p:column>
+                    
+                    <p:column headerText="#{msj.color}">
+                        <h:outputText value="#{material.color.color}" />
                     </p:column>
 
                     <p:column headerText="#{msj.tipoMaterial}">

@@ -46,21 +46,7 @@ import org.primefaces.event.FlowEvent;
  */
 @ViewScoped
 @Named
-public class OrdenControlador extends BaseControlador {
-
-    /**
-     * @return the listaTrabajosPorParte
-     */
-    public List<SelectItem> getListaTrabajosPorParte() {
-        return listaTrabajosPorParte;
-    }
-
-    /**
-     * @param listaTrabajosPorParte the listaTrabajosPorParte to set
-     */
-    public void setListaTrabajosPorParte(List<SelectItem> listaTrabajosPorParte) {
-        this.listaTrabajosPorParte = listaTrabajosPorParte;
-    }
+public class OrdenControlador extends BaseControlador {    
 
     @Inject
     private VehiculoBean vehiculoBean;
@@ -160,6 +146,29 @@ public class OrdenControlador extends BaseControlador {
 
     }
     
+    public void eliminarParte(TrabajoParte trabajoParte, VehiculoTrabajo vehiculoTrabajo) {
+        List<TrabajoParte> listaTrabajoParteTmp = vehiculoTrabajo.getListaTrabajoParte();
+        listaTrabajoParteTmp.remove(trabajoParte);
+        vehiculoTrabajo.setListaTrabajoParte(new ArrayList<TrabajoParte>());
+        for (TrabajoParte trabajoParte1 : listaTrabajoParteTmp) {
+            vehiculoTrabajo.getListaTrabajoParte().add(trabajoParte1);
+        }
+    }
+    
+    public void eliminarTrabajo ( VehiculoTrabajo vehiculoTrabajo) {
+        List<VehiculoTrabajo> listaVehiculoTrabajoTmp = listaVehiculoTrabajo;
+        listaVehiculoTrabajoTmp.remove(vehiculoTrabajo);
+        listaVehiculoTrabajo = new ArrayList<>();
+        for (VehiculoTrabajo vehiculoTrabajoTmp2 : listaVehiculoTrabajoTmp) {
+            listaVehiculoTrabajo.add(vehiculoTrabajoTmp2);
+        }
+        System.out.println("eliminar trabajo");
+    }
+    
+    public void agregarParte() {
+        System.out.println("agregar parte");
+    }
+    
     public List<SelectItem> generarSelectItemPartesAsiento() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
         for (TrabajoCategoriaPrecio trabajoCategoriaPrecioTmp : getListaTrabajoCategoriaPrecioTmp()) {
@@ -173,7 +182,7 @@ public class OrdenControlador extends BaseControlador {
     }
 
     public void agregarTrabajo() {
-        System.out.println("trabajoCategoriaPrecio.getTrabajo().getDescripcion(): " + trabajoCategoriaPrecio.getTrabajo().getDescripcion());
+        System.out.println("trabajoCategoriaPrecio.getTrabajo().getDescripcion(): " + trabajoCategoriaPrecio.toString());
         VehiculoTrabajo vehiculoTrabajo = new VehiculoTrabajo();
         vehiculoTrabajo.setIdGrupoPrecio(trabajoCategoriaPrecio.getGrupoPrecio().getIdGrupoPrecio());
         vehiculoTrabajo.setIdTrabajo(trabajoCategoriaPrecio.getTrabajo().getIdTrabajo());
@@ -728,6 +737,20 @@ public class OrdenControlador extends BaseControlador {
      */
     public void setListaVehiculoTrabajo(List<VehiculoTrabajo> listaVehiculoTrabajo) {
         this.listaVehiculoTrabajo = listaVehiculoTrabajo;
+    }
+    
+    /**
+     * @return the listaTrabajosPorParte
+     */
+    public List<SelectItem> getListaTrabajosPorParte() {
+        return listaTrabajosPorParte;
+    }
+
+    /**
+     * @param listaTrabajosPorParte the listaTrabajosPorParte to set
+     */
+    public void setListaTrabajosPorParte(List<SelectItem> listaTrabajosPorParte) {
+        this.listaTrabajosPorParte = listaTrabajosPorParte;
     }
 
 }

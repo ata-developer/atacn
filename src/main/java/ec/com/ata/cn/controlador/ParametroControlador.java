@@ -24,6 +24,7 @@ import ec.com.ata.cn.modelo.Parte;
 import ec.com.ata.cn.modelo.TipoDocumento;
 import ec.com.ata.cn.modelo.TipoFila;
 import ec.com.ata.cn.modelo.TipoMaterial;
+import java.util.AbstractList;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -141,7 +142,9 @@ public class ParametroControlador extends BaseControlador {
         setDetalle(new Detalle());
         setListaDetalle(new ArrayList<Detalle>());
         setMaterial(new Material());
-        setListaMaterial(new ArrayList<Material>());
+        setListaMaterial(materialBean.obtenerLista());
+        setColor(new Color());
+        setListaColor(colorBean.obtenerLista());
     }
     
     public List<SelectItem> generarSelectItemDeTipoMaterial() {

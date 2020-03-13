@@ -224,7 +224,8 @@
                         id="parteSeleccionada"
                         rendered="#{!parametroControlador.partePrincipal}"
                         disabled="true"
-                        value="#{parametroControlador.parteSeleccionada.parte}">
+                        value="#{parametroControlador.parteSeleccionada.parte}"
+                        onblur="value = value.toUpperCase()">
                     </p:inputText>
 
                     <p:outputLabel
@@ -306,7 +307,8 @@
                         value="#{msj.tipoMaterial}" />
                     <p:inputText
                         id="tipoMaterialEntrada"
-                        value="#{parametroControlador.tipoMaterial.tipo}">
+                        value="#{parametroControlador.tipoMaterial.tipo}"
+                        onblur="value = value.toUpperCase()">
                     </p:inputText>
                     <p:commandButton
                         id="btnTipoMaterial" 
@@ -346,7 +348,8 @@
                         value="#{msj.detalle}" />
                     <p:inputText
                         id="entradaDetalle"
-                        value="#{parametroControlador.detalle.detalle}">
+                        value="#{parametroControlador.detalle.detalle}"
+                        onblur="value = value.toUpperCase()">
                     </p:inputText>
                     <p:commandButton
                         id="btnDetalle" 
@@ -386,19 +389,21 @@
                         value="#{msj.color}" />
                     <p:inputText
                         id="entradaColor"
-                        value="#{parametroControlador.color.color}">
+                        value="#{parametroControlador.color.color}"
+                        onblur="value = value.toUpperCase()">
                     </p:inputText>
                     <p:outputLabel
                         for="@next"
                         value="#{msj.descripcion}" />
                     <p:inputText
                         id="entradaDescripcion"
-                        value="#{parametroControlador.color.descripcion}">
+                        value="#{parametroControlador.color.descripcion}"
+                        onblur="value = value.toUpperCase()">
                     </p:inputText>
                     <p:commandButton
                         id="btnColor" 
                         value="#{msj.guardar}"
-                        process="@this pngAdministrarColor"
+                        process="pngAdministrarColor"
                         update="pngAdministrarColor tblListaColor mensajeGeneral"
                         action="#{parametroControlador.guardarColor()}" />
                     <p:outputLabel

@@ -9,6 +9,7 @@ package ec.com.ata.cn.logica;
 import ec.com.ata.cn.logica.dao.UsuarioDao;
 import ec.com.ata.cn.logica.util.gestor.Constante;
 import ec.com.ata.cn.logica.util.gestor.HashCreadorUtil;
+import ec.com.ata.cn.modelo.Detalle;
 import ec.com.ata.cn.modelo.Usuario;
 import java.util.HashMap;
 
@@ -61,5 +62,9 @@ public class UsuarioBean {
     
     public Usuario modificar(Usuario usuarioEntrada) throws Exception {
         return usuarioDao.modificar(usuarioEntrada);
+    }
+    
+    public List<Usuario> obtenerListaPorParametros(HashMap<String, Object> parametros){
+        return usuarioDao.obtenerListaPorParametros(parametros);
     }
 }

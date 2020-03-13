@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -47,9 +48,11 @@ public class Material implements Serializable {
     private GenericoEntidad genericoEntidad;
     
     @ManyToOne
+    @JoinColumn(name="id_tipo_material", referencedColumnName="id_tipo_material")
     private TipoMaterial tipoMaterial;
     
     @ManyToOne
+    @JoinColumn(name="id_color", referencedColumnName="id_color")
     private Color color;
     
     

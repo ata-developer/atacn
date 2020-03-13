@@ -14,6 +14,7 @@ import ec.com.ata.cn.modelo.Equipo;
 import ec.com.ata.cn.modelo.TipoDocumento;
 import ec.com.ata.cn.modelo.Usuario;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -31,9 +32,7 @@ import org.omnifaces.util.selectitems.SelectItemsBuilder;
  */
 @ViewScoped
 @Named
-public class UsuarioControlador extends BaseControlador {
-
-   
+public class UsuarioControlador extends BaseControlador {   
 
     @Inject
     private UsuarioBean usuarioBean;
@@ -58,6 +57,8 @@ public class UsuarioControlador extends BaseControlador {
     
     private Usuario usuarioSeleccionado;
     
+    private List<Usuario> listaUsuarioEquipo;
+    
     @PostConstruct
     public void init() {
         usuario = new Usuario();
@@ -66,6 +67,18 @@ public class UsuarioControlador extends BaseControlador {
         setEquipo(new Equipo());
         setEquipoSeleccionado(new Equipo());
         setListaEquipo(equipoBean.obtenerLista());
+        setListaUsuarioEquipo(new ArrayList<Usuario>());
+    }
+    
+    public void cargarListaUsuarioSelecionados(){
+        //Equipo equipoTmp = equipoBean.obtenerPorCodigo(getEquipoSeleccionado().getIdEquipo());
+        //System.out.println("equipoTmp:+"+equipoTmp.getEquipo());
+        HashMap parametros = new HashMap();
+        parametros.put("equipo", getEquipoSeleccionado());
+        listaUsuarioEquipo = usuarioBean.obtenerListaPorParametros(parametros);
+        for (Usuario usuarioTemp : listaUsuarioEquipo) {
+            System.out.println("usuarioTemp:"+usuarioTemp.getDocumentoYNombres());
+        }
     }
     
     public List<SelectItem> generarSelectItemDeTipoDocumento() {
@@ -136,9 +149,12 @@ public class UsuarioControlador extends BaseControlador {
     
     public void actualizarEquipoUsuario(){
         try {
+            System.out.println("ec.com.ata.cn.controlador.UsuarioControlador.actualizarEquipoUsuario()");
             getUsuarioSeleccionado().setEquipo(getEquipoSeleccionado());
+            System.out.println("getEquipoSeleccionado:"+getEquipoSeleccionado().getEquipo());
+            System.out.println("getUsuarioSeleccionado:"+getUsuarioSeleccionado().getDocumentoYNombres());
             usuarioBean.modificar(getUsuarioSeleccionado());
-            setEquipoSeleccionado(equipoBean.obtenerPorCodigo(getEquipoSeleccionado().getIdEquipo()));
+            cargarListaUsuarioSelecionados();
             addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
@@ -148,7 +164,7 @@ public class UsuarioControlador extends BaseControlador {
             }
             addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
         } finally {
-            setEquipo(new Equipo());
+            setUsuarioSeleccionado(new Usuario());
         }
     }
 
@@ -248,5 +264,19 @@ public class UsuarioControlador extends BaseControlador {
      */
     public void setUsuarioSeleccionado(Usuario usuarioSeleccionado) {
         this.usuarioSeleccionado = usuarioSeleccionado;
+    }
+    
+    /**
+     * @return the listaUsuarioEquipo
+     */
+    public List<Usuario> getListaUsuarioEquipo() {
+        return listaUsuarioEquipo;
+    }
+
+    /**
+     * @param listaUsuarioEquipo the listaUsuarioEquipo to set
+     */
+    public void setListaUsuarioEquipo(List<Usuario> listaUsuarioEquipo) {
+        this.listaUsuarioEquipo = listaUsuarioEquipo;
     }
 }

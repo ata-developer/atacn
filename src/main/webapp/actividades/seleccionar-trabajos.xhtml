@@ -34,7 +34,7 @@
                     <p:panelGrid columns="2">
                         <p:outputLabel
                             for="@next"
-                            value="#{msj.seleccionarTrabajo} " />
+                            value="#{msj.seleccionarTrabajo} **" />
                         <p:selectOneMenu
                             id="somSeleccionarTrabajo"
                             value="#{ordenControlador.trabajoCategoriaPrecio}"
@@ -48,10 +48,11 @@
                     <p:commandButton
                         id="btnAgregarTrabajo" 
                         value="#{msj.agregar}"
-                        update="pngSeleccionarTrabajo"
+                        process="@this somSeleccionarTrabajo"
+                        update="pngSeleccionarTrabajo mensajeGeneral"
                         action="#{ordenControlador.agregarTrabajo()}" />
                 </p:column>
-                <p:panelGrid id="pngListaSeleccionarTrabajo" columns="2">
+                <p:panelGrid id="pngListaSeleccionarTrabajo" columns="3">
                     <c:forEach var="vehiculoTrabajo" items="#{ordenControlador.listaVehiculoTrabajo}">
                         <p:outputLabel value="#{vehiculoTrabajo.trabajoDescripcion}" /> 
                         <p:selectOneMenu
@@ -60,13 +61,25 @@
                             converter="omnifaces.SelectItemsConverter">
                             <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                             <f:selectItems value="#{ordenControlador.listaTrabajosPorParte}" />
-                        </p:selectOneMenu> 
-                        <p:outputLabel value=""/>
-                        <p:outputLabel value=""/>
-                        <c:forEach var="trabajoParte" items="#{vehiculoTrabajo.listaTrabajoParte}">
-                            <p:outputLabel value="#{trabajoParte.parte.parte}" />
-                            <p:inputText value="#{trabajoParte.detalle}"/>    
-                        </c:forEach>
+                        </p:selectOneMenu>
+                        <p:commandButton
+                            id="btnAgregarTrabajo2" 
+                            value="#{msj.eliminar}"
+                            process="@this pngListaSeleccionarTrabajo"
+                            update="pngListaSeleccionarTrabajo"
+                            action="#{ordenControlador.eliminarTrabajo(vehiculoTrabajo)}" />
+                        <p:panelGrid id="pngListaMateriales" columns="3">
+                            <c:forEach var="trabajoParte" items="#{vehiculoTrabajo.listaTrabajoParte}">
+                                <p:outputLabel value="#{trabajoParte.parte.parte}" />
+                                <p:inputText value="#{trabajoParte.detalle}"/>    
+                                <p:commandButton
+                                    id="btnAgregarTrabajo3" 
+                                    value="#{msj.eliminar}"
+                                    process="@this pngListaMateriales"
+                                    update="pngListaMateriales"
+                                    action="#{ordenControlador.eliminarParte(trabajoParte, vehiculoTrabajo)}" />
+                            </c:forEach> 
+                        </p:panelGrid>
                     </c:forEach>
                 </p:panelGrid>
 

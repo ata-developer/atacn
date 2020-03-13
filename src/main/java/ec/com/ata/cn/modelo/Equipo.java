@@ -45,7 +45,7 @@ public class Equipo implements Serializable {
     @Embedded
     private GenericoEntidad genericoEntidad;
     
-    @OneToMany(mappedBy = "equipo", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "equipo", fetch = FetchType.EAGER)
     private List<Usuario> listaUsuario;
     
     

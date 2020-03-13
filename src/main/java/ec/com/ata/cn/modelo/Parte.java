@@ -54,9 +54,6 @@ public class Parte implements Serializable {
     @Embedded
     private GenericoEntidad genericoEntidad;
 
-    @ManyToOne
-    private Material material;
-
     public Parte() {
         genericoEntidad = new GenericoEntidad();
     }
@@ -107,20 +104,6 @@ public class Parte implements Serializable {
      */
     public void setParte(String parte) {
         this.parte = parte;
-    }
-
-    /**
-     * @return the material
-     */
-    public Material getMaterial() {
-        return material;
-    }
-
-    /**
-     * @param material the material to set
-     */
-    public void setMaterial(Material material) {
-        this.material = material;
     }
 
     /**
