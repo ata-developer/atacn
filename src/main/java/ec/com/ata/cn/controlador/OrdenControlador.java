@@ -48,6 +48,8 @@ import org.primefaces.event.FlowEvent;
 @Named
 public class OrdenControlador extends BaseControlador {    
 
+    
+
     @Inject
     private VehiculoBean vehiculoBean;
 
@@ -121,6 +123,8 @@ public class OrdenControlador extends BaseControlador {
     private List<VehiculoTrabajo> listaVehiculoTrabajo;
     
     private List<SelectItem> listaTrabajosPorParte;
+    
+    private HashMap <TrabajoCategoriaPrecio,List<VehiculoTrabajo>> vehiculoListaTrabajo;
 
     @PostConstruct
     public void init() {
@@ -143,6 +147,7 @@ public class OrdenControlador extends BaseControlador {
         setListaTrabajoCategoriaPrecioTmp(new ArrayList<TrabajoCategoriaPrecio>());
         setTrabajoCategoriaPrecio(new TrabajoCategoriaPrecio());
         setListaVehiculoTrabajo(new ArrayList<VehiculoTrabajo>());
+        setVehiculoListaTrabajo(new HashMap<TrabajoCategoriaPrecio, List<VehiculoTrabajo>>());
 
     }
     
@@ -213,6 +218,8 @@ public class OrdenControlador extends BaseControlador {
         listaTrabajosPorParte = selectItemsBuilder.buildList();
         vehiculoTrabajo.setListaTrabajoParte(listaTrabajoPartesTmp);
         listaVehiculoTrabajo.add(vehiculoTrabajo);
+        vehiculoListaTrabajo.put(trabajoCategoriaPrecio, listaVehiculoTrabajo);
+        
         
     }
 
@@ -751,6 +758,20 @@ public class OrdenControlador extends BaseControlador {
      */
     public void setListaTrabajosPorParte(List<SelectItem> listaTrabajosPorParte) {
         this.listaTrabajosPorParte = listaTrabajosPorParte;
+    }
+    
+    /**
+     * @return the vehiculoListaTrabajo
+     */
+    public HashMap <TrabajoCategoriaPrecio,List<VehiculoTrabajo>> getVehiculoListaTrabajo() {
+        return vehiculoListaTrabajo;
+    }
+
+    /**
+     * @param vehiculoListaTrabajo the vehiculoListaTrabajo to set
+     */
+    public void setVehiculoListaTrabajo(HashMap <TrabajoCategoriaPrecio,List<VehiculoTrabajo>> vehiculoListaTrabajo) {
+        this.vehiculoListaTrabajo = vehiculoListaTrabajo;
     }
 
 }
