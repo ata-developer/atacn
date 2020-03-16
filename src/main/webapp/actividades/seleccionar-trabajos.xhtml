@@ -20,8 +20,9 @@
                     <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                     <f:selectItems value="#{ordenControlador.generarSelectItemDeVehiculosParaTrabajo()}" />
                     <p:ajax                             
-                        event="change"
-                        update="pngSeleccionarTrabajo mensajeGeneral"
+                        event="selectItem"
+                        process="@form"
+                        update="pnlSeleccionarVehiculosTrabajo mensajeGeneral"
                         listener="#{ordenControlador.cargarPreciosVehiculo()}" />
                 </p:selectOneMenu>
             </p:panelGrid>
@@ -53,7 +54,7 @@
                             action="#{ordenControlador.agregarTrabajo()}" />
                     </p:column>
                 </p:row>
-                <c:forEach var="vehiculoTrabajo" items="#{ordenControlador.vehiculoListaTrabajo[trabajoCategoriaPrecio]}">
+                <c:forEach var="vehiculoTrabajo" items="#{ordenControlador.listaVehiculoTrabajo}">
                     <p:row>
                         <p:column colspan="3">test test test</p:column>
                     </p:row>

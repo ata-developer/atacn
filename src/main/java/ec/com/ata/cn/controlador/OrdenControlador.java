@@ -231,6 +231,7 @@ public class OrdenControlador extends BaseControlador {
     }
 
     public void cargarPreciosVehiculo() {
+        System.out.println("vehiculoParaTrabajos: "+vehiculoParaTrabajos.toString());
         if (vehiculoParaTrabajos != null) {
             GrupoPrecio grupoPrecio = establecimiento.getGrupoPrecio();
             setListaMapaTrabajoCategoriaPrecioVehiculoSeleccionado(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecioYVehiculo(grupoPrecio, vehiculoParaTrabajos.getVehiculo()));
