@@ -46,21 +46,7 @@ import org.primefaces.event.FlowEvent;
  */
 @ViewScoped
 @Named
-public class OrdenControlador extends BaseControlador {
-
-    /**
-     * @return the vehiculoTrabajoSeleccionado
-     */
-    public VehiculoTrabajo getVehiculoTrabajoSeleccionado() {
-        return vehiculoTrabajoSeleccionado;
-    }
-
-    /**
-     * @param vehiculoTrabajoSeleccionado the vehiculoTrabajoSeleccionado to set
-     */
-    public void setVehiculoTrabajoSeleccionado(VehiculoTrabajo vehiculoTrabajoSeleccionado) {
-        this.vehiculoTrabajoSeleccionado = vehiculoTrabajoSeleccionado;
-    }
+public class OrdenControlador1 extends BaseControlador {
 
     @Inject
     private VehiculoBean vehiculoBean;
@@ -136,9 +122,9 @@ public class OrdenControlador extends BaseControlador {
 
     private List<SelectItem> listaTrabajosPorParte;
 
-    private HashMap<OrdenVehiculo, List<TrabajoCategoriaPrecio>> mapaOrdenVehiculoListaTrabajos;
-    
-    private VehiculoTrabajo vehiculoTrabajoSeleccionado;
+    private HashMap<TrabajoCategoriaPrecio, List<VehiculoTrabajo>> vehiculoListaTrabajo;
+
+    private HashMap<VehiculoTrabajo, List<TrabajoParte>> vehiculoListaPartes;
 
     @PostConstruct
     public void init() {
@@ -161,14 +147,23 @@ public class OrdenControlador extends BaseControlador {
         setListaTrabajoCategoriaPrecioTmp(new ArrayList<TrabajoCategoriaPrecio>());
         setTrabajoCategoriaPrecio(new TrabajoCategoriaPrecio());
         setListaVehiculoTrabajo(new ArrayList<VehiculoTrabajo>());
-        setMapaOrdenVehiculoListaTrabajos(new HashMap<OrdenVehiculo, List<TrabajoCategoriaPrecio>>());
+        setVehiculoListaTrabajo(new HashMap<TrabajoCategoriaPrecio, List<VehiculoTrabajo>>());
+        setVehiculoListaPartes(new HashMap<VehiculoTrabajo, List<TrabajoParte>>());
+
     }
-    
-    public void seleccionarParte(VehiculoTrabajo vehiculoTrabajoEntrada) {
-        setVehiculoTrabajoSeleccionado(vehiculoTrabajoEntrada);
+
+    public void testTrabajoSeleccionado() {
+        System.out.println("trabajoCategoriaPrecio.getTrabajo().getDescripcion(): " + trabajoCategoriaPrecio.toString());
+
     }
 
     public void eliminarParte(TrabajoParte trabajoParte, VehiculoTrabajo vehiculoTrabajo) {
+        List<TrabajoParte> vehiculoListaPartesTmp = vehiculoListaPartes.get(vehiculoTrabajo);
+        vehiculoListaPartesTmp.remove(trabajoParte);
+        vehiculoListaPartes.put(vehiculoTrabajo, vehiculoListaPartesTmp);
+    }
+
+    public void eliminarParte1(TrabajoParte trabajoParte, VehiculoTrabajo vehiculoTrabajo) {
         List<TrabajoParte> listaTrabajoParteTmp = vehiculoTrabajo.getListaTrabajoParte();
         listaTrabajoParteTmp.remove(trabajoParte);
         vehiculoTrabajo.setListaTrabajoParte(new ArrayList<TrabajoParte>());
@@ -203,9 +198,51 @@ public class OrdenControlador extends BaseControlador {
         System.out.println("eliminarVehiculoOrden");
     }
 
-    public void agregarTrabajo() {
-        System.out.println("trabajoCategoriaPrecio.getTrabajo().getDescripcion(): " + trabajoCategoriaPrecio.toString());
-        VehiculoTrabajo vehiculoTrabajo = new VehiculoTrabajo();
+    public void agregarTrabajo1() {
+        try {
+            System.out.println("trabajoCategoriaPrecio.getTrabajo().getDescripcion(): " + trabajoCategoriaPrecio.toString());
+
+            VehiculoTrabajo vehiculoTrabajo = new VehiculoTrabajo();
+            vehiculoTrabajo.setIdGrupoPrecio(trabajoCategoriaPrecio.getGrupoPrecio().getIdGrupoPrecio());
+            vehiculoTrabajo.setIdTrabajo(trabajoCategoriaPrecio.getTrabajo().getIdTrabajo());
+            vehiculoTrabajo.setIdVehiculo(vehiculoParaTrabajos.getIdOrdenVehiculo());
+            vehiculoTrabajo.setPrecioVentaPublico(trabajoCategoriaPrecio.getPrecioVentaPublico());
+            vehiculoTrabajo.setPrecioDescuento(trabajoCategoriaPrecio.getPrecioDescuento());
+            vehiculoTrabajo.setVehiculoDescripcion(vehiculoParaTrabajos.getVehiculo().getDescripcion());
+            vehiculoTrabajo.setTrabajoDescripcion(trabajoCategoriaPrecio.getTrabajo().getDescripcion());
+            vehiculoTrabajo.setPartePrincipal(trabajoCategoriaPrecio.getParte());
+            HashMap<String, Object> parametros = new HashMap<>();
+            parametros.put("padre", trabajoCategoriaPrecio.getParte());
+            parametros.put("distintivo", "INICIALIZAR");
+            List<Parte> listaPartes = parteBean.obtenerListaPorParametros(parametros);
+            List<TrabajoParte> listaTrabajoPartesTmp = new ArrayList<>();
+            for (Parte parteTmp : listaPartes) {
+                TrabajoParte trabajoParte = new TrabajoParte();
+                trabajoParte.setPartePadre(trabajoCategoriaPrecio.getParte());
+                trabajoParte.setParte(parteTmp);
+                listaTrabajoPartesTmp.add(trabajoParte);
+            }
+            parametros = new HashMap<>();
+            parametros.put("padre", trabajoCategoriaPrecio.getParte());
+            List<Parte> listaPartesTrabajo = parteBean.obtenerListaPorParametros(parametros);
+            SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+            for (Parte parte : listaPartesTrabajo) {
+                selectItemsBuilder.add(parte, parte.getParte());
+            }
+            listaTrabajosPorParte = selectItemsBuilder.buildList();
+            vehiculoTrabajo.setListaTrabajoParte(listaTrabajoPartesTmp);
+            listaVehiculoTrabajo.add(vehiculoTrabajo);
+            vehiculoListaTrabajo.put(trabajoCategoriaPrecio, listaVehiculoTrabajo);
+            getVehiculoListaPartes().put(vehiculoTrabajo, listaTrabajoPartesTmp);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void agregarTrabajo(TrabajoCategoriaPrecio trabajoCategoriaPrecioEntrada) {
+        System.out.println("-----> agregarTrabajo: " + trabajoCategoriaPrecioEntrada.toString());
+        /*VehiculoTrabajo vehiculoTrabajo = new VehiculoTrabajo();
         vehiculoTrabajo.setIdGrupoPrecio(trabajoCategoriaPrecio.getGrupoPrecio().getIdGrupoPrecio());
         vehiculoTrabajo.setIdTrabajo(trabajoCategoriaPrecio.getTrabajo().getIdTrabajo());
         vehiculoTrabajo.setIdVehiculo(vehiculoParaTrabajos.getIdOrdenVehiculo());
@@ -234,44 +271,7 @@ public class OrdenControlador extends BaseControlador {
         }
         listaTrabajosPorParte = selectItemsBuilder.buildList();
         vehiculoTrabajo.setListaTrabajoParte(listaTrabajoPartesTmp);
-        listaVehiculoTrabajo.add(vehiculoTrabajo);
-
-    }
-
-    public void agregarTrabajo(OrdenVehiculo ordenVehiculo) {
-        System.out.println("----> agregarTrabajo inicio: " + trabajoCategoriaPrecio.toString());
-        VehiculoTrabajo vehiculoTrabajo = new VehiculoTrabajo();
-        vehiculoTrabajo.setIdGrupoPrecio(trabajoCategoriaPrecio.getGrupoPrecio().getIdGrupoPrecio());
-        vehiculoTrabajo.setIdTrabajo(trabajoCategoriaPrecio.getTrabajo().getIdTrabajo());
-        vehiculoTrabajo.setIdVehiculo(ordenVehiculo.getIdOrdenVehiculo());
-        vehiculoTrabajo.setPrecioVentaPublico(trabajoCategoriaPrecio.getPrecioVentaPublico());
-        vehiculoTrabajo.setPrecioDescuento(trabajoCategoriaPrecio.getPrecioDescuento());
-        vehiculoTrabajo.setVehiculoDescripcion(ordenVehiculo.getVehiculo().getDescripcion());
-        vehiculoTrabajo.setTrabajoDescripcion(trabajoCategoriaPrecio.getTrabajo().getDescripcion());
-        vehiculoTrabajo.setPartePrincipal(trabajoCategoriaPrecio.getParte());
-        HashMap<String, Object> parametros = new HashMap<>();
-        parametros.put("padre", trabajoCategoriaPrecio.getParte());
-        parametros.put("distintivo", "INICIALIZAR");
-        List<Parte> listaPartes = parteBean.obtenerListaPorParametros(parametros);
-        List<TrabajoParte> listaTrabajoPartesTmp = new ArrayList<>();
-        for (Parte parteTmp : listaPartes) {
-            TrabajoParte trabajoParte = new TrabajoParte();
-            trabajoParte.setPartePadre(trabajoCategoriaPrecio.getParte());
-            trabajoParte.setParte(parteTmp);
-            listaTrabajoPartesTmp.add(trabajoParte);
-        }
-        parametros = new HashMap<>();
-        parametros.put("padre", trabajoCategoriaPrecio.getParte());
-        List<Parte> listaPartesTrabajo = parteBean.obtenerListaPorParametros(parametros);
-        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
-        for (Parte parte : listaPartesTrabajo) {
-            selectItemsBuilder.add(parte, parte.getParte());
-        }
-        listaTrabajosPorParte = selectItemsBuilder.buildList();
-        vehiculoTrabajo.setListaTrabajoParte(listaTrabajoPartesTmp);
-        listaVehiculoTrabajo.add(vehiculoTrabajo);
-        System.out.println("----> agregarTrabajo fin");
-
+        listaVehiculoTrabajo.add(vehiculoTrabajo);*/
     }
 
     public List<GrupoPrecioParteCategoriaVehiculo> generarListaGrupoVehiculo() {
@@ -292,21 +292,6 @@ public class OrdenControlador extends BaseControlador {
 
     }
 
-    public List<TrabajoCategoriaPrecio> obtenerListaTrabajoPorGrupoVehiculo(GrupoPrecio grupoPrecioEntrada, Vehiculo vehiculoEntrada) {
-        return trabajoCategoriaTrabajoBean.generarListaCompletaTrabajoCategoriaPrecioPorVehiculo(grupoPrecioParteCategoriaVehiculoBean.obtenerListaPorVehiculoYCategoria(grupoPrecioEntrada, vehiculoEntrada));
-    }
-
-    public List<SelectItem> generarSelectItemDeTrabajosParaVehiculoSeleccionado(OrdenVehiculo ordenVehiculoEntrada) {
-        System.out.println("----> generarSelectItemDeTrabajosParaVehiculoSeleccionado inicio: " + ordenVehiculoEntrada.toString());
-        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
-        if (null != ordenVehiculoEntrada) {
-            for (TrabajoCategoriaPrecio trabajoCategoriaPrecioTmp : mapaOrdenVehiculoListaTrabajos.get(ordenVehiculoEntrada)) {
-                selectItemsBuilder.add(trabajoCategoriaPrecioTmp, trabajoCategoriaPrecioTmp.getTrabajo().getDescripcion() + " - " + trabajoCategoriaPrecioTmp.getPrecioVentaPublico() + " - " + trabajoCategoriaPrecioTmp.getPrecioDescuento());
-            }
-        }
-        return selectItemsBuilder.buildList();
-    }
-
     public List<SelectItem> generarSelectItemDeTrabajosParaVehiculoSeleccionado() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
         for (TrabajoCategoriaPrecio trabajoCategoriaPrecioTmp : getListaTrabajoCategoriaPrecioTmp()) {
@@ -318,14 +303,6 @@ public class OrdenControlador extends BaseControlador {
     public List<SelectItem> generarSelectItemDeVehiculosParaTrabajo() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
         for (OrdenVehiculo vehiculoTmp : vehiculosCliente) {
-            selectItemsBuilder.add(vehiculoTmp, vehiculoTmp.getVehiculo().getModelo() + " - " + vehiculoTmp.getVehiculo().getAnioDesde() + " - " + vehiculoTmp.getVehiculo().getAnioHasta());
-        }
-        return selectItemsBuilder.buildList();
-    }
-
-    public List<SelectItem> generarSelectItemDeVehiculosParaTrabajoMapa() {
-        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
-        for (OrdenVehiculo vehiculoTmp : mapaOrdenVehiculoListaTrabajos.keySet()) {
             selectItemsBuilder.add(vehiculoTmp, vehiculoTmp.getVehiculo().getModelo() + " - " + vehiculoTmp.getVehiculo().getAnioDesde() + " - " + vehiculoTmp.getVehiculo().getAnioHasta());
         }
         return selectItemsBuilder.buildList();
@@ -373,8 +350,6 @@ public class OrdenControlador extends BaseControlador {
         ordenVehiculo.setVehiculo(vehiculoSeleccionado);
         ordenVehiculo.setFechaRegistroVehiculo(new Date(System.currentTimeMillis()));
         getVehiculosCliente().add(ordenVehiculo);
-        List<TrabajoCategoriaPrecio> listaTrabajoCategoriaPrecio = obtenerListaTrabajoPorGrupoVehiculo(establecimiento.getGrupoPrecio(), vehiculoSeleccionado);
-        getMapaOrdenVehiculoListaTrabajos().put(ordenVehiculo, listaTrabajoCategoriaPrecio);
     }
 
     public void llenarEsteMomentoOrden() {
@@ -838,18 +813,31 @@ public class OrdenControlador extends BaseControlador {
     }
 
     /**
-     * @return the mapaOrdenVehiculoListaTrabajos
+     * @return the vehiculoListaTrabajo
      */
-    public HashMap<OrdenVehiculo, List<TrabajoCategoriaPrecio>> getMapaOrdenVehiculoListaTrabajos() {
-        return mapaOrdenVehiculoListaTrabajos;
+    public HashMap<TrabajoCategoriaPrecio, List<VehiculoTrabajo>> getVehiculoListaTrabajo() {
+        return vehiculoListaTrabajo;
     }
 
     /**
-     * @param mapaOrdenVehiculoListaTrabajos the mapaOrdenVehiculoListaTrabajos
-     * to set
+     * @param vehiculoListaTrabajo the vehiculoListaTrabajo to set
      */
-    public void setMapaOrdenVehiculoListaTrabajos(HashMap<OrdenVehiculo, List<TrabajoCategoriaPrecio>> mapaOrdenVehiculoListaTrabajos) {
-        this.mapaOrdenVehiculoListaTrabajos = mapaOrdenVehiculoListaTrabajos;
+    public void setVehiculoListaTrabajo(HashMap<TrabajoCategoriaPrecio, List<VehiculoTrabajo>> vehiculoListaTrabajo) {
+        this.vehiculoListaTrabajo = vehiculoListaTrabajo;
+    }
+
+    /**
+     * @return the vehiculoListaPartes
+     */
+    public HashMap<VehiculoTrabajo, List<TrabajoParte>> getVehiculoListaPartes() {
+        return vehiculoListaPartes;
+    }
+
+    /**
+     * @param vehiculoListaPartes the vehiculoListaPartes to set
+     */
+    public void setVehiculoListaPartes(HashMap<VehiculoTrabajo, List<TrabajoParte>> vehiculoListaPartes) {
+        this.vehiculoListaPartes = vehiculoListaPartes;
     }
 
 }

@@ -270,7 +270,7 @@ public class ParametroControlador extends BaseControlador {
             }
             addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
         } finally {
-            setDetalle(new Detalle());
+            setTipoMaterial(new TipoMaterial());
         }
     }
     

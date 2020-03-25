@@ -9,25 +9,25 @@
     <p:messages />
     <p:panel id="pnlSeleccionarVehiculos" header="#{msj.detallesCliente}">
         <p:fieldset legend="#{msj.configurarVehiculo}">
-                <p:panelGrid id="pngSeleccionarVehiculo" columns="2" style="width: 400px;">                    
-                    <p:outputLabel
-                        for="@next"
-                        value="#{msj.selecccionarMarca}" />
-                    <p:selectOneMenu
-                        id="somSeleccionarVehiculo"
-                        value="#{ordenControlador.marcaVehiculoSeleccionado}"
-                        converter="omnifaces.SelectItemsConverter">
-                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
-                        <f:selectItems value="#{vehiculoCategoriaAdministracionControlador.generarSelectItemDeMarcaVehiculo()}" />
-                        <p:ajax 
-                            event="change"
-                            process="@this"
-                            update="pnlSeleccionarVehiculos  mensajeGeneral"
-                            listener="#{ordenControlador.cargarListaDeVehiculos()}" />
-                    </p:selectOneMenu>
-                </p:panelGrid>
-            </p:fieldset>
-            <p/>
+            <p:panelGrid id="pngSeleccionarVehiculo" columns="2" style="width: 400px;">                    
+                <p:outputLabel
+                    for="@next"
+                    value="#{msj.selecccionarMarca}" />
+                <p:selectOneMenu
+                    id="somSeleccionarVehiculo"
+                    value="#{ordenControlador.marcaVehiculoSeleccionado}"
+                    converter="omnifaces.SelectItemsConverter">
+                    <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                    <f:selectItems value="#{vehiculoCategoriaAdministracionControlador.generarSelectItemDeMarcaVehiculo()}" />
+                    <p:ajax 
+                        event="change"
+                        process="@this"
+                        update="pnlSeleccionarVehiculos  mensajeGeneral"
+                        listener="#{ordenControlador.cargarListaDeVehiculos()}" />
+                </p:selectOneMenu>
+            </p:panelGrid>
+        </p:fieldset>
+        <p/>
         <p:fieldset id="fdSeleccionarVehiculos" legend="#{msj.seleccionarVehiculosCliente}">
             <p:panelGrid id="pngSeleccionarVehiculos" columns="2">
                 <p:column>

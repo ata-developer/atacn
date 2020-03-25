@@ -98,6 +98,7 @@ public class Usuario implements Serializable {
         genericoEntidad = new GenericoEntidad();
         ciudad = new Ciudad();
         tipoDocumento = new TipoDocumento();
+        numeroDocumento = "";
     }
 
     @Override

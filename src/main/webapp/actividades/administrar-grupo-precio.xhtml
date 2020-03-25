@@ -123,7 +123,7 @@
                         id="btnGuardaCategoria"
                         process="@this descripcionCategoria somSeleccionarGrupoPrecio"
                         value="#{msj.guardar}"
-                        update="fsAdministrarCategoria  mensajeGeneral"
+                        update="frmAdministrarGrupoPrecio mensajeGeneral"
                         action="#{grupoPrecioControlador.guardarCategoria()}" />
                     <p:outputLabel
                         value="" />
@@ -277,7 +277,7 @@
                     <p:commandButton
                         id="btnGuardar" 
                         value="#{msj.guardar}" 
-                        process="@this somSeleccionarCategoriaConfiguracion somSeleccionarTrabajo iTprecioVentaPublico iTprecioDescuento"
+                        process="@this pngAdministrarPrecio"
                         update="dtListaMapaPrecio mensajeGeneral"
                         actionListener="#{grupoPrecioControlador.guardarPrecioConfiguracion()}"/>
                     <p:outputLabel

@@ -106,7 +106,7 @@ public class PaisCiudadControlador extends BaseControlador {
     
     public List<SelectItem> generarSelectItemDeCiudad() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
-        for (Ciudad ciudadTmp : getListaCiudad()) {
+        for (Ciudad ciudadTmp : ciudadBean.obtenerListaPorProvincia(provinciaEstadoSeleccionado)) {
             selectItemsBuilder.add(ciudadTmp, ciudadTmp.getCiudad());
         }
         return selectItemsBuilder.buildList();
@@ -114,7 +114,7 @@ public class PaisCiudadControlador extends BaseControlador {
     
     public List<SelectItem> generarSelectItemDeProvincia() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
-        for (ProvinciaEstado provinciaEstadoTmp : getListaProvinciaEstado()) {
+        for (ProvinciaEstado provinciaEstadoTmp : provinciaBean.obtenerListaPorPais(paisSeleccionado)) {
             selectItemsBuilder.add(provinciaEstadoTmp, provinciaEstadoTmp.getProvinciaEstado());
         }
         return selectItemsBuilder.buildList();
@@ -154,7 +154,7 @@ public class PaisCiudadControlador extends BaseControlador {
         try {
             getProvinciaEstado().setPais(paisSeleccionado);
             provinciaBean.crear(getProvinciaEstado());
-            listaProvinciaEstado = provinciaBean.obtenerListaPorPais(pais);
+            listaProvinciaEstado = provinciaBean.obtenerListaPorPais(paisSeleccionado);
             addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);

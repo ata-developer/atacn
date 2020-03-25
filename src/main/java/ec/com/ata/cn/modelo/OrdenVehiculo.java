@@ -62,9 +62,12 @@ public class OrdenVehiculo implements Serializable {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 47 * hash + Objects.hashCode(this.idOrdenVehiculo);
-        hash = 47 * hash + Objects.hashCode(this.vehiculo);
-        hash = 47 * hash + Objects.hashCode(this.fechaRegistroVehiculo);
+        hash = 53 * hash + Objects.hashCode(this.idOrdenVehiculo);
+        hash = 53 * hash + Objects.hashCode(this.descripcion);
+        hash = 53 * hash + Objects.hashCode(this.genericoEntidad);
+        hash = 53 * hash + Objects.hashCode(this.orden);
+        hash = 53 * hash + Objects.hashCode(this.vehiculo);
+        hash = 53 * hash + Objects.hashCode(this.fechaRegistroVehiculo);
         return hash;
     }
 
@@ -80,7 +83,16 @@ public class OrdenVehiculo implements Serializable {
             return false;
         }
         final OrdenVehiculo other = (OrdenVehiculo) obj;
+        if (!Objects.equals(this.descripcion, other.descripcion)) {
+            return false;
+        }
         if (!Objects.equals(this.idOrdenVehiculo, other.idOrdenVehiculo)) {
+            return false;
+        }
+        if (!Objects.equals(this.genericoEntidad, other.genericoEntidad)) {
+            return false;
+        }
+        if (!Objects.equals(this.orden, other.orden)) {
             return false;
         }
         if (!Objects.equals(this.vehiculo, other.vehiculo)) {
@@ -91,6 +103,12 @@ public class OrdenVehiculo implements Serializable {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "OrdenVehiculo{" + "idOrdenVehiculo=" + idOrdenVehiculo + ", descripcion=" + descripcion + ", genericoEntidad=" + genericoEntidad + ", orden=" + orden + ", vehiculo=" + vehiculo + ", fechaRegistroVehiculo=" + fechaRegistroVehiculo + '}';
+    }
+
     
     
     public OrdenVehiculo () {
@@ -105,12 +123,6 @@ public class OrdenVehiculo implements Serializable {
         this.idOrdenVehiculo = idOrdenVehiculo;
     }
 
-   
-
-    @Override
-    public String toString() {
-        return "ec.com.ata.cn.modelo.OrdenVehiculo[ id=" + getIdOrdenVehiculo() + " ]";
-    }
 
     /**
      * @return the descripcion

@@ -1,0 +1,103 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://java.sun.com/jsf/html"                
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:messages />
+    <p:panel id="pnlSeleccionarVehiculosTrabajo" header="#{msj.seleccionarTrabajo}">
+        <p:panelGrid id="pngSeleccionarTrabajoParaVehiculos" columns="2">
+            <c:forEach var="ordenVehiculo" items="#{ordenControlador.vehiculosCliente}">
+                <p:outputLabel
+                    for="@next"
+                    value="#{msj.ve}" />
+                <p:outputLabel
+                    value="#{ordenVehiculo.vehiculo.descripcionDetallada}" />
+            </c:forEach>
+        </p:panelGrid>
+        <p:fieldset legend="#{msj.seleccionar}">
+            <p:panelGrid id="pngSeleccionarVehiculosTrabajo" columns="2"> 
+                <p:outputLabel
+                    for="@next"
+                    value="#{msj.seleccionarVehiculo}" />
+                <p:selectOneMenu
+                    id="somSeleccionarVehiculoParaTrabajo"
+                    value="#{ordenControlador.vehiculoParaTrabajos}"
+                    converter="omnifaces.SelectItemsConverter">
+                    <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                    <f:selectItems value="#{ordenControlador.generarSelectItemDeVehiculosParaTrabajo()}" />
+                    <p:ajax                             
+                        event="itemSelect"
+                        update="pngSeleccionarTrabajo mensajeGeneral"
+                        listener="#{ordenControlador.cargarPreciosVehiculo()}" />
+                </p:selectOneMenu>
+            </p:panelGrid>
+        </p:fieldset>
+        <p/>
+        <p/>
+        <p:fieldset legend="#{msj.seleccionarTrabajo}">
+            <p:panelGrid id="pngSeleccionarTrabajo" columns="2">
+                <p:column>
+                    <p:panelGrid columns="2">
+                        <p:outputLabel
+                            for="@next"
+                            value="#{msj.seleccionarTrabajo} **" />
+                        <p:selectOneMenu
+                            id="somSeleccionarTrabajo"
+                            required="true"
+                            value="#{ordenControlador.trabajoCategoriaPrecio}"
+                            converter="omnifaces.SelectItemsConverter">
+                            <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                            <f:selectItems value="#{ordenControlador.generarSelectItemDeTrabajosParaVehiculoSeleccionado()}" />
+                        </p:selectOneMenu> 
+                    </p:panelGrid>
+                </p:column>
+                <p:column>
+                    <p:commandButton
+                        id="btnAgregarTrabajo" 
+                        value="#{msj.agregar}"
+                        process="@this somSeleccionarTrabajo"
+                        update="pngSeleccionarTrabajo mensajeGeneral"
+                        action="#{ordenControlador.agregarTrabajo()}" />
+                </p:column>
+                <p:panelGrid id="pngListaSeleccionarTrabajo" columns="3">
+                    <c:forEach var="vehiculoTrabajo" items="#{ordenControlador.listaVehiculoTrabajo}">
+                        <p:outputLabel value="#{vehiculoTrabajo.trabajoDescripcion}" /> 
+                        <p:selectOneMenu
+                            id="somSeleccionarTrabajoPartes"
+                            value="#{ordenControlador.trabajoCategoriaPrecio}"
+                            converter="omnifaces.SelectItemsConverter">
+                            <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                            <f:selectItems value="#{ordenControlador.listaTrabajosPorParte}" />
+                        </p:selectOneMenu>
+                        <p:commandButton
+                            id="btnAgregarTrabajo2" 
+                            value="#{msj.eliminar}"
+                            process="@this pngListaSeleccionarTrabajo"
+                            update="pngListaSeleccionarTrabajo"
+                            action="#{ordenControlador.eliminarTrabajo(vehiculoTrabajo)}" />
+                        <p:panelGrid id="pngListaMateriales" columns="3">
+                            <c:forEach var="trabajoParte" items="#{vehiculoTrabajo.listaTrabajoParte}">
+                                <p:outputLabel value="#{trabajoParte.parte.parte}" />
+                                <p:inputText value="#{trabajoParte.detalle}"/>    
+                                <p:commandButton
+                                    id="btnAgregarTrabajo3" 
+                                    value="#{msj.eliminar}"
+                                    process="@this pngListaMateriales"
+                                    update="pngListaMateriales"
+                                    action="#{ordenControlador.eliminarParte(trabajoParte, vehiculoTrabajo)}" />
+                            </c:forEach>
+
+                        </p:panelGrid>
+                        <p:outputLabel value="" />
+                        <p:outputLabel value="" />
+                    </c:forEach>
+                </p:panelGrid>
+                <p:outputLabel value="" /> 
+
+            </p:panelGrid>
+        </p:fieldset>
+    </p:panel>
+</ui:composition>

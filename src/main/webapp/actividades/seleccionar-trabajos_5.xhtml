@@ -1,0 +1,75 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://java.sun.com/jsf/html"                
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:messages />
+    <p:panel id="pnlSeleccionarVehiculosTrabajo" header="#{msj.seleccionarTrabajo}">
+        <c:forEach var="mapaOrdenVehiculoListaTrabajos" items="#{ordenControlador.mapaOrdenVehiculoListaTrabajos}">
+            <p:fieldset legend="#{msj.administrarTrabajos}">
+                <p:panelGrid id="panelVehiculosTrabajo" columns="1">
+                    <p:row>
+                        <p:outputLabel
+                            value="Vehiculo: #{mapaOrdenVehiculoListaTrabajos.key.vehiculo.descripcionDetallada}" />
+                    </p:row>
+                    <p:row>
+
+                    </p:row>
+                    <p:row>
+                        <p:outputLabel
+                            for="@next"
+                            value="#{msj.seleccionarTrabajo} **" />
+                        <p:selectOneMenu
+                            id="somSeleccionarTrabajo1"
+                            required="true"
+                            value="#{ordenControlador.trabajoCategoriaPrecio}"
+                            converter="omnifaces.SelectItemsConverter">
+                            <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                            <f:selectItems value="#{ordenControlador.generarSelectItemDeTrabajosParaVehiculoSeleccionado(mapaOrdenVehiculoListaTrabajos.key)}" />
+                        </p:selectOneMenu>
+                        <p:commandButton
+                            id="btnAgregarTrabajo4" 
+                            value="#{msj.agregar}"
+                            process="@this somSeleccionarTrabajo1"
+                            update="panelVehiculosTrabajo  tablaVehiculoTrabajo mensajeGeneral"
+                            action="#{ordenControlador.agregarTrabajo(mapaOrdenVehiculoListaTrabajos.key)}" />
+                    </p:row>
+                    <p:row>
+                        <p:dataTable
+                            id="tablaVehiculoTrabajo"
+                            var="vehiculoTrabajo1"
+                            values="#{ordenControlador.listaVehiculoTrabajo}"
+                            >
+                            <p:column>
+                                <p:outputLabel value="#{vehiculoTrabajo1.trabajoDescripcion}" />
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu
+                                    id="somSeleccionarTrabajoPartes_"
+                                    value="#{ordenControlador.trabajoCategoriaPrecio}"
+                                    converter="omnifaces.SelectItemsConverter">
+                                    <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                                    <f:selectItems value="#{ordenControlador.listaTrabajosPorParte}" />
+                                </p:selectOneMenu>
+                            </p:column>
+                            <p:column>
+                                <p:commandButton
+                                    id="btnAgregarTrabajo_" 
+                                    value="#{msj.eliminar}"
+                                    process="@this pngListaSeleccionarTrabajo"
+                                    update="pngListaSeleccionarTrabajo"
+                                    action="#{ordenControlador.eliminarTrabajo(vehiculoTrabajo1)}" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:row>
+                </p:panelGrid>
+            </p:fieldset>
+            <p/>
+        </c:forEach>
+        <p/>
+                
+    </p:panel>
+</ui:composition>
