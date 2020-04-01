@@ -6,15 +6,18 @@
 package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -25,6 +28,20 @@ import javax.persistence.Table;
 @Entity
 @Table
 public class Establecimiento implements Serializable {
+
+    /**
+     * @return the listaParqueadero
+     */
+    public List<Parqueadero> getListaParqueadero() {
+        return listaParqueadero;
+    }
+
+    /**
+     * @param listaParqueadero the listaParqueadero to set
+     */
+    public void setListaParqueadero(List<Parqueadero> listaParqueadero) {
+        this.listaParqueadero = listaParqueadero;
+    }
 
     private static final long serialVersionUID = 1L;
     
@@ -74,6 +91,9 @@ public class Establecimiento implements Serializable {
     @ManyToOne
     @JoinColumn(name="id_grupo_precio", referencedColumnName="id_grupo_precio")
     private GrupoPrecio grupoPrecio;
+    
+    @OneToMany(mappedBy = "establecimiento", fetch = FetchType.EAGER)
+    private List<Parqueadero> listaParqueadero;
     
     public Establecimiento () {
         genericoEntidad = new GenericoEntidad();

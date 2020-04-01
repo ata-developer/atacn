@@ -7,6 +7,7 @@ package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -19,7 +20,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -29,7 +31,7 @@ import javax.persistence.Transient;
 @Entity
 @Table ( name = "vehiculo_trabajo")
 public class VehiculoTrabajo implements Serializable {
-        
+    
     @Id
     @SequenceGenerator(
             name = "vehiculo_trabajo_seq",
@@ -62,11 +64,27 @@ public class VehiculoTrabajo implements Serializable {
     @Column(name = "precio_descuento")
     private BigDecimal precioDescuento;
     
+    @Column(name = "precio_abono_efectivo")
+    private BigDecimal precioAbonoEfectivo;
+    
+    @Column(name = "precio_abono_tarjeta")
+    private BigDecimal precioAbonoTarjeta;
+    
+    @Column(name = "precio_saldo_efectivo")
+    private BigDecimal precioSaldoEfectivo;
+    
+    @Column(name = "precio_saldo_tarjeta")
+    private BigDecimal precioSaldoTarjeta;
+    
+    @Column(name = "fecha_registro")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaRegistro;
+    
     @ManyToOne
     @JoinColumn(name="id_parte", referencedColumnName="id_parte")
     private Parte partePrincipal;
     
-    @OneToMany
+    @OneToMany(mappedBy = "vehiculoTrabajo")
     private List<TrabajoParte> listaTrabajoParte;
    
     
@@ -228,7 +246,74 @@ public class VehiculoTrabajo implements Serializable {
         this.listaTrabajoParte = listaTrabajoParte;
     }
     
+    /**
+     * @return the fechaRegistro
+     */
+    public Date getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    /**
+     * @param fechaRegistro the fechaRegistro to set
+     */
+    public void setFechaRegistro(Date fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
     
-   
-    
+    /**
+     * @return the precioAbonoEfectivo
+     */
+    public BigDecimal getPrecioAbonoEfectivo() {
+        return precioAbonoEfectivo;
+    }
+
+    /**
+     * @param precioAbonoEfectivo the precioAbonoEfectivo to set
+     */
+    public void setPrecioAbonoEfectivo(BigDecimal precioAbonoEfectivo) {
+        this.precioAbonoEfectivo = precioAbonoEfectivo;
+    }
+
+    /**
+     * @return the precioAbonoTarjeta
+     */
+    public BigDecimal getPrecioAbonoTarjeta() {
+        return precioAbonoTarjeta;
+    }
+
+    /**
+     * @param precioAbonoTarjeta the precioAbonoTarjeta to set
+     */
+    public void setPrecioAbonoTarjeta(BigDecimal precioAbonoTarjeta) {
+        this.precioAbonoTarjeta = precioAbonoTarjeta;
+    }
+
+    /**
+     * @return the precioSaldoEfectivo
+     */
+    public BigDecimal getPrecioSaldoEfectivo() {
+        return precioSaldoEfectivo;
+    }
+
+    /**
+     * @param precioSaldoEfectivo the precioSaldoEfectivo to set
+     */
+    public void setPrecioSaldoEfectivo(BigDecimal precioSaldoEfectivo) {
+        this.precioSaldoEfectivo = precioSaldoEfectivo;
+    }
+
+    /**
+     * @return the precioSaldoTarjeta
+     */
+    public BigDecimal getPrecioSaldoTarjeta() {
+        return precioSaldoTarjeta;
+    }
+
+    /**
+     * @param precioSaldoTarjeta the precioSaldoTarjeta to set
+     */
+    public void setPrecioSaldoTarjeta(BigDecimal precioSaldoTarjeta) {
+        this.precioSaldoTarjeta = precioSaldoTarjeta;
+    }
+        
 }

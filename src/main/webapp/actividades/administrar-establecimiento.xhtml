@@ -11,9 +11,6 @@
             <p/>
             <p:fieldset legend="#{msj.agregarEstablecimiento}">
                 <p:panelGrid id="pngAdministrarEstablecimiento" columns="2">
-                    
-                    
-                    
                     <p:outputLabel
                         for="@next"
                         value="#{msj.nombreEstablecimiento}" />                    
@@ -39,7 +36,7 @@
                         <p:keyFilter regEx="/[a-zA-ZáéíñóúüÁÉÍÑÓÚÜ\s]/"/>
                         <f:converter converterId="trimConverter" />
                     </p:inputText>
-                    
+
                     <p:outputLabel
                         for="@next"
                         value="#{msj.numeracion}" />                    
@@ -100,7 +97,7 @@
                         <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
                         <f:converter converterId="trimConverter" />
                     </p:inputText>
-                    
+
                     <p:outputLabel
                         for="@next"
                         value="#{msj.ciudad}" />
@@ -126,45 +123,100 @@
                         <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                         <f:selectItems value="#{establecimientoControlador.generarSelectItemDeUsuario()}" />                        
                     </h:selectOneMenu>
-                    
+
                     <p:commandButton
                         id="btnGuardar" 
                         value="#{msj.guardar}"
-                        update="pngAdministrarEstablecimiento tblListaEstablecimiento mensajeGeneral"
+                        update=":frmAdministrarEstablecimiento:pngAdministrarEstablecimiento :frmAdministrarEstablecimiento:tblListaEstablecimiento mensajeGeneral"
                         action="#{establecimientoControlador.guardar()}" />
                     <p:outputLabel
                         value="" />
 
                 </p:panelGrid>
-            </p:fieldset>
-            <p/>
-            <p:dataTable
-                id="tblListaEstablecimiento"                
-                var="establecimiento" 
-                value="#{establecimientoControlador.listaEstablecimiento}">
-                <f:facet name="header">
-                    #{msj.listaEstablecimiento}
-                </f:facet>
-                <p:column headerText="#{msj.nombreEstablecimiento}">
-                    <h:outputText value="#{establecimiento.nombre}" />
-                </p:column>
-                
-                <p:column headerText="#{msj.usuario}">
-                    <h:outputText value="#{establecimiento.responsable.usuario}" />
-                </p:column>
+                <p/>
+                <p:dataTable
+                    id="tblListaEstablecimiento"                
+                    var="establecimiento" 
+                    value="#{establecimientoControlador.listaEstablecimiento}">
+                    <f:facet name="header">
+                        #{msj.listaEstablecimiento}
+                    </f:facet>
+                    <p:column headerText="#{msj.nombreEstablecimiento}">
+                        <h:outputText value="#{establecimiento.nombre}" />
+                    </p:column>
 
-                <p:column headerText="#{msj.ciudad}">
-                    <h:outputText value="#{establecimiento.ciudad.ciudad}" />
-                </p:column>
-                
-                <p:column headerText="#{msj.nombre}">
-                    <h:outputText value="#{establecimiento.nombre}" />
-                </p:column>
-                
-                <p:column headerText="#{msj.callePrincipal}">
-                    <h:outputText value="#{establecimiento.callePrincipal}" />
-                </p:column>
-            </p:dataTable>
+                    <p:column headerText="#{msj.usuario}">
+                        <h:outputText value="#{establecimiento.responsable.usuario}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.ciudad}">
+                        <h:outputText value="#{establecimiento.ciudad.ciudad}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.nombre}">
+                        <h:outputText value="#{establecimiento.nombre}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.callePrincipal}">
+                        <h:outputText value="#{establecimiento.callePrincipal}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.acciones}">
+                        <p:commandButton
+                            id="btnSeleccionar" 
+                            value="#{msj.seleccionar}"
+                            process="@this tblListaEstablecimiento"
+                            update="frmAdministrarEstablecimiento mensajeGeneral"
+                            action="#{establecimientoControlador.seleccionarEstablecimiento(establecimiento)}" />
+                    </p:column>
+                </p:dataTable>
+                <p:panelGrid id="pngParqueaderoSeleccionado" columns="2">
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.seleccionado}" />                    
+                    <p:outputLabel                        
+                        value="#{establecimientoControlador.establecimientoSeleccionado.nombre}" />
+                </p:panelGrid>
+
+                <p/>
+                <p:panelGrid id="pngAdministrarParqueadero" columns="2">
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.parqueadero}" />                    
+                    <p:inputText
+                        id="itParqueadero"
+                        required="true"
+                        value="#{establecimientoControlador.parqueadero.parqueadero}"
+                        placeholder="#{msj.ejemploNombre}"
+                        onblur="value = value.toUpperCase()">
+                        <f:converter converterId="trimConverter" />
+                    </p:inputText>
+
+                    <p:commandButton
+                        id="btnGuardarParqueadero" 
+                        value="#{msj.guardar}"
+                        process="@this itParqueadero tblListaEstablecimiento"
+                        update="itParqueadero tblListaParqueadero mensajeGeneral"
+                        action="#{establecimientoControlador.guardarParqueadero()}" />
+                    <p:outputLabel
+                        value="" />
+
+
+                </p:panelGrid>
+                <p/>
+                <p:dataTable
+                    id="tblListaParqueadero"                
+                    var="parqueadero" 
+                    value="#{establecimientoControlador.listaParqueaderos}">
+                    <f:facet name="header">
+                        #{msj.listaDeParqueaderos}
+                    </f:facet>
+                    <p:column headerText="#{msj.parqueadero}">
+                        <h:outputText value="#{parqueadero.parqueadero}" />
+                    </p:column>
+                </p:dataTable>
+            </p:fieldset>
+
         </h:form>
     </ui:define>
 </ui:composition>

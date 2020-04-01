@@ -21,10 +21,9 @@ import javax.persistence.Table;
  *
  * @author ATA1
  */
-
 @Entity
-@Table ( name = "trabajo_parte")
-public class TrabajoParte implements Serializable {   
+@Table(name = "trabajo_parte")
+public class TrabajoParte implements Serializable {
     
     @Id
     @SequenceGenerator(
@@ -36,30 +35,33 @@ public class TrabajoParte implements Serializable {
             generator = "trabajo_parte_seq")
     @Column(name = "id_trabajo_parte")
     private Long idTrabajoParte;
-    
+
     @Column(name = "detalle")
     private String detalle;
-    
+
     @Column(name = "cantidad")
     private BigDecimal cantidad;
-    
+
     @Column(name = "unidad")
     private String unidad;
-    
+
     @ManyToOne
-    @JoinColumn(name="id_vehiculo_trabajo", referencedColumnName="id_vehiculo_trabajo")
+    @JoinColumn(name = "id_vehiculo_trabajo", referencedColumnName = "id_vehiculo_trabajo")
     private VehiculoTrabajo vehiculoTrabajo;
-    
+
     @ManyToOne
-    @JoinColumn(name="id_parte", referencedColumnName="id_parte")
+    @JoinColumn(name = "id_parte", referencedColumnName = "id_parte")
     private Parte parte;
-    
-    
+
     @ManyToOne
-    @JoinColumn(name="id_parte_padre", referencedColumnName="id_parte")
+    @JoinColumn(name = "id_parte_padre", referencedColumnName = "id_parte")
     private Parte partePadre;
-    
-     /**
+
+    @ManyToOne
+    @JoinColumn(name = "id_material", referencedColumnName = "id_material")
+    private Material material;
+
+    /**
      * @return the partePadre
      */
     public Parte getPartePadre() {
@@ -72,7 +74,7 @@ public class TrabajoParte implements Serializable {
     public void setPartePadre(Parte partePadre) {
         this.partePadre = partePadre;
     }
-    
+
     /**
      * @return the idTrabajoParte
      */
@@ -86,7 +88,7 @@ public class TrabajoParte implements Serializable {
     public void setIdTrabajoParte(Long idTrabajoParte) {
         this.idTrabajoParte = idTrabajoParte;
     }
-    
+
     /**
      * @return the vehiculoTrabajo
      */
@@ -100,7 +102,7 @@ public class TrabajoParte implements Serializable {
     public void setVehiculoTrabajo(VehiculoTrabajo vehiculoTrabajo) {
         this.vehiculoTrabajo = vehiculoTrabajo;
     }
-    
+
     /**
      * @return the parte
      */
@@ -114,7 +116,8 @@ public class TrabajoParte implements Serializable {
     public void setParte(Parte parte) {
         this.parte = parte;
     }
-     /**
+
+    /**
      * @return the detalle
      */
     public String getDetalle() {
@@ -154,5 +157,19 @@ public class TrabajoParte implements Serializable {
      */
     public void setUnidad(String unidad) {
         this.unidad = unidad;
+    }
+    
+    /**
+     * @return the material
+     */
+    public Material getMaterial() {
+        return material;
+    }
+
+    /**
+     * @param material the material to set
+     */
+    public void setMaterial(Material material) {
+        this.material = material;
     }
 }

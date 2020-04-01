@@ -33,7 +33,7 @@ import org.omnifaces.util.selectitems.SelectItemsBuilder;
  */
 @ViewScoped
 @Named
-public class EstablecimientoControlador extends BaseControlador {
+public class HorarioControlador extends BaseControlador {
 
     @Inject
     private EstablecimientoBean establecimientoBean;

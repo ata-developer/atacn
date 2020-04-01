@@ -6,6 +6,7 @@
 package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -28,7 +29,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "orden_vehiculo")
-public class OrdenVehiculo implements Serializable {    
+public class OrdenVehiculo implements Serializable {
     
     @Id
     @SequenceGenerator(
@@ -43,6 +44,24 @@ public class OrdenVehiculo implements Serializable {
     
     @Column(name = "descripcion",unique=true)
     private String descripcion;
+    
+    @Column(name = "precio_total_abono_efectivo")
+    private BigDecimal precioTotalAbonoEfectivo;
+    
+    @Column(name = "precio_total_abono_tarjeta")
+    private BigDecimal precioTotalAbonoTarjeta;
+    
+    @Column(name = "precio_total_saldo_efectivo")
+    private BigDecimal precioTotalSaldoEfectivo;
+    
+    @Column(name = "precio_total_saldo_tarjeta")
+    private BigDecimal precioTotalSaldoTarjeta;
+    
+    @Column(name = "precio_total_efectivo")
+    private BigDecimal precioTotalEfectivo;
+    
+    @Column(name = "precio_total_tarjeta")
+    private BigDecimal precioTotalTarjeta;
     
     @Embedded
     private GenericoEntidad genericoEntidad;
@@ -195,4 +214,90 @@ public class OrdenVehiculo implements Serializable {
     public void setFechaRegistroVehiculo(Date fechaRegistroVehiculo) {
         this.fechaRegistroVehiculo = fechaRegistroVehiculo;
     }
+    
+    
+    /**
+     * @return the precioTotalTarjeta
+     */
+    public BigDecimal getPrecioTotalTarjeta() {
+        return precioTotalTarjeta;
+    }
+
+    /**
+     * @param precioTotalTarjeta the precioTotalTarjeta to set
+     */
+    public void setPrecioTotalTarjeta(BigDecimal precioTotalTarjeta) {
+        this.precioTotalTarjeta = precioTotalTarjeta;
+    }
+
+    /**
+     * @return the precioTotalEfectivo
+     */
+    public BigDecimal getPrecioTotalEfectivo() {
+        return precioTotalEfectivo;
+    }
+
+    /**
+     * @param precioTotalEfectivo the precioTotalEfectivo to set
+     */
+    public void setPrecioTotalEfectivo(BigDecimal precioTotalEfectivo) {
+        this.precioTotalEfectivo = precioTotalEfectivo;
+    }
+
+    /**
+     * @return the precioTotalSaldoTarjeta
+     */
+    public BigDecimal getPrecioTotalSaldoTarjeta() {
+        return precioTotalSaldoTarjeta;
+    }
+
+    /**
+     * @param precioTotalSaldoTarjeta the precioTotalSaldoTarjeta to set
+     */
+    public void setPrecioTotalSaldoTarjeta(BigDecimal precioTotalSaldoTarjeta) {
+        this.precioTotalSaldoTarjeta = precioTotalSaldoTarjeta;
+    }
+
+    /**
+     * @return the precioTotalSaldoEfectivo
+     */
+    public BigDecimal getPrecioTotalSaldoEfectivo() {
+        return precioTotalSaldoEfectivo;
+    }
+
+    /**
+     * @param precioTotalSaldoEfectivo the precioTotalSaldoEfectivo to set
+     */
+    public void setPrecioTotalSaldoEfectivo(BigDecimal precioTotalSaldoEfectivo) {
+        this.precioTotalSaldoEfectivo = precioTotalSaldoEfectivo;
+    }
+
+    /**
+     * @return the precioTotalAbonoTarjeta
+     */
+    public BigDecimal getPrecioTotalAbonoTarjeta() {
+        return precioTotalAbonoTarjeta;
+    }
+
+    /**
+     * @param precioTotalAbonoTarjeta the precioTotalAbonoTarjeta to set
+     */
+    public void setPrecioTotalAbonoTarjeta(BigDecimal precioTotalAbonoTarjeta) {
+        this.precioTotalAbonoTarjeta = precioTotalAbonoTarjeta;
+    }
+
+    /**
+     * @return the precioTotalAbonoEfectivo
+     */
+    public BigDecimal getPrecioTotalAbonoEfectivo() {
+        return precioTotalAbonoEfectivo;
+    }
+
+    /**
+     * @param precioTotalAbonoEfectivo the precioTotalAbonoEfectivo to set
+     */
+    public void setPrecioTotalAbonoEfectivo(BigDecimal precioTotalAbonoEfectivo) {
+        this.precioTotalAbonoEfectivo = precioTotalAbonoEfectivo;
+    }
+
 }

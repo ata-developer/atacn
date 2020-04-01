@@ -36,64 +36,64 @@ public class Parqueadero implements Serializable {
             strategy = GenerationType.SEQUENCE,
             generator = "parqueadero_seq")
     @Column(name = "id_parqueadero")
-    private Long idEstablecimiento;
+    private Long idParqueadero;
 
     @Column(name = "parqueadero")
     private String parqueadero;
-
-    @Embedded
-    private GenericoEntidad genericoEntidad;
-
+    
     @ManyToOne
     @JoinColumn(name = "id_establecimiento", referencedColumnName = "id_establecimiento")
     private Establecimiento establecimiento;
+
+    @Embedded
+    private GenericoEntidad genericoEntidad;   
     
     public Parqueadero () {
         genericoEntidad = new GenericoEntidad();
     }
 
-    public Long getIdEstablecimiento() {
-        return idEstablecimiento;
+    public Long getIdParqueadero() {
+        return idParqueadero;
     }
 
-    public void setIdEstablecimiento(Long idEstablecimiento) {
-        this.idEstablecimiento = idEstablecimiento;
+    public void setIdParqueadero(Long idParqueadero) {
+        this.idParqueadero = idParqueadero;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idEstablecimiento != null ? idEstablecimiento.hashCode() : 0);
+        hash += (idParqueadero != null ? idParqueadero.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the idEstablecimiento fields are not set
+        // TODO: Warning - this method won't work in the case the idParqueadero fields are not set
         if (!(object instanceof Parqueadero)) {
             return false;
         }
         Parqueadero other = (Parqueadero) object;
-        return !((this.idEstablecimiento == null && other.idEstablecimiento != null) || (this.idEstablecimiento != null && !this.idEstablecimiento.equals(other.idEstablecimiento)));
+        return !((this.idParqueadero == null && other.idParqueadero != null) || (this.idParqueadero != null && !this.idParqueadero.equals(other.idParqueadero)));
     }
 
     @Override
     public String toString() {
-        return "ec.com.ata.cn.modelo.Establecimiento[ id=" + idEstablecimiento + " ]";
+        return "ec.com.ata.cn.modelo.Parqueadero[ id=" + idParqueadero + " ]";
+    }   
+
+    /**
+     * @return the genericoEntidad
+     */
+    public GenericoEntidad getGenericoEntidad() {
+        return genericoEntidad;
     }
 
     /**
-     * @return the parqueadero
+     * @param genericoEntidad the genericoEntidad to set
      */
-    public String getParqueadero() {
-        return parqueadero;
-    }
-
-    /**
-     * @param parqueadero the parqueadero to set
-     */
-    public void setParqueadero(String parqueadero) {
-        this.parqueadero = parqueadero;
+    public void setGenericoEntidad(GenericoEntidad genericoEntidad) {
+        this.genericoEntidad = genericoEntidad;
     }
 
     /**
@@ -111,17 +111,17 @@ public class Parqueadero implements Serializable {
     }
 
     /**
-     * @return the genericoEntidad
+     * @return the parqueadero
      */
-    public GenericoEntidad getGenericoEntidad() {
-        return genericoEntidad;
+    public String getParqueadero() {
+        return parqueadero;
     }
 
     /**
-     * @param genericoEntidad the genericoEntidad to set
+     * @param parqueadero the parqueadero to set
      */
-    public void setGenericoEntidad(GenericoEntidad genericoEntidad) {
-        this.genericoEntidad = genericoEntidad;
+    public void setParqueadero(String parqueadero) {
+        this.parqueadero = parqueadero;
     }
 
 }
