@@ -5,27 +5,20 @@
  */
 package ec.com.ata.cn.controlador;
 
-import ec.com.ata.cn.logica.CiudadBean;
-import ec.com.ata.cn.logica.EstablecimientoBean;
-import ec.com.ata.cn.logica.ParqueaderoBean;
-import ec.com.ata.cn.logica.UsuarioBean;
+import ec.com.ata.cn.logica.HorarioBean;
+import ec.com.ata.cn.logica.PeriodoBean;
 import ec.com.ata.cn.logica.util.gestor.Constante;
-import ec.com.ata.cn.modelo.Ciudad;
-import ec.com.ata.cn.modelo.Establecimiento;
-import ec.com.ata.cn.modelo.Parqueadero;
-import ec.com.ata.cn.modelo.Usuario;
+import ec.com.ata.cn.modelo.Horario;
+import ec.com.ata.cn.modelo.Periodo;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.omnifaces.util.selectitems.SelectItemsBuilder;
 
 /**
  *
@@ -35,76 +28,35 @@ import org.omnifaces.util.selectitems.SelectItemsBuilder;
 @Named
 public class HorarioControlador extends BaseControlador {
 
+    
+    
     @Inject
-    private EstablecimientoBean establecimientoBean;
-
+    private PeriodoBean periodoBean; 
+    
     @Inject
-    private CiudadBean ciudadBean;
-
-    @Inject
-    private UsuarioBean usuarioBean;
-
-    @Inject
-    private ParqueaderoBean parqueaderoBean;
-
-    private Establecimiento establecimiento;
-
-    private List<Establecimiento> listaEstablecimiento;
-
-    private List<Ciudad> listaCiudad;
-
-    private List<Usuario> listaUsuario;
-
-    private Parqueadero parqueadero;
-
-    private List<Parqueadero> listaParqueaderos;
-
-    private Establecimiento establecimientoSeleccionado;
+    private HorarioBean horarioBean;
+    
+    private Periodo periodo;
+    
+    private Horario horario;
+    
+    private List<Periodo> listaPeriodo;
+    
+    private List<Horario> listaHorario;
+    
 
     @PostConstruct
     public void init() {
-        establecimiento = new Establecimiento();
-        listaEstablecimiento = establecimientoBean.obtenerLista();
-        listaCiudad = ciudadBean.obtenerLista();
-        setListaUsuario(usuarioBean.obtenerLista());
-        setParqueadero(new Parqueadero());
-        setListaParqueaderos(new ArrayList<Parqueadero>());
-        setEstablecimientoSeleccionado(new Establecimiento());
+        setPeriodo(new Periodo());
+        setListaPeriodo(periodoBean.obtenerLista());
+        setHorario(new Horario());
+        setListaHorario(new ArrayList<Horario>());
     }
-
-    public void seleccionarEstablecimiento(Establecimiento establecimientEntrada) {
-        setEstablecimientoSeleccionado(establecimientEntrada);
-        HashMap parametros = new HashMap();
-        parametros.put("establecimiento", getEstablecimientoSeleccionado());
-        List<Parqueadero> listaParqueadero = parqueaderoBean.obtenerListaPorParametros(parametros);
-        setListaParqueaderos(listaParqueadero);
-        addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
-    }
-
-    public List<Establecimiento> obtenerListaEstablecimiento() {
-        return establecimientoBean.obtenerLista();
-    }
-
-    public List<SelectItem> generarSelectItemDeCiudad() {
-        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
-        for (Ciudad ciudadTmp : getListaCiudad()) {
-            selectItemsBuilder.add(ciudadTmp, ciudadTmp.getCiudad() + " - " + ciudadTmp.getProvinciaEstado().getProvinciaEstado() + " - " + ciudadTmp.getProvinciaEstado().getPais().getPais());
-        }
-        return selectItemsBuilder.buildList();
-    }
-
-    public List<SelectItem> generarSelectItemDeUsuario() {
-        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
-        for (Usuario usuarioTmp : getListaUsuario()) {
-            selectItemsBuilder.add(usuarioTmp, usuarioTmp.getUsuario());
-        }
-        return selectItemsBuilder.buildList();
-    }
-
+    
     public void guardar() {
         try {
-            establecimientoBean.crear(getEstablecimiento());
-            listaEstablecimiento = establecimientoBean.obtenerLista();
+            periodoBean.crear(getPeriodo());
+            setListaPeriodo(periodoBean.obtenerLista());
             addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
@@ -114,127 +66,64 @@ public class HorarioControlador extends BaseControlador {
             }
             addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
         } finally {
-            setEstablecimiento(new Establecimiento());
+            setPeriodo(new Periodo());
         }
     }
-
-    public void guardarParqueadero() {
-        try {
-            parqueadero.setEstablecimiento(getEstablecimientoSeleccionado());
-            parqueaderoBean.crear(parqueadero);
-            listaEstablecimiento = establecimientoBean.obtenerLista();
-            HashMap parametros = new HashMap();
-            parametros.put("establecimiento", getEstablecimientoSeleccionado());
-            List<Parqueadero> listaParqueadero = parqueaderoBean.obtenerListaPorParametros(parametros);
-            setListaParqueaderos(listaParqueadero);
-            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
-        } catch (Exception e) {
-            final Throwable root = ExceptionUtils.getRootCause(e);
-            if (null != root) {
-                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
-                return;
-            }
-            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
-        } finally {
-            setParqueadero(new Parqueadero());
-        }
+    
+    /**
+     * @return the listaPeriodo
+     */
+    public List<Periodo> getListaPeriodo() {
+        return listaPeriodo;
     }
 
     /**
-     * @return the establecimiento
+     * @param listaPeriodo the listaPeriodo to set
      */
-    public Establecimiento getEstablecimiento() {
-        return establecimiento;
+    public void setListaPeriodo(List<Periodo> listaPeriodo) {
+        this.listaPeriodo = listaPeriodo;
     }
 
     /**
-     * @param establecimiento the establecimiento to set
+     * @return the periodo
      */
-    public void setEstablecimiento(Establecimiento establecimiento) {
-        this.establecimiento = establecimiento;
+    public Periodo getPeriodo() {
+        return periodo;
     }
 
     /**
-     * @return the listaEstablecimiento
+     * @param periodo the periodo to set
      */
-    public List<Establecimiento> getListaEstablecimiento() {
-        return listaEstablecimiento;
+    public void setPeriodo(Periodo periodo) {
+        this.periodo = periodo;
+    }
+    
+    /**
+     * @return the listaHorario
+     */
+    public List<Horario> getListaHorario() {
+        return listaHorario;
     }
 
     /**
-     * @param listaEstablecimiento the listaEstablecimiento to set
+     * @param listaHorario the listaHorario to set
      */
-    public void setListaEstablecimiento(List<Establecimiento> listaEstablecimiento) {
-        this.listaEstablecimiento = listaEstablecimiento;
+    public void setListaHorario(List<Horario> listaHorario) {
+        this.listaHorario = listaHorario;
     }
 
     /**
-     * @return the listaCiudad
+     * @return the horario
      */
-    public List<Ciudad> getListaCiudad() {
-        return listaCiudad;
+    public Horario getHorario() {
+        return horario;
     }
 
     /**
-     * @param listaCiudad the listaCiudad to set
+     * @param horario the horario to set
      */
-    public void setListaCiudad(List<Ciudad> listaCiudad) {
-        this.listaCiudad = listaCiudad;
+    public void setHorario(Horario horario) {
+        this.horario = horario;
     }
-
-    /**
-     * @return the listaUsuario
-     */
-    public List<Usuario> getListaUsuario() {
-        return listaUsuario;
-    }
-
-    /**
-     * @param listaUsuario the listaUsuario to set
-     */
-    public void setListaUsuario(List<Usuario> listaUsuario) {
-        this.listaUsuario = listaUsuario;
-    }
-
-    /**
-     * @return the listaParqueaderos
-     */
-    public List<Parqueadero> getListaParqueaderos() {
-        return listaParqueaderos;
-    }
-
-    /**
-     * @param listaParqueaderos the listaParqueaderos to set
-     */
-    public void setListaParqueaderos(List<Parqueadero> listaParqueaderos) {
-        this.listaParqueaderos = listaParqueaderos;
-    }
-
-    /**
-     * @return the parqueadero
-     */
-    public Parqueadero getParqueadero() {
-        return parqueadero;
-    }
-
-    /**
-     * @param parqueadero the parqueadero to set
-     */
-    public void setParqueadero(Parqueadero parqueadero) {
-        this.parqueadero = parqueadero;
-    }
-
-    /**
-     * @return the establecimientoSeleccionado
-     */
-    public Establecimiento getEstablecimientoSeleccionado() {
-        return establecimientoSeleccionado;
-    }
-
-    /**
-     * @param establecimientoSeleccionado the establecimientoSeleccionado to set
-     */
-    public void setEstablecimientoSeleccionado(Establecimiento establecimientoSeleccionado) {
-        this.establecimientoSeleccionado = establecimientoSeleccionado;
-    }
+    
 }

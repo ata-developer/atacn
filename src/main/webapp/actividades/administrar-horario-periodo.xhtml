@@ -1,0 +1,137 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templateATA.xhtml">
+
+    <ui:define name="content">
+        <h:form id="frmAdministrarHorarioPeriodo">
+            <p/>
+            <p:fieldset legend="#{msj.administrarPeriodo}">
+                <p:panelGrid id="pngAdministrarPeriodo" columns="2">
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.nombreEstablecimiento}" />                    
+                    <p:inputText
+                        id="itPeriodo"
+                        required="true"
+                        value="#{horarioControlador.periodo.periodo}"
+                        placeholder="#{msj.periodoEjemplo}"
+                        onblur="value = value.toUpperCase()">
+                        <f:converter converterId="trimConverter" />
+                    </p:inputText>
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.periodoInicial}" />                    
+                    <p:datePicker 
+                        id="dpPeriodoInicial"
+                        value="#{horarioControlador.periodo.inicio}"
+                        required="true"
+                        monthNavigator="true"
+                        pattern="yyyy-MM-dd"/>
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.periodoFinal}" />                    
+                    <p:datePicker 
+                        id="dpPeriodoFinal"
+                        value="#{horarioControlador.periodo.fin}"                        
+                        required="true"
+                        monthNavigator="true"
+                        pattern="yyyy-MM-dd"/>
+
+                    <p:commandButton
+                        id="btnGuardar" 
+                        value="#{msj.guardar}"
+                        update="pngAdministrarEstablecimiento dtListaPeriodos mensajeGeneral"
+                        action="#{horarioControlador.guardar()}" />
+                    <p:outputLabel
+                        value="" />
+                </p:panelGrid>
+                <p/>
+                <p:dataTable
+                    id="dtListaPeriodos"                
+                    var="periodo" 
+                    value="#{horarioControlador.listaPeriodo}">
+
+                    <f:facet name="header">
+                        #{msj.listaPeriodos}
+                    </f:facet>
+
+                    <p:column headerText="#{msj.periodo}">
+                        <h:outputText value="#{periodo.periodo}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.periodoInicial}">
+                        <h:outputText value="#{periodo.inicio}">
+                            <f:convertDateTime type="date" pattern="yyyy-MM-dd"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="#{msj.periodoFinal}">
+                        <h:outputText value="#{periodo.fin}">
+                            <f:convertDateTime type="date" pattern="yyyy-MM-dd"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="#{msj.acciones}">
+                        <p:commandButton
+                            id="btnSeleccionar" 
+                            value="#{msj.seleccionar}"/>
+                    </p:column>
+                </p:dataTable>
+                <p/>
+                <p:panelGrid id="pngAdministrarHorario" columns="2">
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.horario}" />                    
+                    <p:inputText
+                        id="itHorario"
+                        required="true"
+                        value="#{horarioControlador.horario.horario}"
+                        onblur="value = value.toUpperCase()">
+                        <f:converter converterId="trimConverter" />
+                    </p:inputText>
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.horarioInicial}" />
+                    <p:datePicker
+                        id="dpPeriodoInicial"
+                        value="#{horarioControlador.horario.inicio}"
+                        timeOnly="true"
+                        pattern="HH:mm"/>
+                    
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.horarioFinal}" />                    
+                    <p:datePicker
+                        id="dpPeriodoFinal"
+                        value="#{horarioControlador.horario.fin}"
+                        timeOnly="true"
+                        pattern="HH:mm"/>
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.horarioFinal}" />                    
+                    <p:datePicker 
+                        id="dpPeriodoFinal"
+                        value="#{horarioControlador.periodo.fin}"                        
+                        required="true"
+                        monthNavigator="true"
+                        pattern="yyyy-MM-dd"/>
+
+                    <p:commandButton
+                        id="btnGuardar" 
+                        value="#{msj.guardar}"
+                        update="pngAdministrarEstablecimiento dtListaPeriodos mensajeGeneral"
+                        action="#{horarioControlador.guardar()}" />
+                    <p:outputLabel
+                        value="" />
+                </p:panelGrid>
+            </p:fieldset>
+
+        </h:form>
+    </ui:define>
+</ui:composition>

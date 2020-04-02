@@ -6,15 +6,20 @@
 package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
-import java.time.LocalTime;
+import java.time.LocalDate;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -23,6 +28,8 @@ import javax.persistence.Table;
 @Entity
 @Table
 public class Horario implements Serializable {
+
+    
     
     private static final long serialVersionUID = 1L;
 
@@ -42,9 +49,11 @@ public class Horario implements Serializable {
     
     private Long posicion;
     
-    private LocalTime inicio;
+    @Temporal(TemporalType.TIME)
+    private Date inicio;
     
-    private LocalTime fin;
+    @Temporal(TemporalType.TIME)
+    private Date fin;
     
     private Boolean lunes;
     
@@ -59,6 +68,10 @@ public class Horario implements Serializable {
     private Boolean sabado;
     
     private Boolean domingo;
+    
+    @ManyToOne
+    @JoinColumn(name="id_periodo", referencedColumnName="id_periodo")
+    private Periodo periodo;
     
     @Embedded
     private GenericoEntidad genericoEntidad;   
@@ -130,28 +143,28 @@ public class Horario implements Serializable {
     /**
      * @return the fin
      */
-    public LocalTime getFin() {
+    public Date getFin() {
         return fin;
     }
 
     /**
      * @param fin the fin to set
      */
-    public void setFin(LocalTime fin) {
+    public void setFin(Date fin) {
         this.fin = fin;
     }
 
     /**
      * @return the inicio
      */
-    public LocalTime getInicio() {
+    public Date getInicio() {
         return inicio;
     }
 
     /**
      * @param inicio the inicio to set
      */
-    public void setInicio(LocalTime inicio) {
+    public void setInicio(Date inicio) {
         this.inicio = inicio;
     }
 
@@ -265,6 +278,20 @@ public class Horario implements Serializable {
      */
     public void setDomingo(Boolean domingo) {
         this.domingo = domingo;
+    }
+    
+    /**
+     * @return the periodo
+     */
+    public Periodo getPeriodo() {
+        return periodo;
+    }
+
+    /**
+     * @param periodo the periodo to set
+     */
+    public void setPeriodo(Periodo periodo) {
+        this.periodo = periodo;
     }
 
 

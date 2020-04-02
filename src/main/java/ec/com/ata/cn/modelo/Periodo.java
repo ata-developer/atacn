@@ -7,14 +7,20 @@ package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -23,7 +29,7 @@ import javax.persistence.Table;
 @Entity
 @Table
 public class Periodo implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -39,15 +45,20 @@ public class Periodo implements Serializable {
 
     @Column(name = "periodo")
     private String periodo;
+
+    @Temporal(TemporalType.DATE)
+    private Date inicio;
+
+    @Temporal(TemporalType.DATE)
+    private Date fin;
     
-    private LocalDate inicio;
-    
-    private LocalDate fin;
-    
+    @OneToMany(mappedBy = "periodo", fetch = FetchType.EAGER)
+    private List<Horario> listaHorario;
+
     @Embedded
-    private GenericoEntidad genericoEntidad;   
-    
-    public Periodo () {
+    private GenericoEntidad genericoEntidad;
+
+    public Periodo() {
         genericoEntidad = new GenericoEntidad();
     }
 
@@ -79,7 +90,7 @@ public class Periodo implements Serializable {
     @Override
     public String toString() {
         return "ec.com.ata.cn.modelo.Periodo[ id=" + idPeriodo + " ]";
-    }   
+    }
 
     /**
      * @return the genericoEntidad
@@ -95,7 +106,6 @@ public class Periodo implements Serializable {
         this.genericoEntidad = genericoEntidad;
     }
 
-    
     /**
      * @return the periodo
      */
@@ -109,33 +119,32 @@ public class Periodo implements Serializable {
     public void setPeriodo(String periodo) {
         this.periodo = periodo;
     }
-    
-    
+
     /**
      * @return the fin
      */
-    public LocalDate getFin() {
+    public Date getFin() {
         return fin;
     }
 
     /**
      * @param fin the fin to set
      */
-    public void setFin(LocalDate fin) {
+    public void setFin(Date fin) {
         this.fin = fin;
     }
 
     /**
      * @return the inicio
      */
-    public LocalDate getInicio() {
+    public Date getInicio() {
         return inicio;
     }
 
     /**
      * @param inicio the inicio to set
      */
-    public void setInicio(LocalDate inicio) {
+    public void setInicio(Date inicio) {
         this.inicio = inicio;
     }
 }
