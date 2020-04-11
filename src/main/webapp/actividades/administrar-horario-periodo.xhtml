@@ -114,13 +114,45 @@
 
                     <p:outputLabel
                         for="@next"
-                        value="#{msj.horarioFinal}" />                    
-                    <p:datePicker 
-                        id="dpPeriodoFinal"
-                        value="#{horarioControlador.periodo.fin}"                        
-                        required="true"
-                        monthNavigator="true"
-                        pattern="yyyy-MM-dd"/>
+                        value="#{msj.lunes}" />
+                    <p:selectBooleanCheckbox value="#{horarioControlador.horario.lunes}" />
+                    
+                     <p:outputLabel
+                        for="@next"
+                        value="#{msj.lunes}" />
+                    <p:selectBooleanCheckbox value="#{horarioControlador.horario.lunes}" />
+                    
+                     <p:outputLabel
+                        for="@next"
+                        value="#{msj.martes}" />
+                    <p:selectBooleanCheckbox value="#{horarioControlador.horario.martes}" />
+                    
+                     <p:outputLabel
+                        for="@next"
+                        value="#{msj.miercoles}" />
+                    <p:selectBooleanCheckbox value="#{horarioControlador.horario.miercoles}" />
+                    
+                     <p:outputLabel
+                        for="@next"
+                        value="#{msj.jueves}" />
+                    <p:selectBooleanCheckbox value="#{horarioControlador.horario.jueves}" />
+                    
+                     <p:outputLabel
+                        for="@next"
+                        value="#{msj.viernes}" />
+                    <p:selectBooleanCheckbox value="#{horarioControlador.horario.viernes}" />
+                    
+                     <p:outputLabel
+                        for="@next"
+                        value="#{msj.sabado}" />
+                    <p:selectBooleanCheckbox value="#{horarioControlador.horario.sabado}" />
+                    
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.domingo}" />
+                    <p:selectBooleanCheckbox value="#{horarioControlador.horario.domingo}" />
+                    
+                    
 
                     <p:commandButton
                         id="btnGuardar" 
@@ -130,6 +162,61 @@
                     <p:outputLabel
                         value="" />
                 </p:panelGrid>
+                <p/>
+                <p:dataTable
+                    id="dtListaHorarios"                
+                    var="horario" 
+                    value="#{horarioControlador.listaHorario}">
+                    <f:facet name="header">
+                        #{msj.listaHorarios}
+                    </f:facet>
+
+                    <p:column headerText="#{msj.horario}">
+                        <h:outputText value="#{horario.horario}" />
+                    </p:column>
+                    
+                    <p:column headerText="#{msj.horarioInicial}">
+                        <h:outputText value="#{horario.inicio}">
+                            <f:convertDateTime type="time" pattern="HH:mm"/>
+                        </h:outputText>
+                    </p:column>
+                    
+                    <p:column headerText="#{msj.horarioFinal}">
+                        <h:outputText value="#{horario.fin}">
+                            <f:convertDateTime type="time" pattern="HH:mm"/>
+                        </h:outputText>
+                    </p:column>
+                    
+                    <p:column headerText="#{msj.lunes}">
+                        <p:selectBooleanCheckbox value="#{horario.lunes}" />
+                    </p:column>
+                    
+                    <p:column headerText="#{msj.martes}">
+                        <p:selectBooleanCheckbox value="#{horario.martes}" />
+                    </p:column>
+                    
+                    <p:column headerText="#{msj.miercoles}">
+                        <p:selectBooleanCheckbox value="#{horario.miercoles}" />
+                    </p:column>
+                    
+                    <p:column headerText="#{msj.jueves}">
+                        <p:selectBooleanCheckbox value="#{horario.jueves}" />
+                    </p:column>
+                    
+                    <p:column headerText="#{msj.viernes}">
+                        <p:selectBooleanCheckbox value="#{horario.viernes}" />
+                    </p:column>
+                    
+                    <p:column headerText="#{msj.sabado}">
+                        <p:selectBooleanCheckbox value="#{horario.sabado}" />
+                    </p:column>
+                    
+                    <p:column headerText="#{msj.domingo}">
+                        <p:selectBooleanCheckbox value="#{horario.domingo}" />
+                    </p:column>
+                    
+                    
+                </p:dataTable>
             </p:fieldset>
 
         </h:form>
