@@ -123,6 +123,19 @@
                         <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                         <f:selectItems value="#{establecimientoControlador.generarSelectItemDeUsuario()}" />                        
                     </h:selectOneMenu>
+                    
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.seleccionarPeriodo}" />
+                    <h:selectOneMenu
+                        id="somSeleccionarPeriodo"
+                        value="#{establecimientoControlador.establecimiento.periodo}"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{consultaControlador.generarSelectItemDePeriodos()}" />                        
+                    </h:selectOneMenu>
 
                     <p:commandButton
                         id="btnGuardar" 
@@ -153,8 +166,8 @@
                         <h:outputText value="#{establecimiento.ciudad.ciudad}" />
                     </p:column>
 
-                    <p:column headerText="#{msj.nombre}">
-                        <h:outputText value="#{establecimiento.nombre}" />
+                    <p:column headerText="#{msj.periodo}">
+                        <h:outputText value="#{establecimiento.periodo.periodo}" />
                     </p:column>
 
                     <p:column headerText="#{msj.callePrincipal}">
@@ -191,6 +204,15 @@
                         onblur="value = value.toUpperCase()">
                         <f:converter converterId="trimConverter" />
                     </p:inputText>
+                    
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.numeroDeParqueadero}" />                    
+                    <p:inputMask
+                        id="imOrden"
+                        required="true"
+                        value="#{establecimientoControlador.parqueadero.numero}" 
+                        mask="99"/>
 
                     <p:commandButton
                         id="btnGuardarParqueadero" 
@@ -214,7 +236,51 @@
                     <p:column headerText="#{msj.parqueadero}">
                         <h:outputText value="#{parqueadero.parqueadero}" />
                     </p:column>
+                    
+                    <p:column headerText="#{msj.numeroDeParqueadero}">
+                        <h:outputText value="#{parqueadero.numero}" />
+                    </p:column>
                 </p:dataTable>
+            </p:fieldset>
+            <p/>
+            <p:fieldset id="fdAdministrarPeriodoParaEstablecimiento" legend="#{msj.configurarPeriodoParaEstablecimiento}">
+                <p:panelGrid id="pngAdministrarPeriodoParaEstablecimiento" columns="2">
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.seleccionarEstablecimiento}" />
+                    <p:selectOneMenu
+                        id="somSeleccionarEstablecimiento"
+                        value="#{establecimientoControlador.establecimientoSeleccionado}"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{consultaControlador.generarSelectItemDeEstablecimientos()}" />
+                        <p:ajax 
+                            event="change"
+                            process="@this"
+                            update="pngAdministrarPeriodoParaEstablecimiento  mensajeGeneral"
+                            />
+                    </p:selectOneMenu>
+                    
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.periodoSeleccionado}" />
+                    <p:outputLabel                    
+                        value="#{establecimientoControlador.establecimientoSeleccionado.periodo.periodo}" />
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.horarioSeleccionado}" />
+                    <p:outputLabel
+                        value="#{establecimientoControlador.establecimientoSeleccionado.nombre}" />
+                    
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.numeroDeParqueaderos}" />
+                    <p:outputLabel
+                        value="#{establecimientoControlador.establecimientoSeleccionado.listaParqueadero.size()}" />
+
+                    
+                </p:panelGrid>
             </p:fieldset>
 
         </h:form>

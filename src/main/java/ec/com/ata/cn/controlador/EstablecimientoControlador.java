@@ -60,6 +60,7 @@ public class EstablecimientoControlador extends BaseControlador {
     private List<Parqueadero> listaParqueaderos;
 
     private Establecimiento establecimientoSeleccionado;
+    
 
     @PostConstruct
     public void init() {

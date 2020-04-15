@@ -43,10 +43,11 @@
                         pattern="yyyy-MM-dd"/>
 
                     <p:commandButton
-                        id="btnGuardar" 
+                        id="btnGuardarPeriodo" 
                         value="#{msj.guardar}"
-                        update="pngAdministrarEstablecimiento dtListaPeriodos mensajeGeneral"
-                        action="#{horarioControlador.guardar()}" />
+                        process="pngAdministrarPeriodo"
+                        update="pngAdministrarPeriodo dtListaPeriodos mensajeGeneral"
+                        action="#{horarioControlador.guardarPeriodo()}" />
                     <p:outputLabel
                         value="" />
                 </p:panelGrid>
@@ -76,12 +77,13 @@
                         </h:outputText>
                     </p:column>
                     <p:column headerText="#{msj.acciones}">
-                        <p:commandButton
-                            id="btnSeleccionar" 
-                            value="#{msj.seleccionar}"/>
+
                     </p:column>
                 </p:dataTable>
-                <p/>
+
+            </p:fieldset>
+            <p/>
+            <p:fieldset legend="#{msj.administrarHorario}">
                 <p:panelGrid id="pngAdministrarHorario" columns="2">
                     <p:outputLabel
                         for="@next"
@@ -96,18 +98,29 @@
 
                     <p:outputLabel
                         for="@next"
+                        value="#{msj.posicion}" />                    
+                    <p:inputMask
+                        id="imOrden"
+                        required="true"
+                        value="#{horarioControlador.horario.posicion}" 
+                        mask="99"/>
+
+                    <p:outputLabel
+                        for="@next"
                         value="#{msj.horarioInicial}" />
                     <p:datePicker
-                        id="dpPeriodoInicial"
+                        id="dpHorarioInicial"
+                        required="true"
                         value="#{horarioControlador.horario.inicio}"
                         timeOnly="true"
                         pattern="HH:mm"/>
-                    
+
                     <p:outputLabel
                         for="@next"
                         value="#{msj.horarioFinal}" />                    
                     <p:datePicker
-                        id="dpPeriodoFinal"
+                        id="dpHorarioFinal"
+                        required="true"
                         value="#{horarioControlador.horario.fin}"
                         timeOnly="true"
                         pattern="HH:mm"/>
@@ -116,49 +129,45 @@
                         for="@next"
                         value="#{msj.lunes}" />
                     <p:selectBooleanCheckbox value="#{horarioControlador.horario.lunes}" />
-                    
-                     <p:outputLabel
-                        for="@next"
-                        value="#{msj.lunes}" />
-                    <p:selectBooleanCheckbox value="#{horarioControlador.horario.lunes}" />
-                    
-                     <p:outputLabel
+
+                    <p:outputLabel
                         for="@next"
                         value="#{msj.martes}" />
                     <p:selectBooleanCheckbox value="#{horarioControlador.horario.martes}" />
-                    
-                     <p:outputLabel
+
+                    <p:outputLabel
                         for="@next"
                         value="#{msj.miercoles}" />
                     <p:selectBooleanCheckbox value="#{horarioControlador.horario.miercoles}" />
-                    
-                     <p:outputLabel
+
+                    <p:outputLabel
                         for="@next"
                         value="#{msj.jueves}" />
                     <p:selectBooleanCheckbox value="#{horarioControlador.horario.jueves}" />
-                    
-                     <p:outputLabel
+
+                    <p:outputLabel
                         for="@next"
                         value="#{msj.viernes}" />
                     <p:selectBooleanCheckbox value="#{horarioControlador.horario.viernes}" />
-                    
-                     <p:outputLabel
+
+                    <p:outputLabel
                         for="@next"
                         value="#{msj.sabado}" />
                     <p:selectBooleanCheckbox value="#{horarioControlador.horario.sabado}" />
-                    
+
                     <p:outputLabel
                         for="@next"
                         value="#{msj.domingo}" />
                     <p:selectBooleanCheckbox value="#{horarioControlador.horario.domingo}" />
-                    
-                    
+
+
 
                     <p:commandButton
-                        id="btnGuardar" 
+                        id="btnGuardarHorario" 
                         value="#{msj.guardar}"
-                        update="pngAdministrarEstablecimiento dtListaPeriodos mensajeGeneral"
-                        action="#{horarioControlador.guardar()}" />
+                        process="pngAdministrarHorario @this"
+                        update="pngAdministrarHorario dtListaHorarios mensajeGeneral"
+                        action="#{horarioControlador.guardarHorario()}" />
                     <p:outputLabel
                         value="" />
                 </p:panelGrid>
@@ -174,51 +183,131 @@
                     <p:column headerText="#{msj.horario}">
                         <h:outputText value="#{horario.horario}" />
                     </p:column>
-                    
+
+                    <p:column headerText="#{msj.posicion}">
+                        <h:outputText value="#{horario.posicion}" />
+                    </p:column>
+
                     <p:column headerText="#{msj.horarioInicial}">
                         <h:outputText value="#{horario.inicio}">
                             <f:convertDateTime type="time" pattern="HH:mm"/>
                         </h:outputText>
                     </p:column>
-                    
+
                     <p:column headerText="#{msj.horarioFinal}">
                         <h:outputText value="#{horario.fin}">
                             <f:convertDateTime type="time" pattern="HH:mm"/>
                         </h:outputText>
                     </p:column>
-                    
+
                     <p:column headerText="#{msj.lunes}">
                         <p:selectBooleanCheckbox value="#{horario.lunes}" />
                     </p:column>
-                    
+
                     <p:column headerText="#{msj.martes}">
                         <p:selectBooleanCheckbox value="#{horario.martes}" />
                     </p:column>
-                    
+
                     <p:column headerText="#{msj.miercoles}">
                         <p:selectBooleanCheckbox value="#{horario.miercoles}" />
                     </p:column>
-                    
+
                     <p:column headerText="#{msj.jueves}">
                         <p:selectBooleanCheckbox value="#{horario.jueves}" />
                     </p:column>
-                    
+
                     <p:column headerText="#{msj.viernes}">
                         <p:selectBooleanCheckbox value="#{horario.viernes}" />
                     </p:column>
-                    
+
                     <p:column headerText="#{msj.sabado}">
                         <p:selectBooleanCheckbox value="#{horario.sabado}" />
                     </p:column>
-                    
+
                     <p:column headerText="#{msj.domingo}">
                         <p:selectBooleanCheckbox value="#{horario.domingo}" />
                     </p:column>
-                    
-                    
+
+                    <p:column headerText="#{msj.acciones}">
+                        <p:commandButton
+                            id="btnEliminarHorario" 
+                            value="#{msj.eliminar}"
+                            process="dtListaHorarios"
+                            update="dtListaHorarios mensajeGeneral"
+                            action="#{horarioControlador.eliminarHorario(horario)}" />
+                    </p:column>
                 </p:dataTable>
             </p:fieldset>
+            <p/>
+            <p:fieldset id="fdAdministrarPeriodoHorario" legend="#{msj.configurarPeriodo}">
+                <p:panelGrid id="pngAdministrarPeriodoHorario" columns="2">
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.seleccionarPeriodo}" />
+                    <p:selectOneMenu
+                        id="somSeleccionarPeriodo"
+                        value="#{horarioControlador.periodoSeleccionado}"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{consultaControlador.generarSelectItemDePeriodos()}" />
+                        <p:ajax 
+                            event="change"
+                            process="@this"
+                            update="pngAdministrarPeriodoHorario  mensajeGeneral"/>
+                    </p:selectOneMenu>
 
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.seleccionarHorario}" />
+                    <p:selectOneMenu
+                        id="somSeleccionarHorario"
+                        value="#{horarioControlador.horarioSeleccionado}"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{consultaControlador.generarSelectItemDeHorarios()}" />
+                        <p:ajax 
+                            event="change"
+                            process="@this"
+                            update="pngAdministrarPeriodoHorario  mensajeGeneral"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.periodoSeleccionado}" />
+                    <p:outputLabel                    
+                        value="#{horarioControlador.periodoSeleccionado.periodo}" />
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.horarioSeleccionado}" />
+                    <p:outputLabel
+                        value="#{horarioControlador.horarioSeleccionado.horario}" />
+
+                    <p:commandButton
+                        id="btnGuardarPeriodoHorario" 
+                        value="#{msj.agregarPeriodo}"
+                        process="pngAdministrarPeriodoHorario @this"
+                        update="pngAdministrarPeriodoHorario dtListaPeriodoHorario mensajeGeneral"
+                        action="#{horarioControlador.guardarPeriodoHorario()}" />
+                    <p:outputLabel
+                        value="" />
+                </p:panelGrid>
+                <p/>
+                <p:dataTable
+                    id="dtListaPeriodoHorario"                
+                    var="periodoHorario" 
+                    value="#{horarioControlador.listaPeriodoHorario}">
+                    <f:facet name="header">
+                        #{msj.listaPeriodoHorario}
+                    </f:facet>
+
+                    <p:column headerText="#{msj.horario}">
+                        <h:outputText value="#{periodoHorario.horario.horario}" />
+                    </p:column>
+                </p:dataTable>
+            </p:fieldset>
+            <p/>
+            
         </h:form>
     </ui:define>
 </ui:composition>

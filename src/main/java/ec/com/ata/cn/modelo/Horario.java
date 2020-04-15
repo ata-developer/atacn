@@ -6,7 +6,6 @@
 package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -47,26 +46,37 @@ public class Horario implements Serializable {
     @Column(name = "horario")
     private String horario;
     
+    @Column(name = "posicion")
     private Long posicion;
     
+
+    @Column(name = "inicio")
     @Temporal(TemporalType.TIME)
     private Date inicio;
     
+    @Column(name = "fin")
     @Temporal(TemporalType.TIME)
     private Date fin;
     
+    @Column(name = "lunes")
     private Boolean lunes;
     
+    @Column(name = "martes")
     private Boolean martes;
     
+    @Column(name = "miercoles")
     private Boolean miercoles;
     
+    @Column(name = "jueves")
     private Boolean jueves;
     
+    @Column(name = "viernes")
     private Boolean viernes;
     
+    @Column(name = "sabado")
     private Boolean sabado;
     
+    @Column(name = "doming")
     private Boolean domingo;
     
     @ManyToOne

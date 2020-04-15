@@ -1,0 +1,8 @@
+ALTER TABLE establecimiento
+ADD COLUMN id_periodo bigint;
+
+ALTER TABLE establecimiento
+ADD CONSTRAINT fk_establecimiento_id_periodo FOREIGN KEY (id_periodo)
+        REFERENCES public.periodo (id_periodo) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION;

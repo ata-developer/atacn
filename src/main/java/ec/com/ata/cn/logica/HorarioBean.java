@@ -39,4 +39,12 @@ public class HorarioBean {
     public List<Horario> obtenerListaPorParametros(HashMap<String, Object> parametros){
         return horarioDao.obtenerListaPorParametros(parametros);
     }
+    
+    public void eliminar (Horario horarioEntrada) {
+        horarioDao.eliminar(horarioEntrada);
+    }
+    
+    public void eliminar (Long idHorarioEntrada) {
+        horarioDao.eliminar(idHorarioEntrada);
+    } 
 }

@@ -7,10 +7,15 @@ package ec.com.ata.cn.controlador;
 
 import ec.com.ata.cn.logica.HorarioBean;
 import ec.com.ata.cn.logica.PeriodoBean;
+import ec.com.ata.cn.logica.PeriodoHorarioBean;
 import ec.com.ata.cn.logica.util.gestor.Constante;
+import ec.com.ata.cn.modelo.Establecimiento;
 import ec.com.ata.cn.modelo.Horario;
+import ec.com.ata.cn.modelo.Parqueadero;
 import ec.com.ata.cn.modelo.Periodo;
+import ec.com.ata.cn.modelo.PeriodoHorario;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -29,12 +34,17 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 public class HorarioControlador extends BaseControlador {
 
     
+
     
+
     @Inject
     private PeriodoBean periodoBean; 
     
     @Inject
     private HorarioBean horarioBean;
+    
+    @Inject
+    private PeriodoHorarioBean periodoHorarioBean;
     
     private Periodo periodo;
     
@@ -44,16 +54,75 @@ public class HorarioControlador extends BaseControlador {
     
     private List<Horario> listaHorario;
     
-
+    private Periodo periodoSeleccionado;
+    
+    private Horario horarioSeleccionado;
+    
+    private Establecimiento establecimientoSeleccionado;
+    
+    private List<PeriodoHorario> listaPeriodoHorario;
+    
+    private Periodo periodoSeleccionadoParaEstablecimiento;
+    
+    private List<Parqueadero> listaParqueaderoSeleccionado;
+    
     @PostConstruct
     public void init() {
         setPeriodo(new Periodo());
         setListaPeriodo(periodoBean.obtenerLista());
         setHorario(new Horario());
-        setListaHorario(new ArrayList<Horario>());
+        setListaHorario(horarioBean.obtenerLista());
+        setPeriodoSeleccionado(new Periodo());
+        setHorarioSeleccionado(new Horario());
+        setEstablecimientoSeleccionado(new Establecimiento());
+        setListaPeriodoHorario(new ArrayList<PeriodoHorario>());
+        setPeriodoSeleccionadoParaEstablecimiento(new Periodo());
+        setListaParqueaderoSeleccionado(new ArrayList<Parqueadero>());        
     }
     
-    public void guardar() {
+    public void cargarListaParquederos() {
+        setListaParqueaderoSeleccionado(getEstablecimientoSeleccionado().getListaParqueadero());
+        System.out.println("tama;o lista: "+getListaParqueaderoSeleccionado().size());
+    }
+    
+    public void guardarPeriodoHorario() {
+        try {
+            PeriodoHorario periodoHorario = new PeriodoHorario();
+            periodoHorario.setPeriodo(getPeriodoSeleccionado());
+            periodoHorario.setHorario(getHorarioSeleccionado());
+            periodoHorarioBean.crear(periodoHorario);
+            HashMap<String,Object> parametros = new HashMap();
+            parametros.put("periodo", getPeriodoSeleccionado());
+            setListaPeriodoHorario(periodoHorarioBean.obtenerListaPorParametros(parametros));
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+        } finally {
+            setHorarioSeleccionado(new Horario());
+        }
+    }
+    
+    public void eliminarHorario(Horario horarioEntrada) {
+        try {
+            horarioBean.eliminar(horarioEntrada.getIdHorario());
+            setListaHorario(horarioBean.obtenerLista());
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+        }
+    }
+    
+    public void guardarPeriodo() {
         try {
             periodoBean.crear(getPeriodo());
             setListaPeriodo(periodoBean.obtenerLista());
@@ -67,6 +136,23 @@ public class HorarioControlador extends BaseControlador {
             addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
         } finally {
             setPeriodo(new Periodo());
+        }
+    }
+    
+    public void guardarHorario() {
+        try {
+            horarioBean.crear(getHorario());
+            setListaHorario(horarioBean.obtenerLista());
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+        } finally {
+            setHorario(new Horario());
         }
     }
     
@@ -124,6 +210,90 @@ public class HorarioControlador extends BaseControlador {
      */
     public void setHorario(Horario horario) {
         this.horario = horario;
+    }
+    
+    /**
+     * @return the periodoSeleccionado
+     */
+    public Periodo getPeriodoSeleccionado() {
+        return periodoSeleccionado;
+    }
+
+    /**
+     * @param periodoSeleccionado the periodoSeleccionado to set
+     */
+    public void setPeriodoSeleccionado(Periodo periodoSeleccionado) {
+        this.periodoSeleccionado = periodoSeleccionado;
+    }
+
+    /**
+     * @return the horarioSeleccionado
+     */
+    public Horario getHorarioSeleccionado() {
+        return horarioSeleccionado;
+    }
+
+    /**
+     * @param horarioSeleccionado the horarioSeleccionado to set
+     */
+    public void setHorarioSeleccionado(Horario horarioSeleccionado) {
+        this.horarioSeleccionado = horarioSeleccionado;
+    }
+
+    /**
+     * @return the establecimientoSeleccionado
+     */
+    public Establecimiento getEstablecimientoSeleccionado() {
+        return establecimientoSeleccionado;
+    }
+
+    /**
+     * @param establecimientoSeleccionado the establecimientoSeleccionado to set
+     */
+    public void setEstablecimientoSeleccionado(Establecimiento establecimientoSeleccionado) {
+        this.establecimientoSeleccionado = establecimientoSeleccionado;
+    }
+    
+    /**
+     * @return the listaPeriodoHorario
+     */
+    public List<PeriodoHorario> getListaPeriodoHorario() {
+        return listaPeriodoHorario;
+    }
+
+    /**
+     * @param listaPeriodoHorario the listaPeriodoHorario to set
+     */
+    public void setListaPeriodoHorario(List<PeriodoHorario> listaPeriodoHorario) {
+        this.listaPeriodoHorario = listaPeriodoHorario;
+    }
+    
+    /**
+     * @return the periodoSeleccionadoParaEstablecimiento
+     */
+    public Periodo getPeriodoSeleccionadoParaEstablecimiento() {
+        return periodoSeleccionadoParaEstablecimiento;
+    }
+
+    /**
+     * @param periodoSeleccionadoParaEstablecimiento the periodoSeleccionadoParaEstablecimiento to set
+     */
+    public void setPeriodoSeleccionadoParaEstablecimiento(Periodo periodoSeleccionadoParaEstablecimiento) {
+        this.periodoSeleccionadoParaEstablecimiento = periodoSeleccionadoParaEstablecimiento;
+    }
+    
+    /**
+     * @return the listaParqueaderoSeleccionado
+     */
+    public List<Parqueadero> getListaParqueaderoSeleccionado() {
+        return listaParqueaderoSeleccionado;
+    }
+
+    /**
+     * @param listaParqueaderoSeleccionado the listaParqueaderoSeleccionado to set
+     */
+    public void setListaParqueaderoSeleccionado(List<Parqueadero> listaParqueaderoSeleccionado) {
+        this.listaParqueaderoSeleccionado = listaParqueaderoSeleccionado;
     }
     
 }

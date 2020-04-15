@@ -29,20 +29,6 @@ import javax.persistence.Table;
 @Table
 public class Establecimiento implements Serializable {
 
-    /**
-     * @return the listaParqueadero
-     */
-    public List<Parqueadero> getListaParqueadero() {
-        return listaParqueadero;
-    }
-
-    /**
-     * @param listaParqueadero the listaParqueadero to set
-     */
-    public void setListaParqueadero(List<Parqueadero> listaParqueadero) {
-        this.listaParqueadero = listaParqueadero;
-    }
-
     private static final long serialVersionUID = 1L;
     
      @Id
@@ -91,6 +77,10 @@ public class Establecimiento implements Serializable {
     @ManyToOne
     @JoinColumn(name="id_grupo_precio", referencedColumnName="id_grupo_precio")
     private GrupoPrecio grupoPrecio;
+    
+    @ManyToOne
+    @JoinColumn(name="id_periodo", referencedColumnName="id_periodo")
+    private Periodo periodo;
     
     @OneToMany(mappedBy = "establecimiento", fetch = FetchType.EAGER)
     private List<Parqueadero> listaParqueadero;
@@ -292,4 +282,36 @@ public class Establecimiento implements Serializable {
     public void setGenericoEntidad(GenericoEntidad genericoEntidad) {
         this.genericoEntidad = genericoEntidad;
     }
+    
+    /**
+     * @return the periodo
+     */
+    public Periodo getPeriodo() {
+        return periodo;
+    }
+
+    /**
+     * @param periodo the periodo to set
+     */
+    public void setPeriodo(Periodo periodo) {
+        this.periodo = periodo;
+    }
+    
+    
+    
+
+    /**
+     * @return the listaParqueadero
+     */
+    public List<Parqueadero> getListaParqueadero() {
+        return listaParqueadero;
+    }
+
+    /**
+     * @param listaParqueadero the listaParqueadero to set
+     */
+    public void setListaParqueadero(List<Parqueadero> listaParqueadero) {
+        this.listaParqueadero = listaParqueadero;
+    }
+
 }

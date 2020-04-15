@@ -22,8 +22,8 @@ import javax.persistence.Table;
  * @author ATA1
  */
 @Entity
-@Table
-public class Parqueadero implements Serializable {
+@Table( name = "parqueadero")
+public class Parqueadero implements Serializable {    
 
     private static final long serialVersionUID = 1L;
 
@@ -40,6 +40,9 @@ public class Parqueadero implements Serializable {
 
     @Column(name = "parqueadero")
     private String parqueadero;
+    
+    @Column(name = "numero")
+    private String numero;
     
     @ManyToOne
     @JoinColumn(name = "id_establecimiento", referencedColumnName = "id_establecimiento")
@@ -122,6 +125,20 @@ public class Parqueadero implements Serializable {
      */
     public void setParqueadero(String parqueadero) {
         this.parqueadero = parqueadero;
+    }
+    
+    /**
+     * @return the numero
+     */
+    public String getNumero() {
+        return numero;
+    }
+
+    /**
+     * @param numero the numero to set
+     */
+    public void setNumero(String numero) {
+        this.numero = numero;
     }
 
 }
