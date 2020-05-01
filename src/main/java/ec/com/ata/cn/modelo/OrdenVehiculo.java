@@ -7,7 +7,9 @@ package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -17,6 +19,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -29,7 +32,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "orden_vehiculo")
-public class OrdenVehiculo implements Serializable {
+public class OrdenVehiculo implements Serializable {   
     
     @Id
     @SequenceGenerator(
@@ -77,6 +80,15 @@ public class OrdenVehiculo implements Serializable {
     @Column(name = "fecha_registro_vehiculo")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaRegistroVehiculo;
+    
+    @OneToMany(mappedBy = "ordenVehiculo")
+    private List<VehiculoTrabajo> listaVehiculoTrabajo;
+    
+    public OrdenVehiculo () {
+        genericoEntidad = new GenericoEntidad();
+        setListaVehiculoTrabajo(new ArrayList<VehiculoTrabajo>());
+    }
+   
 
     @Override
     public int hashCode() {
@@ -130,9 +142,7 @@ public class OrdenVehiculo implements Serializable {
 
     
     
-    public OrdenVehiculo () {
-        genericoEntidad = new GenericoEntidad();
-    }
+    
     
     public Long getIdOrdenVehiculo() {
         return idOrdenVehiculo;
@@ -298,6 +308,20 @@ public class OrdenVehiculo implements Serializable {
      */
     public void setPrecioTotalAbonoEfectivo(BigDecimal precioTotalAbonoEfectivo) {
         this.precioTotalAbonoEfectivo = precioTotalAbonoEfectivo;
+    }
+    
+    /**
+     * @return the listaVehiculoTrabajo
+     */
+    public List<VehiculoTrabajo> getListaVehiculoTrabajo() {
+        return listaVehiculoTrabajo;
+    }
+
+    /**
+     * @param listaVehiculoTrabajo the listaVehiculoTrabajo to set
+     */
+    public void setListaVehiculoTrabajo(List<VehiculoTrabajo> listaVehiculoTrabajo) {
+        this.listaVehiculoTrabajo = listaVehiculoTrabajo;
     }
 
 }

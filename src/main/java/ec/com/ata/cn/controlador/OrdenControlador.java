@@ -8,21 +8,31 @@ package ec.com.ata.cn.controlador;
 import ec.com.ata.cn.logica.CiudadBean;
 import ec.com.ata.cn.logica.EstablecimientoBean;
 import ec.com.ata.cn.logica.GrupoPrecioParteCategoriaVehiculoBean;
+import ec.com.ata.cn.logica.HorarioParqueaderoBean;
 import ec.com.ata.cn.logica.MaterialBean;
+import ec.com.ata.cn.logica.OrdenVehiculoBean;
 import ec.com.ata.cn.logica.ParteBean;
+import ec.com.ata.cn.logica.ProcesarHorarioBean;
 import ec.com.ata.cn.logica.TipoDocumentoBean;
 import ec.com.ata.cn.logica.TrabajoCategoriaPrecioBean;
+import ec.com.ata.cn.logica.TrabajoParteBean;
 import ec.com.ata.cn.logica.UsuarioBean;
 import ec.com.ata.cn.logica.VehiculoBean;
+import ec.com.ata.cn.logica.VehiculoTrabajoBean;
 import ec.com.ata.cn.logica.util.gestor.Constante;
 import ec.com.ata.cn.modelo.Ciudad;
+import ec.com.ata.cn.modelo.Equipo;
 import ec.com.ata.cn.modelo.Establecimiento;
+import ec.com.ata.cn.modelo.GenericoEntidad;
 import ec.com.ata.cn.modelo.GrupoPrecio;
 import ec.com.ata.cn.modelo.GrupoPrecioParteCategoriaVehiculo;
+import ec.com.ata.cn.modelo.HorarioParqueadero;
 import ec.com.ata.cn.modelo.MarcaVehiculo;
 import ec.com.ata.cn.modelo.Material;
 import ec.com.ata.cn.modelo.OrdenVehiculo;
 import ec.com.ata.cn.modelo.Parte;
+import ec.com.ata.cn.modelo.Periodo;
+import ec.com.ata.cn.modelo.PeriodoEstablecimientoFecha;
 import ec.com.ata.cn.modelo.TipoDocumento;
 import ec.com.ata.cn.modelo.TrabajoCategoriaPrecio;
 import ec.com.ata.cn.modelo.TrabajoParte;
@@ -33,12 +43,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import javax.annotation.PostConstruct;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.omnifaces.util.selectitems.SelectItemsBuilder;
 import org.primefaces.event.FlowEvent;
 
@@ -50,7 +62,6 @@ import org.primefaces.event.FlowEvent;
 @Named
 public class OrdenControlador extends BaseControlador {
 
-    
     @Inject
     private VehiculoBean vehiculoBean;
 
@@ -74,11 +85,25 @@ public class OrdenControlador extends BaseControlador {
 
     @Inject
     private ParteBean parteBean;
-    
+
     @Inject
     private MaterialBean materialBean;
-    
-    
+
+    @Inject
+    private ProcesarHorarioBean procesarHorarioBean;
+
+    @Inject
+    private OrdenVehiculoBean ordenVehiculoBean;
+
+    @Inject
+    private VehiculoTrabajoBean vehiculoTrabajoBean;
+
+    @Inject
+    private TrabajoParteBean trabajoParteBean;
+
+    @Inject
+    private HorarioParqueaderoBean horarioParqueaderoBean;
+
     private Establecimiento establecimiento;
 
     private Usuario clienteOrden;
@@ -130,14 +155,28 @@ public class OrdenControlador extends BaseControlador {
     private List<SelectItem> listaTrabajosPorParte;
 
     private HashMap<OrdenVehiculo, List<TrabajoCategoriaPrecio>> mapaOrdenVehiculoListaTrabajos;
-    
+
     private VehiculoTrabajo vehiculoTrabajoSeleccionado;
-    
+
     private Parte parteSeleccionada;
-    
+
     private TrabajoParte trabajoParteSeleccionada;
-    
+
     private Material materialSeleccionado;
+
+    private Long mesSeleccionado;
+
+    private List<HashMap<String, PeriodoEstablecimientoFecha>> listaPEF;
+
+    private Periodo periodoSeleccionadoParaCalendario;
+
+    private Equipo equipoSeleccionado;
+
+    private HashMap<OrdenVehiculo, List<VehiculoTrabajo>> mapaOrdenVehiculoTrabajo;
+
+    private HashMap<VehiculoTrabajo, List<TrabajoParte>> mapaVehiculoTrabajoParte;
+
+    private VehiculoTrabajo vehiculoTrabajoParaHorario;
 
     @PostConstruct
     public void init() {
@@ -161,16 +200,65 @@ public class OrdenControlador extends BaseControlador {
         setTrabajoCategoriaPrecio(new TrabajoCategoriaPrecio());
         setListaVehiculoTrabajo(new ArrayList<VehiculoTrabajo>());
         setMapaOrdenVehiculoListaTrabajos(new HashMap<OrdenVehiculo, List<TrabajoCategoriaPrecio>>());
+        setMapaOrdenVehiculoTrabajo(new HashMap<OrdenVehiculo, List<VehiculoTrabajo>>());
+        setMapaVehiculoTrabajoParte(new HashMap<VehiculoTrabajo, List<TrabajoParte>>());
     }
-    
+
+    public void guardarHorarioVehiculoTrabajo(HorarioParqueadero horarioParqueaderoEntrada, VehiculoTrabajo vehiculoTrabajoEntrada) {
+        try {
+            if (null != horarioParqueaderoEntrada.getVehiculoTrabajo() && horarioParqueaderoEntrada.getVehiculoTrabajo().getIdVehiculoTrabajo() == vehiculoTrabajoEntrada.getIdVehiculoTrabajo()) {
+                horarioParqueaderoEntrada.setVehiculoTrabajo(null);
+                horarioParqueaderoBean.modificar(horarioParqueaderoEntrada);
+                cargarFechasPrivado();
+                addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+                return;
+            }
+            System.out.println("guardarHorarioVehiculoTrabajo");
+            vehiculoTrabajoEntrada = vehiculoTrabajoBean.modificar(vehiculoTrabajoEntrada);
+            horarioParqueaderoEntrada.setVehiculoTrabajo(vehiculoTrabajoEntrada);
+            horarioParqueaderoBean.modificar(horarioParqueaderoEntrada);
+            cargarFechasPrivado();
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+        }
+    }
+
+    private void cargarFechasPrivado() {
+        HashMap<String, Object> parametros = new HashMap<>();
+        parametros.put("periodo", getPeriodoSeleccionadoParaCalendario());
+        parametros.put("mes", getMesSeleccionado());
+        parametros.put("diaMesOrderByAsc", null);
+        setListaPEF(procesarHorarioBean.generarCalendarioHash(parametros));
+    }
+
+    public void cargarFechas() {
+        try {
+            cargarFechasPrivado();
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+        }
+    }
+
     public List<SelectItem> generarSelectItemMaterial() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
-        for (Material materialTmp  : materialBean.obtenerLista()) {
+        for (Material materialTmp : materialBean.obtenerLista()) {
             selectItemsBuilder.add(materialTmp, materialTmp.getCodigo() + " - " + materialTmp.getDescripcion() + " - " + materialTmp.getColor().getColor());
         }
         return selectItemsBuilder.buildList();
     }
-    
+
     public List<SelectItem> generarSelectItemPartesAsiento() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
         for (TrabajoCategoriaPrecio trabajoCategoriaPrecioTmp : getListaTrabajoCategoriaPrecioTmp()) {
@@ -178,112 +266,55 @@ public class OrdenControlador extends BaseControlador {
         }
         return selectItemsBuilder.buildList();
     }
-    
-    public void agregarTrabajoParte(TrabajoParte trabajoParteEntrada){
-        System.out.println("agregarTrabajoParte: "+trabajoParteEntrada);
-        getVehiculoTrabajoSeleccionado().getListaTrabajoParte().add(trabajoParteEntrada);
+
+    public void agregarTrabajoParte(TrabajoParte trabajoParteEntrada) {
+        try {
+            System.out.println("agregarTrabajoParte: " + trabajoParteEntrada);
+            List<TrabajoParte> ListaTrabajoParteTmp = getMapaVehiculoTrabajoParte().get(getVehiculoTrabajoSeleccionado());
+            trabajoParteEntrada.setVehiculoTrabajo(getVehiculoTrabajoSeleccionado());
+            trabajoParteEntrada = trabajoParteBean.crear(trabajoParteEntrada);
+            ListaTrabajoParteTmp.add(trabajoParteEntrada);
+            getMapaVehiculoTrabajoParte().put(getVehiculoTrabajoSeleccionado(), ListaTrabajoParteTmp);
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+        }
     }
-    
+
+    public void actualizarTrabajoParte(TrabajoParte trabajoParteEntrada) {
+        try {
+            System.out.println("agregarTrabajoParte: " + trabajoParteEntrada);
+            TrabajoParte trabajoParteTemp = new TrabajoParte();
+            List<TrabajoParte> ListaTrabajoParteTmp = getMapaVehiculoTrabajoParte().get(getVehiculoTrabajoSeleccionado());
+            for (TrabajoParte trabajoParte : ListaTrabajoParteTmp) {
+                if (trabajoParte.getIdTrabajoParte().longValue() == trabajoParteEntrada.getIdTrabajoParte().longValue()) {
+                    trabajoParteTemp = trabajoParte;
+                }
+            }
+            ListaTrabajoParteTmp.remove(trabajoParteTemp);
+            trabajoParteEntrada = trabajoParteBean.modificar(trabajoParteEntrada);
+            ListaTrabajoParteTmp.add(trabajoParteEntrada);
+            getMapaVehiculoTrabajoParte().put(getVehiculoTrabajoSeleccionado(), ListaTrabajoParteTmp);
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+        }
+    }
+
     public void seleccionarParte(VehiculoTrabajo vehiculoTrabajoEntrada) {
         setVehiculoTrabajoSeleccionado(vehiculoTrabajoEntrada);
-    }
-
-    public void eliminarParte(TrabajoParte trabajoParte, VehiculoTrabajo vehiculoTrabajo) {
-        List<TrabajoParte> listaTrabajoParteTmp = vehiculoTrabajo.getListaTrabajoParte();
-        listaTrabajoParteTmp.remove(trabajoParte);
-        vehiculoTrabajo.setListaTrabajoParte(new ArrayList<TrabajoParte>());
-        for (TrabajoParte trabajoParte1 : listaTrabajoParteTmp) {
-            vehiculoTrabajo.getListaTrabajoParte().add(trabajoParte1);
-        }
-    }
-    
-    public void eliminarParte(TrabajoParte trabajoParteEntrada) {
-        List<TrabajoParte> listaTrabajoParteTmp = vehiculoTrabajoSeleccionado.getListaTrabajoParte();
-        listaTrabajoParteTmp.remove(trabajoParteEntrada);
-        vehiculoTrabajoSeleccionado.setListaTrabajoParte(listaTrabajoParteTmp);
-    }
-
-    public void eliminarTrabajo(VehiculoTrabajo vehiculoTrabajo) {
-        setVehiculoTrabajoSeleccionado(null);
-        List<VehiculoTrabajo> listaVehiculoTrabajoTmp = listaVehiculoTrabajo;
-        listaVehiculoTrabajoTmp.remove(vehiculoTrabajo);
-        listaVehiculoTrabajo = new ArrayList<>();
-        for (VehiculoTrabajo vehiculoTrabajoTmp2 : listaVehiculoTrabajoTmp) {
-            listaVehiculoTrabajo.add(vehiculoTrabajoTmp2);
-        }
-        System.out.println("eliminar trabajo");
-    }
-
-    public void agregarParte() {
-        System.out.println("agregar parte");
-    }
-
-    
-
-    public void eliminarVehiculoOrden() {
-        System.out.println("eliminarVehiculoOrden");
-    }
-
-    public void agregarTrabajo() {
-        System.out.println("trabajoCategoriaPrecio.getTrabajo().getDescripcion(): " + trabajoCategoriaPrecio.toString());
-        VehiculoTrabajo vehiculoTrabajo = new VehiculoTrabajo();
-        vehiculoTrabajo.setIdGrupoPrecio(trabajoCategoriaPrecio.getGrupoPrecio().getIdGrupoPrecio());
-        vehiculoTrabajo.setIdTrabajo(trabajoCategoriaPrecio.getTrabajo().getIdTrabajo());
-        vehiculoTrabajo.setIdVehiculo(vehiculoParaTrabajos.getIdOrdenVehiculo());
-        vehiculoTrabajo.setPrecioVentaPublico(trabajoCategoriaPrecio.getPrecioVentaPublico());
-        vehiculoTrabajo.setPrecioDescuento(trabajoCategoriaPrecio.getPrecioDescuento());
-        vehiculoTrabajo.setVehiculoDescripcion(vehiculoParaTrabajos.getVehiculo().getDescripcion());
-        vehiculoTrabajo.setTrabajoDescripcion(trabajoCategoriaPrecio.getTrabajo().getDescripcion());
-        vehiculoTrabajo.setPartePrincipal(trabajoCategoriaPrecio.getParte());
-        HashMap<String, Object> parametros = new HashMap<>();
-        parametros.put("padre", trabajoCategoriaPrecio.getParte());
-        parametros.put("distintivo", "INICIALIZAR");
-        List<Parte> listaPartes = parteBean.obtenerListaPorParametros(parametros);
-        List<TrabajoParte> listaTrabajoPartesTmp = new ArrayList<>();
-        for (Parte parteTmp : listaPartes) {
-            TrabajoParte trabajoParte = new TrabajoParte();
-            trabajoParte.setPartePadre(trabajoCategoriaPrecio.getParte());
-            trabajoParte.setParte(parteTmp);
-            listaTrabajoPartesTmp.add(trabajoParte);
-        }
-        parametros = new HashMap<>();
-        parametros.put("padre", trabajoCategoriaPrecio.getParte());
-        List<Parte> listaPartesTrabajo = parteBean.obtenerListaPorParametros(parametros);
-        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
-        for (Parte parte : listaPartesTrabajo) {
-            selectItemsBuilder.add(parte, parte.getParte());
-        }
-        listaTrabajosPorParte = selectItemsBuilder.buildList();
-        vehiculoTrabajo.setListaTrabajoParte(listaTrabajoPartesTmp);
-        listaVehiculoTrabajo.add(vehiculoTrabajo);
-
-    }
-
-    public void agregarTrabajo(OrdenVehiculo ordenVehiculo) {
-        System.out.println("----> agregarTrabajo inicio: " + trabajoCategoriaPrecio.toString());
-        VehiculoTrabajo vehiculoTrabajo = new VehiculoTrabajo();
-        vehiculoTrabajo.setIdGrupoPrecio(trabajoCategoriaPrecio.getGrupoPrecio().getIdGrupoPrecio());
-        vehiculoTrabajo.setIdTrabajo(trabajoCategoriaPrecio.getTrabajo().getIdTrabajo());
-        vehiculoTrabajo.setIdVehiculo(ordenVehiculo.getIdOrdenVehiculo());
-        vehiculoTrabajo.setPrecioVentaPublico(trabajoCategoriaPrecio.getPrecioVentaPublico());
-        vehiculoTrabajo.setPrecioDescuento(trabajoCategoriaPrecio.getPrecioDescuento());
-        vehiculoTrabajo.setVehiculoDescripcion(ordenVehiculo.getVehiculo().getDescripcion());
-        vehiculoTrabajo.setTrabajoDescripcion(trabajoCategoriaPrecio.getTrabajo().getDescripcion());
-        vehiculoTrabajo.setPartePrincipal(trabajoCategoriaPrecio.getParte());
-        vehiculoTrabajo.setFechaRegistro(new Date(System.currentTimeMillis()));
-        HashMap<String, Object> parametros = new HashMap<>();
-        parametros.put("padre", trabajoCategoriaPrecio.getParte());
-        parametros.put("distintivo", "INICIALIZAR");
-        List<Parte> listaPartes = parteBean.obtenerListaPorParametros(parametros);
-        List<TrabajoParte> listaTrabajoPartesTmp = new ArrayList<>();
-        for (Parte parteTmp : listaPartes) {
-            TrabajoParte trabajoParte = new TrabajoParte();
-            trabajoParte.setPartePadre(trabajoCategoriaPrecio.getParte());
-            trabajoParte.setParte(parteTmp);
-            listaTrabajoPartesTmp.add(trabajoParte);
-        }
-        parametros = new HashMap<>();
-        parametros.put("padre", trabajoCategoriaPrecio.getParte());
+        HashMap parametros = new HashMap<>();
+        parametros.put("padre", vehiculoTrabajoEntrada.getPartePrincipal());
         List<Parte> listaPartesTrabajo = parteBean.obtenerListaPorParametros(parametros);
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
         for (Parte parteTmp2 : listaPartesTrabajo) {
@@ -293,9 +324,138 @@ public class OrdenControlador extends BaseControlador {
             selectItemsBuilder.add(trabajoParteTmp, parteTmp2.getParte());
         }
         listaTrabajosPorParte = selectItemsBuilder.buildList();
-        vehiculoTrabajo.setListaTrabajoParte(listaTrabajoPartesTmp);
-        listaVehiculoTrabajo.add(vehiculoTrabajo);
-        System.out.println("----> agregarTrabajo fin");
+
+    }
+
+    public void eliminarParte(TrabajoParte trabajoParte, VehiculoTrabajo vehiculoTrabajo) {
+        List<TrabajoParte> listaParteTrabajo = getMapaVehiculoTrabajoParte().get(vehiculoTrabajo);
+        listaParteTrabajo.remove(trabajoParte);
+        getMapaVehiculoTrabajoParte().put(vehiculoTrabajo, listaParteTrabajo);
+    }
+
+    public void eliminarParte(TrabajoParte trabajoParteEntrada) {
+        try {
+            List<TrabajoParte> listaParteTrabajo = getMapaVehiculoTrabajoParte().get(getVehiculoTrabajoSeleccionado());
+            listaParteTrabajo.remove(trabajoParteEntrada);
+            if (null != trabajoParteEntrada.getIdTrabajoParte()) {
+                trabajoParteBean.eliminar(trabajoParteEntrada.getIdTrabajoParte());
+            }
+            getMapaVehiculoTrabajoParte().put(getVehiculoTrabajoSeleccionado(), listaParteTrabajo);
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+        }
+    }
+
+    public void eliminarTrabajo(VehiculoTrabajo vehiculoTrabajoEntrada) {
+        try {
+            //Lista<TrabajoParte> listaTrabajoParteTmp2 = getMapaVehiculoTrabajoParte()
+            VehiculoTrabajo vehiculoTrabajoTmp2 = new VehiculoTrabajo();
+            for (VehiculoTrabajo vehiculoTrabajoTmp : getMapaVehiculoTrabajoParte().keySet()) {
+                if (Objects.equals(vehiculoTrabajoTmp.getIdVehiculoTrabajo(), vehiculoTrabajoEntrada.getIdVehiculoTrabajo())) {
+                    vehiculoTrabajoTmp2 = vehiculoTrabajoTmp;
+                }
+            }
+            getMapaVehiculoTrabajoParte().remove(vehiculoTrabajoTmp2);
+            if (null != vehiculoTrabajoEntrada.getIdVehiculoTrabajo()) {
+                HashMap<String, Object> parametros = new HashMap<>();
+                parametros.put("vehiculoTrabajo", vehiculoTrabajoEntrada);
+                List<TrabajoParte> listaTrabajoParte = trabajoParteBean.obtenerListaPorParametros(parametros);
+                for (TrabajoParte trabajoParte : listaTrabajoParte) {
+                    trabajoParteBean.eliminar(trabajoParte.getIdTrabajoParte());
+                }
+                vehiculoTrabajoBean.eliminar(vehiculoTrabajoEntrada.getIdVehiculoTrabajo());
+            }
+            List<VehiculoTrabajo> listaVehiculoTrabajoTmp2 = getMapaOrdenVehiculoTrabajo().get(getVehiculoParaTrabajos());
+            listaVehiculoTrabajoTmp2.remove(vehiculoTrabajoEntrada);
+            getMapaOrdenVehiculoTrabajo().put(getVehiculoParaTrabajos(), listaVehiculoTrabajoTmp2);
+            System.out.println("eliminar trabajo");
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+        }
+    }
+
+    public void agregarParte() {
+        System.out.println("agregar parte");
+    }
+
+    public void eliminarVehiculoOrden(OrdenVehiculo ordenVehiculoEntrada) {
+        try {
+            getMapaOrdenVehiculoListaTrabajos().remove(ordenVehiculoEntrada);
+            getMapaOrdenVehiculoTrabajo().remove(ordenVehiculoEntrada);
+            getVehiculosCliente().remove(ordenVehiculoEntrada);
+            if (null != ordenVehiculoEntrada.getIdOrdenVehiculo()) {
+                ordenVehiculoBean.eliminar(ordenVehiculoEntrada.getIdOrdenVehiculo());
+            }
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+        }
+    }
+
+    public void agregarTrabajo(OrdenVehiculo ordenVehiculoEntrada) {
+        try {
+            VehiculoTrabajo vehiculoTrabajo = new VehiculoTrabajo();
+            vehiculoTrabajo.setOrdenVehiculo(ordenVehiculoEntrada);
+            vehiculoTrabajo.setIdGrupoPrecio(trabajoCategoriaPrecio.getGrupoPrecio().getIdGrupoPrecio());
+            vehiculoTrabajo.setIdTrabajo(trabajoCategoriaPrecio.getTrabajo().getIdTrabajo());
+            vehiculoTrabajo.setIdVehiculo(ordenVehiculoEntrada.getIdOrdenVehiculo());
+            vehiculoTrabajo.setPrecioVentaPublico(trabajoCategoriaPrecio.getPrecioVentaPublico());
+            vehiculoTrabajo.setPrecioDescuento(trabajoCategoriaPrecio.getPrecioDescuento());
+            vehiculoTrabajo.setVehiculoDescripcion(ordenVehiculoEntrada.getVehiculo().getDescripcion());
+            vehiculoTrabajo.setTrabajoDescripcion(trabajoCategoriaPrecio.getTrabajo().getDescripcion());
+            vehiculoTrabajo.setPartePrincipal(trabajoCategoriaPrecio.getParte());
+            vehiculoTrabajo.setGenericoEntidad(new GenericoEntidad());
+            vehiculoTrabajo.getGenericoEntidad().setFechaRegistro(new Date(System.currentTimeMillis()));
+            vehiculoTrabajo = vehiculoTrabajoBean.crear(vehiculoTrabajo);
+            System.out.println("trabajoCategoriaPrecio.getParte:" + trabajoCategoriaPrecio.getParte());
+            HashMap<String, Object> parametros = new HashMap<>();
+            parametros.put("padre", trabajoCategoriaPrecio.getParte());
+            parametros.put("distintivo", "INICIALIZAR");
+            List<Parte> listaPartes = parteBean.obtenerListaPorParametros(parametros);
+            List<TrabajoParte> listaTrabajoPartesTmp = new ArrayList<>();
+            for (Parte parteTmp : listaPartes) {
+                TrabajoParte trabajoParte = new TrabajoParte();
+                trabajoParte.setPartePadre(trabajoCategoriaPrecio.getParte());
+                trabajoParte.setParte(parteTmp);
+                trabajoParte.setVehiculoTrabajo(vehiculoTrabajo);
+                trabajoParte = trabajoParteBean.crear(trabajoParte);
+                listaTrabajoPartesTmp.add(trabajoParte);
+            }
+
+            getMapaVehiculoTrabajoParte().put(vehiculoTrabajo, listaTrabajoPartesTmp);
+            List<VehiculoTrabajo> listaVehiculoTrabajoTmp2 = getMapaOrdenVehiculoTrabajo().get(ordenVehiculoEntrada);
+            listaVehiculoTrabajoTmp2.add(vehiculoTrabajo);
+            getMapaOrdenVehiculoTrabajo().put(ordenVehiculoEntrada, listaVehiculoTrabajoTmp2);
+            System.out.println("----> agregarTrabajo fin");
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+        }
+        System.out.println("----> agregarTrabajo inicio: " + trabajoCategoriaPrecio.toString());
 
     }
 
@@ -392,13 +552,26 @@ public class OrdenControlador extends BaseControlador {
     }
 
     public void agregarVehiculo() {
-        System.out.println("agregarVehiculo");
-        OrdenVehiculo ordenVehiculo = new OrdenVehiculo();
-        ordenVehiculo.setVehiculo(vehiculoSeleccionado);
-        ordenVehiculo.setFechaRegistroVehiculo(new Date(System.currentTimeMillis()));
-        getVehiculosCliente().add(ordenVehiculo);
-        List<TrabajoCategoriaPrecio> listaTrabajoCategoriaPrecio = obtenerListaTrabajoPorGrupoVehiculo(establecimiento.getGrupoPrecio(), vehiculoSeleccionado);
-        getMapaOrdenVehiculoListaTrabajos().put(ordenVehiculo, listaTrabajoCategoriaPrecio);
+        try {
+            System.out.println("agregarVehiculo");
+            OrdenVehiculo ordenVehiculo = new OrdenVehiculo();
+            ordenVehiculo.setVehiculo(vehiculoSeleccionado);
+            ordenVehiculo.setFechaRegistroVehiculo(new Date(System.currentTimeMillis()));
+            ordenVehiculo = ordenVehiculoBean.crear(ordenVehiculo);
+            getVehiculosCliente().add(ordenVehiculo);
+            List<TrabajoCategoriaPrecio> listaTrabajoCategoriaPrecio = obtenerListaTrabajoPorGrupoVehiculo(establecimiento.getGrupoPrecio(), vehiculoSeleccionado);
+            getMapaOrdenVehiculoListaTrabajos().put(ordenVehiculo, listaTrabajoCategoriaPrecio);
+            getMapaOrdenVehiculoTrabajo().put(ordenVehiculo, new ArrayList<VehiculoTrabajo>());
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+        }
+
     }
 
     public void llenarEsteMomentoOrden() {
@@ -512,11 +685,34 @@ public class OrdenControlador extends BaseControlador {
     }
 
     public String enFlujoProceso(FlowEvent event) {
-        if (skip) {
-            skip = false;   //reset in case user goes back
-            return "confirm";
-        } else {
-            return event.getNewStep();
+        System.out.println("getOldStep: " + event.getOldStep());
+        System.out.println("getNewStep: " + event.getNewStep());
+        switch (event.getOldStep()) {
+            case "idSeleccionVehiculo":
+                if (!getVehiculosCliente().isEmpty()) {
+                    return event.getNewStep();
+                } else {
+                    addErrorMessage(Constante.ERROR_LISTA_VEHICULOS_MENSAJE + ":" + Constante.ERROR_LISTA_VEHICULOS, Constante.ERROR_LISTA_VEHICULOS_MENSAJE + ":" + Constante.ERROR_LISTA_VEHICULOS);
+                    return event.getOldStep();
+                }
+            case "idSeleccionTrabajo":
+                Boolean existeTrabajos = true;
+                for (VehiculoTrabajo vehiculoTrabajo : getMapaVehiculoTrabajoParte().keySet()) {
+                    List<TrabajoParte> listaTrabajoParteTmp = getMapaVehiculoTrabajoParte().get(vehiculoTrabajo);
+                    for (TrabajoParte trabajoParte : listaTrabajoParteTmp) {
+                        if (null == trabajoParte.getMaterial()) {
+                            existeTrabajos = false;
+                        }
+                    }
+                }
+                if (existeTrabajos) {
+                    return event.getNewStep();
+                } else {
+                    addErrorMessage(Constante.ERROR_LISTA_TRABAJO_MENSAJE + ":" + Constante.ERROR_LISTA_TRABAJO, Constante.ERROR_LISTA_TRABAJO_MENSAJE + ":" + Constante.ERROR_LISTA_TRABAJO);
+                    return event.getOldStep();
+                }
+            default:
+                return event.getNewStep();
         }
     }
 
@@ -903,7 +1099,7 @@ public class OrdenControlador extends BaseControlador {
     public void setVehiculoTrabajoSeleccionado(VehiculoTrabajo vehiculoTrabajoSeleccionado) {
         this.vehiculoTrabajoSeleccionado = vehiculoTrabajoSeleccionado;
     }
-    
+
     /**
      * @return the trabajoParteSeleccionada
      */
@@ -930,6 +1126,105 @@ public class OrdenControlador extends BaseControlador {
      */
     public void setMaterialSeleccionado(Material materialSeleccionado) {
         this.materialSeleccionado = materialSeleccionado;
+    }
+
+    /**
+     * @return the mesSeleccionado
+     */
+    public Long getMesSeleccionado() {
+        return mesSeleccionado;
+    }
+
+    /**
+     * @param mesSeleccionado the mesSeleccionado to set
+     */
+    public void setMesSeleccionado(Long mesSeleccionado) {
+        this.mesSeleccionado = mesSeleccionado;
+    }
+
+    /**
+     * @return the listaPEF
+     */
+    public List<HashMap<String, PeriodoEstablecimientoFecha>> getListaPEF() {
+        return listaPEF;
+    }
+
+    /**
+     * @param listaPEF the listaPEF to set
+     */
+    public void setListaPEF(List<HashMap<String, PeriodoEstablecimientoFecha>> listaPEF) {
+        this.listaPEF = listaPEF;
+    }
+
+    /**
+     * @return the periodoSeleccionadoParaCalendario
+     */
+    public Periodo getPeriodoSeleccionadoParaCalendario() {
+        return periodoSeleccionadoParaCalendario;
+    }
+
+    /**
+     * @param periodoSeleccionadoParaCalendario the
+     * periodoSeleccionadoParaCalendario to set
+     */
+    public void setPeriodoSeleccionadoParaCalendario(Periodo periodoSeleccionadoParaCalendario) {
+        this.periodoSeleccionadoParaCalendario = periodoSeleccionadoParaCalendario;
+    }
+
+    /**
+     * @return the equipoSeleccionado
+     */
+    public Equipo getEquipoSeleccionado() {
+        return equipoSeleccionado;
+    }
+
+    /**
+     * @param equipoSeleccionado the equipoSeleccionado to set
+     */
+    public void setEquipoSeleccionado(Equipo equipoSeleccionado) {
+        this.equipoSeleccionado = equipoSeleccionado;
+    }
+
+    /**
+     * @return the mapaOrdenVehiculoTrabajo
+     */
+    public HashMap<OrdenVehiculo, List<VehiculoTrabajo>> getMapaOrdenVehiculoTrabajo() {
+        return mapaOrdenVehiculoTrabajo;
+    }
+
+    /**
+     * @param mapaOrdenVehiculoTrabajo the mapaOrdenVehiculoTrabajo to set
+     */
+    public void setMapaOrdenVehiculoTrabajo(HashMap<OrdenVehiculo, List<VehiculoTrabajo>> mapaOrdenVehiculoTrabajo) {
+        this.mapaOrdenVehiculoTrabajo = mapaOrdenVehiculoTrabajo;
+    }
+
+    /**
+     * @return the mapaVehiculoTrabajoParte
+     */
+    public HashMap<VehiculoTrabajo, List<TrabajoParte>> getMapaVehiculoTrabajoParte() {
+        return mapaVehiculoTrabajoParte;
+    }
+
+    /**
+     * @param mapaVehiculoTrabajoParte the mapaVehiculoTrabajoParte to set
+     */
+    public void setMapaVehiculoTrabajoParte(HashMap<VehiculoTrabajo, List<TrabajoParte>> mapaVehiculoTrabajoParte) {
+        this.mapaVehiculoTrabajoParte = mapaVehiculoTrabajoParte;
+    }
+
+    /**
+     * @return the vehiculoTrabajoParaHorario
+     */
+    public VehiculoTrabajo getVehiculoTrabajoParaHorario() {
+        return vehiculoTrabajoParaHorario;
+    }
+
+    /**
+     * @param vehiculoTrabajoParaHorario the vehiculoTrabajoParaHorario to set
+     */
+    public void setVehiculoTrabajoParaHorario(VehiculoTrabajo vehiculoTrabajoParaHorario) {
+        this.vehiculoTrabajoParaHorario = vehiculoTrabajoParaHorario;
     }
 
 }

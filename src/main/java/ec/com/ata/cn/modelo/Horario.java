@@ -13,8 +13,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -28,8 +26,6 @@ import javax.persistence.TemporalType;
 @Table
 public class Horario implements Serializable {
 
-    
-    
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -43,50 +39,66 @@ public class Horario implements Serializable {
     @Column(name = "id_horario")
     private Long idHorario;
 
+    public Boolean presentarPorDia(String dia) {
+        switch (dia) {
+            case "LUNES":
+                return this.lunes;
+            case "MARTES":
+                return this.martes;
+            case "MIERCOLES":
+                return this.miercoles;
+            case "JUEVES":
+                return this.jueves;
+            case "VIERNES":
+                return this.viernes;
+            case "SABADO":
+                return this.sabado;
+            case "DOMINGO":
+                return this.domingo;
+            default:
+                return null;
+        }
+    }
+
     @Column(name = "horario")
     private String horario;
-    
+
     @Column(name = "posicion")
     private Long posicion;
-    
 
     @Column(name = "inicio")
     @Temporal(TemporalType.TIME)
     private Date inicio;
-    
+
     @Column(name = "fin")
     @Temporal(TemporalType.TIME)
     private Date fin;
-    
+
     @Column(name = "lunes")
     private Boolean lunes;
-    
+
     @Column(name = "martes")
     private Boolean martes;
-    
+
     @Column(name = "miercoles")
     private Boolean miercoles;
-    
+
     @Column(name = "jueves")
     private Boolean jueves;
-    
+
     @Column(name = "viernes")
     private Boolean viernes;
-    
+
     @Column(name = "sabado")
     private Boolean sabado;
-    
+
     @Column(name = "doming")
     private Boolean domingo;
-    
-    @ManyToOne
-    @JoinColumn(name="id_periodo", referencedColumnName="id_periodo")
-    private Periodo periodo;
-    
+
     @Embedded
-    private GenericoEntidad genericoEntidad;   
-    
-    public Horario () {
+    private GenericoEntidad genericoEntidad;
+
+    public Horario() {
         genericoEntidad = new GenericoEntidad();
     }
 
@@ -118,7 +130,7 @@ public class Horario implements Serializable {
     @Override
     public String toString() {
         return "ec.com.ata.cn.modelo.Horario[ id=" + idHorario + " ]";
-    }   
+    }
 
     /**
      * @return the genericoEntidad
@@ -134,7 +146,6 @@ public class Horario implements Serializable {
         this.genericoEntidad = genericoEntidad;
     }
 
-    
     /**
      * @return the horario
      */
@@ -148,8 +159,7 @@ public class Horario implements Serializable {
     public void setHorario(String horario) {
         this.horario = horario;
     }
-    
-    
+
     /**
      * @return the fin
      */
@@ -289,20 +299,5 @@ public class Horario implements Serializable {
     public void setDomingo(Boolean domingo) {
         this.domingo = domingo;
     }
-    
-    /**
-     * @return the periodo
-     */
-    public Periodo getPeriodo() {
-        return periodo;
-    }
-
-    /**
-     * @param periodo the periodo to set
-     */
-    public void setPeriodo(Periodo periodo) {
-        this.periodo = periodo;
-    }
-
 
 }

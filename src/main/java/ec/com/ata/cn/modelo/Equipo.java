@@ -24,6 +24,8 @@ import javax.persistence.Table;
 @Entity
 @Table
 public class Equipo implements Serializable {
+
+    
    
     private static final long serialVersionUID = 1L;
     
@@ -40,6 +42,9 @@ public class Equipo implements Serializable {
 
     @Column(name = "equipo")
     private String equipo;
+    
+    @Column(name = "color")
+    private String color;
     
     @Embedded
     private GenericoEntidad genericoEntidad;
@@ -125,6 +130,18 @@ public class Equipo implements Serializable {
     public void setListaUsuario(List<Usuario> listaUsuario) {
         this.listaUsuario = listaUsuario;
     }
+    
+    /**
+     * @return the color
+     */
+    public String getColor() {
+        return color;
+    }
 
-
+    /**
+     * @param color the color to set
+     */
+    public void setColor(String color) {
+        this.color = color;
+    }
 }

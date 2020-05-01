@@ -12,6 +12,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,7 +32,9 @@ import javax.persistence.TemporalType;
 @Entity
 @Table ( name = "vehiculo_trabajo")
 public class VehiculoTrabajo implements Serializable {
+
     
+  
     @Id
     @SequenceGenerator(
             name = "vehiculo_trabajo_seq",
@@ -76,15 +79,19 @@ public class VehiculoTrabajo implements Serializable {
     @Column(name = "precio_saldo_tarjeta")
     private BigDecimal precioSaldoTarjeta;
     
-    @Column(name = "fecha_registro")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaRegistro;
-    
     @ManyToOne
     @JoinColumn(name="id_parte", referencedColumnName="id_parte")
     private Parte partePrincipal;
     
-    @OneToMany(mappedBy = "vehiculoTrabajo")
+    @ManyToOne
+    @JoinColumn(name="id_orden_vehiculo", referencedColumnName="id_orden_vehiculo")
+    private OrdenVehiculo ordenVehiculo;
+    
+    @ManyToOne
+    @JoinColumn(name="id_equipo", referencedColumnName="id_equipo")
+    private Equipo equipo;
+     
+    @OneToMany(mappedBy = "vehiculoTrabajo", fetch = FetchType.EAGER)
     private List<TrabajoParte> listaTrabajoParte;
    
     
@@ -247,20 +254,6 @@ public class VehiculoTrabajo implements Serializable {
     }
     
     /**
-     * @return the fechaRegistro
-     */
-    public Date getFechaRegistro() {
-        return fechaRegistro;
-    }
-
-    /**
-     * @param fechaRegistro the fechaRegistro to set
-     */
-    public void setFechaRegistro(Date fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
-    
-    /**
      * @return the precioAbonoEfectivo
      */
     public BigDecimal getPrecioAbonoEfectivo() {
@@ -315,5 +308,32 @@ public class VehiculoTrabajo implements Serializable {
     public void setPrecioSaldoTarjeta(BigDecimal precioSaldoTarjeta) {
         this.precioSaldoTarjeta = precioSaldoTarjeta;
     }
-        
+    
+    /**
+     * @return the equipo
+     */
+    public Equipo getEquipo() {
+        return equipo;
+    }
+
+    /**
+     * @param equipo the equipo to set
+     */
+    public void setEquipo(Equipo equipo) {
+        this.equipo = equipo;
+    }
+    
+    /**
+     * @return the ordenVehiculo
+     */
+    public OrdenVehiculo getOrdenVehiculo() {
+        return ordenVehiculo;
+    }
+
+    /**
+     * @param ordenVehiculo the ordenVehiculo to set
+     */
+    public void setOrdenVehiculo(OrdenVehiculo ordenVehiculo) {
+        this.ordenVehiculo = ordenVehiculo;
+    }
 }

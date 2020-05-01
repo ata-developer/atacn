@@ -7,7 +7,6 @@ package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -20,31 +19,28 @@ import javax.persistence.Table;
  * @author ATA1
  */
 @Entity
-@Table(name = "periodo_horario")
-public class PeriodoHorario implements Serializable {
+@Table(name = "periodo_establecimiento")
+public class PeriodoEstablecimiento implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @EmbeddedId
-    private PeriodoHorarioId periodoHorarioId;
+    private PeriodoEstablecimientoId periodoEstablecimientoId;
 
     @MapsId("idPeriodo")
     @JoinColumn(name = "id_periodo", referencedColumnName = "id_periodo")
     @ManyToOne
     private Periodo periodo;
 
-    @MapsId("idHorario")
-    @JoinColumn(name = "id_horario", referencedColumnName = "id_horario")
+    @MapsId("idEstablecimiento")
+    @JoinColumn(name = "id_establecimiento", referencedColumnName = "id_establecimiento")
     @ManyToOne
-    private Horario horario;
-    
-    @Column(name = "orden")
-    private Long orden;
+    private Establecimiento establecimiento;
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 29 * hash + Objects.hashCode(this.periodoHorarioId);
+        hash = 29 * hash + Objects.hashCode(this.periodoEstablecimientoId);
         return hash;
     }
 
@@ -59,8 +55,8 @@ public class PeriodoHorario implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final PeriodoHorario other = (PeriodoHorario) obj;
-        if (!Objects.equals(this.periodoHorarioId, other.periodoHorarioId)) {
+        final PeriodoEstablecimiento other = (PeriodoEstablecimiento) obj;
+        if (!Objects.equals(this.periodoEstablecimientoId, other.periodoEstablecimientoId)) {
             return false;
         }
         return true;
@@ -68,7 +64,7 @@ public class PeriodoHorario implements Serializable {
 
     @Override
     public String toString() {
-        return "PeriodoHorarioPrecio{" + "periodoHorarioPrecioId=" + (periodoHorarioId == null ? null : periodoHorarioId.toString()) + "'}'";
+        return "PeriodoEstablecimientoPrecio{" + "periodoEstablecimientoPrecioId=" + (periodoEstablecimientoId == null ? null : periodoEstablecimientoId.toString()) + "'}'";
     }
     
     /**
@@ -86,45 +82,30 @@ public class PeriodoHorario implements Serializable {
     }
 
     /**
-     * @return the horario
+     * @return the establecimiento
      */
-    public Horario getHorario() {
-        return horario;
+    public Establecimiento getEstablecimiento() {
+        return establecimiento;
     }
 
     /**
-     * @param horario the horario to set
+     * @param establecimiento the establecimiento to set
      */
-    public void setHorario(Horario horario) {
-        this.horario = horario;
+    public void setEstablecimiento(Establecimiento establecimiento) {
+        this.establecimiento = establecimiento;
     }
 
     /**
-     * @return the periodoHorarioId
+     * @return the periodoEstablecimientoId
      */
-    public PeriodoHorarioId getPeriodoHorarioPrecioId() {
-        return periodoHorarioId;
+    public PeriodoEstablecimientoId getPeriodoEstablecimientoPrecioId() {
+        return periodoEstablecimientoId;
     }
 
     /**
-     * @param periodoHorarioPrecioId the periodoHorarioId to set
+     * @param periodoEstablecimientoPrecioId the periodoEstablecimientoId to set
      */
-    public void setPeriodoHorarioPrecioId(PeriodoHorarioId periodoHorarioPrecioId) {
-        this.periodoHorarioId = periodoHorarioPrecioId;
+    public void setPeriodoEstablecimientoPrecioId(PeriodoEstablecimientoId periodoEstablecimientoPrecioId) {
+        this.periodoEstablecimientoId = periodoEstablecimientoPrecioId;
     }
-    
-    /**
-     * @return the orden
-     */
-    public Long getOrden() {
-        return orden;
-    }
-
-    /**
-     * @param orden the orden to set
-     */
-    public void setOrden(Long orden) {
-        this.orden = orden;
-    }
-
 }

@@ -1,0 +1,120 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://java.sun.com/jsf/html"                
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:messages />
+    <p:panel id="pnlSeleccionarHorarios" header="#{msj.seleccionarHorarios}">
+        <p:fieldset legend="#{msj.seleccionarFecha}">
+            <p:panelGrid id="pngSeleccionarFecha" columns="2">
+                <p:outputLabel
+                    value="#{msj.seleccionarPeriodo}: " />
+                <p:selectOneMenu
+                    id="somSeleccionarPeriodoParaHorario"
+                    value="#{ordenControlador.periodoSeleccionadoParaCalendario}"
+                    required="true"
+                    converter="omnifaces.SelectItemsConverter">
+                    <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                    <f:selectItems value="#{consultaControlador.generarSelectItemDePeriodosPorEstablecimiento(ordenControlador.establecimiento)}" />
+                </p:selectOneMenu>
+                <p:outputLabel
+                    for="@next"
+                    value="#{msj.seleccionarMes}" />
+                <p:selectOneMenu
+                    id="somSeleccionarMesParaHorario"
+                    value="#{ordenControlador.mesSeleccionado}"
+                    rendered="true"
+                    converter="omnifaces.SelectItemsConverter">
+                    <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                    <f:selectItems value="#{consultaControlador.generarSelectItemDeMeses()}" />                    
+                </p:selectOneMenu>
+            </p:panelGrid>
+        </p:fieldset>        
+        <p/>
+        <p:fieldset legend="#{msj.seleccionarTrabajo}">
+            <p:panelGrid id="pngSeleccionarTrabajoParaHorario" columns="2">
+                <p:outputLabel
+                    value="#{msj.seleccionarTrabajo}: " />
+                <p:selectOneMenu
+                    id="somSeleccionarTrabajoParaHorario"
+                    value="#{ordenControlador.vehiculoTrabajoParaHorario}"
+                    required="true"
+                    converter="omnifaces.SelectItemsConverter">
+                    <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                    <f:selectItems value="#{consultaControlador.generarSelectItemDeVehiculoTrabajoMapa(ordenControlador.mapaOrdenVehiculoTrabajo)}" />
+
+                </p:selectOneMenu>
+            </p:panelGrid>
+        </p:fieldset>
+        <p/>
+        <p:fieldset legend="#{msj.seleccionarEquipo}">
+            <p:panelGrid id="pngSeleccionarEquipo" columns="2">
+                <p:outputLabel
+                    value="#{msj.seleccionarEquipo}: " />
+                <p:selectOneMenu
+                    id="somSeleccionarEquipo"
+                    value="#{ordenControlador.vehiculoTrabajoParaHorario.equipo}"
+                    required="true"
+                    converter="omnifaces.SelectItemsConverter">
+                    <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                    <f:selectItems value="#{consultaControlador.generarSelectItemDeEquipos()}" />
+                    <p:ajax 
+                        event="change"
+                        process="@this somSeleccionarPeriodoParaHorario somSeleccionarMesParaHorario somSeleccionarTrabajoParaHorario"
+                        update=" pnlSeleccionarHorarios mensajeGeneral"
+                        listener="#{ordenControlador.cargarFechas()}"/>
+                </p:selectOneMenu>
+            </p:panelGrid>
+        </p:fieldset>
+        <p/>
+        <p:dataTable
+            id="tblListaFechasTrabajos"
+            var="pefHash"
+            scrollWidth="1100"
+            scrollable="true"
+            value="#{ordenControlador.listaPEF}">
+            <c:forEach var="dia" items="#{consultaControlador.generarSelectItemDeDias()}" >
+                <p:column headerText="#{dia.label}" rendered="#{dia.label ne 'DOMINGO'}" style="width: 400px">
+                    <h:outputText value="#{pefHash[dia.label].diaMes}" />
+                    <p/>
+                    <p:repeat var="pefHorario" value="#{pefHash[dia.label].listaPEFHorario}" >
+                        <p:panelGrid>
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="#{pefHorario.horario.horario}" />
+                                </p:column>
+                                <p:repeat var="horarioParqueadero" value="#{pefHorario.listaHorarioParqueadero}" > 
+                                    
+                                        <p:column styleClass="personalizar-celda" style="--color: #{consultaControlador.obtenerEstilo(horarioParqueadero)}">
+
+                                            <p:commandButton
+                                                id="btnParqueadero"
+                                                rendered="#{horarioParqueadero.horario.presentarPorDia(dia.label)}"
+                                                value="#{horarioParqueadero.orden}"
+                                                update=":frmGenerarOrden:tblListaFechasTrabajos mensajeGeneral"
+                                                action="#{ordenControlador.guardarHorarioVehiculoTrabajo(horarioParqueadero, ordenControlador.vehiculoTrabajoParaHorario)}"
+                                                />    
+
+                                        </p:column>
+                                    
+                                </p:repeat>
+                            </p:row>
+                        </p:panelGrid>
+                    </p:repeat>
+                </p:column>
+            </c:forEach>
+        </p:dataTable>
+    </p:panel>
+    <style>
+        .personalizar-celda {
+            border-width: 1px;
+            border-style: solid;
+            border-color: inherit;
+            padding: 4px 10px;
+            background-color:  var(--color);
+        }
+    </style>
+</ui:composition>

@@ -19,6 +19,7 @@
                         <p:selectOneMenu
                             id="somSeleccionarVehiculoParaTrabajo"
                             value="#{ordenControlador.vehiculoParaTrabajos}"
+                            required="true"
                             converter="omnifaces.SelectItemsConverter">
                             <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                             <f:selectItems value="#{ordenControlador.generarSelectItemDeVehiculosParaTrabajoMapa()}" />
@@ -58,7 +59,7 @@
                         <p:dataTable
                             id="tablaVehiculoTrabajo"
                             var="vehiculoTrabajo"
-                            value="#{ordenControlador.listaVehiculoTrabajo}">
+                            value="#{ordenControlador.mapaOrdenVehiculoTrabajo[ordenControlador.vehiculoParaTrabajos]}">
                             <p:column headerText="#{msj.descripcion}">
                                 <p:outputLabel value="#{vehiculoTrabajo.trabajoDescripcion}" />
                             </p:column>
@@ -73,7 +74,7 @@
                                 <p:commandButton
                                     id="btnEliminarTrabajo" 
                                     value="#{msj.eliminar}"
-                                    update="tablaVehiculoTrabajo"
+                                    update=":frmGenerarOrden:pngSeleccionarTrabajosParaAuto mensajeGeneral"
                                     action="#{ordenControlador.eliminarTrabajo(vehiculoTrabajo)}" />
                                 <p:commandButton
                                     id="btnConfigurarTrabajo" 
@@ -111,7 +112,7 @@
                         <p:dataTable
                             id="tablaTrabajoParte"
                             var="trabajoParte" 
-                            value="#{ordenControlador.vehiculoTrabajoSeleccionado.listaTrabajoParte}">
+                            value="#{ordenControlador.mapaVehiculoTrabajoParte[ordenControlador.vehiculoTrabajoSeleccionado]}">
                             <p:column headerText="#{msj.parte}">
                                 <p:outputLabel value="#{trabajoParte.parte.parte}" />
                             </p:column>
@@ -122,6 +123,10 @@
                                     converter="omnifaces.SelectItemsConverter">
                                     <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                                     <f:selectItems value="#{ordenControlador.generarSelectItemMaterial()}" />
+                                    <p:ajax                             
+                                        event="itemSelect"
+                                        update="tablaTrabajoParte mensajeGeneral"
+                                        listener="#{ordenControlador.actualizarTrabajoParte(trabajoParte)}"/>
                                 </p:selectOneMenu>
                             </p:column>
                             <p:column headerText="#{msj.acciones}">

@@ -6,17 +6,13 @@
 package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -52,9 +48,7 @@ public class Periodo implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date fin;
     
-    @OneToMany(mappedBy = "periodo", fetch = FetchType.EAGER)
-    private List<Horario> listaHorario;
-
+    
     @Embedded
     private GenericoEntidad genericoEntidad;
 

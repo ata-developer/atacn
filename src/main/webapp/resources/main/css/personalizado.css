@@ -1,0 +1,14 @@
+.ui-panelgrid-cell-black {
+    border-width: 1px;
+    border-style: solid;
+    border-color: inherit;
+    padding: 4px 10px;
+    background-color: #435A5F;
+}
+.ui-panelgrid-cell-green {
+    border-width: 1px;
+    border-style: solid;
+    border-color: inherit;
+    padding: 4px 10px;
+    background-color: #009900;
+}

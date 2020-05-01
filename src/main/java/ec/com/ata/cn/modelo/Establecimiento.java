@@ -18,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -78,11 +79,8 @@ public class Establecimiento implements Serializable {
     @JoinColumn(name="id_grupo_precio", referencedColumnName="id_grupo_precio")
     private GrupoPrecio grupoPrecio;
     
-    @ManyToOne
-    @JoinColumn(name="id_periodo", referencedColumnName="id_periodo")
-    private Periodo periodo;
-    
     @OneToMany(mappedBy = "establecimiento", fetch = FetchType.EAGER)
+    @OrderBy("numero ASC")
     private List<Parqueadero> listaParqueadero;
     
     public Establecimiento () {
@@ -283,23 +281,6 @@ public class Establecimiento implements Serializable {
         this.genericoEntidad = genericoEntidad;
     }
     
-    /**
-     * @return the periodo
-     */
-    public Periodo getPeriodo() {
-        return periodo;
-    }
-
-    /**
-     * @param periodo the periodo to set
-     */
-    public void setPeriodo(Periodo periodo) {
-        this.periodo = periodo;
-    }
-    
-    
-    
-
     /**
      * @return the listaParqueadero
      */

@@ -228,6 +228,10 @@
                         onblur="value = value.toUpperCase()">
                         <f:converter converterId="trimConverter" />
                     </p:inputText>
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.escogerColor}" />
+                    <p:colorPicker value="#{usuarioControlador.equipo.color}" /> 
                     <p:commandButton
                         id="btnGuardarEquipo" 
                         value="#{msj.guardar}"
@@ -248,6 +252,9 @@
                     <p:column headerText="#{msj.equipo}">
                         <h:outputText value="#{equipo.equipo}" />
                     </p:column>
+                    <p:column headerText="#{msj.color}">
+                        <h:outputText value="#{equipo.color}" />
+                    </p:column>
                 </p:dataTable>                
             </p:fieldset>
             <p/>
@@ -264,7 +271,7 @@
                         <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                         <f:selectItems value="#{usuarioControlador.generarSelectItemDeUsuarios()}" />
                     </p:selectOneMenu>
-                    
+
                     <p:outputLabel
                         for="@next"
                         value="#{msj.equipo}" />
@@ -286,13 +293,13 @@
                     <p:outputLabel
                         id="labelEquipoSeleccionado"
                         value="#{usuarioControlador.equipoSeleccionado.equipo}" />
-                    
+
 
                     <p:commandButton
                         id="btnGuardarEquipoUsuario" 
                         value="#{msj.guardar}"
-                        process="pngAdministrarEquipoPersona"
-                        update="labelEquipoSeleccionado tblListaEquipoUsuario mensajeGeneral"
+                        process="@this pngAdministrarEquipoPersona"
+                        update="pngAdministrarEquipoPersona tblListaEquipoUsuario mensajeGeneral"
                         action="#{usuarioControlador.actualizarEquipoUsuario()}" />
                     <p:outputLabel
                         value="" />

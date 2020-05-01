@@ -18,6 +18,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -119,7 +120,7 @@ public class GenericoDaoUtil<T, I extends Serializable> {
             CriteriaBuilder cb = em.getCriteriaBuilder();
             CriteriaQuery<T> query = cb.createQuery(tablaEntidad);
             Root<T> root = query.from(tablaEntidad);
-
+            List<Order> listOrder = new ArrayList<>();
             Field[] fields = tablaEntidad.getDeclaredFields();
             for (Field field : fields) {
                 
@@ -141,8 +142,18 @@ public class GenericoDaoUtil<T, I extends Serializable> {
                             cb.upper(root.<String>get(field.getName())),
                             "%" + parametroCadena.toUpperCase() + "%")));
                 }
+                if (parametros.containsKey(field.getName().concat("OrderByDesc"))) {
+                    listOrder.add(cb.desc(root.get(field.getName())));
+                }
+                if (parametros.containsKey(field.getName().concat("OrderByAsc"))) {
+                    listOrder.add(cb.asc(root.get(field.getName())));
+                }
+                
             }
             query.select(root).where(predicates.toArray(new Predicate[predicates.size()]));
+            if (listOrder.size() > 0 ) {
+                query.orderBy(listOrder);
+            }
             return em.createQuery(query).getResultList();
         }
     }

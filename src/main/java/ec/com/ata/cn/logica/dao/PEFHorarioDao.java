@@ -6,7 +6,7 @@
 package ec.com.ata.cn.logica.dao;
 
 import ec.com.ata.cn.logica.util.gestor.GenericoDaoUtil;
-import ec.com.ata.cn.modelo.MarcaVehiculo;
+import ec.com.ata.cn.modelo.PEFHorario;
 import javax.ejb.Stateless;
 
 /**
@@ -14,11 +14,10 @@ import javax.ejb.Stateless;
  * @author ATA1
  */
 @Stateless
-public class MarcaVehiculoDao extends GenericoDaoUtil<MarcaVehiculo, Long>{
+public class PEFHorarioDao extends GenericoDaoUtil<PEFHorario, Long>{
     
-    public MarcaVehiculoDao() {
-        super(MarcaVehiculo.class);
+    public PEFHorarioDao() {
+        super(PEFHorario.class);
     }
-    
     
 }

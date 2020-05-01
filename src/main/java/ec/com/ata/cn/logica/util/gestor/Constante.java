@@ -77,7 +77,13 @@ public class Constante {
     public static final String ERROR_PRECIOS_CONTROLADOR_GUARDAR_ROOT = " 005 ";
     public static final String ERROR_MATERIAL = " 006 ";
     public static final String ERROR_COLOR = " 007 ";
+    public static final String ERROR_LISTA_TRABAJO = " 008 ";
+    public static final String ERROR_LISTA_TRABAJO_MENSAJE = "Uno de los vehiculos no tiene trabajos asignados";
+    public static final String ERROR_LISTA_VEHICULOS = " 008 ";
+    public static final String ERROR_LISTA_VEHICULOS_MENSAJE = "Seleccione uno o mas vehiculos";
 
+
+    
     public static final String TRABAJO_CATEGORIA = "TRABAJO/CATEGORIA";
 
     public static final String SALT = "Br6Jew==";

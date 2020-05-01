@@ -117,6 +117,7 @@ public class UsuarioControlador extends BaseControlador {
             usuarioBean.crear(getUsuario());
             listaUsuario = usuarioBean.obtenerLista();            
             addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+            setUsuario(new Usuario());
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
             if (null != root) {
@@ -124,8 +125,6 @@ public class UsuarioControlador extends BaseControlador {
                 return;
             }
             addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
-        } finally {
-            setUsuario(new Usuario());
         }
     }
     

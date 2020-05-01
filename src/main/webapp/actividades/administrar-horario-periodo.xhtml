@@ -46,7 +46,7 @@
                         id="btnGuardarPeriodo" 
                         value="#{msj.guardar}"
                         process="pngAdministrarPeriodo"
-                        update="pngAdministrarPeriodo dtListaPeriodos mensajeGeneral"
+                        update="pngAdministrarPeriodo fdAdministrarPeriodoHorario dtListaPeriodos mensajeGeneral"
                         action="#{horarioControlador.guardarPeriodo()}" />
                     <p:outputLabel
                         value="" />
@@ -253,7 +253,8 @@
                         <p:ajax 
                             event="change"
                             process="@this"
-                            update="pngAdministrarPeriodoHorario  mensajeGeneral"/>
+                            listener="#{horarioControlador.cargarListaPeriodoHorario()}"
+                            update="pngAdministrarPeriodoHorario dtListaPeriodoHorario mensajeGeneral"/>
                     </p:selectOneMenu>
 
                     <p:outputLabel

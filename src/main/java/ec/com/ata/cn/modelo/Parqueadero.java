@@ -42,7 +42,7 @@ public class Parqueadero implements Serializable {
     private String parqueadero;
     
     @Column(name = "numero")
-    private String numero;
+    private Long numero;
     
     @ManyToOne
     @JoinColumn(name = "id_establecimiento", referencedColumnName = "id_establecimiento")
@@ -130,14 +130,14 @@ public class Parqueadero implements Serializable {
     /**
      * @return the numero
      */
-    public String getNumero() {
+    public Long getNumero() {
         return numero;
     }
 
     /**
      * @param numero the numero to set
      */
-    public void setNumero(String numero) {
+    public void setNumero(Long numero) {
         this.numero = numero;
     }
 

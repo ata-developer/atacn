@@ -33,10 +33,6 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 @Named
 public class HorarioControlador extends BaseControlador {
 
-    
-
-    
-
     @Inject
     private PeriodoBean periodoBean; 
     
@@ -80,15 +76,17 @@ public class HorarioControlador extends BaseControlador {
         setListaParqueaderoSeleccionado(new ArrayList<Parqueadero>());        
     }
     
-    public void cargarListaParquederos() {
-        setListaParqueaderoSeleccionado(getEstablecimientoSeleccionado().getListaParqueadero());
-        System.out.println("tama;o lista: "+getListaParqueaderoSeleccionado().size());
+    public void cargarListaPeriodoHorario () {
+        HashMap <String, Object> parametros = new HashMap<>();
+        parametros.put("periodo", getPeriodoSeleccionado());
+        setListaPeriodoHorario(periodoHorarioBean.obtenerListaPorParametros(parametros));
     }
     
     public void guardarPeriodoHorario() {
         try {
             PeriodoHorario periodoHorario = new PeriodoHorario();
             periodoHorario.setPeriodo(getPeriodoSeleccionado());
+            periodoHorario.setOrden(getHorarioSeleccionado().getPosicion());
             periodoHorario.setHorario(getHorarioSeleccionado());
             periodoHorarioBean.crear(periodoHorario);
             HashMap<String,Object> parametros = new HashMap();

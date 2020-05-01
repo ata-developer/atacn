@@ -2,6 +2,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/templateATA.xhtml">
 
@@ -123,24 +124,14 @@
                         <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                         <f:selectItems value="#{establecimientoControlador.generarSelectItemDeUsuario()}" />                        
                     </h:selectOneMenu>
-                    
-                    <p:outputLabel
-                        for="@next"
-                        value="#{msj.seleccionarPeriodo}" />
-                    <h:selectOneMenu
-                        id="somSeleccionarPeriodo"
-                        value="#{establecimientoControlador.establecimiento.periodo}"
-                        required="true"
-                        requiredMessage="#{msj.campoNecesario}"
-                        converter="omnifaces.SelectItemsConverter">
-                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
-                        <f:selectItems value="#{consultaControlador.generarSelectItemDePeriodos()}" />                        
-                    </h:selectOneMenu>
+
+
 
                     <p:commandButton
                         id="btnGuardar" 
                         value="#{msj.guardar}"
-                        update=":frmAdministrarEstablecimiento:pngAdministrarEstablecimiento :frmAdministrarEstablecimiento:tblListaEstablecimiento mensajeGeneral"
+                        process="@this pngAdministrarEstablecimiento"
+                        update="pngAdministrarEstablecimiento tblListaEstablecimiento mensajeGeneral"
                         action="#{establecimientoControlador.guardar()}" />
                     <p:outputLabel
                         value="" />
@@ -166,10 +157,6 @@
                         <h:outputText value="#{establecimiento.ciudad.ciudad}" />
                     </p:column>
 
-                    <p:column headerText="#{msj.periodo}">
-                        <h:outputText value="#{establecimiento.periodo.periodo}" />
-                    </p:column>
-
                     <p:column headerText="#{msj.callePrincipal}">
                         <h:outputText value="#{establecimiento.callePrincipal}" />
                     </p:column>
@@ -179,7 +166,7 @@
                             id="btnSeleccionar" 
                             value="#{msj.seleccionar}"
                             process="@this tblListaEstablecimiento"
-                            update="frmAdministrarEstablecimiento mensajeGeneral"
+                            update="frmAdministrarEstablecimiento  mensajeGeneral"
                             action="#{establecimientoControlador.seleccionarEstablecimiento(establecimiento)}" />
                     </p:column>
                 </p:dataTable>
@@ -204,12 +191,12 @@
                         onblur="value = value.toUpperCase()">
                         <f:converter converterId="trimConverter" />
                     </p:inputText>
-                    
+
                     <p:outputLabel
                         for="@next"
                         value="#{msj.numeroDeParqueadero}" />                    
                     <p:inputMask
-                        id="imOrden"
+                        id="imNumero"
                         required="true"
                         value="#{establecimientoControlador.parqueadero.numero}" 
                         mask="99"/>
@@ -217,8 +204,8 @@
                     <p:commandButton
                         id="btnGuardarParqueadero" 
                         value="#{msj.guardar}"
-                        process="@this itParqueadero tblListaEstablecimiento"
-                        update="itParqueadero tblListaParqueadero mensajeGeneral"
+                        process="@this pngAdministrarParqueadero"
+                        update="pngAdministrarParqueadero tblListaParqueadero mensajeGeneral"
                         action="#{establecimientoControlador.guardarParqueadero()}" />
                     <p:outputLabel
                         value="" />
@@ -229,60 +216,169 @@
                 <p:dataTable
                     id="tblListaParqueadero"                
                     var="parqueadero" 
-                    value="#{establecimientoControlador.listaParqueaderos}">
+                    value="#{establecimientoControlador.listaParqueadero}">
                     <f:facet name="header">
                         #{msj.listaDeParqueaderos}
                     </f:facet>
                     <p:column headerText="#{msj.parqueadero}">
                         <h:outputText value="#{parqueadero.parqueadero}" />
                     </p:column>
-                    
+
                     <p:column headerText="#{msj.numeroDeParqueadero}">
                         <h:outputText value="#{parqueadero.numero}" />
                     </p:column>
                 </p:dataTable>
             </p:fieldset>
             <p/>
+            <p:fieldset id="fdAdministrarPeriodoEstablecimiento" legend="#{msj.configurarPeriodoParaEstablecimiento}">
+                <p:panelGrid id="pngAdministrarPeriodoEstablecimiento" columns="2">
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.seleccionarPeriodo}" />
+                    <p:selectOneMenu
+                        id="somSeleccionarPeriodo"
+                        value="#{establecimientoControlador.periodoSeleccionado}"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{consultaControlador.generarSelectItemDePeriodos()}" />                        
+                    </p:selectOneMenu>
+                    <p:commandButton
+                        id="btnGuardarPeriodoEstablecimiento" 
+                        value="#{msj.agregar}"
+                        process="@this pngAdministrarPeriodoEstablecimiento"
+                        update="pngAdministrarPeriodoEstablecimiento :frmAdministrarEstablecimiento:tblListaPeriodoEstablecimiento mensajeGeneral"
+                        action="#{establecimientoControlador.guardarPeriodoEstablecimiento()}" />
+                    <p:outputLabel
+                        value="" />
+                </p:panelGrid>
+                <p/>
+                <p:dataTable
+                    id="tblListaPeriodoEstablecimiento"                
+                    var="periodoEstablecimiento" 
+                    value="#{establecimientoControlador.listaPeriodoEstablecimiento}">
+                    <f:facet name="header">
+                        #{msj.listaPeriodoEstablecimiento}
+                    </f:facet>
+                    <p:column headerText="#{msj.periodo}">
+                        <h:outputText value="#{periodoEstablecimiento.periodo.periodo}" />
+                    </p:column>
+                </p:dataTable>
+
+
+            </p:fieldset>
+            <p/>
             <p:fieldset id="fdAdministrarPeriodoParaEstablecimiento" legend="#{msj.configurarPeriodoParaEstablecimiento}">
                 <p:panelGrid id="pngAdministrarPeriodoParaEstablecimiento" columns="2">
                     <p:outputLabel
                         for="@next"
-                        value="#{msj.seleccionarEstablecimiento}" />
-                    <p:selectOneMenu
-                        id="somSeleccionarEstablecimiento"
-                        value="#{establecimientoControlador.establecimientoSeleccionado}"
-                        converter="omnifaces.SelectItemsConverter">
-                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
-                        <f:selectItems value="#{consultaControlador.generarSelectItemDeEstablecimientos()}" />
-                        <p:ajax 
-                            event="change"
-                            process="@this"
-                            update="pngAdministrarPeriodoParaEstablecimiento  mensajeGeneral"
-                            />
-                    </p:selectOneMenu>
-                    
+                        value="#{msj.establecimientoSeleccionado}" />
                     <p:outputLabel
-                        for="@next"
-                        value="#{msj.periodoSeleccionado}" />
-                    <p:outputLabel                    
-                        value="#{establecimientoControlador.establecimientoSeleccionado.periodo.periodo}" />
+                        value="#{establecimientoControlador.establecimientoSeleccionado.nombre}" />
 
                     <p:outputLabel
                         for="@next"
-                        value="#{msj.horarioSeleccionado}" />
-                    <p:outputLabel
-                        value="#{establecimientoControlador.establecimientoSeleccionado.nombre}" />
-                    
+                        value="#{msj.seleccionarPeriodo}" />
+                    <p:selectOneMenu
+                        id="somSeleccionarPeriodoParaProcesar"
+                        value="#{establecimientoControlador.periodoSeleccionado}"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{consultaControlador.generarSelectItemDePeriodos(establecimientoControlador.listaPeriodoEstablecimiento)}" />                        
+                    </p:selectOneMenu>
+
+
+
                     <p:outputLabel
                         for="@next"
                         value="#{msj.numeroDeParqueaderos}" />
                     <p:outputLabel
-                        value="#{establecimientoControlador.establecimientoSeleccionado.listaParqueadero.size()}" />
+                        value="#{establecimientoControlador.listaParqueadero.size()}" />
 
-                    
+                    <p:commandButton
+                        id="btnProcesarHorarios" 
+                        value="#{msj.procesarHorarios}"
+                        process="@this pngAdministrarPeriodoParaEstablecimiento"
+                        update="pngAdministrarPeriodoParaEstablecimiento mensajeGeneral"
+                        action="#{establecimientoControlador.procesarHorarios()}" />
+                    <p:outputLabel
+                        value="" />                    
                 </p:panelGrid>
+                <p/>
+                <p:panelGrid id="pngAdministrarFechas" columns="2">
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.establecimientoSeleccionado}" />
+                    <p:outputLabel
+                        value="#{establecimientoControlador.establecimientoSeleccionado.nombre}" />
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.seleccionarPeriodo}" />
+                    <p:selectOneMenu
+                        id="somSeleccionarPeriodoParaCalendario"
+                        value="#{establecimientoControlador.periodoSeleccionadoParaCalendario}"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{consultaControlador.generarSelectItemDePeriodos(establecimientoControlador.listaPeriodoEstablecimiento)}" />                        
+                    </p:selectOneMenu>
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.seleccionarMes}" />
+                    <p:selectOneMenu
+                        id="somSeleccionarMes"
+                        value="#{establecimientoControlador.mesSeleccionado}"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{consultaControlador.generarSelectItemDeMeses()}" />
+                        <p:ajax 
+                            event="change"
+                            process="@this pngAdministrarFechas"
+                            update=" tblListaFechas2 mensajeGeneral"
+                            listener="#{establecimientoControlador.cargarFechas()}"
+                            />
+                    </p:selectOneMenu>
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.seleccionarMes}" />
+                    <p:outputLabel
+                        value="#{establecimientoControlador.mesSeleccionado}"/>
+                </p:panelGrid>
+                <p/>
+                <p:dataTable
+                    id="tblListaFechas2"
+                    var="pefHash"
+                    scrollWidth="1100"
+                    scrollable="true"
+                    value="#{establecimientoControlador.listaPEF}">
+                    <c:forEach var="dia" items="#{consultaControlador.generarSelectItemDeDias()}" >
+                        <p:column headerText="#{dia.label}" rendered="#{dia.label ne 'DOMINGO'}" style="width: 400px">
+                            <h:outputText value="#{pefHash[dia.label].diaMes}" />
+                            <p/>
+                            <p:repeat var="pefHorario" value="#{pefHash[dia.label].listaPEFHorario}" >
+                                <p:panelGrid>
+                                    <p:row>
+                                        <p:column>
+                                            <h:outputText value="#{pefHorario.horario.horario}" />
+                                        </p:column>
+                                        <p:repeat var="horarioParqueadero" value="#{pefHorario.listaHorarioParqueadero}" >
+                                            <p:column>
+                                                <p:commandButton
+                                                    id="btnParqueadero" 
+                                                    value="#{horarioParqueadero.orden}"/>
+                                            </p:column>
+                                        </p:repeat>
+                                    </p:row>
+                                </p:panelGrid>
+                            </p:repeat>
+                        </p:column>
+                    </c:forEach>
+                </p:dataTable>
             </p:fieldset>
-
         </h:form>
     </ui:define>
 </ui:composition>
