@@ -7,7 +7,6 @@ package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -21,8 +20,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 /**
  *
@@ -33,6 +30,7 @@ import javax.persistence.TemporalType;
 @Table ( name = "vehiculo_trabajo")
 public class VehiculoTrabajo implements Serializable {
 
+    
     
   
     @Id
@@ -78,6 +76,15 @@ public class VehiculoTrabajo implements Serializable {
     
     @Column(name = "precio_saldo_tarjeta")
     private BigDecimal precioSaldoTarjeta;
+    
+    @Column(name = "tipo_tarjeta")
+    private String tipoTarjeta;
+    
+    @Column(name = "banco")
+    private String banco;
+    
+    @Column(name = "lote")
+    private String lote;
     
     @ManyToOne
     @JoinColumn(name="id_parte", referencedColumnName="id_parte")
@@ -336,4 +343,47 @@ public class VehiculoTrabajo implements Serializable {
     public void setOrdenVehiculo(OrdenVehiculo ordenVehiculo) {
         this.ordenVehiculo = ordenVehiculo;
     }
+    
+    /**
+     * @return the tipoTarjeta
+     */
+    public String getTipoTarjeta() {
+        return tipoTarjeta;
+    }
+
+    /**
+     * @param tipoTarjeta the tipoTarjeta to set
+     */
+    public void setTipoTarjeta(String tipoTarjeta) {
+        this.tipoTarjeta = tipoTarjeta;
+    }
+
+    /**
+     * @return the banco
+     */
+    public String getBanco() {
+        return banco;
+    }
+
+    /**
+     * @param banco the banco to set
+     */
+    public void setBanco(String banco) {
+        this.banco = banco;
+    }
+
+    /**
+     * @return the lote
+     */
+    public String getLote() {
+        return lote;
+    }
+
+    /**
+     * @param lote the lote to set
+     */
+    public void setLote(String lote) {
+        this.lote = lote;
+    }
+
 }

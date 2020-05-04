@@ -1,0 +1,157 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://java.sun.com/jsf/html"                
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:messages />
+    <p:panel id="pnlSeleccionarPago" header="#{msj.pagos}">
+        <p:fieldset legend="#{msj.administrarPagos}">
+            <p:dataTable
+                id="tblListaVehiculoTrabajoPago"
+                var="vehiculoTrabajo"
+                value="#{ordenControlador.generartListaVehiculoTrabajoPago()}">
+                <p:column headerText="#{msj.numeroOrden}">
+                    <p:outputLabel value="#{vehiculoTrabajo.ordenVehiculo.idOrdenVehiculo}" />
+                </p:column>
+                <p:column headerText="#{msj.descripcion}">
+                    <p:outputLabel value="#{vehiculoTrabajo.trabajoDescripcion}" />
+                </p:column>
+                <p:column headerText="#{msj.precioVentaPublico}">
+                    <p:outputLabel value="#{vehiculoTrabajo.precioVentaPublico}" />
+                </p:column>
+                <p:column headerText="#{msj.precioDescuento}">
+                    <p:outputLabel value="#{vehiculoTrabajo.precioDescuento}" />
+                </p:column>
+                <p:column headerText="#{msj.acciones}">
+                    <p:commandButton
+                        value="#{msj.configurar}"
+                        actionListener="#{ordenControlador.seleccionarVehiculoTrabajoPago(vehiculoTrabajo)}"
+                        />
+                </p:column>
+            </p:dataTable>
+            <p/>
+            <p:panelGrid id="pnlEfectivoTarjeta" columns="1">
+                <p:column>
+                    <p:outputLabel
+                        value="#{msj.elegirPago}" /> 
+                </p:column>
+                <p:selectOneMenu
+                    id="somSeleccionarEfectivoTarjeta"
+                    value="#{ordenControlador.pagoTarjeta}"
+                    required="true">
+                    <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                    <f:selectItem itemLabel="#{msj.si}" value="#{true}" />
+                    <f:selectItem itemLabel="#{msj.no}" value="#{false}" />
+                    <p:ajax 
+                        event="change"
+                        process="@this somSeleccionarEfectivoTarjeta"
+                        update=" pnlConfigurarPrecio tblListaVehiculoValores mensajeGeneral"/>
+                </p:selectOneMenu>
+            </p:panelGrid>
+            <p/>
+            <p:panelGrid id="pnlConfigurarPrecio" columns="4">
+                <p:outputLabel
+                    for="@next"
+                    rendered="#{!ordenControlador.pagoTarjeta}"
+                    value="#{msj.precioAbonoEfectivo}" />                    
+                <p:inputText
+                    id="iTnumeracion"
+                    required="true"
+                    rendered="#{!ordenControlador.pagoTarjeta}"
+                    value="#{ordenControlador.vehiculoTrabajoPago.precioAbonoEfectivo}"/>
+                <p:outputLabel
+                    for="@next"
+                    rendered="#{!ordenControlador.pagoTarjeta}"
+                    value="#{msj.precioSaldoEfectivo}" />                    
+                <p:inputText
+                    id="iTnumeracion"
+                    required="true"
+                    rendered="#{!ordenControlador.pagoTarjeta}"
+                    value="#{ordenControlador.vehiculoTrabajoPago.precioSaldoEfectivo}"/>
+                <p:outputLabel
+                    for="@next"
+                    rendered="#{ordenControlador.pagoTarjeta}"
+                    value="#{msj.precioAbonoTarjeta}" />                    
+                <p:inputText
+                    id="iTnumeracion"
+                    required="true"
+                    rendered="#{ordenControlador.pagoTarjeta}"
+                    value="#{ordenControlador.vehiculoTrabajoPago.precioAbonoTarjeta}"/>
+                <p:outputLabel
+                    for="@next"
+                    rendered="#{ordenControlador.pagoTarjeta}"
+                    value="#{msj.precioSaldoTarjeta}" />                    
+                <p:inputText
+                    id="iTnumeracion"
+                    required="true"
+                    rendered="#{ordenControlador.pagoTarjeta}"
+                    value="#{ordenControlador.vehiculoTrabajoPago.precioSaldoTarjeta}"/>
+                <p:outputLabel
+                    for="@next"
+                    rendered="#{ordenControlador.pagoTarjeta}"
+                    value="#{msj.tipoTarjeta}" />                    
+                <p:inputText
+                    id="iTnumeracion"
+                    required="true"
+                    rendered="#{ordenControlador.pagoTarjeta}"
+                    value="#{ordenControlador.vehiculoTrabajoPago.tipoTarjeta}"/>
+                <p:outputLabel
+                    for="@next"
+                    rendered="#{ordenControlador.pagoTarjeta}"
+                    value="#{msj.banco}" />                    
+                <p:inputText
+                    id="iTnumeracion"
+                    required="true"
+                    rendered="#{ordenControlador.pagoTarjeta}"
+                    value="#{ordenControlador.vehiculoTrabajoPago.banco}"/>
+                <p:outputLabel
+                    for="@next"
+                    rendered="#{ordenControlador.pagoTarjeta}"
+                    value="#{msj.numeroLote}" />                    
+                <p:inputText
+                    id="iTnumeracion"
+                    required="true"
+                    rendered="#{ordenControlador.pagoTarjeta}"
+                    value="#{ordenControlador.vehiculoTrabajoPago.lote}"/>
+                <p:outputLabel
+                    value="" />
+                <p:outputLabel
+                    value="" />
+            </p:panelGrid>
+            <p/>
+            <p:dataTable
+                id="tblListaVehiculoValores"
+                var="vehiculoTrabajoTmp"
+                value="#{ordenControlador.generartListaVehiculoTrabajoPago()}">
+                <p:column headerText="#{msj.numeroOrden}">
+                    <p:outputLabel value="#{vehiculoTrabajoTmp.ordenVehiculo.idOrdenVehiculo}" />
+                </p:column>
+                <p:column headerText="#{msj.precioAbonoEfectivo}">
+                    <p:outputLabel value="#{vehiculoTrabajoTmp.precioAbonoEfectivo}" />
+                </p:column>
+                <p:column headerText="#{msj.precioSaldoEfectivo}">
+                    <p:outputLabel value="#{vehiculoTrabajoTmp.precioSaldoEfectivo}" />
+                </p:column>
+                <p:column headerText="#{msj.precioAbonoTarjeta}">
+                    <p:outputLabel value="#{vehiculoTrabajoTmp.precioAbonoTarjeta}" />
+                </p:column>
+                <p:column headerText="#{msj.precioSaldoTarjeta}">
+                    <p:outputLabel value="#{vehiculoTrabajoTmp.precioSaldoTarjeta}" />
+                </p:column>
+                <p:column headerText="#{msj.tipoTarjeta}">
+                    <p:outputLabel value="#{vehiculoTrabajoTmp.tipoTarjeta}" />
+                </p:column>
+                <p:column headerText="#{msj.banco}">
+                    <p:outputLabel value="#{vehiculoTrabajoTmp.banco}" />
+                </p:column>
+                <p:column headerText="#{msj.lote}">
+                    <p:outputLabel value="#{vehiculoTrabajoTmp.lote}" />
+                </p:column>
+            </p:dataTable>
+        </p:fieldset>        
+        <p/>
+    </p:panel>
+</ui:composition>

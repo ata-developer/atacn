@@ -95,4 +95,5 @@ public class Constante {
     public static final String SUPERIOR = "SUPERIOR";
     public static final String RANGO = "RANGO";
     
+    public static final String MENSAJE_SELECCIONADO = "NO PUEDE SELECCIONAR ESTE HORARIO, YA ESTA OCUPADO";
 }

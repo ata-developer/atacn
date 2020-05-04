@@ -39,6 +39,7 @@ import ec.com.ata.cn.modelo.TrabajoParte;
 import ec.com.ata.cn.modelo.Usuario;
 import ec.com.ata.cn.modelo.Vehiculo;
 import ec.com.ata.cn.modelo.VehiculoTrabajo;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -60,8 +61,8 @@ import org.primefaces.event.FlowEvent;
  */
 @ViewScoped
 @Named
-public class OrdenControlador extends BaseControlador {
-
+public class OrdenControlador extends BaseControlador {    
+    
     @Inject
     private VehiculoBean vehiculoBean;
 
@@ -177,6 +178,14 @@ public class OrdenControlador extends BaseControlador {
     private HashMap<VehiculoTrabajo, List<TrabajoParte>> mapaVehiculoTrabajoParte;
 
     private VehiculoTrabajo vehiculoTrabajoParaHorario;
+    
+    private BigDecimal totalDescuento;
+    
+    private BigDecimal totalPVP;
+    
+    private Boolean pagoTarjeta = false;
+    
+    private VehiculoTrabajo vehiculoTrabajoPago;
 
     @PostConstruct
     public void init() {
@@ -202,15 +211,37 @@ public class OrdenControlador extends BaseControlador {
         setMapaOrdenVehiculoListaTrabajos(new HashMap<OrdenVehiculo, List<TrabajoCategoriaPrecio>>());
         setMapaOrdenVehiculoTrabajo(new HashMap<OrdenVehiculo, List<VehiculoTrabajo>>());
         setMapaVehiculoTrabajoParte(new HashMap<VehiculoTrabajo, List<TrabajoParte>>());
+        setVehiculoTrabajoPago(new VehiculoTrabajo());
     }
-
+    
+    public void seleccionarVehiculoTrabajoPago(VehiculoTrabajo vehiculoTrabajoEntrada){
+        setVehiculoTrabajoPago(vehiculoTrabajoEntrada);
+    }
+    
+    public List<VehiculoTrabajo> generartListaVehiculoTrabajoPago() {
+        List<VehiculoTrabajo> listaVehiculoTrabajosFinal = new ArrayList<>();
+        for (OrdenVehiculo ordenVehiculo : mapaOrdenVehiculoTrabajo.keySet()) {
+            List<VehiculoTrabajo> listaVehiculoTrabajos = mapaOrdenVehiculoTrabajo.get(ordenVehiculo);
+            for (VehiculoTrabajo listaVehiculoTrabajoTmp : listaVehiculoTrabajos) {
+                listaVehiculoTrabajosFinal.add(listaVehiculoTrabajoTmp);
+            }
+        }
+        return listaVehiculoTrabajosFinal;
+    }
+    
     public void guardarHorarioVehiculoTrabajo(HorarioParqueadero horarioParqueaderoEntrada, VehiculoTrabajo vehiculoTrabajoEntrada) {
         try {
-            if (null != horarioParqueaderoEntrada.getVehiculoTrabajo() && horarioParqueaderoEntrada.getVehiculoTrabajo().getIdVehiculoTrabajo() == vehiculoTrabajoEntrada.getIdVehiculoTrabajo()) {
+            if (null != horarioParqueaderoEntrada.getVehiculoTrabajo() && 
+                    horarioParqueaderoEntrada.getVehiculoTrabajo().getIdVehiculoTrabajo().equals(vehiculoTrabajoEntrada.getIdVehiculoTrabajo())) {
                 horarioParqueaderoEntrada.setVehiculoTrabajo(null);
                 horarioParqueaderoBean.modificar(horarioParqueaderoEntrada);
                 cargarFechasPrivado();
                 addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+                return;
+            }
+            if (null != horarioParqueaderoEntrada.getVehiculoTrabajo() &&
+                    !horarioParqueaderoEntrada.getVehiculoTrabajo().getIdVehiculoTrabajo().equals(vehiculoTrabajoEntrada.getIdVehiculoTrabajo())) {
+                addInfoMessage(Constante.MENSAJE_SELECCIONADO, Constante.MENSAJE_SELECCIONADO);
                 return;
             }
             System.out.println("guardarHorarioVehiculoTrabajo");
@@ -419,7 +450,7 @@ public class OrdenControlador extends BaseControlador {
             vehiculoTrabajo.setIdVehiculo(ordenVehiculoEntrada.getIdOrdenVehiculo());
             vehiculoTrabajo.setPrecioVentaPublico(trabajoCategoriaPrecio.getPrecioVentaPublico());
             vehiculoTrabajo.setPrecioDescuento(trabajoCategoriaPrecio.getPrecioDescuento());
-            vehiculoTrabajo.setVehiculoDescripcion(ordenVehiculoEntrada.getVehiculo().getDescripcion());
+            vehiculoTrabajo.setVehiculoDescripcion(ordenVehiculoEntrada.getVehiculo().getModelo());
             vehiculoTrabajo.setTrabajoDescripcion(trabajoCategoriaPrecio.getTrabajo().getDescripcion());
             vehiculoTrabajo.setPartePrincipal(trabajoCategoriaPrecio.getParte());
             vehiculoTrabajo.setGenericoEntidad(new GenericoEntidad());
@@ -1227,4 +1258,59 @@ public class OrdenControlador extends BaseControlador {
         this.vehiculoTrabajoParaHorario = vehiculoTrabajoParaHorario;
     }
 
+    /**
+     * @return the totalDescuento
+     */
+    public BigDecimal getTotalDescuento() {
+        return totalDescuento;
+    }
+
+    /**
+     * @param totalDescuento the totalDescuento to set
+     */
+    public void setTotalDescuento(BigDecimal totalDescuento) {
+        this.totalDescuento = totalDescuento;
+    }
+
+    /**
+     * @return the totalPVP
+     */
+    public BigDecimal getTotalPVP() {
+        return totalPVP;
+    }
+
+    /**
+     * @param totalPVP the totalPVP to set
+     */
+    public void setTotalPVP(BigDecimal totalPVP) {
+        this.totalPVP = totalPVP;
+    }
+    
+    /**
+     * @return the pagoTarjeta
+     */
+    public Boolean getPagoTarjeta() {
+        return pagoTarjeta;
+    }
+
+    /**
+     * @param pagoTarjeta the pagoTarjeta to set
+     */
+    public void setPagoTarjeta(Boolean pagoTarjeta) {
+        this.pagoTarjeta = pagoTarjeta;
+    }
+    
+    /**
+     * @return the vehiculoTrabajoPago
+     */
+    public VehiculoTrabajo getVehiculoTrabajoPago() {
+        return vehiculoTrabajoPago;
+    }
+
+    /**
+     * @param vehiculoTrabajoPago the vehiculoTrabajoPago to set
+     */
+    public void setVehiculoTrabajoPago(VehiculoTrabajo vehiculoTrabajoPago) {
+        this.vehiculoTrabajoPago = vehiculoTrabajoPago;
+    }
 }
