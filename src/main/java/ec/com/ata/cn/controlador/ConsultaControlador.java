@@ -110,6 +110,27 @@ public class ConsultaControlador extends BaseControlador {
 
         return selectItemsBuilder.buildList();
     }
+    
+    public List<SelectItem> generarTipoPago() {
+
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+
+        selectItemsBuilder.add("EFECTIVO", getBundle("pagoEfectivo"));
+        selectItemsBuilder.add("TRANSFERENCIA", getBundle("pagoTransferencia"));
+        selectItemsBuilder.add("TARJETA", getBundle("pagoTarjeta"));
+
+        return selectItemsBuilder.buildList();
+    }
+    
+    public List<SelectItem> generarSiNo() {
+
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+
+        selectItemsBuilder.add(Boolean.TRUE, getBundle("si"));
+        selectItemsBuilder.add(Boolean.FALSE, getBundle("no"));
+
+        return selectItemsBuilder.buildList();
+    }
 
     public List<SelectItem> generarSelectItemDeTrabajoParte(TrabajoCategoriaPrecio trabajoCategoriaPrecioEntrada) {
         HashMap<String, Object> parametros = new HashMap<>();

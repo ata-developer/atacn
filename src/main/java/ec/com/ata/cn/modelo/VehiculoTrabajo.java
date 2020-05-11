@@ -31,8 +31,6 @@ import javax.persistence.Table;
 public class VehiculoTrabajo implements Serializable {
 
     
-    
-  
     @Id
     @SequenceGenerator(
             name = "vehiculo_trabajo_seq",
@@ -61,9 +59,21 @@ public class VehiculoTrabajo implements Serializable {
     
     @Column(name = "precio_venta_publico")
     private BigDecimal precioVentaPublico;
+    
+    @Column(name = "precio_venta_publico_factura")
+    private BigDecimal precioVentaPublicoFactura;
 
     @Column(name = "precio_descuento")
     private BigDecimal precioDescuento;
+
+    @Column(name = "precio_descuento_factura")
+    private BigDecimal precioDescuentoFactura;
+    
+    @Column(name = "valor_iva")
+    private BigDecimal valorIva;
+    
+    @Column(name = "porcentaje_iva")
+    private BigDecimal porcentajeIva;
     
     @Column(name = "precio_abono_efectivo")
     private BigDecimal precioAbonoEfectivo;
@@ -77,6 +87,9 @@ public class VehiculoTrabajo implements Serializable {
     @Column(name = "precio_saldo_tarjeta")
     private BigDecimal precioSaldoTarjeta;
     
+    @Column(name = "descuento")
+    private BigDecimal descuento;
+    
     @Column(name = "tipo_tarjeta")
     private String tipoTarjeta;
     
@@ -85,6 +98,13 @@ public class VehiculoTrabajo implements Serializable {
     
     @Column(name = "lote")
     private String lote;
+    
+    @Column(name = "pago_tarjeta")
+    private Boolean pagoTarjeta;
+    
+    @Column(name = "dar_descuento")
+    private Boolean darDescuento;
+    
     
     @ManyToOne
     @JoinColumn(name="id_parte", referencedColumnName="id_parte")
@@ -385,5 +405,103 @@ public class VehiculoTrabajo implements Serializable {
     public void setLote(String lote) {
         this.lote = lote;
     }
+    
+    /**
+     * @return the descuento
+     */
+    public BigDecimal getDescuento() {
+        return descuento;
+    }
 
+    /**
+     * @param descuento the descuento to set
+     */
+    public void setDescuento(BigDecimal descuento) {
+        this.descuento = descuento;
+    }
+    
+    /**
+     * @return the darDescuento
+     */
+    public Boolean getDarDescuento() {
+        return darDescuento;
+    }
+
+    /**
+     * @param darDescuento the darDescuento to set
+     */
+    public void setDarDescuento(Boolean darDescuento) {
+        this.darDescuento = darDescuento;
+    }
+
+    /**
+     * @return the pagoTarjeta
+     */
+    public Boolean getPagoTarjeta() {
+        return pagoTarjeta;
+    }
+    
+    /**
+     * @param pagoTarjeta the pagoTarjeta to set
+     */
+    public void setPagoTarjeta(Boolean pagoTarjeta) {
+        this.pagoTarjeta = pagoTarjeta;
+    }
+
+    /**
+     * @return the precioVentaPublicoFactura
+     */
+    public BigDecimal getPrecioVentaPublicoFactura() {
+        return precioVentaPublicoFactura;
+    }
+
+    /**
+     * @param precioVentaPublicoFactura the precioVentaPublicoFactura to set
+     */
+    public void setPrecioVentaPublicoFactura(BigDecimal precioVentaPublicoFactura) {
+        this.precioVentaPublicoFactura = precioVentaPublicoFactura;
+    }
+
+    /**
+     * @return the precioDescuentoFactura
+     */
+    public BigDecimal getPrecioDescuentoFactura() {
+        return precioDescuentoFactura;
+    }
+
+    /**
+     * @param precioDescuentoFactura the precioDescuentoFactura to set
+     */
+    public void setPrecioDescuentoFactura(BigDecimal precioDescuentoFactura) {
+        this.precioDescuentoFactura = precioDescuentoFactura;
+    }
+
+    /**
+     * @return the valorIva
+     */
+    public BigDecimal getValorIva() {
+        return valorIva;
+    }
+
+    /**
+     * @param valorIva the valorIva to set
+     */
+    public void setValorIva(BigDecimal valorIva) {
+        this.valorIva = valorIva;
+    }
+
+    /**
+     * @return the porcentajeIva
+     */
+    public BigDecimal getPorcentajeIva() {
+        return porcentajeIva;
+    }
+
+    /**
+     * @param porcentajeIva the porcentajeIva to set
+     */
+    public void setPorcentajeIva(BigDecimal porcentajeIva) {
+        this.porcentajeIva = porcentajeIva;
+    }
+    
 }

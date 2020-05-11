@@ -9,148 +9,86 @@
     <p:messages />
     <p:panel id="pnlSeleccionarPago" header="#{msj.pagos}">
         <p:fieldset legend="#{msj.administrarPagos}">
-            <p:dataTable
-                id="tblListaVehiculoTrabajoPago"
-                var="vehiculoTrabajo"
-                value="#{ordenControlador.generartListaVehiculoTrabajoPago()}">
-                <p:column headerText="#{msj.numeroOrden}">
-                    <p:outputLabel value="#{vehiculoTrabajo.ordenVehiculo.idOrdenVehiculo}" />
-                </p:column>
-                <p:column headerText="#{msj.descripcion}">
-                    <p:outputLabel value="#{vehiculoTrabajo.trabajoDescripcion}" />
-                </p:column>
-                <p:column headerText="#{msj.precioVentaPublico}">
-                    <p:outputLabel value="#{vehiculoTrabajo.precioVentaPublico}" />
-                </p:column>
-                <p:column headerText="#{msj.precioDescuento}">
-                    <p:outputLabel value="#{vehiculoTrabajo.precioDescuento}" />
-                </p:column>
-                <p:column headerText="#{msj.acciones}">
-                    <p:commandButton
-                        value="#{msj.configurar}"
-                        actionListener="#{ordenControlador.seleccionarVehiculoTrabajoPago(vehiculoTrabajo)}"
-                        />
-                </p:column>
-            </p:dataTable>
-            <p/>
-            <p:panelGrid id="pnlEfectivoTarjeta" columns="1">
+            <p:panelGrid id="pnlEfectivoTarjeta" columns="1" >
                 <p:column>
                     <p:outputLabel
                         value="#{msj.elegirPago}" /> 
                 </p:column>
                 <p:selectOneMenu
                     id="somSeleccionarEfectivoTarjeta"
-                    value="#{ordenControlador.pagoTarjeta}"
-                    required="true">
+                    value="#{ordenControlador.tipoPago}"
+                    required="true"
+                    converter="omnifaces.SelectItemsConverter">
                     <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
-                    <f:selectItem itemLabel="#{msj.si}" value="#{true}" />
-                    <f:selectItem itemLabel="#{msj.no}" value="#{false}" />
+                    <f:selectItems value="#{consultaControlador.generarTipoPago()}" />
                     <p:ajax 
                         event="change"
                         process="@this somSeleccionarEfectivoTarjeta"
-                        update=" pnlConfigurarPrecio tblListaVehiculoValores mensajeGeneral"/>
+                        update=" pnlSeleccionarPago mensajeGeneral"
+                        listener="#{ordenControlador.generartListaVehiculoTrabajoPagoEfectivoSiNo()}"/>
                 </p:selectOneMenu>
             </p:panelGrid>
             <p/>
-            <p:panelGrid id="pnlConfigurarPrecio" columns="4">
-                <p:outputLabel
-                    for="@next"
-                    rendered="#{!ordenControlador.pagoTarjeta}"
-                    value="#{msj.precioAbonoEfectivo}" />                    
-                <p:inputText
-                    id="iTnumeracion"
-                    required="true"
-                    rendered="#{!ordenControlador.pagoTarjeta}"
-                    value="#{ordenControlador.vehiculoTrabajoPago.precioAbonoEfectivo}"/>
-                <p:outputLabel
-                    for="@next"
-                    rendered="#{!ordenControlador.pagoTarjeta}"
-                    value="#{msj.precioSaldoEfectivo}" />                    
-                <p:inputText
-                    id="iTnumeracion"
-                    required="true"
-                    rendered="#{!ordenControlador.pagoTarjeta}"
-                    value="#{ordenControlador.vehiculoTrabajoPago.precioSaldoEfectivo}"/>
-                <p:outputLabel
-                    for="@next"
-                    rendered="#{ordenControlador.pagoTarjeta}"
-                    value="#{msj.precioAbonoTarjeta}" />                    
-                <p:inputText
-                    id="iTnumeracion"
-                    required="true"
-                    rendered="#{ordenControlador.pagoTarjeta}"
-                    value="#{ordenControlador.vehiculoTrabajoPago.precioAbonoTarjeta}"/>
-                <p:outputLabel
-                    for="@next"
-                    rendered="#{ordenControlador.pagoTarjeta}"
-                    value="#{msj.precioSaldoTarjeta}" />                    
-                <p:inputText
-                    id="iTnumeracion"
-                    required="true"
-                    rendered="#{ordenControlador.pagoTarjeta}"
-                    value="#{ordenControlador.vehiculoTrabajoPago.precioSaldoTarjeta}"/>
-                <p:outputLabel
-                    for="@next"
-                    rendered="#{ordenControlador.pagoTarjeta}"
-                    value="#{msj.tipoTarjeta}" />                    
-                <p:inputText
-                    id="iTnumeracion"
-                    required="true"
-                    rendered="#{ordenControlador.pagoTarjeta}"
-                    value="#{ordenControlador.vehiculoTrabajoPago.tipoTarjeta}"/>
-                <p:outputLabel
-                    for="@next"
-                    rendered="#{ordenControlador.pagoTarjeta}"
-                    value="#{msj.banco}" />                    
-                <p:inputText
-                    id="iTnumeracion"
-                    required="true"
-                    rendered="#{ordenControlador.pagoTarjeta}"
-                    value="#{ordenControlador.vehiculoTrabajoPago.banco}"/>
-                <p:outputLabel
-                    for="@next"
-                    rendered="#{ordenControlador.pagoTarjeta}"
-                    value="#{msj.numeroLote}" />                    
-                <p:inputText
-                    id="iTnumeracion"
-                    required="true"
-                    rendered="#{ordenControlador.pagoTarjeta}"
-                    value="#{ordenControlador.vehiculoTrabajoPago.lote}"/>
-                <p:outputLabel
-                    value="" />
-                <p:outputLabel
-                    value="" />
-            </p:panelGrid>
-            <p/>
             <p:dataTable
-                id="tblListaVehiculoValores"
-                var="vehiculoTrabajoTmp"
-                value="#{ordenControlador.generartListaVehiculoTrabajoPago()}">
+                id="tblListaVehiculoTrabajoPago"
+                var="vehiculoTrabajoParaPago"
+                rendered="#{ordenControlador.tipoPago ne null}"
+                value="#{ordenControlador.listaVehiculoTrabajosFinal}"
+                editable="true">
+                <p:ajax event="rowEdit" listener="#{ordenControlador.onRowEdit}" update="tblListaVehiculoTrabajoPago mensajeGeneral" />
+                <p:ajax event="rowEditCancel" listener="#{ordenControlador.onRowCancel}" />
                 <p:column headerText="#{msj.numeroOrden}">
-                    <p:outputLabel value="#{vehiculoTrabajoTmp.ordenVehiculo.idOrdenVehiculo}" />
+                    <p:outputLabel value="#{vehiculoTrabajoParaPago.ordenVehiculo.idOrdenVehiculo}" />
                 </p:column>
-                <p:column headerText="#{msj.precioAbonoEfectivo}">
-                    <p:outputLabel value="#{vehiculoTrabajoTmp.precioAbonoEfectivo}" />
+                <p:column headerText="#{msj.descripcion}">
+                    <p:outputLabel value="#{vehiculoTrabajoParaPago.trabajoDescripcion}" />
                 </p:column>
-                <p:column headerText="#{msj.precioSaldoEfectivo}">
-                    <p:outputLabel value="#{vehiculoTrabajoTmp.precioSaldoEfectivo}" />
+                <p:column headerText="#{msj.precioVentaPublico}" rendered="#{ordenControlador.tipoPago eq 'TARJETA'}" >
+                    <p:outputLabel value="#{vehiculoTrabajoParaPago.precioVentaPublico}" />
                 </p:column>
-                <p:column headerText="#{msj.precioAbonoTarjeta}">
-                    <p:outputLabel value="#{vehiculoTrabajoTmp.precioAbonoTarjeta}" />
+                <p:column headerText="#{msj.precioDescuento}" rendered="#{ordenControlador.tipoPago eq 'EFECTIVO' or ordenControlador.tipoPago eq 'TRANSFERENCIA'}" >
+                    <p:outputLabel value="#{vehiculoTrabajoParaPago.precioDescuento}" />
                 </p:column>
-                <p:column headerText="#{msj.precioSaldoTarjeta}">
-                    <p:outputLabel value="#{vehiculoTrabajoTmp.precioSaldoTarjeta}" />
+                <p:column headerText="#{msj.descuento}" >                    
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{vehiculoTrabajoParaPago.descuento}" /></f:facet>
+                        <f:facet name="input"><p:inputText id="txtDescuento" value="#{vehiculoTrabajoParaPago.descuento}"/></f:facet>
+                    </p:cellEditor>
                 </p:column>
-                <p:column headerText="#{msj.tipoTarjeta}">
-                    <p:outputLabel value="#{vehiculoTrabajoTmp.tipoTarjeta}" />
+                <p:column headerText="#{msj.valorIva}" >
+                    <p:outputLabel value="#{vehiculoTrabajoParaPago.valorIva}" />
                 </p:column>
-                <p:column headerText="#{msj.banco}">
-                    <p:outputLabel value="#{vehiculoTrabajoTmp.banco}" />
+                <p:column headerText="#{msj.precioVentaPublicoFactura}" rendered="#{ordenControlador.tipoPago eq 'TARJETA'}" >
+                    <p:outputLabel value="#{vehiculoTrabajoParaPago.precioVentaPublicoFactura}" />
                 </p:column>
-                <p:column headerText="#{msj.lote}">
-                    <p:outputLabel value="#{vehiculoTrabajoTmp.lote}" />
+                <p:column headerText="#{msj.precioDescuentoFactura}" rendered="#{ordenControlador.tipoPago eq 'EFECTIVO' or ordenControlador.tipoPago eq 'TRANSFERENCIA'}" >
+                    <p:outputLabel value="#{vehiculoTrabajoParaPago.precioDescuentoFactura}" />
+                </p:column>
+                
+                <p:column headerText="#{msj.precioAbonoTarjeta}" rendered="#{ordenControlador.tipoPago eq 'TARJETA'}" >
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{vehiculoTrabajoParaPago.precioAbonoTarjeta}" /></f:facet>
+                        <f:facet name="input"><p:inputText id="txtPrecioAbonoTarjeta" value="#{vehiculoTrabajoParaPago.precioAbonoTarjeta}"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="#{msj.precioAbonoEfectivo}" rendered="#{ordenControlador.tipoPago eq 'EFECTIVO' or ordenControlador.tipoPago eq 'TRANSFERENCIA'}" >
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{vehiculoTrabajoParaPago.precioAbonoEfectivo}" /></f:facet>
+                        <f:facet name="input"><p:inputText id="txtPrecioAbonoEfectivo" value="#{vehiculoTrabajoParaPago.precioAbonoEfectivo}"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                
+                <p:column headerText="#{msj.precioSaldoTarjeta}" rendered="#{ordenControlador.tipoPago eq 'TARJETA'}" >
+                    <p:outputLabel value="#{vehiculoTrabajoParaPago.precioSaldoTarjeta}" />
+                </p:column>
+                <p:column headerText="#{msj.precioSaldoEfectivo}" rendered="#{ordenControlador.tipoPago eq 'EFECTIVO' or ordenControlador.tipoPago eq 'TRANSFERENCIA'}" >
+                    <p:outputLabel value="#{vehiculoTrabajoParaPago.precioSaldoEfectivo}" />
+                </p:column>
+                <p:column headerText="#{msj.acciones}" >
+                    <p:rowEditor/>
                 </p:column>
             </p:dataTable>
+            <p/>
         </p:fieldset>        
         <p/>
     </p:panel>

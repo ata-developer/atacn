@@ -7,6 +7,7 @@ package ec.com.ata.cn.controlador;
 
 import ec.com.ata.cn.logica.ColorBean;
 import ec.com.ata.cn.logica.DetalleBean;
+import ec.com.ata.cn.logica.ImpuestoBean;
 import ec.com.ata.cn.logica.LugarVehiculoTrabajoBean;
 import ec.com.ata.cn.logica.MaterialBean;
 import ec.com.ata.cn.logica.ParametroBean;
@@ -17,6 +18,7 @@ import ec.com.ata.cn.logica.TipoMaterialBean;
 import ec.com.ata.cn.logica.util.gestor.Constante;
 import ec.com.ata.cn.modelo.Color;
 import ec.com.ata.cn.modelo.Detalle;
+import ec.com.ata.cn.modelo.Impuesto;
 import ec.com.ata.cn.modelo.LugarVehiculoTrabajo;
 import ec.com.ata.cn.modelo.Material;
 import ec.com.ata.cn.modelo.Parametro;
@@ -24,7 +26,6 @@ import ec.com.ata.cn.modelo.Parte;
 import ec.com.ata.cn.modelo.TipoDocumento;
 import ec.com.ata.cn.modelo.TipoFila;
 import ec.com.ata.cn.modelo.TipoMaterial;
-import java.util.AbstractList;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -48,6 +49,7 @@ import org.primefaces.model.TreeNode;
 @Named
 public class ParametroControlador extends BaseControlador {    
 
+   
     
     
     @Inject
@@ -76,6 +78,9 @@ public class ParametroControlador extends BaseControlador {
     
     @Inject
     private ColorBean colorBean;
+    
+    @Inject
+    private ImpuestoBean impuestoBean;
     
     private TipoDocumento tipoNumeracionDocumento;
     
@@ -121,6 +126,10 @@ public class ParametroControlador extends BaseControlador {
     
     private List<Color> listaColor;
     
+    private Impuesto impuesto;
+    
+    private List<Impuesto> listaImpuesto;
+    
     @PostConstruct
     public void init() {
         setTipoFila(new TipoFila());
@@ -145,6 +154,8 @@ public class ParametroControlador extends BaseControlador {
         setListaMaterial(materialBean.obtenerLista());
         setColor(new Color());
         setListaColor(colorBean.obtenerLista());
+        setImpuesto(new Impuesto());
+        setListaImpuesto(impuestoBean.obtenerLista());
     }
     
     public List<SelectItem> generarSelectItemDeTipoMaterial() {
@@ -350,6 +361,24 @@ public class ParametroControlador extends BaseControlador {
             addErrorMessage(Constante.ERROR, Constante.ERROR_COLOR + ":" + e.getMessage());
         } finally {
             setColor(new Color());
+        }
+    }
+    
+    public void guardarImpuesto() {
+        try {
+            System.out.println("ec.com.ata.cn.controlador.ParametroControlador.guardarImpuesto()");
+            //getParte().setPadre(getParteSeleccionada());
+            impuestoBean.crear(getImpuesto());
+            setListaImpuesto(impuestoBean.obtenerLista());
+            setImpuesto(new Impuesto());
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_COLOR + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_COLOR + ":" + e.getMessage());
         }
     }
     
@@ -680,5 +709,32 @@ public class ParametroControlador extends BaseControlador {
         this.listaColor = listaColor;
     }
 
+ /**
+     * @return the impuesto
+     */
+    public Impuesto getImpuesto() {
+        return impuesto;
+    }
+
+    /**
+     * @param impuesto the impuesto to set
+     */
+    public void setImpuesto(Impuesto impuesto) {
+        this.impuesto = impuesto;
+    }
+
+    /**
+     * @return the listaImpuesto
+     */
+    public List<Impuesto> getListaImpuesto() {
+        return listaImpuesto;
+    }
+
+    /**
+     * @param listaImpuesto the listaImpuesto to set
+     */
+    public void setListaImpuesto(List<Impuesto> listaImpuesto) {
+        this.listaImpuesto = listaImpuesto;
+    }
 
 }

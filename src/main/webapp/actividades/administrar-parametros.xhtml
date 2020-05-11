@@ -471,6 +471,53 @@
 
             </p:fieldset>
             <!-- FIN ADMINISTRACION TIPO DOCUMENTO -->
+            <!-- INICIO ADMINISTRACION impuesto -->
+            <p:fieldset legend="#{msj.administrarImpuestos}">
+                <p:panelGrid id="pngAdministrarImpuesto" columns="2">
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.impuesto}" />
+                    <p:inputText
+                        id="entradaParametro"
+                        value="#{parametroControlador.impuesto.impuesto}"
+                        onblur="value = value.toUpperCase()">
+                    </p:inputText>
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.factorImpuesto}" />
+                    <p:inputText
+                        id="entradaFactorImpuesto"
+                        value="#{parametroControlador.impuesto.factor}">
+                    </p:inputText>
+                    <p:commandButton
+                        id="btnImpuesto" 
+                        value="#{msj.guardar}"
+                        process="pngAdministrarImpuesto"
+                        update="pngAdministrarImpuesto tblListaImpuesto mensajeGeneral"
+                        action="#{parametroControlador.guardarImpuesto()}" />
+                    <p:outputLabel
+                        value="" />
+                </p:panelGrid>
+                <p/>
+                <p:dataTable
+                    id="tblListaImpuesto"                
+                    var="impuesto"
+                    style="width: 400px;"
+                    value="#{parametroControlador.listaImpuesto}">
+                    <f:facet name="header">
+                        #{msj.listaImpuestos}
+                    </f:facet>
+
+                    <p:column headerText="#{msj.impuesto}">
+                        <h:outputText value="#{impuesto.impuesto}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.factorImpuesto}">
+                        <h:outputText value="#{impuesto.factor}" />
+                    </p:column>
+                </p:dataTable>
+            </p:fieldset>
+            <!-- FIN ADMINISTRACION COLOR -->
 
         </h:form>
     </ui:define>
