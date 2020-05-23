@@ -29,7 +29,6 @@ import javax.persistence.Table;
 @Entity
 @Table ( name = "vehiculo_trabajo")
 public class VehiculoTrabajo implements Serializable {
-
     
     @Id
     @SequenceGenerator(
@@ -90,14 +89,7 @@ public class VehiculoTrabajo implements Serializable {
     @Column(name = "descuento")
     private BigDecimal descuento;
     
-    @Column(name = "tipo_tarjeta")
-    private String tipoTarjeta;
     
-    @Column(name = "banco")
-    private String banco;
-    
-    @Column(name = "lote")
-    private String lote;
     
     @Column(name = "pago_tarjeta")
     private Boolean pagoTarjeta;
@@ -105,6 +97,11 @@ public class VehiculoTrabajo implements Serializable {
     @Column(name = "dar_descuento")
     private Boolean darDescuento;
     
+    @Column(name = "tipo_pago")
+    private String tipoPago;
+    
+    @Column(name = "observacion_pago")
+    private String observacionPago;
     
     @ManyToOne
     @JoinColumn(name="id_parte", referencedColumnName="id_parte")
@@ -120,8 +117,6 @@ public class VehiculoTrabajo implements Serializable {
      
     @OneToMany(mappedBy = "vehiculoTrabajo", fetch = FetchType.EAGER)
     private List<TrabajoParte> listaTrabajoParte;
-   
-    
     
     @Embedded
     private GenericoEntidad genericoEntidad;
@@ -364,47 +359,6 @@ public class VehiculoTrabajo implements Serializable {
         this.ordenVehiculo = ordenVehiculo;
     }
     
-    /**
-     * @return the tipoTarjeta
-     */
-    public String getTipoTarjeta() {
-        return tipoTarjeta;
-    }
-
-    /**
-     * @param tipoTarjeta the tipoTarjeta to set
-     */
-    public void setTipoTarjeta(String tipoTarjeta) {
-        this.tipoTarjeta = tipoTarjeta;
-    }
-
-    /**
-     * @return the banco
-     */
-    public String getBanco() {
-        return banco;
-    }
-
-    /**
-     * @param banco the banco to set
-     */
-    public void setBanco(String banco) {
-        this.banco = banco;
-    }
-
-    /**
-     * @return the lote
-     */
-    public String getLote() {
-        return lote;
-    }
-
-    /**
-     * @param lote the lote to set
-     */
-    public void setLote(String lote) {
-        this.lote = lote;
-    }
     
     /**
      * @return the descuento
@@ -502,6 +456,34 @@ public class VehiculoTrabajo implements Serializable {
      */
     public void setPorcentajeIva(BigDecimal porcentajeIva) {
         this.porcentajeIva = porcentajeIva;
+    }
+    
+    /**
+     * @return the tipoPago
+     */
+    public String getTipoPago() {
+        return tipoPago;
+    }
+
+    /**
+     * @param tipoPago the tipoPago to set
+     */
+    public void setTipoPago(String tipoPago) {
+        this.tipoPago = tipoPago;
+    }
+    
+    /**
+     * @return the observacionPago
+     */
+    public String getObservacionPago() {
+        return observacionPago;
+    }
+
+    /**
+     * @param observacionPago the observacionPago to set
+     */
+    public void setObservacionPago(String observacionPago) {
+        this.observacionPago = observacionPago;
     }
     
 }

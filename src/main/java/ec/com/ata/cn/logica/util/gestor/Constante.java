@@ -66,6 +66,7 @@ public class Constante {
     public static final String VALIDACION_FORMULARIO_MSG_VAL_FECHAFIN = "valorFechaFinal";
 
     public static final String EXITO = "Exitoso";
+    public static final String EXITO_YA_EXISTE = "Ya existe auto seleccionado";
     public static final String EXITO_DETALLE = "Se ha procesado su requerimiento exitosamente";
     public static final String EXITO_ESTABLECIMIENTO = "Se ha seleccionado el establecimiento";
     public static final String NO_EXISTE_REGISTRO = "No existe registro";

@@ -55,6 +55,7 @@
                     <p:commandButton
                         id="btnGuardar" 
                         value="#{msj.agregar}"
+                        rendered="#{ordenControlador.mapaOrdenVehiculoListaTrabajos.keySet().isEmpty()}"
                         update="tblListaVehiculosSeleccionados :frmGenerarOrden:pngSeleccionarVehiculos mensajeGeneral"
                         action="#{ordenControlador.agregarVehiculo()}" />
                 </p:column>
@@ -108,7 +109,7 @@
                     <p:commandButton
                         id="btnEditarVehiculo"
                         value="#{msj.eliminar}"
-                        update="tblListaVehiculosSeleccionados mensajeGeneral"
+                        update="tblListaVehiculosSeleccionados :frmGenerarOrden:pngSeleccionarVehiculos mensajeGeneral"
                         action="#{ordenControlador.eliminarVehiculoOrden(ordenVehiculo)}" />
                 </p:column>
 

@@ -53,9 +53,9 @@ import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.omnifaces.util.selectitems.SelectItemsBuilder;
-import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.event.RowEditEvent;
 
@@ -198,9 +198,13 @@ public class OrdenControlador extends BaseControlador {
 
     private Boolean configurarPrecio;
 
-    private Boolean darDescuento;
-
     private String tipoPago;
+
+    private String observacionPago;
+
+    private String origen;
+
+    private String nombreReferencia;
 
     @PostConstruct
     public void init() {
@@ -229,32 +233,91 @@ public class OrdenControlador extends BaseControlador {
         setVehiculoTrabajoPago(new VehiculoTrabajo());
         setListaVehiculoTrabajosFinal(new ArrayList<VehiculoTrabajo>());
         setConfigurarPrecio(Boolean.FALSE);
-        setDarDescuento(Boolean.FALSE);
+        getVehiculoParaTrabajos().setDarDescuento(Boolean.FALSE);
         setPagoTarjeta(null);
+        getVehiculoParaTrabajos().setSubTotal(new BigDecimal("0"));
+        getVehiculoParaTrabajos().setSubTotalDescuento(new BigDecimal("0"));
+        getVehiculoParaTrabajos().setSubTotalIva(new BigDecimal("0"));
+        getVehiculoParaTrabajos().setTotal(new BigDecimal("0"));
+        getVehiculoParaTrabajos().setTotalAbono(new BigDecimal("0"));
+        getVehiculoParaTrabajos().setTotalSaldo(new BigDecimal("0"));
+        getVehiculoParaTrabajos().setPagoAbono(new BigDecimal("0"));
+        getVehiculoParaTrabajos().setImporteAbono(new BigDecimal("0"));
+
     }
 
-    
+    public void setearACero() {
+        try {
+            System.out.println("setearACero");
+            if (getVehiculoParaTrabajos().getDarDescuento() == false) {
+                for (OrdenVehiculo ordenVehiculo : mapaOrdenVehiculoTrabajo.keySet()) {
+                    List<VehiculoTrabajo> listaVehiculoTrabajos = mapaOrdenVehiculoTrabajo.get(ordenVehiculo);
+                    List<VehiculoTrabajo> listaVehiculoTrabajosTmp =new ArrayList<>();
+                    for (VehiculoTrabajo vehiculoTrabajoTmp : listaVehiculoTrabajos) {
+                        vehiculoTrabajoTmp = vehiculoTrabajoBean.obtenerPorCodigo(vehiculoTrabajoTmp.getIdVehiculoTrabajo());
+                        vehiculoTrabajoTmp.setDescuento(new BigDecimal("0"));
+                        vehiculoTrabajoTmp = vehiculoTrabajoBean.modificar(vehiculoTrabajoTmp);
+                        listaVehiculoTrabajosTmp.add(vehiculoTrabajoTmp);
+                    }
+                    mapaOrdenVehiculoTrabajo.put(ordenVehiculo, listaVehiculoTrabajosTmp);
+                    setListaVehiculoTrabajosFinal(listaVehiculoTrabajosFinal);
+                    generartListaVehiculoTrabajoPagoEfectivoSiNo();
+                    return;
+                }
+            }
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+        }
+
+    }
+
+    public void calcularImporteAbono() {
+        System.out.println("getTotalAbono():" + getVehiculoParaTrabajos().getTotalAbono());
+        System.out.println("getPagoAbono():" + getVehiculoParaTrabajos().getPagoAbono());
+        getVehiculoParaTrabajos().setImporteAbono(getVehiculoParaTrabajos().getPagoAbono().subtract(getVehiculoParaTrabajos().getTotalAbono()));
+        System.out.println("getImporteAbono():" + getVehiculoParaTrabajos().getImporteAbono());
+    }
 
     public VehiculoTrabajo procesarValoresDescuento(VehiculoTrabajo vehiculoTrabajoEntrada) {
         HashMap<String, Object> parametros = new HashMap<>();
         parametros.put("impuesto", "IVA");
         List<Impuesto> listaImpuesto = impuestoBean.obtenerListaPorParametros(parametros);
         Impuesto impuesto = listaImpuesto.get(0);
-        System.out.println("impuesto factor: "+impuesto.getFactor());
-        switch (getTipoPago()) {
-                case "EFECTIVO":
-                     return calcularDescuentoEfectivoTransferencia(vehiculoTrabajoEntrada,impuesto);
-                    
-                case "TRANSFERENCIA":
-                    // Statements
-                    return calcularDescuentoEfectivoTransferencia(vehiculoTrabajoEntrada,impuesto);
-                case "TARJETA":
-                    // Statements
-                    return calcularDescuentoTarjeta(vehiculoTrabajoEntrada,impuesto);
-                // You can have any number of case statements.
-                default:
-                    return new VehiculoTrabajo();
-            }
+        System.out.println("impuesto factor: " + impuesto.getFactor());
+        switch (vehiculoParaTrabajos.getTipoPago()) {
+            case "EFECTIVO":
+                return calcularDescuentoEfectivoTransferencia(vehiculoTrabajoEntrada, impuesto);
+            case "TRANSFERENCIA":
+                // Statements
+                return calcularDescuentoEfectivoTransferencia(vehiculoTrabajoEntrada, impuesto);
+            case "TARJETA":
+                // Statements
+                return calcularDescuentoTarjeta(vehiculoTrabajoEntrada, impuesto);
+            // You can have any number of case statements.
+            default:
+                return new VehiculoTrabajo();
+        }
+    }
+
+    private void procesarTotalesEfectivoTransferencia(VehiculoTrabajo vehiculoTrabajo) {
+        getVehiculoParaTrabajos().setSubTotal(getVehiculoParaTrabajos().getSubTotal().add(vehiculoTrabajo.getPrecioDescuento()));
+        getVehiculoParaTrabajos().setSubTotalDescuento(getVehiculoParaTrabajos().getSubTotalDescuento().add(vehiculoTrabajo.getDescuento()));
+        getVehiculoParaTrabajos().setTotal(getVehiculoParaTrabajos().getTotal().add(vehiculoTrabajo.getPrecioDescuentoFactura()));
+        getVehiculoParaTrabajos().setTotalAbono(getVehiculoParaTrabajos().getTotalAbono().add(vehiculoTrabajo.getPrecioAbonoEfectivo()));
+        getVehiculoParaTrabajos().setTotalSaldo(getVehiculoParaTrabajos().getTotalSaldo().add(vehiculoTrabajo.getPrecioSaldoEfectivo()));
+    }
+
+    private void procesarTotalesTarjeta(VehiculoTrabajo vehiculoTrabajo) {
+        getVehiculoParaTrabajos().setSubTotal(getVehiculoParaTrabajos().getSubTotal().add(vehiculoTrabajo.getPrecioVentaPublico()));
+        getVehiculoParaTrabajos().setSubTotalDescuento(getVehiculoParaTrabajos().getSubTotalDescuento().add(vehiculoTrabajo.getDescuento()));
+        getVehiculoParaTrabajos().setTotal(getVehiculoParaTrabajos().getTotal().add(vehiculoTrabajo.getPrecioVentaPublicoFactura()));
+        getVehiculoParaTrabajos().setTotalAbono(getVehiculoParaTrabajos().getTotalAbono().add(vehiculoTrabajo.getPrecioAbonoTarjeta()));
+        getVehiculoParaTrabajos().setTotalSaldo(getVehiculoParaTrabajos().getTotalSaldo().add(vehiculoTrabajo.getPrecioSaldoTarjeta()));
     }
 
     public void onRowEdit(RowEditEvent event) {
@@ -262,11 +325,30 @@ public class OrdenControlador extends BaseControlador {
         System.out.println("vehiculoTrabajo.getDescuento(): " + vehiculoTrabajoAux.getDescuento());
         System.out.println("vehiculoTrabajo.getIdVehiculoTrabajo(): " + vehiculoTrabajoAux.getIdVehiculoTrabajo());
         try {
+            vehiculoTrabajoAux.setTipoPago(tipoPago);
             vehiculoTrabajoAux = procesarValoresDescuento(vehiculoTrabajoAux);
             vehiculoTrabajoBean.modificar(vehiculoTrabajoAux);
             List<VehiculoTrabajo> listaVehiculoTrabajoTemporal = new ArrayList<>();
+            getVehiculoParaTrabajos().setSubTotal(new BigDecimal("0"));
+            getVehiculoParaTrabajos().setSubTotalDescuento(new BigDecimal("0"));
+            getVehiculoParaTrabajos().setTotal(new BigDecimal("0"));
+            getVehiculoParaTrabajos().setTotalAbono(new BigDecimal("0"));
+            getVehiculoParaTrabajos().setTotalSaldo(new BigDecimal("0"));
             for (VehiculoTrabajo vehiculoTrabajo1 : listaVehiculoTrabajosFinal) {
                 VehiculoTrabajo vehiculoTrabajo2 = vehiculoTrabajoBean.obtenerPorCodigo(vehiculoTrabajo1.getIdVehiculoTrabajo());
+                switch (getVehiculoParaTrabajos().getTipoPago()) {
+                    case "EFECTIVO":
+                        procesarTotalesEfectivoTransferencia(vehiculoTrabajo2);
+                        break;
+                    case "TRANSFERENCIA":
+                        procesarTotalesEfectivoTransferencia(vehiculoTrabajo2);
+                        break;
+                    case "TARJETA":
+                        procesarTotalesTarjeta(vehiculoTrabajo2);
+                        break;
+                    default:
+                        break;
+                }
                 listaVehiculoTrabajoTemporal.add(vehiculoTrabajo2);
             }
             setListaVehiculoTrabajosFinal(listaVehiculoTrabajoTemporal);
@@ -336,7 +418,7 @@ public class OrdenControlador extends BaseControlador {
         setListaVehiculoTrabajosFinal(listaVehiculoTrabajosFinalTmp);
     }
 
-    private void calcularListaPagoEfectivoTransferencia() throws Exception {
+    private void calculaPreciosListaFactura() throws Exception {
         HashMap<String, Object> parametros = new HashMap<>();
         parametros.put("impuesto", "IVA");
         List<Impuesto> listaImpuesto = impuestoBean.obtenerListaPorParametros(parametros);
@@ -345,10 +427,46 @@ public class OrdenControlador extends BaseControlador {
         for (OrdenVehiculo ordenVehiculo : mapaOrdenVehiculoTrabajo.keySet()) {
             List<VehiculoTrabajo> listaVehiculoTrabajos = mapaOrdenVehiculoTrabajo.get(ordenVehiculo);
             for (VehiculoTrabajo vehiculoTrabajoTmp : listaVehiculoTrabajos) {
+                vehiculoTrabajoTmp.setPorcentajeIva(impuesto.getFactor());
+                vehiculoTrabajoTmp.setValorIva(vehiculoTrabajoTmp.getPrecioDescuento().multiply(vehiculoTrabajoTmp.getPorcentajeIva()));
+                vehiculoTrabajoTmp.setPrecioDescuentoFactura(vehiculoTrabajoTmp.getPrecioDescuentoFactura().add(vehiculoTrabajoTmp.getValorIva()));
+                vehiculoTrabajoTmp.setPrecioVentaPublicoFactura(vehiculoTrabajoTmp.getPrecioVentaPublicoFactura().add(vehiculoTrabajoTmp.getValorIva()));
+                vehiculoTrabajoTmp.setPrecioSaldoTarjeta(vehiculoTrabajoTmp.getPrecioVentaPublicoFactura().subtract(vehiculoTrabajoTmp.getPrecioAbonoTarjeta()));
+                vehiculoTrabajoTmp.setPrecioSaldoEfectivo(vehiculoTrabajoTmp.getPrecioDescuentoFactura().subtract(vehiculoTrabajoTmp.getPrecioAbonoEfectivo()));
+                vehiculoTrabajoTmp = vehiculoTrabajoBean.modificar(vehiculoTrabajoTmp);
+                listaVehiculoTrabajosFinalTmp.add(vehiculoTrabajoTmp);
+            }
+        }
+        setListaVehiculoTrabajosFinal(listaVehiculoTrabajosFinalTmp);
+    }
+
+    private void calcularListaPagoEfectivoTransferencia() throws Exception {
+        getVehiculoParaTrabajos().setSubTotal(new BigDecimal("0"));
+        getVehiculoParaTrabajos().setSubTotalDescuento(new BigDecimal("0"));
+        getVehiculoParaTrabajos().setSubTotalIva(new BigDecimal("0"));
+        getVehiculoParaTrabajos().setTotal(new BigDecimal("0"));
+        getVehiculoParaTrabajos().setTotalAbono(new BigDecimal("0"));
+        getVehiculoParaTrabajos().setTotalSaldo(new BigDecimal("0"));
+        HashMap<String, Object> parametros = new HashMap<>();
+        parametros.put("impuesto", "IVA");
+        List<Impuesto> listaImpuesto = impuestoBean.obtenerListaPorParametros(parametros);
+        Impuesto impuesto = listaImpuesto.get(0);
+        List<VehiculoTrabajo> listaVehiculoTrabajosFinalTmp = new ArrayList<>();
+        for (OrdenVehiculo ordenVehiculo : mapaOrdenVehiculoTrabajo.keySet()) {
+            List<VehiculoTrabajo> listaVehiculoTrabajos = mapaOrdenVehiculoTrabajo.get(ordenVehiculo);
+            for (VehiculoTrabajo vehiculoTrabajoTmp : listaVehiculoTrabajos) {
+                vehiculoTrabajoTmp = vehiculoTrabajoBean.obtenerPorCodigo(vehiculoTrabajoTmp.getIdVehiculoTrabajo());
+                vehiculoTrabajoTmp.setTipoPago(tipoPago);
                 vehiculoTrabajoTmp.setPrecioDescuentoFactura(vehiculoTrabajoTmp.getPrecioDescuento().subtract(vehiculoTrabajoTmp.getDescuento()));
                 vehiculoTrabajoTmp.setPorcentajeIva(impuesto.getFactor());
                 vehiculoTrabajoTmp.setValorIva(vehiculoTrabajoTmp.getPrecioDescuento().multiply(vehiculoTrabajoTmp.getPorcentajeIva()));
                 vehiculoTrabajoTmp.setPrecioDescuentoFactura(vehiculoTrabajoTmp.getPrecioDescuentoFactura().add(vehiculoTrabajoTmp.getValorIva()));
+                vehiculoTrabajoTmp.setPrecioSaldoEfectivo(vehiculoTrabajoTmp.getPrecioDescuentoFactura().subtract(vehiculoTrabajoTmp.getPrecioAbonoEfectivo()));
+                getVehiculoParaTrabajos().setSubTotal(getVehiculoParaTrabajos().getSubTotal().add(vehiculoTrabajoTmp.getPrecioDescuento()));
+                getVehiculoParaTrabajos().setSubTotalDescuento(getVehiculoParaTrabajos().getSubTotalDescuento().add(vehiculoTrabajoTmp.getDescuento()));
+                getVehiculoParaTrabajos().setTotal(getVehiculoParaTrabajos().getTotal().add(vehiculoTrabajoTmp.getPrecioDescuentoFactura()));
+                getVehiculoParaTrabajos().setTotalAbono(getVehiculoParaTrabajos().getTotalAbono().add(vehiculoTrabajoTmp.getPrecioAbonoEfectivo()));
+                getVehiculoParaTrabajos().setTotalSaldo(getVehiculoParaTrabajos().getTotalSaldo().add(vehiculoTrabajoTmp.getPrecioSaldoEfectivo()));
                 vehiculoTrabajoTmp = vehiculoTrabajoBean.modificar(vehiculoTrabajoTmp);
                 listaVehiculoTrabajosFinalTmp.add(vehiculoTrabajoTmp);
             }
@@ -374,7 +492,13 @@ public class OrdenControlador extends BaseControlador {
         return vehiculoTrabajoTmp;
     }
 
-    private void calcularListaTarjetaTransferencia() throws Exception {
+    private void calcularListaTarjeta() throws Exception {
+        getVehiculoParaTrabajos().setSubTotal(new BigDecimal("0"));
+        getVehiculoParaTrabajos().setSubTotalDescuento(new BigDecimal("0"));
+        getVehiculoParaTrabajos().setSubTotalIva(new BigDecimal("0"));
+        getVehiculoParaTrabajos().setTotal(new BigDecimal("0"));
+        getVehiculoParaTrabajos().setTotalAbono(new BigDecimal("0"));
+        getVehiculoParaTrabajos().setTotalSaldo(new BigDecimal("0"));
         HashMap<String, Object> parametros = new HashMap<>();
         parametros.put("impuesto", "IVA");
         List<Impuesto> listaImpuesto = impuestoBean.obtenerListaPorParametros(parametros);
@@ -383,10 +507,18 @@ public class OrdenControlador extends BaseControlador {
         for (OrdenVehiculo ordenVehiculo : mapaOrdenVehiculoTrabajo.keySet()) {
             List<VehiculoTrabajo> listaVehiculoTrabajos = mapaOrdenVehiculoTrabajo.get(ordenVehiculo);
             for (VehiculoTrabajo vehiculoTrabajoTmp : listaVehiculoTrabajos) {
+                vehiculoTrabajoTmp = vehiculoTrabajoBean.obtenerPorCodigo(vehiculoTrabajoTmp.getIdVehiculoTrabajo());
+                vehiculoTrabajoTmp.setTipoPago(tipoPago);
                 vehiculoTrabajoTmp.setPrecioVentaPublicoFactura(vehiculoTrabajoTmp.getPrecioVentaPublico().subtract(vehiculoTrabajoTmp.getDescuento()));
                 vehiculoTrabajoTmp.setPorcentajeIva(impuesto.getFactor());
                 vehiculoTrabajoTmp.setValorIva(vehiculoTrabajoTmp.getPrecioVentaPublicoFactura().multiply(vehiculoTrabajoTmp.getPorcentajeIva()));
                 vehiculoTrabajoTmp.setPrecioVentaPublicoFactura(vehiculoTrabajoTmp.getPrecioVentaPublicoFactura().add(vehiculoTrabajoTmp.getValorIva()));
+                vehiculoTrabajoTmp.setPrecioSaldoTarjeta(vehiculoTrabajoTmp.getPrecioVentaPublicoFactura().subtract(vehiculoTrabajoTmp.getPrecioAbonoTarjeta()));
+                getVehiculoParaTrabajos().setSubTotal(getVehiculoParaTrabajos().getSubTotal().add(vehiculoTrabajoTmp.getPrecioVentaPublico()));
+                getVehiculoParaTrabajos().setSubTotalDescuento(getVehiculoParaTrabajos().getSubTotalDescuento().add(vehiculoTrabajoTmp.getDescuento()));
+                getVehiculoParaTrabajos().setTotal(getVehiculoParaTrabajos().getTotal().add(vehiculoTrabajoTmp.getPrecioVentaPublicoFactura()));
+                getVehiculoParaTrabajos().setTotalAbono(getVehiculoParaTrabajos().getTotalAbono().add(vehiculoTrabajoTmp.getPrecioAbonoTarjeta()));
+                getVehiculoParaTrabajos().setTotalSaldo(getVehiculoParaTrabajos().getTotalSaldo().add(vehiculoTrabajoTmp.getPrecioSaldoTarjeta()));
                 vehiculoTrabajoTmp = vehiculoTrabajoBean.modificar(vehiculoTrabajoTmp);
                 listaVehiculoTrabajosFinalTmp.add(vehiculoTrabajoTmp);
             }
@@ -396,7 +528,7 @@ public class OrdenControlador extends BaseControlador {
 
     public void generartListaVehiculoTrabajoPagoEfectivoSiNo() {
         try {
-            switch (getTipoPago()) {
+            switch (getVehiculoParaTrabajos().getTipoPago()) {
                 case "EFECTIVO":
                     calcularListaPagoEfectivoTransferencia();
                     addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
@@ -408,7 +540,7 @@ public class OrdenControlador extends BaseControlador {
                     break; // optional
                 case "TARJETA":
                     // Statements
-                    calcularListaTarjetaTransferencia();
+                    calcularListaTarjeta();
                     addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
                     break;
                 // You can have any number of case statements.
@@ -416,6 +548,7 @@ public class OrdenControlador extends BaseControlador {
                     break;
             }
         } catch (Exception e) {
+            e.printStackTrace();
             final Throwable root = ExceptionUtils.getRootCause(e);
             if (null != root) {
                 addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
@@ -653,9 +786,14 @@ public class OrdenControlador extends BaseControlador {
             vehiculoTrabajo.setPrecioVentaPublicoFactura(trabajoCategoriaPrecio.getPrecioVentaPublico());
             vehiculoTrabajo.setPrecioDescuento(trabajoCategoriaPrecio.getPrecioDescuento());
             vehiculoTrabajo.setPrecioDescuentoFactura(trabajoCategoriaPrecio.getPrecioDescuento());
+            vehiculoTrabajo.setPrecioAbonoEfectivo(new BigDecimal("0"));
+            vehiculoTrabajo.setPrecioAbonoTarjeta(new BigDecimal("0"));
+            vehiculoTrabajo.setPrecioSaldoEfectivo(new BigDecimal("0"));
+            vehiculoTrabajo.setPrecioSaldoTarjeta(new BigDecimal("0"));
             vehiculoTrabajo.setPorcentajeIva(impuesto.getFactor());
             vehiculoTrabajo.setValorIva(new BigDecimal("0"));
             vehiculoTrabajo.setDescuento(new BigDecimal("0"));
+
             vehiculoTrabajo.setVehiculoDescripcion(ordenVehiculoEntrada.getVehiculo().getModelo());
             vehiculoTrabajo.setTrabajoDescripcion(trabajoCategoriaPrecio.getTrabajo().getDescripcion());
             vehiculoTrabajo.setPartePrincipal(trabajoCategoriaPrecio.getParte());
@@ -790,10 +928,29 @@ public class OrdenControlador extends BaseControlador {
 
     public void agregarVehiculo() {
         try {
+            if (!getMapaOrdenVehiculoListaTrabajos().entrySet().isEmpty()) {
+                addInfoMessage(Constante.EXITO, Constante.EXITO_YA_EXISTE);
+                return;
+            }
             System.out.println("agregarVehiculo");
+
+            if (clienteFactura.getIdUsuario() == null) {
+                clienteFactura = usuarioBean.crear(clienteFactura);
+            } else {
+                clienteFactura = usuarioBean.modificar(clienteFactura);
+            }
+            if (clienteOrden.getIdUsuario() == null) {
+                clienteOrden = usuarioBean.crear(clienteOrden);
+            } else {
+                clienteOrden = usuarioBean.modificar(clienteOrden);
+            }
             OrdenVehiculo ordenVehiculo = new OrdenVehiculo();
             ordenVehiculo.setVehiculo(vehiculoSeleccionado);
             ordenVehiculo.setFechaRegistroVehiculo(new Date(System.currentTimeMillis()));
+            ordenVehiculo.setClienteFactura(clienteFactura);
+            ordenVehiculo.setClienteOrden(clienteOrden);
+            ordenVehiculo.setOrigen(origen);
+            ordenVehiculo.setNombreReferencia(nombreReferencia);
             ordenVehiculo = ordenVehiculoBean.crear(ordenVehiculo);
             getVehiculosCliente().add(ordenVehiculo);
             List<TrabajoCategoriaPrecio> listaTrabajoCategoriaPrecio = obtenerListaTrabajoPorGrupoVehiculo(establecimiento.getGrupoPrecio(), vehiculoSeleccionado);
@@ -816,14 +973,15 @@ public class OrdenControlador extends BaseControlador {
     }
 
     public void mismosDatosParaFactura() {
-        System.out.println("mismosDatosParaFactura: " + mismosDatosOrden);
-        if (mismosDatosOrden) {
-            clienteFactura = new Usuario();
-            clienteFactura.setApellido(clienteOrden.getApellido());
+        try {
+            if (mismosDatosOrden) {
+                clienteFactura = new Usuario();
+                BeanUtils.copyProperties(clienteFactura, clienteOrden);
+
+                /*clienteFactura.setApellido(clienteOrden.getApellido());
             clienteFactura.setCallePrincipal(clienteOrden.getCallePrincipal());
             clienteFactura.setCalleSecundaria(clienteOrden.getCalleSecundaria());
             clienteFactura.setCelular(clienteOrden.getCelular());
-            System.out.println("clienteOrden.getCiudad() ---> : " + clienteOrden.getCiudad());
             clienteFactura.setCiudad(clienteOrden.getCiudad());
             clienteFactura.setContrasenia(clienteOrden.getContrasenia());
             clienteFactura.setCorreo(clienteOrden.getCorreo());
@@ -832,10 +990,19 @@ public class OrdenControlador extends BaseControlador {
             clienteFactura.setNumeracion(clienteOrden.getNumeracion());
             clienteFactura.setNumeroDocumento(clienteOrden.getNumeroDocumento());
             clienteFactura.setTelefono(clienteOrden.getTelefono());
-            clienteFactura.setTipoDocumento(clienteOrden.getTipoDocumento());
-        } else {
-            clienteFactura = new Usuario();
+            clienteFactura.setTipoDocumento(clienteOrden.getTipoDocumento());*/
+            } else {
+                clienteFactura = new Usuario();
+            }
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
         }
+
     }
 
     public void seleccionarEstablecimiento() {
@@ -926,6 +1093,7 @@ public class OrdenControlador extends BaseControlador {
         System.out.println("getOldStep: " + event.getOldStep());
 
         switch (event.getOldStep()) {
+
             case "idSeleccionVehiculo":
                 if (!getVehiculosCliente().isEmpty()) {
                     return event.getNewStep();
@@ -933,6 +1101,7 @@ public class OrdenControlador extends BaseControlador {
                     addErrorMessage(Constante.ERROR_LISTA_VEHICULOS_MENSAJE + ":" + Constante.ERROR_LISTA_VEHICULOS, Constante.ERROR_LISTA_VEHICULOS_MENSAJE + ":" + Constante.ERROR_LISTA_VEHICULOS);
                     return event.getOldStep();
                 }
+
             case "idSeleccionTrabajo":
                 Boolean existeTrabajos = true;
                 for (VehiculoTrabajo vehiculoTrabajo : getMapaVehiculoTrabajoParte().keySet()) {
@@ -1550,31 +1719,44 @@ public class OrdenControlador extends BaseControlador {
     }
 
     /**
-     * @return the darDescuento
+     * @return the observacionPago
      */
-    public Boolean getDarDescuento() {
-        return darDescuento;
+    public String getObservacionPago() {
+        return observacionPago;
     }
 
     /**
-     * @param darDescuento the darDescuento to set
+     * @param observacionPago the observacionPago to set
      */
-    public void setDarDescuento(Boolean darDescuento) {
-        this.darDescuento = darDescuento;
+    public void setObservacionPago(String observacionPago) {
+        this.observacionPago = observacionPago;
     }
 
     /**
-     * @return the tipoPago
+     * @return the origen
      */
-    public String getTipoPago() {
-        return tipoPago;
+    public String getOrigen() {
+        return origen;
     }
 
     /**
-     * @param tipoPago the tipoPago to set
+     * @param origen the origen to set
      */
-    public void setTipoPago(String tipoPago) {
-        this.tipoPago = tipoPago;
+    public void setOrigen(String origen) {
+        this.origen = origen;
     }
 
+    /**
+     * @return the nombreReferencia
+     */
+    public String getNombreReferencia() {
+        return nombreReferencia;
+    }
+
+    /**
+     * @param nombreReferencia the nombreReferencia to set
+     */
+    public void setNombreReferencia(String nombreReferencia) {
+        this.nombreReferencia = nombreReferencia;
+    }
 }

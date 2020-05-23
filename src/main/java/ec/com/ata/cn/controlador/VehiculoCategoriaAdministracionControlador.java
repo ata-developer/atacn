@@ -59,35 +59,7 @@ import org.primefaces.model.UploadedFile;
 @ViewScoped
 @Named
 public class VehiculoCategoriaAdministracionControlador extends BaseControlador {
-
-    /**
-     * @return the listaTrabajoCategoriaPrecio
-     */
-    public List<TrabajoCategoriaPrecio> getListaTrabajoCategoriaPrecio() {
-        return listaTrabajoCategoriaPrecio;
-    }
-
-    /**
-     * @param listaTrabajoCategoriaPrecio the listaTrabajoCategoriaPrecio to set
-     */
-    public void setListaTrabajoCategoriaPrecio(List<TrabajoCategoriaPrecio> listaTrabajoCategoriaPrecio) {
-        this.listaTrabajoCategoriaPrecio = listaTrabajoCategoriaPrecio;
-    }
-
-    /**
-     * @return the categoriaSeleccionado
-     */
-    public Categoria getCategoriaSeleccionado() {
-        return categoriaSeleccionado;
-    }
-
-    /**
-     * @param categoriaSeleccionado the categoriaSeleccionado to set
-     */
-    public void setCategoriaSeleccionado(Categoria categoriaSeleccionado) {
-        this.categoriaSeleccionado = categoriaSeleccionado;
-    }
-
+    
     @Inject
     private CategoriaBean categoriaBean;
 
@@ -953,4 +925,33 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
     public void setListaGrupoPrecioParteCategoriaVehiculo(List<GrupoPrecioParteCategoriaVehiculo> listaGrupoPrecioParteCategoriaVehiculo) {
         this.listaGrupoPrecioParteCategoriaVehiculo = listaGrupoPrecioParteCategoriaVehiculo;
     }
+    
+    /**
+     * @return the listaTrabajoCategoriaPrecio
+     */
+    public List<TrabajoCategoriaPrecio> getListaTrabajoCategoriaPrecio() {
+        return listaTrabajoCategoriaPrecio;
+    }
+
+    /**
+     * @param listaTrabajoCategoriaPrecio the listaTrabajoCategoriaPrecio to set
+     */
+    public void setListaTrabajoCategoriaPrecio(List<TrabajoCategoriaPrecio> listaTrabajoCategoriaPrecio) {
+        this.listaTrabajoCategoriaPrecio = listaTrabajoCategoriaPrecio;
+    }
+
+    /**
+     * @return the categoriaSeleccionado
+     */
+    public Categoria getCategoriaSeleccionado() {
+        return categoriaSeleccionado;
+    }
+
+    /**
+     * @param categoriaSeleccionado the categoriaSeleccionado to set
+     */
+    public void setCategoriaSeleccionado(Categoria categoriaSeleccionado) {
+        this.categoriaSeleccionado = categoriaSeleccionado;
+    }
+
 }

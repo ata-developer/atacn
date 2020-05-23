@@ -25,7 +25,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table( name = "usuario")
-public class Usuario implements Serializable {    
+public class Usuario implements Serializable {        
 
     private static final long serialVersionUID = 1L;
     
@@ -49,6 +49,12 @@ public class Usuario implements Serializable {
     @Column(name = "apellido", length = 60)
     private String apellido;
     
+    @Column(name = "nombres_apellidos")
+    private String nombresApellidos;
+    
+    @Column(name = "direccion")
+    private String direccion;
+        
     @Column(name = "calle_principal", length = 60)
     private String callePrincipal;
     
@@ -403,4 +409,32 @@ public class Usuario implements Serializable {
         this.equipo = equipo;
     }
     
+    
+    /**
+     * @return the nombresApellidos
+     */
+    public String getNombresApellidos() {
+        return nombresApellidos;
+    }
+
+    /**
+     * @param nombresApellidos the nombresApellidos to set
+     */
+    public void setNombresApellidos(String nombresApellidos) {
+        this.nombresApellidos = nombresApellidos;
+    }
+    
+    /**
+     * @return the direccion
+     */
+    public String getDireccion() {
+        return direccion;
+    }
+
+    /**
+     * @param direccion the direccion to set
+     */
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
 }

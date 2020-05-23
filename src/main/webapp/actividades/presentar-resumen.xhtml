@@ -1,0 +1,188 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://java.sun.com/jsf/html"                
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:messages />
+    <p:panel id="pnlResumenTrabajo" header="#{msj.ordenTrabajo}">
+        <p:panelGrid id="pnlOrdenTrabajoResumen" columns="1" >
+            <p:column><h:outputText value="#{msj.ordenTrabajo}" /></p:column>
+        </p:panelGrid>
+        <p:panelGrid id="pnlNumeroOrdenResumen" columns="2" >
+            <p:column><p:outputLabel value="#{msj.numeroOrden}" /></p:column>
+            <p:column><h:outputText value="#{ordenControlador.vehiculoParaTrabajos.idOrdenVehiculo}" /></p:column>
+        </p:panelGrid>
+        <p/>
+        <p:panelGrid id="pnlDetallesClienteResumen" columns="1" >
+            <p:column><h:outputText value="#{msj.detallesCliente}" /></p:column>
+        </p:panelGrid>
+        <p:panelGrid id="pnlDetalleClienteResumen" columns="6" >
+            <p:column><p:outputLabel value="#{msj.descripcionTipoDocumento}" /></p:column>
+            <p:column><h:outputText value="#{ordenControlador.vehiculoParaTrabajos.clienteOrden.tipoDocumento.tipoDocumento}" /></p:column>
+
+            <p:column><p:outputLabel value="#{msj.numeroDocumento}" /></p:column>
+            <p:column><h:outputText value="#{ordenControlador.vehiculoParaTrabajos.clienteOrden.numeroDocumento}" /></p:column>
+
+            <p:column><p:outputLabel value="#{msj.nombresCompletos}" /></p:column>
+            <p:column><h:outputText value="#{ordenControlador.vehiculoParaTrabajos.clienteOrden.nombresApellidos}" /></p:column>
+
+            <p:column><p:outputLabel value="#{msj.direccion}" /></p:column>
+            <p:column><h:outputText value="#{ordenControlador.vehiculoParaTrabajos.clienteOrden.direccion}" /></p:column>
+
+            <p:column><p:outputLabel value="#{msj.telefono}" /></p:column>
+            <p:column><h:outputText value="#{ordenControlador.vehiculoParaTrabajos.clienteOrden.telefono}" /></p:column>
+
+            <p:column><p:outputLabel value="#{msj.celular}" /></p:column>
+            <p:column><h:outputText value="#{ordenControlador.vehiculoParaTrabajos.clienteOrden.celular}" /></p:column>
+        </p:panelGrid>
+        <p/>
+        <p:panelGrid id="pnlDetallesFacturaResumen" columns="1" rendered="#{ordenControlador.vehiculoParaTrabajos.clienteFactura.numeroDocumento ne null}">
+            <p:column><h:outputText value="#{msj.detallesFactura}" /></p:column>
+        </p:panelGrid>
+        <p:panelGrid id="pnlDetalleFacturaResumen" columns="6" rendered="#{ordenControlador.vehiculoParaTrabajos.clienteFactura.numeroDocumento ne null}">
+            <p:column><p:outputLabel value="#{msj.descripcionTipoDocumento}" /></p:column>
+            <p:column><h:outputText value="#{ordenControlador.vehiculoParaTrabajos.clienteFactura.tipoDocumento.tipoDocumento}" /></p:column>
+
+            <p:column><p:outputLabel value="#{msj.numeroDocumento}" /></p:column>
+            <p:column><h:outputText value="#{ordenControlador.vehiculoParaTrabajos.clienteFactura.numeroDocumento}" /></p:column>
+
+            <p:column><p:outputLabel value="#{msj.nombresCompletos}" /></p:column>
+            <p:column><h:outputText value="#{ordenControlador.vehiculoParaTrabajos.clienteFactura.nombresApellidos}" /></p:column>
+
+            <p:column><p:outputLabel value="#{msj.direccion}" /></p:column>
+            <p:column><h:outputText value="#{ordenControlador.vehiculoParaTrabajos.clienteFactura.direccion}" /></p:column>
+
+            <p:column><p:outputLabel value="#{msj.telefono}" /></p:column>
+            <p:column><h:outputText value="#{ordenControlador.vehiculoParaTrabajos.clienteFactura.telefono}" /></p:column>
+
+            <p:column><p:outputLabel value="#{msj.celular}" /></p:column>
+            <p:column><h:outputText value="#{ordenControlador.vehiculoParaTrabajos.clienteFactura.celular}" /></p:column>
+        </p:panelGrid>
+        <p/>
+        <p:panelGrid id="pnlDetallesVehiculoResumen" columns="1" >
+            <p:column><h:outputText value="#{msj.descripcionVehiculo}" /></p:column>
+        </p:panelGrid>
+        <p:panelGrid id="pnlModeloVehiculoResumen" columns="2" >
+            <p:column><h:outputText value="#{msj.modeloVehiculo}" /></p:column>
+            <p:column><h:outputText value="#{ordenControlador.vehiculoParaTrabajos.vehiculo.descripcionDetallada}" /></p:column>
+        </p:panelGrid>
+        <p/>
+        <p:panelGrid id="pnlDetallesTrabajosResumen" columns="1" >
+            <p:column><h:outputText value="#{msj.detalleTrabajos}" /></p:column>
+        </p:panelGrid>
+        <p/>
+        <p:panelGrid id="pnlTipoPagoResumen" columns="2" >
+            <p:column><h:outputText value="#{msj.tipoPago}" /></p:column>
+            <p:column><h:outputText value="#{msj.detalleTrabajos}" /></p:column>
+        </p:panelGrid>
+        <p/>
+        <p:dataTable
+            id="tblListaVehiculoTrabajoResumen"
+            var="vehiculoTrabajoParaPago"
+            value="#{ordenControlador.listaVehiculoTrabajosFinal}"
+            editable="true">
+            <p:column headerText="#{msj.numeroOrden}">
+                <p:outputLabel value="#{vehiculoTrabajoParaPago.ordenVehiculo.idOrdenVehiculo}" />
+            </p:column>
+            <p:column headerText="#{msj.descripcion}">
+                <p:outputLabel value="#{vehiculoTrabajoParaPago.trabajoDescripcion}" />
+            </p:column>
+            <p:column headerText="#{msj.precioUnitario}" rendered="#{ordenControlador.vehiculoParaTrabajos.tipoPago eq 'TARJETA'}" >
+                <p:outputLabel value="#{vehiculoTrabajoParaPago.precioVentaPublico}" />
+            </p:column>
+            <p:column headerText="#{msj.precioUnitario}" rendered="#{ordenControlador.vehiculoParaTrabajos.tipoPago eq 'EFECTIVO' or ordenControlador.vehiculoParaTrabajos.tipoPago eq 'TRANSFERENCIA'}" >
+                <p:outputLabel value="#{vehiculoTrabajoParaPago.precioDescuento}" />
+            </p:column>
+            <p:column headerText="#{msj.descuento}" rendered="#{ordenControlador.vehiculoParaTrabajos.darDescuento eq true}">
+                <h:outputText value="#{vehiculoTrabajoParaPago.descuento}" />
+            </p:column>
+            <p:column headerText="#{msj.valorIva}" >
+                <p:outputLabel value="#{vehiculoTrabajoParaPago.valorIva}" />
+            </p:column>
+            <p:column headerText="#{msj.precioVentaPublico}" rendered="#{ordenControlador.vehiculoParaTrabajos.tipoPago eq 'TARJETA'}" >
+                <p:outputLabel value="#{vehiculoTrabajoParaPago.precioVentaPublicoFactura}" />
+            </p:column>
+            <p:column headerText="#{msj.precioVentaPublico}" rendered="#{ordenControlador.vehiculoParaTrabajos.tipoPago eq 'EFECTIVO' or ordenControlador.vehiculoParaTrabajos.tipoPago eq 'TRANSFERENCIA'}" >
+                <p:outputLabel value="#{vehiculoTrabajoParaPago.precioDescuentoFactura}" />
+            </p:column>
+
+            <p:column headerText="#{msj.precioAbonoTarjeta}" rendered="#{ordenControlador.vehiculoParaTrabajos.tipoPago eq 'TARJETA'}" >
+                <h:outputText value="#{vehiculoTrabajoParaPago.precioAbonoTarjeta}" />
+            </p:column>
+            <p:column headerText="#{msj.precioAbonoEfectivo}" rendered="#{ordenControlador.vehiculoParaTrabajos.tipoPago eq 'EFECTIVO' or ordenControlador.vehiculoParaTrabajos.tipoPago eq 'TRANSFERENCIA'}" >
+                <h:outputText value="#{vehiculoTrabajoParaPago.precioAbonoEfectivo}" />
+            </p:column>
+
+            <p:column headerText="#{msj.precioSaldoTarjeta}" rendered="#{ordenControlador.vehiculoParaTrabajos.tipoPago eq 'TARJETA'}" >
+                <p:outputLabel value="#{vehiculoTrabajoParaPago.precioSaldoTarjeta}" />
+            </p:column>
+            <p:column headerText="#{msj.precioSaldoEfectivo}" rendered="#{ordenControlador.vehiculoParaTrabajos.tipoPago eq 'EFECTIVO' or ordenControlador.vehiculoParaTrabajos.tipoPago eq 'TRANSFERENCIA'}" >
+                <p:outputLabel value="#{vehiculoTrabajoParaPago.precioSaldoEfectivo}" />
+            </p:column>
+        </p:dataTable>
+        <p/>
+        <p:panelGrid id="pnlResultadosResumen" columns="2">
+            <h:outputText value="#{msj.subTotal}"/>                
+            <h:outputText value="#{ordenControlador.vehiculoParaTrabajos.subTotal}">
+                <f:convertNumber type="currency" currencySymbol="$" />
+            </h:outputText>
+
+            <h:outputText value="#{msj.subTotalDescuento}" rendered="#{ordenControlador.vehiculoParaTrabajos.darDescuento eq true}"/>
+            <h:outputText value="#{ordenControlador.vehiculoParaTrabajos.subTotalDescuento}" rendered="#{ordenControlador.vehiculoParaTrabajos.darDescuento eq true}">
+                <f:convertNumber type="currency" currencySymbol="$" />
+            </h:outputText>
+
+            <h:outputText value="#{msj.subTotalIva}"/>
+            <h:outputText value="#{ordenControlador.vehiculoParaTrabajos.subTotalIva}">
+                <f:convertNumber type="currency" currencySymbol="$" />
+            </h:outputText>
+
+            <h:outputText value="#{msj.total}"/>
+            <h:outputText value="#{ordenControlador.vehiculoParaTrabajos.total}">
+                <f:convertNumber type="currency" currencySymbol="$" />
+            </h:outputText>
+
+            <h:outputText value="#{msj.totalAbono}"/>
+            <h:outputText value="#{ordenControlador.vehiculoParaTrabajos.totalAbono}">
+                <f:convertNumber type="currency" currencySymbol="$" />
+            </h:outputText>
+
+            <h:outputText value="#{msj.totalSaldo}"/>
+            <h:outputText value="#{ordenControlador.vehiculoParaTrabajos.totalSaldo}">
+                <f:convertNumber type="currency" currencySymbol="$" />
+            </h:outputText>
+
+        </p:panelGrid>
+        <p/>
+        <p:panelGrid id="pnlAbonoEfectivoResumen" columns="2" rendered="#{ordenControlador.vehiculoParaTrabajos.tipoPago eq 'EFECTIVO' }" >
+            <h:outputText value="#{msj.pagoAbono}"/>                
+            <h:outputText value="#{ordenControlador.vehiculoParaTrabajos.pagoAbono}"/>
+
+            <h:outputText value="#{msj.importeAbono}"/>
+            <h:outputText value="#{ordenControlador.vehiculoParaTrabajos.importeAbono}" >
+                <f:convertNumber type="currency" currencySymbol="$" />
+            </h:outputText>
+        </p:panelGrid>
+        <p/>
+        <p:panelGrid id="pnlAbonoTarjetaResumen" columns="2" rendered="#{ordenControlador.vehiculoParaTrabajos.tipoPago eq 'TARJETA' }" >
+            <h:outputText value="#{msj.tipoTarjeta}"/>                
+            <p:inputText value="#{ordenControlador.vehiculoParaTrabajos.tipoTarjeta}"/>
+            <h:outputText value="#{msj.banco}"/>
+            <h:outputText value="#{ordenControlador.vehiculoParaTrabajos.banco}" />
+            <h:outputText value="#{msj.numeroLote}"/>
+            <h:outputText value="#{ordenControlador.vehiculoParaTrabajos.lote}" />
+        </p:panelGrid>
+        <p/>
+        <p:panelGrid id="pnlAbonoTransferenciaResumen" columns="2" rendered="#{ordenControlador.vehiculoParaTrabajos.tipoPago eq 'TRANSFERENCIA' }" >
+            <h:outputText value="#{msj.pagoAbonoTransferencia}"/>                
+            <p:inputText value="#{ordenControlador.vehiculoParaTrabajos.pagoAbonoTransferencia}"/>
+            <h:outputText value="#{msj.bancoTransferencia}"/>
+            <h:outputText value="#{ordenControlador.vehiculoParaTrabajos.bancoTransferencia}" />
+            <h:outputText value="#{msj.numeroTransferencia}"/>
+            <h:outputText value="#{ordenControlador.vehiculoParaTrabajos.numeroTransferencia}" />
+        </p:panelGrid>
+    </p:panel>
+</ui:composition>

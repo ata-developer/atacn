@@ -7,6 +7,58 @@
 
     <p:messages />
     <p:panel id="pnlDatosOrdenFactura" header="#{msj.detallesCliente}">
+        <p:fieldset id="fsEstablecimiento" legend="#{msj.establecimiento}">
+            <p:panelGrid id="pngSeleccionarEstablecimiento" columns="2">
+                <p:outputLabel
+                    for="@next"
+                    value="#{msj.establecimiento}" />
+                <p:selectOneMenu
+                    id="somEstablecimiento"
+                    value="#{ordenControlador.establecimiento}"
+                    required="true"
+                    converter="omnifaces.SelectItemsConverter">
+                    <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                    <f:selectItems value="#{ordenControlador.generarSelectItemDeEstablecimento()}" />
+                    <p:ajax 
+                        event="change"
+                        process="@this pngSeleccionarEstablecimiento"
+                        update=" pnlDatosOrdenFactura mensajeGeneral"/>
+                </p:selectOneMenu>
+            </p:panelGrid>
+        </p:fieldset>
+        <p:fieldset id="fsOrigenContacto" legend="#{msj.origenContacto}" >            
+            <p:panelGrid id="pngOrigenContacto" columns="2" >
+                <p:outputLabel
+                    for="@next"
+                    value="#{msj.origenContacto}" />
+                <p:selectOneMenu
+                    id="somOrigenContacto"
+                    value="#{ordenControlador.origen}"
+                    required="true"
+                    converter="omnifaces.SelectItemsConverter">
+                    <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                    <f:selectItems value="#{consultaControlador.generarOrigen()}" />
+                    <p:ajax 
+                        event="change"
+                        process="@this pngOrigenContacto"
+                        update=" pngOrigenContacto mensajeGeneral"/>
+                </p:selectOneMenu>
+                <p:outputLabel
+                    for="@next"
+                    rendered="#{ordenControlador.origen eq msj.referencia}"
+                    value="#{msj.nombreReferencia}" />
+                <p:inputText
+                    id="itNombreReferencia"                    
+                    rendered="#{ordenControlador.origen eq msj.referencia}"
+                    value="#{ordenControlador.nombreReferencia}"
+                    placeholder="#{msj.ejemploNombre}"
+                    onblur="value = value.toUpperCase()">
+                    <p:keyFilter regEx="/[a-zA-ZáéíñóúüÁÉÍÑÓÚÜ\s]/"/>
+                    <f:converter converterId="trimConverter" />
+                </p:inputText>
+
+            </p:panelGrid>
+        </p:fieldset>
         <p:fieldset id="fbBuscarCliente" legend="#{msj.buscar}">
             <p:panelGrid id="pngBuscar" columns="2"> 
                 <p:selectOneMenu id="console" value="#{ordenControlador.seleccionConsulta}" style="width:125px">
@@ -39,7 +91,7 @@
         </p:fieldset>
 
         <p/>
-        <p:fieldset id="fdDatosOrden" legend="#{msj.datosParaOrden}">
+        <p:fieldset id="fdDatosOrden" legend="#{msj.datosParaOrden}" >
             <p:panelGrid id="pngDetallesCliente" columns="2">
                 <p:outputLabel
                     for="@next"
@@ -59,11 +111,11 @@
 
                 <p:outputLabel
                     for="@next"
-                    value="#{msj.nombre}" />                    
+                    value="#{msj.nombresCompletos}" />                    
                 <p:inputText
                     id="iTNombre"
                     required="true"
-                    value="#{ordenControlador.clienteOrden.nombre}"
+                    value="#{ordenControlador.clienteOrden.nombresApellidos}"
                     placeholder="#{msj.ejemploNombre}"
                     onblur="value = value.toUpperCase()">
                     <p:keyFilter regEx="/[a-zA-ZáéíñóúüÁÉÍÑÓÚÜ\s]/"/>
@@ -72,14 +124,13 @@
 
                 <p:outputLabel
                     for="@next"
-                    value="#{msj.apellido}" />                    
+                    value="#{msj.direccion}" />                    
                 <p:inputText
-                    id="iTApellido"
+                    id="iTCallePrincipal"
                     required="true"
-                    value="#{ordenControlador.clienteOrden.apellido}"
-                    placeholder="#{msj.ejemploApellido}"
+                    value="#{ordenControlador.clienteOrden.direccion}"
+                    placeholder="#{msj.ejemploCalle}"
                     onblur="value = value.toUpperCase()">
-                    <p:keyFilter regEx="/[a-zA-ZáéíñóúüÁÉÍÑÓÚÜ\s]/"/>
                     <f:converter converterId="trimConverter" />
                 </p:inputText>
 
@@ -101,46 +152,9 @@
 
                 <p:outputLabel
                     for="@next"
-                    value="#{msj.callePrincipal}" />                    
-                <p:inputText
-                    id="iTCallePrincipal"
-                    required="true"
-                    value="#{ordenControlador.clienteOrden.callePrincipal}"
-                    placeholder="#{msj.ejemploCalle}"
-                    onblur="value = value.toUpperCase()">
-                    <f:converter converterId="trimConverter" />
-                </p:inputText>
-
-                <p:outputLabel
-                    for="@next"
-                    value="#{msj.numeracion}" />                    
-                <p:inputText
-                    id="iTnumeracion"
-                    required="true"
-                    value="#{ordenControlador.clienteOrden.numeracion}"
-                    placeholder="#{msj.ejemploNumeracion}"
-                    onblur="value = value.toUpperCase()">
-                    <f:converter converterId="trimConverter" />
-                </p:inputText>
-
-                <p:outputLabel
-                    for="@next"
-                    value="#{msj.calleSecundaria}" />                    
-                <p:inputText
-                    id="iTCalleSecundaria"
-                    required="true"
-                    value="#{ordenControlador.clienteOrden.calleSecundaria}"
-                    placeholder="#{msj.ejemploSecundaria}"
-                    onblur="value = value.toUpperCase()">
-                    <f:converter converterId="trimConverter" />
-                </p:inputText>
-
-                <p:outputLabel
-                    for="@next"
                     value="#{msj.telefono}" />                    
                 <p:inputMask
                     id="iTTelefono"
-                    required="true"
                     value="#{ordenControlador.clienteOrden.telefono}"
                     mask="999-9999"
                     placeholder="#{msj.mascaraEjemploTelefono}"
@@ -176,5 +190,5 @@
         <p/>
     </p:panel>
     <p/>
-    
+
 </ui:composition>

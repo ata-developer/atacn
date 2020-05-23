@@ -111,6 +111,19 @@ public class ConsultaControlador extends BaseControlador {
         return selectItemsBuilder.buildList();
     }
     
+    public List<SelectItem> generarOrigen() {
+
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+
+        selectItemsBuilder.add(getBundle("referencia"), getBundle("referencia"));
+        selectItemsBuilder.add(getBundle("google"), getBundle("google"));
+        selectItemsBuilder.add(getBundle("twitter"), getBundle("twitter"));
+        selectItemsBuilder.add(getBundle("instagram"), getBundle("instagram"));
+        selectItemsBuilder.add(getBundle("facebook"), getBundle("facebook"));
+        
+        return selectItemsBuilder.buildList();
+    }
+    
     public List<SelectItem> generarTipoPago() {
 
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();

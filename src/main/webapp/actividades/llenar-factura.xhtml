@@ -88,27 +88,26 @@
 
                     <p:outputLabel
                         for="@next"
-                        value="#{msj.nombre}" />                    
+                        value="#{msj.nombresCompletos}" />                    
                     <p:inputText
                         id="iTNombreFactura"
                         required="true"
-                        value="#{ordenControlador.clienteFactura.nombre}"
+                        value="#{ordenControlador.clienteFactura.nombresApellidos}"
                         placeholder="#{msj.ejemploNombre}"
                         onblur="value = value.toUpperCase()">
                         <p:keyFilter regEx="/[a-zA-ZáéíñóúüÁÉÍÑÓÚÜ\s]/"/>
                         <f:converter converterId="trimConverter" />
                     </p:inputText>
-
+                    
                     <p:outputLabel
                         for="@next"
-                        value="#{msj.apellido}" />                    
+                        value="#{msj.direccion}" />                    
                     <p:inputText
-                        id="iTApellidoFactura"
+                        id="iTCallePrincipalFactura"
                         required="true"
-                        value="#{ordenControlador.clienteFactura.apellido}"
-                        placeholder="#{msj.ejemploApellido}"
+                        value="#{ordenControlador.clienteFactura.direccion}"
+                        placeholder="#{msj.ejemploCalle}"
                         onblur="value = value.toUpperCase()">
-                        <p:keyFilter regEx="/[a-zA-ZáéíñóúüÁÉÍÑÓÚÜ\s]/"/>
                         <f:converter converterId="trimConverter" />
                     </p:inputText>
 
@@ -126,49 +125,12 @@
                         <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                         <f:selectItems value="#{ordenControlador.generarSelectItemDeCiudad()}" />
                     </p:selectOneMenu>
-
-                    <p:outputLabel
-                        for="@next"
-                        value="#{msj.callePrincipal}" />                    
-                    <p:inputText
-                        id="iTCallePrincipalFactura"
-                        required="true"
-                        value="#{ordenControlador.clienteFactura.callePrincipal}"
-                        placeholder="#{msj.ejemploCalle}"
-                        onblur="value = value.toUpperCase()">
-                        <f:converter converterId="trimConverter" />
-                    </p:inputText>
-
-                    <p:outputLabel
-                        for="@next"
-                        value="#{msj.numeracion}" />                    
-                    <p:inputText
-                        id="iTnumeracionFactura"
-                        required="true"
-                        value="#{ordenControlador.clienteFactura.numeracion}"
-                        placeholder="#{msj.ejemploNumeracion}"
-                        onblur="value = value.toUpperCase()">
-                        <f:converter converterId="trimConverter" />
-                    </p:inputText>
-
-                    <p:outputLabel
-                        for="@next"
-                        value="#{msj.calleSecundaria}" />                    
-                    <p:inputText
-                        id="iTCalleSecundariaFactura"
-                        required="true"
-                        value="#{ordenControlador.clienteFactura.calleSecundaria}"
-                        placeholder="#{msj.ejemploSecundaria}"
-                        onblur="value = value.toUpperCase()">
-                        <f:converter converterId="trimConverter" />
-                    </p:inputText>
-
+                    
                     <p:outputLabel
                         for="@next"
                         value="#{msj.telefono}" />                    
                     <p:inputMask
                         id="iTTelefonoFactura"
-                        required="true"
                         value="#{ordenControlador.clienteFactura.telefono}"
                         mask="999-9999"
                         placeholder="#{msj.mascaraEjemploTelefono}"
