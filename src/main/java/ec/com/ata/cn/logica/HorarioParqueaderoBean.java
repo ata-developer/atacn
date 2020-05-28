@@ -7,6 +7,7 @@ package ec.com.ata.cn.logica;
 
 
 import ec.com.ata.cn.logica.dao.HorarioParqueaderoDao;
+import ec.com.ata.cn.modelo.CitaDTO;
 import ec.com.ata.cn.modelo.HorarioParqueadero;
 import ec.com.ata.cn.modelo.HorarioParqueadero;
 import java.util.HashMap;
@@ -51,5 +52,9 @@ public class HorarioParqueaderoBean {
 
     public void eliminar(Long idHorarioParqueaderoEntrada) {
         horarioParqueaderoDao.eliminar(idHorarioParqueaderoEntrada);
+    }
+    
+    public List<CitaDTO> obtenerCitaPorIdVehiculoTrabajo(Long idVehiculoTrabaho) {
+        return horarioParqueaderoDao.obtenerCitaPorIdVehiculoTrabajo(idVehiculoTrabaho);
     }
 }

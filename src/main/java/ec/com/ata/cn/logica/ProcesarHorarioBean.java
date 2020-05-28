@@ -14,6 +14,8 @@ import ec.com.ata.cn.modelo.Periodo;
 import ec.com.ata.cn.modelo.PeriodoEstablecimientoFecha;
 import ec.com.ata.cn.modelo.PeriodoHorario;
 import ec.com.ata.cn.modelo.VehiculoTrabajo;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -47,7 +49,7 @@ public class ProcesarHorarioBean {
         Date fechaInicio = periodoEntrada.getInicio();
         Date fechaFin = periodoEntrada.getFin();
         Date fechaActual = new Date();
-        VehiculoTrabajo VehiculoTrabajo = null;
+        VehiculoTrabajo vehiculoTrabajo = null;
         LocalDate localFechaInicio = fechaInicio.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate localFechaFin = fechaFin.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         List<Parqueadero> listaParqueaderos = establecimientoEntrada.getListaParqueadero();
@@ -57,6 +59,11 @@ public class ProcesarHorarioBean {
         parametros.put("ordenOrderByAsc", null);
         List<PeriodoHorario> listaPeriodoHorario = periodoHorarioBean.obtenerListaPorParametros(parametros);
         Integer contadorDias = 1;
+        LocalDate dateTmp = localFechaInicio;
+        fechaActual = java.util.Date.from(dateTmp.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+        String strDate = dateFormat.format(fechaActual);
+        System.out.println("strDate: "+strDate);
         for (LocalDate date = localFechaInicio; date.isBefore(localFechaFin); date = date.plusDays(1)) {
             fechaActual = java.util.Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
             Calendar calendar = Utilitario.dateToCalendar(fechaActual);
@@ -88,8 +95,10 @@ public class ProcesarHorarioBean {
                     horarioParqueadero.setHorario(pEFHorario.getHorario());
                     horarioParqueadero.setParqueadero(parqueaderoTmp);
                     horarioParqueadero.setOrden(parqueaderoTmp.getNumero());
-                    horarioParqueadero.setVehiculoTrabajo(VehiculoTrabajo);
+                    horarioParqueadero.setOrdenParqueadero(periodoHorario.getHorario().getPosicion());
+                    horarioParqueadero.setVehiculoTrabajo(vehiculoTrabajo);
                     horarioParqueadero.setpEFHorario(pEFHorario);
+                    horarioParqueadero.setFecha(fechaActual);
                     horarioParqueaderoBean.crear(horarioParqueadero);
                 }
 
@@ -103,6 +112,7 @@ public class ProcesarHorarioBean {
         List<PeriodoEstablecimientoFecha> listaSemana = new ArrayList<>();
         List<List<PeriodoEstablecimientoFecha>> semana = new ArrayList<>();
         List<PeriodoEstablecimientoFecha> listaFecha = periodoEstablecimientoFechaBean.obtenerListaPorParametros(parametros);
+        System.out.println("listaFecha.size(): "+listaFecha.size());
         Long dia = 1L;
         for (int i = 0; i < listaFecha.size();) {
             PeriodoEstablecimientoFecha fecha = listaFecha.get(i);
@@ -166,7 +176,7 @@ public class ProcesarHorarioBean {
                     default:
                         break;
                 }
-                
+
             }
             listaPEF.add(hashPEF);
 

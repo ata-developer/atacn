@@ -146,7 +146,8 @@ public class EstablecimientoControlador extends BaseControlador {
             parametros.put("periodo", getPeriodoSeleccionadoParaCalendario());
             parametros.put("mes", getMesSeleccionado());
             parametros.put("diaMesOrderByAsc", null);
-            //setSemana(procesarHorarioBean.generarCalendario(parametros));   
+            System.out.println("getPeriodoSeleccionadoParaCalendario" +getPeriodoSeleccionadoParaCalendario() );
+            System.out.println("getMesSeleccionado" +getMesSeleccionado() );
             setListaPEF(procesarHorarioBean.generarCalendarioHash(parametros));
             
             addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);

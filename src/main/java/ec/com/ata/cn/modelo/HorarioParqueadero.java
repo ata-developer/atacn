@@ -6,6 +6,7 @@
 package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -16,6 +17,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -24,7 +27,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "horario_parqueadero")
 public class HorarioParqueadero implements Serializable {    
-
+       
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -41,6 +44,12 @@ public class HorarioParqueadero implements Serializable {
     @Column(name = "orden")
     private Long orden;
     
+    @Column(name = "orden_parqueadero")
+    private Long ordenParqueadero;
+    
+    @Temporal(TemporalType.DATE)
+    private Date fecha;
+    
     @ManyToOne
     @JoinColumn(name="id_horario", referencedColumnName="id_horario")
     private Horario horario;
@@ -56,6 +65,10 @@ public class HorarioParqueadero implements Serializable {
     @ManyToOne
     @JoinColumn(name="id_vehiculo_trabajo", referencedColumnName="id_vehiculo_trabajo")
     private VehiculoTrabajo vehiculoTrabajo;
+    
+    @ManyToOne
+    @JoinColumn(name="id_orden_vehiculo", referencedColumnName="id_orden_vehiculo")
+    private OrdenVehiculo ordenVehiculo;
     
     @Embedded
     private GenericoEntidad genericoEntidad;   
@@ -176,5 +189,46 @@ public class HorarioParqueadero implements Serializable {
     public void setpEFHorario(PEFHorario pEFHorario) {
         this.pEFHorario = pEFHorario;
     }
+    
+    /**
+     * @return the ordenParqueadero
+     */
+    public Long getOrdenParqueadero() {
+        return ordenParqueadero;
+    }
 
+    /**
+     * @param ordenParqueadero the ordenParqueadero to set
+     */
+    public void setOrdenParqueadero(Long ordenParqueadero) {
+        this.ordenParqueadero = ordenParqueadero;
+    }
+    
+    /**
+     * @return the ordenVehiculo
+     */
+    public OrdenVehiculo getOrdenVehiculo() {
+        return ordenVehiculo;
+    }
+
+    /**
+     * @param ordenVehiculo the ordenVehiculo to set
+     */
+    public void setOrdenVehiculo(OrdenVehiculo ordenVehiculo) {
+        this.ordenVehiculo = ordenVehiculo;
+    }
+    
+    /**
+     * @return the fecha
+     */
+    public Date getFecha() {
+        return fecha;
+    }
+
+    /**
+     * @param fecha the fecha to set
+     */
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
 }

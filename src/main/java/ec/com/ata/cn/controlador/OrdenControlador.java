@@ -577,6 +577,7 @@ public class OrdenControlador extends BaseControlador {
             System.out.println("guardarHorarioVehiculoTrabajo");
             vehiculoTrabajoEntrada = vehiculoTrabajoBean.modificar(vehiculoTrabajoEntrada);
             horarioParqueaderoEntrada.setVehiculoTrabajo(vehiculoTrabajoEntrada);
+            horarioParqueaderoEntrada.setOrdenVehiculo(vehiculoTrabajoEntrada.getOrdenVehiculo());
             horarioParqueaderoBean.modificar(horarioParqueaderoEntrada);
             cargarFechasPrivado();
             addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);

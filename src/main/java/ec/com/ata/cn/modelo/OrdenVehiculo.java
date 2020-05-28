@@ -144,6 +144,9 @@ public class OrdenVehiculo implements Serializable {
 
     @OneToMany(mappedBy = "ordenVehiculo")
     private List<VehiculoTrabajo> listaVehiculoTrabajo;
+    
+    @OneToMany(mappedBy = "ordenVehiculo")
+    private List<HorarioParqueadero> listaHorarioParqueadero;
 
     public OrdenVehiculo() {
         genericoEntidad = new GenericoEntidad();
@@ -662,6 +665,20 @@ public class OrdenVehiculo implements Serializable {
      */
     public void setTipoPago(String tipoPago) {
         this.tipoPago = tipoPago;
+    }
+    
+    /**
+     * @return the listaHorarioParqueadero
+     */
+    public List<HorarioParqueadero> getListaHorarioParqueadero() {
+        return listaHorarioParqueadero;
+    }
+
+    /**
+     * @param listaHorarioParqueadero the listaHorarioParqueadero to set
+     */
+    public void setListaHorarioParqueadero(List<HorarioParqueadero> listaHorarioParqueadero) {
+        this.listaHorarioParqueadero = listaHorarioParqueadero;
     }
 
 }
