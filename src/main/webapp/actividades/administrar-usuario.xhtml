@@ -55,7 +55,7 @@
 
                     <p:outputLabel
                         for="@next"
-                        value="#{msj.ciudad}" />                    
+                        value="#{msj.ciudad} -- " />                    
                     <p:selectOneMenu
                         id="somSeleccionarCiudadUsuario"
                         value="#{usuarioControlador.usuario.ciudad}"
@@ -66,7 +66,6 @@
                         converter="omnifaces.SelectItemsConverter">
                         <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                         <f:selectItems value="#{ordenControlador.generarSelectItemDeCiudad()}" />
-                        <f:ajax event="itemSelect" listener="#{ordenControlador.actualizarClienteOrden}"/>
                     </p:selectOneMenu>
 
                     <p:outputLabel
@@ -183,7 +182,7 @@
                     <p:commandButton
                         id="btnGuardar" 
                         value="#{msj.guardar}"
-                        process="pngAdministrarUsuario"
+                        process="@this pngAdministrarUsuario"
                         update="pngAdministrarUsuario tblListaUsuario mensajeGeneral"
                         action="#{usuarioControlador.guardar()}" />
                     <p:outputLabel
@@ -298,7 +297,7 @@
                     <p:commandButton
                         id="btnGuardarEquipoUsuario" 
                         value="#{msj.guardar}"
-                        process="@this pngAdministrarEquipoPersona"
+                        process="pngAdministrarEquipoPersona"
                         update="pngAdministrarEquipoPersona tblListaEquipoUsuario mensajeGeneral"
                         action="#{usuarioControlador.actualizarEquipoUsuario()}" />
                     <p:outputLabel

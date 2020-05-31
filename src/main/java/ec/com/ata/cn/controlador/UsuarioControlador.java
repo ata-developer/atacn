@@ -162,8 +162,6 @@ public class UsuarioControlador extends BaseControlador {
                 return;
             }
             addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
-        } finally {
-            setUsuarioSeleccionado(new Usuario());
         }
     }
 
