@@ -359,6 +359,7 @@
                         <p:column headerText="#{dia.label}" rendered="#{dia.label ne 'DOMINGO'}" style="width: 400px">
                             <h:outputText value="#{pefHash[dia.label].diaMes}" />
                             <p/>
+                            <h:outputText value="#{pefHash[dia.label].listaPEFHorario.size()}" />
                             <p:repeat var="pefHorario" value="#{pefHash[dia.label].listaPEFHorario}" >
                                 <p:panelGrid>
                                     <p:row>

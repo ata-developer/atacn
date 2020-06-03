@@ -189,6 +189,7 @@ public class EstablecimientoControlador extends BaseControlador {
         parametros.put("establecimiento", getEstablecimientoSeleccionado());
         List<Parqueadero> listaParqueaderoTmp = parqueaderoBean.obtenerListaPorParametros(parametros);
         setListaParqueadero(listaParqueaderoTmp);
+        System.out.println("listaParqueaderoTmp.size:"+listaParqueaderoTmp.size());
         parametros = new HashMap();
         parametros.put("establecimiento", getEstablecimientoSeleccionado());
         setListaPeriodoEstablecimiento(periodoEstablecimientoBean.obtenerListaPorParametros(parametros));

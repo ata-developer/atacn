@@ -53,8 +53,9 @@ public class ProcesarHorarioBean {
         LocalDate localFechaInicio = fechaInicio.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate localFechaFin = fechaFin.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         List<Parqueadero> listaParqueaderos = establecimientoEntrada.getListaParqueadero();
-
+        System.out.println("numero de parqueaderos:" + listaParqueaderos.size());
         HashMap<String, Object> parametros = new HashMap();
+        System.out.println("periodoEntrada:" + periodoEntrada.getPeriodo());
         parametros.put("periodo", periodoEntrada);
         parametros.put("ordenOrderByAsc", null);
         List<PeriodoHorario> listaPeriodoHorario = periodoHorarioBean.obtenerListaPorParametros(parametros);
@@ -63,7 +64,7 @@ public class ProcesarHorarioBean {
         fechaActual = java.util.Date.from(dateTmp.atStartOfDay(ZoneId.systemDefault()).toInstant());
         DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
         String strDate = dateFormat.format(fechaActual);
-        System.out.println("strDate: "+strDate);
+        System.out.println("strDate: " + strDate);
         for (LocalDate date = localFechaInicio; date.isBefore(localFechaFin); date = date.plusDays(1)) {
             fechaActual = java.util.Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
             Calendar calendar = Utilitario.dateToCalendar(fechaActual);
@@ -112,7 +113,7 @@ public class ProcesarHorarioBean {
         List<PeriodoEstablecimientoFecha> listaSemana = new ArrayList<>();
         List<List<PeriodoEstablecimientoFecha>> semana = new ArrayList<>();
         List<PeriodoEstablecimientoFecha> listaFecha = periodoEstablecimientoFechaBean.obtenerListaPorParametros(parametros);
-        System.out.println("listaFecha.size(): "+listaFecha.size());
+        System.out.println("listaFecha.size(): " + listaFecha.size());
         Long dia = 1L;
         for (int i = 0; i < listaFecha.size();) {
             PeriodoEstablecimientoFecha fecha = listaFecha.get(i);
