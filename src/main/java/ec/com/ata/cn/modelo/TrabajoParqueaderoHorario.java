@@ -27,7 +27,7 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "trabajo_parqueadero_horario")
 public class TrabajoParqueaderoHorario implements Serializable {    
-       
+           
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -175,5 +175,33 @@ public class TrabajoParqueaderoHorario implements Serializable {
      */
     public void setFecha(Date fecha) {
         this.fecha = fecha;
+    }
+    
+    /**
+     * @return the fechaInicial
+     */
+    public Date getFechaInicial() {
+        return fechaInicial;
+    }
+
+    /**
+     * @param fechaInicial the fechaInicial to set
+     */
+    public void setFechaInicial(Date fechaInicial) {
+        this.fechaInicial = fechaInicial;
+    }
+
+    /**
+     * @return the fechaFin
+     */
+    public Date getFechaFin() {
+        return fechaFin;
+    }
+
+    /**
+     * @param fechaFin the fechaFin to set
+     */
+    public void setFechaFin(Date fechaFin) {
+        this.fechaFin = fechaFin;
     }
 }
