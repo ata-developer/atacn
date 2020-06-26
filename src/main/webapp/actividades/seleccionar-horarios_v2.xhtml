@@ -12,28 +12,15 @@
             <p:dataTable
                 id="tblListaVehiculoTrabajoHorario"
                 var="vehiculoTrabajoParaHorarios"
-                rendered="#{ordenControlador.vehiculoParaTrabajos.tipoPago ne null}"
                 value="#{ordenControlador.listaVehiculoTrabajosFinal}"
                 editable="true">
-                <p:ajax event="rowEdit" listener="#{ordenControlador.onRowEdit}" update="tblListaVehiculoTrabajoPago  :frmGenerarOrden:pnlResultados mensajeGeneral" />
-                <p:ajax event="rowEditCancel" listener="#{ordenControlador.onRowCancel}" />
+                <p:ajax event="rowEdit" listener="#{ordenControlador.onRowEditHorario }" update="tblListaVehiculoTrabajoPago mensajeGeneral" />
+                <p:ajax event="rowEditCancel" listener="#{ordenControlador.onRowCancelHorario}" />
                 <p:column headerText="#{msj.numeroOrden}">
                     <p:outputLabel value="#{vehiculoTrabajoParaHorarios.ordenVehiculo.idOrdenVehiculo}" />
                 </p:column>
                 <p:column headerText="#{msj.descripcion}">
                     <p:outputLabel value="#{vehiculoTrabajoParaHorarios.trabajoDescripcion}" />
-                </p:column>
-                <p:column headerText="#{msj.precioUnitario}" rendered="#{ordenControlador.vehiculoParaTrabajos.tipoPago eq 'TARJETA'}" >
-                    <p:outputLabel value="#{vehiculoTrabajoParaHorarios.precioVentaPublico}" />
-                </p:column>
-                <p:column headerText="#{msj.precioUnitario}" rendered="#{ordenControlador.vehiculoParaTrabajos.tipoPago eq 'EFECTIVO' or ordenControlador.vehiculoParaTrabajos.tipoPago eq 'TRANSFERENCIA'}" >
-                    <p:outputLabel value="#{vehiculoTrabajoParaHorarios.precioDescuento}" />
-                </p:column>
-                <p:column headerText="#{msj.descuento}" rendered="#{ordenControlador.vehiculoParaTrabajos.darDescuento eq true}">
-                    <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{vehiculoTrabajoParaHorarios.descuento}" /></f:facet>
-                        <f:facet name="input"><p:inputText id="txtDescuento" value="#{vehiculoTrabajoParaHorarios.descuento}"/></f:facet>
-                    </p:cellEditor>
                 </p:column>
                 <p:column headerText="#{msj.valorIva}" >
                     <p:outputLabel value="#{vehiculoTrabajoParaHorarios.valorIva}" />

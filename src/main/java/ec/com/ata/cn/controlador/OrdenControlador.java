@@ -363,8 +363,57 @@ public class OrdenControlador extends BaseControlador {
         }
 
     }
+    
+    public void onRowEditHorario(RowEditEvent event) {
+        VehiculoTrabajo vehiculoTrabajoAux = (VehiculoTrabajo) event.getObject();
+        System.out.println("vehiculoTrabajo.getDescuento(): " + vehiculoTrabajoAux.getDescuento());
+        System.out.println("vehiculoTrabajo.getIdVehiculoTrabajo(): " + vehiculoTrabajoAux.getIdVehiculoTrabajo());
+        try {
+            vehiculoTrabajoAux.setTipoPago(tipoPago);
+            vehiculoTrabajoAux = procesarValoresDescuento(vehiculoTrabajoAux);
+            vehiculoTrabajoBean.modificar(vehiculoTrabajoAux);
+            List<VehiculoTrabajo> listaVehiculoTrabajoTemporal = new ArrayList<>();
+            getVehiculoParaTrabajos().setSubTotal(new BigDecimal("0"));
+            getVehiculoParaTrabajos().setSubTotalDescuento(new BigDecimal("0"));
+            getVehiculoParaTrabajos().setTotal(new BigDecimal("0"));
+            getVehiculoParaTrabajos().setTotalAbono(new BigDecimal("0"));
+            getVehiculoParaTrabajos().setTotalSaldo(new BigDecimal("0"));
+            for (VehiculoTrabajo vehiculoTrabajo1 : listaVehiculoTrabajosFinal) {
+                VehiculoTrabajo vehiculoTrabajo2 = vehiculoTrabajoBean.obtenerPorCodigo(vehiculoTrabajo1.getIdVehiculoTrabajo());
+                switch (getVehiculoParaTrabajos().getTipoPago()) {
+                    case "EFECTIVO":
+                        procesarTotalesEfectivoTransferencia(vehiculoTrabajo2);
+                        break;
+                    case "TRANSFERENCIA":
+                        procesarTotalesEfectivoTransferencia(vehiculoTrabajo2);
+                        break;
+                    case "TARJETA":
+                        procesarTotalesTarjeta(vehiculoTrabajo2);
+                        break;
+                    default:
+                        break;
+                }
+                listaVehiculoTrabajoTemporal.add(vehiculoTrabajo2);
+            }
+            setListaVehiculoTrabajosFinal(listaVehiculoTrabajoTemporal);
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+        }
+
+    }
 
     public void onRowCancel(RowEditEvent event) {
+        System.out.println("Cancelado");
+
+    }
+    
+    public void onRowCancelHorario(RowEditEvent event) {
         System.out.println("Cancelado");
 
     }
