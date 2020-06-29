@@ -195,6 +195,11 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
         System.out.println("agregarGrupoTrabajoAVehiculo");
         try {
             GrupoPrecioParteCategoriaVehiculo grupoPrecioParteCategoriaVehiculo = new GrupoPrecioParteCategoriaVehiculo();
+            System.out.println("grupoPrecioSeccionado: "+grupoPrecioSeccionado.getNombre());
+            System.out.println("partePrincipalSeleccionada: "+partePrincipalSeleccionada.getParte());
+            System.out.println("categoriaSeleccionado: "+categoriaSeleccionado.getCategoria());
+            System.out.println("agregarGrupoTrabajoAVehiculo: "+vehiculoSeleccionado.getDescripcionDetallada());
+            
             grupoPrecioParteCategoriaVehiculo.setGrupoPrecio(grupoPrecioSeccionado);
             grupoPrecioParteCategoriaVehiculo.setParte(partePrincipalSeleccionada);
             grupoPrecioParteCategoriaVehiculo.setCategoria(categoriaSeleccionado);
@@ -204,6 +209,10 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
             setListaGrupoPrecioParteCategoriaVehiculo(generarListaGrupoVehiculo());
             setListaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.generarListaCompletaTrabajoCategoriaPrecioPorVehiculo(getListaGrupoPrecioParteCategoriaVehiculo()));
             addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+            grupoPrecioSeccionado = null;
+            partePrincipalSeleccionada = null;
+            categoriaSeleccionado = null;
+            
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
             if (null != root) {

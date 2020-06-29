@@ -35,6 +35,10 @@ public class UsuarioBean {
         return usuarioDao.crear(usuarioEntrada);
     }
     
+    public Usuario crearUsuarioOrdenFactura(Usuario usuarioEntrada) throws Exception{       
+        return usuarioDao.crear(usuarioEntrada);
+    }
+    
     public List<Usuario> obtenerLista(){
         return usuarioDao.obtenerTodos();
     }

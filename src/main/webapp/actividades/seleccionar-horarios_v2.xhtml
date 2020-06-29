@@ -12,9 +12,9 @@
             <p:dataTable
                 id="tblListaVehiculoTrabajoHorario"
                 var="vehiculoTrabajoParaHorarios"
-                value="#{ordenControlador.listaVehiculoTrabajosFinal}"
+                value="#{ordenControlador.generarListaVehiculoTrabajo()}"
                 editable="true">
-                <p:ajax event="rowEdit" listener="#{ordenControlador.onRowEditHorario }" update="tblListaVehiculoTrabajoPago mensajeGeneral" />
+                <p:ajax event="rowEdit" listener="#{ordenControlador.onRowEditHorario }" update=":frmGenerarOrden:tblListaVehiculoTrabajoHorario mensajeGeneral" />
                 <p:ajax event="rowEditCancel" listener="#{ordenControlador.onRowCancelHorario}" />
                 <p:column headerText="#{msj.numeroOrden}">
                     <p:outputLabel value="#{vehiculoTrabajoParaHorarios.ordenVehiculo.idOrdenVehiculo}" />
@@ -22,107 +22,59 @@
                 <p:column headerText="#{msj.descripcion}">
                     <p:outputLabel value="#{vehiculoTrabajoParaHorarios.trabajoDescripcion}" />
                 </p:column>
-                <p:column headerText="#{msj.valorIva}" >
-                    <p:outputLabel value="#{vehiculoTrabajoParaHorarios.valorIva}" />
-                </p:column>
-                <p:column headerText="#{msj.precioVentaPublico}" rendered="#{ordenControlador.vehiculoParaTrabajos.tipoPago eq 'TARJETA'}" >
-                    <p:outputLabel value="#{vehiculoTrabajoParaHorarios.precioVentaPublicoFactura}" />
-                </p:column>
-                <p:column headerText="#{msj.precioVentaPublico}" rendered="#{ordenControlador.vehiculoParaTrabajos.tipoPago eq 'EFECTIVO' or ordenControlador.vehiculoParaTrabajos.tipoPago eq 'TRANSFERENCIA'}" >
-                    <p:outputLabel value="#{vehiculoTrabajoParaHorarios.precioDescuentoFactura}" />
-                </p:column>
 
-                <p:column headerText="#{msj.precioAbonoTarjeta}" rendered="#{ordenControlador.vehiculoParaTrabajos.tipoPago eq 'TARJETA'}" >
+                <p:column headerText="#{msj.fechaInicio}">
                     <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{vehiculoTrabajoParaHorarios.precioAbonoTarjeta}" /></f:facet>
-                        <f:facet name="input"><p:inputText id="txtPrecioAbonoTarjeta" value="#{vehiculoTrabajoParaHorarios.precioAbonoTarjeta}"/></f:facet>
+                        <f:facet name="output">
+                            <h:outputText value="#{vehiculoTrabajoParaHorarios.precioAbonoTarjeta}">
+                                <f:convertDateTime type="date" pattern="MM/dd/yyyy HH:mm"/>
+                            </h:outputText>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:calendar id="dpTrabajoHorarioInicial"
+                                        pattern="MM/dd/yyyy HH:mm"
+                                        value="#{vehiculoTrabajoParaHorarios.fechaInicio}"
+                                        mindate="#{ordenControlador.fechaYHoraActual}">
+                                <p:ajax event="dateSelect" update="dpTrabajoHorarioFinal"/>
+                            </p:calendar>
+                        </f:facet>
                     </p:cellEditor>
                 </p:column>
-                <p:column headerText="#{msj.precioAbonoEfectivo}" rendered="#{ordenControlador.vehiculoParaTrabajos.tipoPago eq 'EFECTIVO' or ordenControlador.vehiculoParaTrabajos.tipoPago eq 'TRANSFERENCIA'}" >
+                <p:column headerText="#{msj.fechaFin}">
                     <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{vehiculoTrabajoParaHorarios.precioAbonoEfectivo}" /></f:facet>
-                        <f:facet name="input"><p:inputText id="txtPrecioAbonoEfectivo" value="#{vehiculoTrabajoParaHorarios.precioAbonoEfectivo}"/></f:facet>
+                        <f:facet name="output">
+                            <h:outputText value="#{vehiculoTrabajoParaHorarios.precioAbonoEfectivo}">
+                                <f:convertDateTime type="date" pattern="MM/dd/yyyy HH:mm"/>
+                            </h:outputText>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:calendar id="dpTrabajoHorarioFinal"
+                                        pattern="MM/dd/yyyy HH:mm:ss"
+                                        value="#{vehiculoTrabajoParaHorarios.fechaFin}"
+                                        mindate="#{vehiculoTrabajoParaHorarios.fechaInicio}"/>
+                        </f:facet>
                     </p:cellEditor>
                 </p:column>
 
-                <p:column headerText="#{msj.precioSaldoTarjeta}" rendered="#{ordenControlador.vehiculoParaTrabajos.tipoPago eq 'TARJETA'}" >
-                    <p:outputLabel value="#{vehiculoTrabajoParaHorarios.precioSaldoTarjeta}" />
+                <p:column headerText="#{msj.equipo}">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{vehiculoTrabajoParaHorarios.equipo.equipo}" /></f:facet>
+                        <f:facet name="input"><p:selectOneMenu
+                                id="somSeleccionarEquipoPersonaParaTrabajo"
+                                value="#{vehiculoTrabajoParaHorarios.equipo}"
+                                required="true"
+                                converter="omnifaces.SelectItemsConverter">
+                                <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                                <f:selectItems value="#{consultaControlador.generarSelectItemDeEquipos()}" />
+                            </p:selectOneMenu></f:facet>
+                    </p:cellEditor>
                 </p:column>
-                <p:column headerText="#{msj.precioSaldoEfectivo}" rendered="#{ordenControlador.vehiculoParaTrabajos.tipoPago eq 'EFECTIVO' or ordenControlador.vehiculoParaTrabajos.tipoPago eq 'TRANSFERENCIA'}" >
-                    <p:outputLabel value="#{vehiculoTrabajoParaHorarios.precioSaldoEfectivo}" />
-                </p:column>
+
                 <p:column headerText="#{msj.acciones}" >
                     <p:rowEditor/>
                 </p:column>
-                
+
             </p:dataTable>
-            <p/>
-            <p:panelGrid id="pnlResultados" columns="2" rendered="#{ordenControlador.vehiculoParaTrabajos.tipoPago ne null}" >
-                <h:outputText value="#{msj.subTotal}"/>                
-                <h:outputText value="#{ordenControlador.vehiculoParaTrabajos.subTotal}">
-                    <f:convertNumber type="currency" currencySymbol="$" />
-                </h:outputText>
-
-                <h:outputText value="#{msj.subTotalDescuento}" rendered="#{ordenControlador.vehiculoParaTrabajos.darDescuento eq true}"/>
-                <h:outputText value="#{ordenControlador.vehiculoParaTrabajos.subTotalDescuento}" rendered="#{ordenControlador.vehiculoParaTrabajos.darDescuento eq true}">
-                    <f:convertNumber type="currency" currencySymbol="$" />
-                </h:outputText>
-                
-                <h:outputText value="#{msj.subTotalIva}"/>
-                <h:outputText value="#{ordenControlador.vehiculoParaTrabajos.subTotalIva}">
-                    <f:convertNumber type="currency" currencySymbol="$" />
-                </h:outputText>
-                
-                <h:outputText value="#{msj.total}"/>
-                <h:outputText value="#{ordenControlador.vehiculoParaTrabajos.total}">
-                    <f:convertNumber type="currency" currencySymbol="$" />
-                </h:outputText>
-                
-                <h:outputText value="#{msj.totalAbono}"/>
-                <h:outputText value="#{ordenControlador.vehiculoParaTrabajos.totalAbono}">
-                    <f:convertNumber type="currency" currencySymbol="$" />
-                </h:outputText>
-                
-                <h:outputText value="#{msj.totalSaldo}"/>
-                <h:outputText value="#{ordenControlador.vehiculoParaTrabajos.totalSaldo}">
-                    <f:convertNumber type="currency" currencySymbol="$" />
-                </h:outputText>
-
-            </p:panelGrid>
-            <p/>
-            <p:panelGrid id="pnlAbonoEfectivo" columns="2" rendered="#{ordenControlador.vehiculoParaTrabajos.tipoPago eq 'EFECTIVO' }" >
-                <h:outputText value="#{msj.pagoAbono}"/>                
-                <p:inputText value="#{ordenControlador.vehiculoParaTrabajos.pagoAbono}">
-                    <p:ajax
-                        event="blur"
-                        process="@this pnlAbonoEfectivo"
-                        update="pnlAbonoEfectivo"
-                        listener="#{ordenControlador.calcularImporteAbono()}" />
-                </p:inputText>
-
-                <h:outputText value="#{msj.importeAbono}"/>
-                <h:outputText value="#{ordenControlador.vehiculoParaTrabajos.importeAbono}" >
-                    <f:convertNumber type="currency" currencySymbol="$" />
-                </h:outputText>
-            </p:panelGrid>
-            <p/>
-            <p:panelGrid id="pnlAbonoTarjeta" columns="2" rendered="#{ordenControlador.vehiculoParaTrabajos.tipoPago eq 'TARJETA' }" >
-                <h:outputText value="#{msj.tipoTarjeta}"/>                
-                <p:inputText value="#{ordenControlador.vehiculoParaTrabajos.tipoTarjeta}"/>
-                <h:outputText value="#{msj.banco}"/>
-                <h:outputText value="#{ordenControlador.vehiculoParaTrabajos.banco}" />
-                <h:outputText value="#{msj.numeroLote}"/>
-                <h:outputText value="#{ordenControlador.vehiculoParaTrabajos.lote}" />
-            </p:panelGrid>
-            <p/>
-            <p:panelGrid id="pnlAbonoTransferencia" columns="2" rendered="#{ordenControlador.vehiculoParaTrabajos.tipoPago eq 'TRANSFERENCIA' }" >
-                <h:outputText value="#{msj.pagoAbonoTransferencia}"/>                
-                <p:inputText value="#{ordenControlador.vehiculoParaTrabajos.pagoAbonoTransferencia}"/>
-                <h:outputText value="#{msj.bancoTransferencia}"/>
-                <h:outputText value="#{ordenControlador.vehiculoParaTrabajos.bancoTransferencia}" />
-                <h:outputText value="#{msj.numeroTransferencia}"/>
-                <h:outputText value="#{ordenControlador.vehiculoParaTrabajos.numeroTransferencia}" />
-            </p:panelGrid>
         </p:fieldset>        
         <p/>
     </p:panel>

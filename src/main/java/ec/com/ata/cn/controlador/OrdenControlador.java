@@ -206,6 +206,8 @@ public class OrdenControlador extends BaseControlador {
 
     private String nombreReferencia;
 
+    private Date fechaYHoraActual;
+
     @PostConstruct
     public void init() {
         setEstablecimiento(new Establecimiento());
@@ -243,6 +245,7 @@ public class OrdenControlador extends BaseControlador {
         getVehiculoParaTrabajos().setTotalSaldo(new BigDecimal("0"));
         getVehiculoParaTrabajos().setPagoAbono(new BigDecimal("0"));
         getVehiculoParaTrabajos().setImporteAbono(new BigDecimal("0"));
+        setFechaYHoraActual(new Date(System.currentTimeMillis()));
 
     }
 
@@ -252,7 +255,7 @@ public class OrdenControlador extends BaseControlador {
             if (getVehiculoParaTrabajos().getDarDescuento() == false) {
                 for (OrdenVehiculo ordenVehiculo : mapaOrdenVehiculoTrabajo.keySet()) {
                     List<VehiculoTrabajo> listaVehiculoTrabajos = mapaOrdenVehiculoTrabajo.get(ordenVehiculo);
-                    List<VehiculoTrabajo> listaVehiculoTrabajosTmp =new ArrayList<>();
+                    List<VehiculoTrabajo> listaVehiculoTrabajosTmp = new ArrayList<>();
                     for (VehiculoTrabajo vehiculoTrabajoTmp : listaVehiculoTrabajos) {
                         vehiculoTrabajoTmp = vehiculoTrabajoBean.obtenerPorCodigo(vehiculoTrabajoTmp.getIdVehiculoTrabajo());
                         vehiculoTrabajoTmp.setDescuento(new BigDecimal("0"));
@@ -363,39 +366,17 @@ public class OrdenControlador extends BaseControlador {
         }
 
     }
-    
+
     public void onRowEditHorario(RowEditEvent event) {
         VehiculoTrabajo vehiculoTrabajoAux = (VehiculoTrabajo) event.getObject();
         System.out.println("vehiculoTrabajo.getDescuento(): " + vehiculoTrabajoAux.getDescuento());
         System.out.println("vehiculoTrabajo.getIdVehiculoTrabajo(): " + vehiculoTrabajoAux.getIdVehiculoTrabajo());
+        System.out.println("vehiculoTrabajo.getFechaInicio(): " + vehiculoTrabajoAux.getFechaInicio());
+        System.out.println("vehiculoTrabajo.getFechaFin(): " + vehiculoTrabajoAux.getFechaFin());
+        System.out.println("vehiculoTrabajo.getEquipo(): " + vehiculoTrabajoAux.getEquipo().getEquipo());
         try {
-            vehiculoTrabajoAux.setTipoPago(tipoPago);
-            vehiculoTrabajoAux = procesarValoresDescuento(vehiculoTrabajoAux);
             vehiculoTrabajoBean.modificar(vehiculoTrabajoAux);
-            List<VehiculoTrabajo> listaVehiculoTrabajoTemporal = new ArrayList<>();
-            getVehiculoParaTrabajos().setSubTotal(new BigDecimal("0"));
-            getVehiculoParaTrabajos().setSubTotalDescuento(new BigDecimal("0"));
-            getVehiculoParaTrabajos().setTotal(new BigDecimal("0"));
-            getVehiculoParaTrabajos().setTotalAbono(new BigDecimal("0"));
-            getVehiculoParaTrabajos().setTotalSaldo(new BigDecimal("0"));
-            for (VehiculoTrabajo vehiculoTrabajo1 : listaVehiculoTrabajosFinal) {
-                VehiculoTrabajo vehiculoTrabajo2 = vehiculoTrabajoBean.obtenerPorCodigo(vehiculoTrabajo1.getIdVehiculoTrabajo());
-                switch (getVehiculoParaTrabajos().getTipoPago()) {
-                    case "EFECTIVO":
-                        procesarTotalesEfectivoTransferencia(vehiculoTrabajo2);
-                        break;
-                    case "TRANSFERENCIA":
-                        procesarTotalesEfectivoTransferencia(vehiculoTrabajo2);
-                        break;
-                    case "TARJETA":
-                        procesarTotalesTarjeta(vehiculoTrabajo2);
-                        break;
-                    default:
-                        break;
-                }
-                listaVehiculoTrabajoTemporal.add(vehiculoTrabajo2);
-            }
-            setListaVehiculoTrabajosFinal(listaVehiculoTrabajoTemporal);
+
             addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
@@ -412,7 +393,7 @@ public class OrdenControlador extends BaseControlador {
         System.out.println("Cancelado");
 
     }
-    
+
     public void onRowCancelHorario(RowEditEvent event) {
         System.out.println("Cancelado");
 
@@ -487,6 +468,18 @@ public class OrdenControlador extends BaseControlador {
             }
         }
         setListaVehiculoTrabajosFinal(listaVehiculoTrabajosFinalTmp);
+    }
+
+    public List<VehiculoTrabajo> generarListaVehiculoTrabajo() {
+        List<VehiculoTrabajo> listaVehiculoTrabajosFinalTmp = new ArrayList<>();
+        for (OrdenVehiculo ordenVehiculo : mapaOrdenVehiculoTrabajo.keySet()) {
+            List<VehiculoTrabajo> listaVehiculoTrabajos = mapaOrdenVehiculoTrabajo.get(ordenVehiculo);
+            for (VehiculoTrabajo vehiculoTrabajoTmp : listaVehiculoTrabajos) {
+                VehiculoTrabajo vehiculoTrabajoTmp2 = vehiculoTrabajoBean.obtenerPorCodigo(vehiculoTrabajoTmp.getIdVehiculoTrabajo());
+                listaVehiculoTrabajosFinalTmp.add(vehiculoTrabajoTmp2);
+            }
+        }
+        return listaVehiculoTrabajosFinalTmp;
     }
 
     private void calcularListaPagoEfectivoTransferencia() throws Exception {
@@ -850,6 +843,7 @@ public class OrdenControlador extends BaseControlador {
             vehiculoTrabajo.setGenericoEntidad(new GenericoEntidad());
             vehiculoTrabajo.getGenericoEntidad().setFechaRegistro(new Date(System.currentTimeMillis()));
             vehiculoTrabajo = vehiculoTrabajoBean.crear(vehiculoTrabajo);
+            System.out.println("trabajoCategoriaPrecio.getTrabajoCategoriaPrecioId:" + trabajoCategoriaPrecio.getTrabajoCategoriaPrecioId());
             System.out.println("trabajoCategoriaPrecio.getParte:" + trabajoCategoriaPrecio.getParte());
             parametros = new HashMap<>();
             parametros.put("padre", trabajoCategoriaPrecio.getParte());
@@ -860,6 +854,7 @@ public class OrdenControlador extends BaseControlador {
                 TrabajoParte trabajoParte = new TrabajoParte();
                 trabajoParte.setPartePadre(trabajoCategoriaPrecio.getParte());
                 trabajoParte.setParte(parteTmp);
+                System.out.println("Parte:" + parteTmp.getParte());
                 trabajoParte.setVehiculoTrabajo(vehiculoTrabajo);
                 trabajoParte = trabajoParteBean.crear(trabajoParte);
                 listaTrabajoPartesTmp.add(trabajoParte);
@@ -983,25 +978,12 @@ public class OrdenControlador extends BaseControlador {
                 return;
             }
             System.out.println("agregarVehiculo");
-
-            if (clienteFactura.getIdUsuario() == null) {
-                clienteFactura = usuarioBean.crear(clienteFactura);
-            } else {
-                clienteFactura = usuarioBean.modificar(clienteFactura);
-            }
-            if (clienteOrden.getIdUsuario() == null) {
-                clienteOrden = usuarioBean.crear(clienteOrden);
-            } else {
-                clienteOrden = usuarioBean.modificar(clienteOrden);
-            }
             OrdenVehiculo ordenVehiculo = new OrdenVehiculo();
             ordenVehiculo.setVehiculo(vehiculoSeleccionado);
             ordenVehiculo.setFechaRegistroVehiculo(new Date(System.currentTimeMillis()));
-            ordenVehiculo.setClienteFactura(clienteFactura);
-            ordenVehiculo.setClienteOrden(clienteOrden);
             ordenVehiculo.setOrigen(origen);
             ordenVehiculo.setNombreReferencia(nombreReferencia);
-            ordenVehiculo = ordenVehiculoBean.crear(ordenVehiculo);
+            ordenVehiculo = ordenVehiculoBean.crearOrden(ordenVehiculo, clienteOrden, clienteFactura, llenarEsteMomento);
             getVehiculosCliente().add(ordenVehiculo);
             List<TrabajoCategoriaPrecio> listaTrabajoCategoriaPrecio = obtenerListaTrabajoPorGrupoVehiculo(establecimiento.getGrupoPrecio(), vehiculoSeleccionado);
             getMapaOrdenVehiculoListaTrabajos().put(ordenVehiculo, listaTrabajoCategoriaPrecio);
@@ -1809,4 +1791,19 @@ public class OrdenControlador extends BaseControlador {
     public void setNombreReferencia(String nombreReferencia) {
         this.nombreReferencia = nombreReferencia;
     }
+
+    /**
+     * @return the fechaYHoraActual
+     */
+    public Date getFechaYHoraActual() {
+        return fechaYHoraActual;
+    }
+
+    /**
+     * @param fechaYHoraActual the fechaYHoraActual to set
+     */
+    public void setFechaYHoraActual(Date fechaYHoraActual) {
+        this.fechaYHoraActual = fechaYHoraActual;
+    }
+
 }

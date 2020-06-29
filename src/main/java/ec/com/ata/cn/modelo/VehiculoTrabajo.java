@@ -7,6 +7,7 @@ package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -20,6 +21,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -29,7 +32,7 @@ import javax.persistence.Table;
 @Entity
 @Table ( name = "vehiculo_trabajo")
 public class VehiculoTrabajo implements Serializable {
-    
+        
     @Id
     @SequenceGenerator(
             name = "vehiculo_trabajo_seq",
@@ -89,8 +92,6 @@ public class VehiculoTrabajo implements Serializable {
     @Column(name = "descuento")
     private BigDecimal descuento;
     
-    
-    
     @Column(name = "pago_tarjeta")
     private Boolean pagoTarjeta;
     
@@ -102,6 +103,14 @@ public class VehiculoTrabajo implements Serializable {
     
     @Column(name = "observacion_pago")
     private String observacionPago;
+    
+    @Column(name = "fecha_inicio")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaInicio;
+    
+    @Column(name = "fecha_fin")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaFin;
     
     @ManyToOne
     @JoinColumn(name="id_parte", referencedColumnName="id_parte")
@@ -486,4 +495,31 @@ public class VehiculoTrabajo implements Serializable {
         this.observacionPago = observacionPago;
     }
     
+    /**
+     * @return the fechaInicio
+     */
+    public Date getFechaInicio() {
+        return fechaInicio;
+    }
+
+    /**
+     * @param fechaInicio the fechaInicio to set
+     */
+    public void setFechaInicio(Date fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
+    /**
+     * @return the fechaFin
+     */
+    public Date getFechaFin() {
+        return fechaFin;
+    }
+
+    /**
+     * @param fechaFin the fechaFin to set
+     */
+    public void setFechaFin(Date fechaFin) {
+        this.fechaFin = fechaFin;
+    }
 }
