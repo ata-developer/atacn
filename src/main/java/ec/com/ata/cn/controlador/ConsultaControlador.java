@@ -8,6 +8,7 @@ package ec.com.ata.cn.controlador;
 import ec.com.ata.cn.logica.EquipoBean;
 import ec.com.ata.cn.logica.EstablecimientoBean;
 import ec.com.ata.cn.logica.HorarioBean;
+import ec.com.ata.cn.logica.ParqueaderoBean;
 import ec.com.ata.cn.logica.ParteBean;
 import ec.com.ata.cn.logica.PeriodoBean;
 import ec.com.ata.cn.logica.PeriodoEstablecimientoBean;
@@ -16,6 +17,7 @@ import ec.com.ata.cn.modelo.Establecimiento;
 import ec.com.ata.cn.modelo.Horario;
 import ec.com.ata.cn.modelo.HorarioParqueadero;
 import ec.com.ata.cn.modelo.OrdenVehiculo;
+import ec.com.ata.cn.modelo.Parqueadero;
 import ec.com.ata.cn.modelo.Parte;
 import ec.com.ata.cn.modelo.Periodo;
 import ec.com.ata.cn.modelo.PeriodoEstablecimiento;
@@ -54,6 +56,9 @@ public class ConsultaControlador extends BaseControlador {
 
     @Inject
     private EquipoBean equipoBean;
+    
+    @Inject
+    private ParqueaderoBean parqueaderoBean;
     
     @Inject
     private ParteBean parteBean;
@@ -163,6 +168,14 @@ public class ConsultaControlador extends BaseControlador {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
         for (Equipo equipoTmp : equipoBean.obtenerLista()) {
             selectItemsBuilder.add(equipoTmp, equipoTmp.getEquipo());
+        }
+        return selectItemsBuilder.buildList();
+    }
+    
+    public List<SelectItem> generarSelectItemDeParqueaderos() {
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+        for (Parqueadero parqueaderoTmp : parqueaderoBean.obtenerLista()) {
+            selectItemsBuilder.add(parqueaderoTmp, parqueaderoTmp.getParqueadero());
         }
         return selectItemsBuilder.buildList();
     }

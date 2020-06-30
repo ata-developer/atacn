@@ -31,7 +31,9 @@ import ec.com.ata.cn.modelo.HorarioParqueadero;
 import ec.com.ata.cn.modelo.Impuesto;
 import ec.com.ata.cn.modelo.MarcaVehiculo;
 import ec.com.ata.cn.modelo.Material;
+import ec.com.ata.cn.modelo.OrdenFecha;
 import ec.com.ata.cn.modelo.OrdenVehiculo;
+import ec.com.ata.cn.modelo.Parqueadero;
 import ec.com.ata.cn.modelo.Parte;
 import ec.com.ata.cn.modelo.Periodo;
 import ec.com.ata.cn.modelo.PeriodoEstablecimientoFecha;
@@ -122,8 +124,6 @@ public class OrdenControlador extends BaseControlador {
 
     private List<Vehiculo> listaVehiculos;
 
-    private boolean skip;
-
     private String numeroDocumento;
 
     private List<Usuario> listaClientes;
@@ -207,7 +207,11 @@ public class OrdenControlador extends BaseControlador {
     private String nombreReferencia;
 
     private Date fechaYHoraActual;
-
+    
+    private OrdenFecha ordenFecha;
+    
+    private List<OrdenFecha> listaOrdenFecha;
+    
     @PostConstruct
     public void init() {
         setEstablecimiento(new Establecimiento());
@@ -246,7 +250,8 @@ public class OrdenControlador extends BaseControlador {
         getVehiculoParaTrabajos().setPagoAbono(new BigDecimal("0"));
         getVehiculoParaTrabajos().setImporteAbono(new BigDecimal("0"));
         setFechaYHoraActual(new Date(System.currentTimeMillis()));
-
+        setOrdenFecha(new OrdenFecha());
+        setListaOrdenFecha(new ArrayList<OrdenFecha>());
     }
 
     public void setearACero() {
@@ -1805,5 +1810,34 @@ public class OrdenControlador extends BaseControlador {
     public void setFechaYHoraActual(Date fechaYHoraActual) {
         this.fechaYHoraActual = fechaYHoraActual;
     }
+    
+    /**
+     * @return the listaOrdenFecha
+     */
+    public List<OrdenFecha> getListaOrdenFecha() {
+        return listaOrdenFecha;
+    }
+
+    /**
+     * @param listaOrdenFecha the listaOrdenFecha to set
+     */
+    public void setListaOrdenFecha(List<OrdenFecha> listaOrdenFecha) {
+        this.listaOrdenFecha = listaOrdenFecha;
+    }
+
+    /**
+     * @return the ordenFecha
+     */
+    public OrdenFecha getOrdenFecha() {
+        return ordenFecha;
+    }
+
+    /**
+     * @param ordenFecha the ordenFecha to set
+     */
+    public void setOrdenFecha(OrdenFecha ordenFecha) {
+        this.ordenFecha = ordenFecha;
+    }
+    
 
 }
