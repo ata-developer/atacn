@@ -40,6 +40,8 @@
                     <f:selectItem itemLabel="#{msj.seleccionarTodosLosTrabajos}" value="#{null}" />
                     <f:selectItems value="#{consultaControlador.generarSelectItemDeVehiculoTrabajo(listaVehiculoTrabajoEntrada)}" />
                 </p:selectOneMenu>
+                <p:outputLabel
+                    value="#{msj.fechaInicio}: " />
             </p:panelGrid>
             
             <p:dataTable
