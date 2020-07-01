@@ -42,73 +42,39 @@
                 </p:selectOneMenu>
                 <p:outputLabel
                     value="#{msj.fechaInicio}: " />
-            </p:panelGrid>
-            
-            <p:dataTable
-                id="tblListaVehiculoTrabajoHorario"
-                var="vehiculoTrabajoParaHorarios"
-                value="#{ordenControlador.generarListaVehiculoTrabajo()}"
-                editable="true">
-                <p:ajax event="rowEdit" listener="#{ordenControlador.onRowEditHorario }" update=":frmGenerarOrden:tblListaVehiculoTrabajoHorario mensajeGeneral" />
-                <p:ajax event="rowEditCancel" listener="#{ordenControlador.onRowCancelHorario}" />
-                <p:column headerText="#{msj.numeroOrden}">
-                    <p:outputLabel value="#{vehiculoTrabajoParaHorarios.ordenVehiculo.idOrdenVehiculo}" />
-                </p:column>
-                <p:column headerText="#{msj.descripcion}">
-                    <p:outputLabel value="#{vehiculoTrabajoParaHorarios.trabajoDescripcion}" />
-                </p:column>
+                <p:datePicker
+                    id="fechaInicio"
+                    value="#{ordenControlador.ordenFecha.fechaInicio}" 
+                    mindate="#{calendarJava8View.minDate}"/>
+                <p:outputLabel
+                    value="#{msj.fechaFin}: " />
+                <p:datePicker
+                    id="fechaFin"
+                    value="#{ordenControlador.ordenFecha.fechaFin}" 
+                    mindate="#{calendarJava8View.minDate}"/>
 
+            </p:panelGrid>
+
+            <p:dataTable
+                id="tblListaOrdenFecha"
+                var="ordenFecha"
+                value="#{ordenControlador.listaOrdenFecha}">
+                <p:column headerText="#{msj.descripcion}">
+                    <p:outputLabel value="#{ordenFecha.vehiculoTrabajo == null ? 'TODOS LOS TRABAJOS': ordenFecha.vehiculoTrabajo.trabajoDescripcion}" />
+                </p:column>
                 <p:column headerText="#{msj.fechaInicio}">
-                    <p:cellEditor>
-                        <f:facet name="output">
-                            <h:outputText value="#{vehiculoTrabajoParaHorarios.precioAbonoTarjeta}">
-                                <f:convertDateTime type="date" pattern="MM/dd/yyyy HH:mm"/>
-                            </h:outputText>
-                        </f:facet>
-                        <f:facet name="input">
-                            <p:calendar id="dpTrabajoHorarioInicial"
-                                        pattern="MM/dd/yyyy HH:mm"
-                                        value="#{vehiculoTrabajoParaHorarios.fechaInicio}"
-                                        mindate="#{ordenControlador.fechaYHoraActual}">
-                                <p:ajax event="dateSelect" update="dpTrabajoHorarioFinal"/>
-                            </p:calendar>
-                        </f:facet>
-                    </p:cellEditor>
+                    <h:outputText value="#{ordenFecha.fechaInicio}">
+                        <f:convertDateTime type="date" pattern="MM/dd/yyyy HH:mm"/>
+                    </h:outputText>
                 </p:column>
                 <p:column headerText="#{msj.fechaFin}">
-                    <p:cellEditor>
-                        <f:facet name="output">
-                            <h:outputText value="#{vehiculoTrabajoParaHorarios.precioAbonoEfectivo}">
-                                <f:convertDateTime type="date" pattern="MM/dd/yyyy HH:mm"/>
-                            </h:outputText>
-                        </f:facet>
-                        <f:facet name="input">
-                            <p:calendar id="dpTrabajoHorarioFinal"
-                                        pattern="MM/dd/yyyy HH:mm:ss"
-                                        value="#{vehiculoTrabajoParaHorarios.fechaFin}"
-                                        mindate="#{vehiculoTrabajoParaHorarios.fechaInicio}"/>
-                        </f:facet>
-                    </p:cellEditor>
+                    <h:outputText value="#{ordenFecha.fechaFin}">
+                        <f:convertDateTime type="date" pattern="MM/dd/yyyy HH:mm"/>
+                    </h:outputText>
                 </p:column>
-
-                <p:column headerText="#{msj.equipo}">
-                    <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{vehiculoTrabajoParaHorarios.equipo.equipo}" /></f:facet>
-                        <f:facet name="input"><p:selectOneMenu
-                                id="somSeleccionarEquipoPersonaParaTrabajo"
-                                value="#{vehiculoTrabajoParaHorarios.equipo}"
-                                required="true"
-                                converter="omnifaces.SelectItemsConverter">
-                                <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
-                                <f:selectItems value="#{consultaControlador.generarSelectItemDeEquipos()}" />
-                            </p:selectOneMenu></f:facet>
-                    </p:cellEditor>
-                </p:column>
-
                 <p:column headerText="#{msj.acciones}" >
-                    <p:rowEditor/>
+                    
                 </p:column>
-
             </p:dataTable>
         </p:fieldset>        
         <p/>
