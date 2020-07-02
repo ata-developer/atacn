@@ -13,7 +13,7 @@
                 <p:outputLabel
                     value="#{msj.seleccionarParqueadero}: " />
                 <p:selectOneMenu
-                    id="somSeleccionarParqueadero"
+                    id="somSeleccionarParqueaderoHorario"
                     value="#{ordenControlador.ordenFecha.parqueadero}"
                     required="true"
                     converter="omnifaces.SelectItemsConverter">
@@ -23,7 +23,7 @@
                 <p:outputLabel
                     value="#{msj.seleccionarEquipo}: " />
                 <p:selectOneMenu
-                    id="somSeleccionarParqueadero"
+                    id="somSeleccionarEquipoHorario"
                     value="#{ordenControlador.ordenFecha.equipo}"
                     required="true"
                     converter="omnifaces.SelectItemsConverter">
@@ -33,23 +33,23 @@
                 <p:outputLabel
                     value="#{msj.seleccionarEquipo}: " />
                 <p:selectOneMenu
-                    id="somSeleccionarParqueadero"
+                    id="somSeleccionarVehiculoParqueadero"
                     value="#{ordenControlador.ordenFecha.vehiculoTrabajo}"
                     required="true"
                     converter="omnifaces.SelectItemsConverter">
                     <f:selectItem itemLabel="#{msj.seleccionarTodosLosTrabajos}" value="#{null}" />
-                    <f:selectItems value="#{consultaControlador.generarSelectItemDeVehiculoTrabajo(listaVehiculoTrabajoEntrada)}" />
+                    <f:selectItems value="#{consultaControlador.generarSelectItemDeVehiculoTrabajoMapa(ordenControlador.mapaOrdenVehiculoTrabajo)}" />
                 </p:selectOneMenu>
                 <p:outputLabel
                     value="#{msj.fechaInicio}: " />
                 <p:datePicker
-                    id="fechaInicio"
+                    id="fechaInicioHorario"
                     value="#{ordenControlador.ordenFecha.fechaInicio}" 
                     mindate="#{calendarJava8View.minDate}"/>
                 <p:outputLabel
                     value="#{msj.fechaFin}: " />
                 <p:datePicker
-                    id="fechaFin"
+                    id="fechaFinHorario"
                     value="#{ordenControlador.ordenFecha.fechaFin}" 
                     mindate="#{calendarJava8View.minDate}"/>
 
