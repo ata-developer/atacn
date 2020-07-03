@@ -11,6 +11,7 @@ import ec.com.ata.cn.logica.GrupoPrecioParteCategoriaVehiculoBean;
 import ec.com.ata.cn.logica.HorarioParqueaderoBean;
 import ec.com.ata.cn.logica.ImpuestoBean;
 import ec.com.ata.cn.logica.MaterialBean;
+import ec.com.ata.cn.logica.OrdenFechaBean;
 import ec.com.ata.cn.logica.OrdenVehiculoBean;
 import ec.com.ata.cn.logica.ParteBean;
 import ec.com.ata.cn.logica.ProcesarHorarioBean;
@@ -33,7 +34,6 @@ import ec.com.ata.cn.modelo.MarcaVehiculo;
 import ec.com.ata.cn.modelo.Material;
 import ec.com.ata.cn.modelo.OrdenFecha;
 import ec.com.ata.cn.modelo.OrdenVehiculo;
-import ec.com.ata.cn.modelo.Parqueadero;
 import ec.com.ata.cn.modelo.Parte;
 import ec.com.ata.cn.modelo.Periodo;
 import ec.com.ata.cn.modelo.PeriodoEstablecimientoFecha;
@@ -114,6 +114,10 @@ public class OrdenControlador extends BaseControlador {
     @Inject
     private ImpuestoBean impuestoBean;
 
+    @Inject
+    private OrdenFechaBean ordenFechaBean;
+
+    
     private Establecimiento establecimiento;
 
     private Usuario clienteOrden;
@@ -252,6 +256,23 @@ public class OrdenControlador extends BaseControlador {
         setFechaYHoraActual(new Date(System.currentTimeMillis()));
         setOrdenFecha(new OrdenFecha());
         setListaOrdenFecha(new ArrayList<OrdenFecha>());
+    }
+    
+    public void agregarOrdenFecha (OrdenFecha ordenFecha) {
+        try {
+            ordenFechaBean.crear(ordenFecha);
+            setListaOrdenFecha(ordenFechaBean.obtenerLista());
+            setOrdenFecha(new OrdenFecha());
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+        }
+        
     }
 
     public void setearACero() {

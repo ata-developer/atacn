@@ -44,15 +44,23 @@
                     value="#{msj.fechaInicio}: " />
                 <p:datePicker
                     id="fechaInicioHorario"
+                    showTime="true"
                     value="#{ordenControlador.ordenFecha.fechaInicio}" 
-                    mindate="#{calendarJava8View.minDate}"/>
+                    mindate="#{ordenControlador.ordenFecha.vehiculoTrabajo.fechaInicio}"/>
                 <p:outputLabel
                     value="#{msj.fechaFin}: " />
                 <p:datePicker
                     id="fechaFinHorario"
+                    showTime="true"
                     value="#{ordenControlador.ordenFecha.fechaFin}" 
-                    mindate="#{calendarJava8View.minDate}"/>
+                    mindate="#{ordenControlador.ordenFecha.vehiculoTrabajo.fechaFin}"/>
 
+                <p:commandButton
+                            id="btnAgregar" 
+                            value="#{msj.agregar}"
+                            update="pngSeleccionarTrabajosParaAuto tablaVehiculoTrabajo mensajeGeneral"
+                            action="#{ordenControlador.agregarOrdenFecha(ordenControlador.ordenFecha)}" /> 
+                <p:outputLabel value="" />
             </p:panelGrid>
 
             <p:dataTable
@@ -73,7 +81,7 @@
                     </h:outputText>
                 </p:column>
                 <p:column headerText="#{msj.acciones}" >
-                    
+
                 </p:column>
             </p:dataTable>
         </p:fieldset>        
