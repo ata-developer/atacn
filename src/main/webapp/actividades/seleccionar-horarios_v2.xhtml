@@ -42,19 +42,23 @@
                 </p:selectOneMenu>
                 <p:outputLabel
                     value="#{msj.fechaInicio}: " />
-                <p:datePicker
-                    id="fechaInicioHorario"
-                    showTime="true"
-                    value="#{ordenControlador.ordenFecha.fechaInicio}" 
-                    mindate="#{ordenControlador.ordenFecha.vehiculoTrabajo.fechaInicio}"/>
+                
+                <p:calendar
+                    id="fechaInicioHorario" 
+                    value="#{ordenControlador.ordenFecha.fechaInicio}"
+                    mindate="#{ordenControlador.ordenFecha.vehiculoTrabajo.fechaInicio}"
+                    pattern="yyyy-MM-dd HH:mm" 
+                    placeholder="2020-12-24 13:59"
+                    mask="true" />
                 <p:outputLabel
                     value="#{msj.fechaFin}: " />
-                <p:datePicker
-                    id="fechaFinHorario"
-                    showTime="true"
+                <p:calendar
+                    id="fechaFinHorario" 
                     value="#{ordenControlador.ordenFecha.fechaFin}" 
-                    mindate="#{ordenControlador.ordenFecha.vehiculoTrabajo.fechaFin}"/>
-
+                    mindate="#{ordenControlador.ordenFecha.vehiculoTrabajo.fechaFin}"
+                    pattern="yyyy-MM-dd HH:mm"
+                    placeholder="2020-12-24 13:59"
+                    mask="true" />
                 <p:commandButton
                             id="btnAgregar" 
                             value="#{msj.agregar}"
