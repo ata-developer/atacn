@@ -44,4 +44,9 @@ public class OrdenFechaBean {
     public void eliminar(Long ordenFechaEntradaId) throws Exception {    
         ordenFechaDao.eliminar(ordenFechaEntradaId);
     }
+    
+    public List<OrdenFecha> obtenerListaPorParametros (HashMap<String, Object> parametros) {
+        return ordenFechaDao.obtenerListaPorParametros(parametros);
+    }
+    
 }

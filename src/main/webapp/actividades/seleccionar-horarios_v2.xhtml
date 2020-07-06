@@ -31,42 +31,45 @@
                     <f:selectItems value="#{consultaControlador.generarSelectItemDeEquipos()}" />
                 </p:selectOneMenu>
                 <p:outputLabel
-                    value="#{msj.seleccionarEquipo}: " />
+                    value="#{msj.seleccionarTrabajo}: " />
                 <p:selectOneMenu
                     id="somSeleccionarVehiculoParqueadero"
                     value="#{ordenControlador.ordenFecha.vehiculoTrabajo}"
-                    required="true"
                     converter="omnifaces.SelectItemsConverter">
                     <f:selectItem itemLabel="#{msj.seleccionarTodosLosTrabajos}" value="#{null}" />
                     <f:selectItems value="#{consultaControlador.generarSelectItemDeVehiculoTrabajoMapa(ordenControlador.mapaOrdenVehiculoTrabajo)}" />
                 </p:selectOneMenu>
                 <p:outputLabel
-                    value="#{msj.fechaInicio}: " />
-                
+                    value="#{msj.fechaInicio}: " />                
                 <p:calendar
                     id="fechaInicioHorario" 
                     value="#{ordenControlador.ordenFecha.fechaInicio}"
-                    mindate="#{ordenControlador.ordenFecha.vehiculoTrabajo.fechaInicio}"
+                    mindate="#{ordenControlador.fechaYHoraActual}"
+                    required="true"
                     pattern="yyyy-MM-dd HH:mm" 
                     placeholder="2020-12-24 13:59"
-                    mask="true" />
+                    mask="true">
+                    <p:ajax event="dateSelect" process="fechaInicioHorario fechaFinHorario" update=":frmGenerarOrden:fechaFinHorario" />
+                </p:calendar>
                 <p:outputLabel
                     value="#{msj.fechaFin}: " />
                 <p:calendar
                     id="fechaFinHorario" 
                     value="#{ordenControlador.ordenFecha.fechaFin}" 
-                    mindate="#{ordenControlador.ordenFecha.vehiculoTrabajo.fechaFin}"
+                    mindate="#{ordenControlador.ordenFecha.fechaInicio}"
+                    required="true"
                     pattern="yyyy-MM-dd HH:mm"
                     placeholder="2020-12-24 13:59"
                     mask="true" />
                 <p:commandButton
                             id="btnAgregar" 
                             value="#{msj.agregar}"
-                            update="pngSeleccionarTrabajosParaAuto tablaVehiculoTrabajo mensajeGeneral"
+                            process="pngSeleccionarFecha"
+                            update="pngSeleccionarFecha tblListaOrdenFecha mensajeGeneral"
                             action="#{ordenControlador.agregarOrdenFecha(ordenControlador.ordenFecha)}" /> 
                 <p:outputLabel value="" />
             </p:panelGrid>
-
+            <p/>
             <p:dataTable
                 id="tblListaOrdenFecha"
                 var="ordenFecha"
@@ -85,7 +88,11 @@
                     </h:outputText>
                 </p:column>
                 <p:column headerText="#{msj.acciones}" >
-
+                    <p:commandButton
+                            id="btnEliminarOrdenFecha" 
+                            value="#{msj.eliminar}"
+                            update="tblListaOrdenFecha"
+                            action="#{ordenControlador.agregarOrdenFecha(ordenControlador.ordenFecha)}" /> 
                 </p:column>
             </p:dataTable>
         </p:fieldset>        

@@ -117,7 +117,6 @@ public class OrdenControlador extends BaseControlador {
     @Inject
     private OrdenFechaBean ordenFechaBean;
 
-    
     private Establecimiento establecimiento;
 
     private Usuario clienteOrden;
@@ -211,11 +210,11 @@ public class OrdenControlador extends BaseControlador {
     private String nombreReferencia;
 
     private Date fechaYHoraActual;
-    
+
     private OrdenFecha ordenFecha;
-    
+
     private List<OrdenFecha> listaOrdenFecha;
-    
+
     @PostConstruct
     public void init() {
         setEstablecimiento(new Establecimiento());
@@ -257,10 +256,15 @@ public class OrdenControlador extends BaseControlador {
         setOrdenFecha(new OrdenFecha());
         setListaOrdenFecha(new ArrayList<OrdenFecha>());
     }
-    
-    public void agregarOrdenFecha (OrdenFecha ordenFecha) {
+
+    public void cambiarFechaFin() {
+    }
+
+    public void agregarOrdenFecha(OrdenFecha ordenFecha) {
         try {
             ordenFechaBean.crear(ordenFecha);
+            HashMap<String, Object> parametros = new HashMap<>();
+            parametros.put("ordenVehiculo", ordenVehiculo);
             setListaOrdenFecha(ordenFechaBean.obtenerLista());
             setOrdenFecha(new OrdenFecha());
             addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
@@ -272,7 +276,24 @@ public class OrdenControlador extends BaseControlador {
             }
             addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
         }
-        
+
+    }
+
+    public void eliminarOrdenFecha(OrdenFecha ordenFecha) {
+        try {
+            ordenFechaBean.eliminar(ordenFecha.getIdOrdenFecha());
+            setListaOrdenFecha(ordenFechaBean.obtenerLista());
+            setOrdenFecha(new OrdenFecha());
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+        }
+
     }
 
     public void setearACero() {
@@ -1831,7 +1852,7 @@ public class OrdenControlador extends BaseControlador {
     public void setFechaYHoraActual(Date fechaYHoraActual) {
         this.fechaYHoraActual = fechaYHoraActual;
     }
-    
+
     /**
      * @return the listaOrdenFecha
      */
@@ -1859,6 +1880,5 @@ public class OrdenControlador extends BaseControlador {
     public void setOrdenFecha(OrdenFecha ordenFecha) {
         this.ordenFecha = ordenFecha;
     }
-    
 
 }
