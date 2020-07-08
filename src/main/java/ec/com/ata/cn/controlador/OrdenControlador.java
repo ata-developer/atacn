@@ -262,10 +262,11 @@ public class OrdenControlador extends BaseControlador {
 
     public void agregarOrdenFecha(OrdenFecha ordenFecha) {
         try {
+            ordenFecha.setOrdenVehiculo(vehiculoParaTrabajos);
             ordenFechaBean.crear(ordenFecha);
             HashMap<String, Object> parametros = new HashMap<>();
-            parametros.put("ordenVehiculo", ordenVehiculo);
-            setListaOrdenFecha(ordenFechaBean.obtenerLista());
+            parametros.put("ordenVehiculo", vehiculoParaTrabajos);
+            setListaOrdenFecha(ordenFechaBean.obtenerListaPorParametros(parametros));
             setOrdenFecha(new OrdenFecha());
             addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
@@ -282,8 +283,9 @@ public class OrdenControlador extends BaseControlador {
     public void eliminarOrdenFecha(OrdenFecha ordenFecha) {
         try {
             ordenFechaBean.eliminar(ordenFecha.getIdOrdenFecha());
-            setListaOrdenFecha(ordenFechaBean.obtenerLista());
-            setOrdenFecha(new OrdenFecha());
+            HashMap<String, Object> parametros = new HashMap<>();
+            parametros.put("ordenVehiculo", vehiculoParaTrabajos);
+            setListaOrdenFecha(ordenFechaBean.obtenerListaPorParametros(parametros));            
             addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
