@@ -263,6 +263,25 @@ public class OrdenControlador extends BaseControlador {
     public void agregarOrdenFecha(OrdenFecha ordenFecha) {
         try {
             ordenFecha.setOrdenVehiculo(vehiculoParaTrabajos);
+            if (null == ordenFecha.getParqueadero().getIdParqueadero()) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + Constante.MENSAJE_SELECCION_PARQUEADERO);
+                return;
+            }
+            
+            if (null == ordenFecha.getParqueadero().getIdParqueadero()) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + Constante.MENSAJE_SELECCION_PARQUEADERO);
+                return;
+            }
+            
+            if (null == ordenFecha.getParqueadero().getIdParqueadero()) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + Constante.MENSAJE_SELECCION_PARQUEADERO);
+                return;
+            }
+            
+            if (null == ordenFecha.getParqueadero().getIdParqueadero()) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + Constante.MENSAJE_SELECCION_PARQUEADERO);
+                return;
+            }
             ordenFechaBean.crear(ordenFecha);
             HashMap<String, Object> parametros = new HashMap<>();
             parametros.put("ordenVehiculo", vehiculoParaTrabajos);

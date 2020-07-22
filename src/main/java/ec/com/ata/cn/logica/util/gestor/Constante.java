@@ -97,4 +97,8 @@ public class Constante {
     public static final String RANGO = "RANGO";
     
     public static final String MENSAJE_SELECCIONADO = "NO PUEDE SELECCIONAR ESTE HORARIO, YA ESTA OCUPADO";
+    public static final String MENSAJE_SELECCION_PARQUEADERO = "TIENE QUE SELECCIONAR UN PARQUEADERO";
+    public static final String MENSAJE_SELECCION_EQUIPO = "TIENE QUE SELECCIONAR UN EQUIPO";
+    public static final String MENSAJE_SELECCION_FECHA_INICIO = "TIENE QUE SELECCIONAR UNA FECHA INICIO";
+    public static final String MENSAJE_SELECCION_FECHA_FIN = "TIENE QUE SELECCIONAR UNA FECHA FIN";
 }
