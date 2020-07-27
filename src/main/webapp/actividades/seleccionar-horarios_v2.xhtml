@@ -46,7 +46,15 @@
                     pattern="yyyy-MM-dd HH:mm" 
                     placeholder="2020-12-24 13:59"
                     mask="true">
-                    <p:ajax event="dateSelect" process="fechaInicioHorario fechaFinHorario" update=":frmGenerarOrden:fechaFinHorario" />
+                    <p:ajax 
+                        event="dateSelect"
+                        process="fechaInicioHorario fechaFinHorario"
+                        update=":frmGenerarOrden:fechaFinHorario"
+                        listener="#{ordenControlador.cambiarFechaFin(ordenControlador.ordenFecha.fechaInicio)}"/>
+                    <p:ajax event="change" 
+                            process="fechaInicioHorario fechaFinHorario" 
+                            update=":frmGenerarOrden:fechaFinHorario"
+                            listener="#{ordenControlador.cambiarFechaFin(ordenControlador.ordenFecha.fechaInicio)}"/>
                 </p:calendar>
                 <p:outputLabel
                     value="#{msj.fechaFin}: " />

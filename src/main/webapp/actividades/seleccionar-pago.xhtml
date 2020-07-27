@@ -9,24 +9,7 @@
     <p:messages />
     <p:panel id="pnlSeleccionarPago" header="#{msj.pagos}">
         <p:fieldset legend="#{msj.administrarPagos}">
-            <p:panelGrid id="pnlDescuentoAdicional" columns="1" >
-                <p:column>
-                    <p:outputLabel
-                        value="#{msj.descuentoAdicional}" /> 
-                </p:column>
-                <p:selectOneMenu
-                    id="somDescuentoAdicional"
-                    value="#{ordenControlador.vehiculoParaTrabajos.darDescuento}"
-                    converter="omnifaces.SelectItemsConverter">
-                    <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
-                    <f:selectItems value="#{consultaControlador.generarSiNo()}" />
-                    <p:ajax 
-                        event="change"
-                        process="@this pnlDescuentoAdicional"
-                        update=" pnlSeleccionarPago mensajeGeneral" 
-                        listener="#{ordenControlador.setearACero()}"/>
-                </p:selectOneMenu>
-            </p:panelGrid>
+            
             <p:panelGrid id="pnlEfectivoTarjeta" columns="1" >
                 <p:column>
                     <p:outputLabel
@@ -44,6 +27,24 @@
                         process="@this somSeleccionarEfectivoTarjeta"
                         update=" pnlSeleccionarPago mensajeGeneral"
                         listener="#{ordenControlador.generartListaVehiculoTrabajoPagoEfectivoSiNo()}"/>
+                </p:selectOneMenu>
+            </p:panelGrid>
+            <p:panelGrid id="pnlDescuentoAdicional" columns="1" >
+                <p:column>
+                    <p:outputLabel
+                        value="#{msj.descuentoAdicional}" /> 
+                </p:column>
+                <p:selectOneMenu
+                    id="somDescuentoAdicional"
+                    value="#{ordenControlador.vehiculoParaTrabajos.darDescuento}"
+                    converter="omnifaces.SelectItemsConverter">
+                    <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                    <f:selectItems value="#{consultaControlador.generarSiNo()}" />
+                    <p:ajax 
+                        event="change"
+                        process="@this pnlDescuentoAdicional"
+                        update=" pnlSeleccionarPago mensajeGeneral" 
+                        listener="#{ordenControlador.setearACero()}"/>
                 </p:selectOneMenu>
             </p:panelGrid>
             <p/>

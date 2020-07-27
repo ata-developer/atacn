@@ -82,6 +82,8 @@ public class Constante {
     public static final String ERROR_LISTA_TRABAJO_MENSAJE = "Uno de los vehiculos no tiene trabajos asignados";
     public static final String ERROR_LISTA_VEHICULOS = " 008 ";
     public static final String ERROR_LISTA_VEHICULOS_MENSAJE = "Seleccione uno o mas vehiculos";
+    public static final String ERROR_LISTA_ORDEN_FECHA = " 009 ";
+    public static final String ERROR_LISTA_ORDEN_FECHA_MENSAJE = "Agregue una fecha";
 
 
     

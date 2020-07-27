@@ -257,7 +257,19 @@ public class OrdenControlador extends BaseControlador {
         setListaOrdenFecha(new ArrayList<OrdenFecha>());
     }
 
-    public void cambiarFechaFin() {
+    public String generarDetalleTrabajo(VehiculoTrabajo vehiculoTrabajo) {
+        HashMap<String, Object> parametros = new HashMap<>();
+        parametros.put("vehiculoTrabajo", vehiculoTrabajo);
+        List<TrabajoParte> ListaTrabajoParteTmp = trabajoParteBean.obtenerListaPorParametros(parametros);
+        for (TrabajoParte trabajoParte : ListaTrabajoParteTmp) {
+            
+        }
+        return "";
+    }
+
+    public void cambiarFechaFin(Date fechaEntrada) {
+        System.out.println("cambiarFechaFin");
+        this.ordenFecha.setFechaFin(fechaEntrada);
     }
 
     public void agregarOrdenFecha(OrdenFecha ordenFecha) {
@@ -267,19 +279,19 @@ public class OrdenControlador extends BaseControlador {
                 addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + Constante.MENSAJE_SELECCION_PARQUEADERO);
                 return;
             }
-            
-            if (null == ordenFecha.getParqueadero().getIdParqueadero()) {
-                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + Constante.MENSAJE_SELECCION_PARQUEADERO);
+
+            if (null == ordenFecha.getEquipo().getIdEquipo()) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + Constante.MENSAJE_SELECCION_EQUIPO);
                 return;
             }
-            
-            if (null == ordenFecha.getParqueadero().getIdParqueadero()) {
-                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + Constante.MENSAJE_SELECCION_PARQUEADERO);
+
+            if (null == ordenFecha.getFechaInicio()) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + Constante.MENSAJE_SELECCION_FECHA_INICIO);
                 return;
             }
-            
-            if (null == ordenFecha.getParqueadero().getIdParqueadero()) {
-                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + Constante.MENSAJE_SELECCION_PARQUEADERO);
+
+            if (null == ordenFecha.getFechaFin()) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + Constante.MENSAJE_SELECCION_FECHA_FIN);
                 return;
             }
             ordenFechaBean.crear(ordenFecha);
@@ -304,7 +316,7 @@ public class OrdenControlador extends BaseControlador {
             ordenFechaBean.eliminar(ordenFecha.getIdOrdenFecha());
             HashMap<String, Object> parametros = new HashMap<>();
             parametros.put("ordenVehiculo", vehiculoParaTrabajos);
-            setListaOrdenFecha(ordenFechaBean.obtenerListaPorParametros(parametros));            
+            setListaOrdenFecha(ordenFechaBean.obtenerListaPorParametros(parametros));
             addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
@@ -638,6 +650,7 @@ public class OrdenControlador extends BaseControlador {
 
     public void generartListaVehiculoTrabajoPagoEfectivoSiNo() {
         try {
+            System.out.println("generartListaVehiculoTrabajoPagoEfectivoSiNo: " + getVehiculoParaTrabajos());
             switch (getVehiculoParaTrabajos().getTipoPago()) {
                 case "EFECTIVO":
                     calcularListaPagoEfectivoTransferencia();
@@ -1052,6 +1065,7 @@ public class OrdenControlador extends BaseControlador {
             ordenVehiculo.setOrigen(origen);
             ordenVehiculo.setNombreReferencia(nombreReferencia);
             ordenVehiculo = ordenVehiculoBean.crearOrden(ordenVehiculo, clienteOrden, clienteFactura, llenarEsteMomento);
+            setVehiculoParaTrabajos(ordenVehiculo);
             getVehiculosCliente().add(ordenVehiculo);
             List<TrabajoCategoriaPrecio> listaTrabajoCategoriaPrecio = obtenerListaTrabajoPorGrupoVehiculo(establecimiento.getGrupoPrecio(), vehiculoSeleccionado);
             getMapaOrdenVehiculoListaTrabajos().put(ordenVehiculo, listaTrabajoCategoriaPrecio);
@@ -1217,6 +1231,13 @@ public class OrdenControlador extends BaseControlador {
                 } else {
                     addErrorMessage(Constante.ERROR_LISTA_TRABAJO_MENSAJE + ":" + Constante.ERROR_LISTA_TRABAJO, Constante.ERROR_LISTA_TRABAJO_MENSAJE + ":" + Constante.ERROR_LISTA_TRABAJO);
                     return event.getOldStep();
+                }
+            case "idSeleccionHorario":
+                if (this.listaOrdenFecha.isEmpty()) {
+                    addErrorMessage(Constante.ERROR_LISTA_ORDEN_FECHA_MENSAJE + ":" + Constante.ERROR_LISTA_ORDEN_FECHA, Constante.ERROR_LISTA_ORDEN_FECHA_MENSAJE + ":" + Constante.ERROR_LISTA_ORDEN_FECHA);
+                    return event.getOldStep();
+                } else {
+                    return event.getNewStep();
                 }
             default:
                 return event.getNewStep();
