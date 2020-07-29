@@ -260,11 +260,12 @@ public class OrdenControlador extends BaseControlador {
     public String generarDetalleTrabajo(VehiculoTrabajo vehiculoTrabajo) {
         HashMap<String, Object> parametros = new HashMap<>();
         parametros.put("vehiculoTrabajo", vehiculoTrabajo);
+        String resultado = "";
         List<TrabajoParte> ListaTrabajoParteTmp = trabajoParteBean.obtenerListaPorParametros(parametros);
         for (TrabajoParte trabajoParte : ListaTrabajoParteTmp) {
-            
+            resultado = trabajoParte.getDetalle() + " : " + trabajoParte.getMaterial().getCodigo() + " - " + trabajoParte.getMaterial().getDescripcion() + " - "  + trabajoParte.getMaterial().getColor().getColor() +"\n" + resultado;
         }
-        return "";
+        return resultado;
     }
 
     public void cambiarFechaFin(Date fechaEntrada) {
