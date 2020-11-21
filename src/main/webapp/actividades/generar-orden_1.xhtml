@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templateATA.xhtml">
+
+    <ui:define name="content">
+        <h:form id="frmGenerarOrden_1">
+            <p:wizard flowListener="#{ordenControlador.enFlujoProceso}">
+                
+                <p:tab id="idDetallesCliente" title="#{msj.detallesCliente}">
+                    <ui:include src="llenar-cliente.xhtml" />
+                </p:tab>
+
+                <p:tab id="idDetallesFactura" title="#{msj.factura}">
+                    <ui:include src="llenar-factura.xhtml" />
+                </p:tab>
+
+                <p:tab id="idSeleccionVehiculo" title="#{msj.seleccionVehiculo}">
+                    <ui:include src="seleccionar-vehiculos-clientes.xhtml" />
+                </p:tab>
+
+                <p:tab id="idSeleccionTrabajo" title="#{msj.seleccionarTrabajo}">
+                    <ui:include src="seleccionar-trabajos.xhtml" />
+                </p:tab>
+
+                <p:tab id="idSeleccionHorario" title="#{msj.seleccionarFecha}">
+                    <ui:include src="seleccionar-horarios_v2.xhtml" />
+                </p:tab>
+
+                <p:tab id="idSeleccionPago" title="#{msj.seleccionarPago}">
+                    <ui:include src="seleccionar-pago.xhtml" />
+                </p:tab>
+
+                <p:tab id="idResumen" title="#{msj.resumen}">
+                    <ui:include src="presentar-resumen.xhtml" />
+                </p:tab>            
+            </p:wizard>
+        </h:form>
+    </ui:define>
+</ui:composition>

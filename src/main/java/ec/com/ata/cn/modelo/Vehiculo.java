@@ -27,7 +27,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name = "vehiculo")
-public class Vehiculo implements Serializable {
+public class Vehiculo implements Serializable {    
 
     private static final long serialVersionUID = 1L;
 
@@ -53,6 +53,16 @@ public class Vehiculo implements Serializable {
 
     @Column(name = "tipo_rango")
     private String tipoRango;
+    
+    @Column(name = "tiene_plantilla")
+    private boolean tienePlantilla;
+    
+    @Column(name = "estado_plantilla")
+    private String estadoPlantilla;
+    
+    @Column(name = "observacion")
+    private String observacion;
+    
 
     @Transient
     private String descripcionDetallada;
@@ -262,6 +272,46 @@ public class Vehiculo implements Serializable {
         this.descripcionDetallada = descripcionDetallada;
     }
 
-   
+   /**
+     * @return the tiene_plantillas
+     */
+    public boolean isTienePlantilla() {
+        return tienePlantilla;
+    }
+
+    /**
+     * @param tiene_plantillas the tiene_plantillas to set
+     */
+    public void setTienePlantilla(boolean tiene_plantillas) {
+        this.tienePlantilla = tiene_plantillas;
+    }
+    
+    /**
+     * @return the observacion
+     */
+    public String getObservacion() {
+        return observacion;
+    }
+
+    /**
+     * @param observacion the observacion to set
+     */
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
+    }
+    
+    /**
+     * @return the estadoPlantilla
+     */
+    public String getEstadoPlantilla() {
+        return estadoPlantilla;
+    }
+
+    /**
+     * @param estadoPlantilla the estadoPlantilla to set
+     */
+    public void setEstadoPlantilla(String estadoPlantilla) {
+        this.estadoPlantilla = estadoPlantilla;
+    }
 
 }

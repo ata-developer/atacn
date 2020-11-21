@@ -23,43 +23,69 @@
                     <p:ajax 
                         event="change"
                         process="@this"
-                        update="fieldSeleccionarVehiculos mensajeGeneral"
+                        update="fieldSeleccionarVehiculos tblListaVehiculosPorFabricante mensajeGeneral"
                         listener="#{ordenControlador.cargarListaDeVehiculos()}" />
                 </p:selectOneMenu>
             </p:panelGrid>
-        </p:fieldset>
-        <p/>
-        <p:fieldset id="fdSeleccionarVehiculos" legend="#{msj.seleccionarVehiculosCliente}">
-            <p:panelGrid id="pngSeleccionarVehiculos" columns="2">
-                <p:column>
-                    <p:outputLabel
-                        for="@next"
-                        value="#{msj.modeloVehiculo}" />                    
-                    <p:autoComplete
-                        id="acSeleccionarVehiculo"
-                        minQueryLength="4"
-                        effect="fade"
-                        value="#{ordenControlador.vehiculoSeleccionado}"
-                        completeMethod="#{ordenControlador.autoCompletarVehiculo}"
-                        converter="vehiculoConvertidor"
-                        var="vehiculo"
-                        itemValue="#{vehiculo}"
-                        itemLabel="#{vehiculo.descripcionDetallada}">
+            <p/>
+            <p:dataTable
+                id="tblListaVehiculosPorFabricante"
+                var="vehiculo"
+                value="#{ordenControlador.listaVehiculos}"
+                >
+                <f:facet name="header">
+                    #{msj.listaDeVehiculos}
 
-                        <p:column>
-                            <h:outputText value="#{vehiculo.descripcionDetallada}" />
-                        </p:column>
-                    </p:autoComplete>
+                </f:facet>
+
+                <p:column filterBy="#{vehiculo.modelo}" headerText="#{msj.descripcionModelo}" filterMatchMode="contains" >
+                    <h:outputText value="#{vehiculo.modelo}" />
                 </p:column>
-                <p:column>
+
+                <p:column headerText="#{msj.descripcion}" >
+                    <h:outputText value="#{vehiculo.descripcion}" />
+                </p:column>
+
+                <p:column headerText="#{msj.numeroFilas}">
+                    <h:outputText value="#{vehiculo.numeroDeFilas}" />
+                </p:column>
+
+                <p:column headerText="#{msj.anioInicialRango}">
+                    <h:outputText value="#{vehiculo.anioDesde}" />
+                </p:column>
+
+                <p:column headerText="#{msj.anioFinalRango}">
+                    <h:outputText value="#{vehiculo.anioHasta}" />
+                </p:column>
+
+                <p:column headerText="#{msj.listaTipoFila}">
+                    <c:forEach var="fila" items="#{vehiculoAdministracionControlador.listaFila(vehiculo)}">
+                        <h:outputText value="#{fila.tipoFila.tipoFila}" />
+                        <p/>
+                    </c:forEach>
+                </p:column>
+
+
+                <p:column headerText="#{msj.imagenes}" colspan="3">
+                    <p:panelGrid id="pngAdministrarImagenes4" columns="3">
+                        <c:forEach var="imagen" items="#{vehiculoAdministracionControlador.listaImagenes(ordenVehiculo.vehiculo)}">
+                            <h:outputLink value="MostradorImagen?Image_id=#{imagen.idImagen}" target="_blank" >
+                                <h:graphicImage value="MostradorImagen?Image_id=#{imagen.idImagen}" width="100" height="100"></h:graphicImage>
+                            </h:outputLink>
+                        </c:forEach>
+                    </p:panelGrid>
+                </p:column> 
+
+                <p:column headerText="#{msj.acciones}">
                     <p:commandButton
                         id="btnGuardar" 
                         value="#{msj.agregar}"
-                        rendered="#{ordenControlador.mapaOrdenVehiculoListaTrabajos.keySet().isEmpty()}"
-                        update="tblListaVehiculosSeleccionados :frmGenerarOrden:pngSeleccionarVehiculos mensajeGeneral"
+                        update=":frmGenerarOrden:fieldSeleccionarVehiculos mensajeGeneral"
                         action="#{ordenControlador.agregarVehiculo()}" />
                 </p:column>
-            </p:panelGrid>
+
+            </p:dataTable>
+            <p/>
             <p:dataTable
                 id="tblListaVehiculosSeleccionados"                
                 var="ordenVehiculo" 
@@ -105,15 +131,8 @@
                     </p:panelGrid>
                 </p:column>
 
-                <p:column headerText="#{msj.acciones}">
-                    <p:commandButton
-                        id="btnEditarVehiculo"
-                        value="#{msj.eliminar}"
-                        update="tblListaVehiculosSeleccionados :frmGenerarOrden:pngSeleccionarVehiculos mensajeGeneral"
-                        action="#{ordenControlador.eliminarVehiculoOrden(ordenVehiculo)}" />
-                </p:column>
-
             </p:dataTable>
         </p:fieldset>
+        <p/>
     </p:panel>
 </ui:composition>

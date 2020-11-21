@@ -149,6 +149,16 @@ public class ConsultaControlador extends BaseControlador {
 
         return selectItemsBuilder.buildList();
     }
+    
+    public List<SelectItem> generarEstadoPlantilla() {
+
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+
+        selectItemsBuilder.add("SIN REVISAR", getBundle("sinRevisar"));
+        selectItemsBuilder.add("REVISADO", getBundle("revisado"));
+
+        return selectItemsBuilder.buildList();
+    }
 
     public List<SelectItem> generarSelectItemDeTrabajoParte(TrabajoCategoriaPrecio trabajoCategoriaPrecioEntrada) {
         HashMap<String, Object> parametros = new HashMap<>();

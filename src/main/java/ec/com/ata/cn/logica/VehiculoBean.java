@@ -63,10 +63,6 @@ public class VehiculoBean {
                 System.out.println("crear vehiculo imagen");
             }
         }
-        List<Imagen> listaImagen = vehiculoImagenBean.obtenerListaPorVehiculo(vehiculoEntrada);
-        vehiculoImagenBean.eliminarPorVehiculo(vehiculoEntrada);
-        System.out.println("Elimnado vehiculo imagen");
-        eliminarListaVehiculoImagen(listaImagen);
         if (null != listaImagenesVehiculo && !listaImagenesVehiculo.isEmpty()) {
             for (Imagen imagen : listaImagenesVehiculo) {
                 VehiculoImagenId vehiculoImagenId = new VehiculoImagenId();

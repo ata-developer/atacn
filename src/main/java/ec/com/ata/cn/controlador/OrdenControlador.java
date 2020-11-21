@@ -214,6 +214,8 @@ public class OrdenControlador extends BaseControlador {
     private OrdenFecha ordenFecha;
 
     private List<OrdenFecha> listaOrdenFecha;
+    
+    private List<Vehiculo> listaVehiculoFiltrado;
 
     @PostConstruct
     public void init() {
@@ -255,6 +257,7 @@ public class OrdenControlador extends BaseControlador {
         setFechaYHoraActual(new Date(System.currentTimeMillis()));
         setOrdenFecha(new OrdenFecha());
         setListaOrdenFecha(new ArrayList<OrdenFecha>());
+        setListaVehiculoFiltrado(new ArrayList<Vehiculo>());
     }
 
     public String generarDetalleTrabajo(VehiculoTrabajo vehiculoTrabajo) {
@@ -1055,10 +1058,11 @@ public class OrdenControlador extends BaseControlador {
 
     public void agregarVehiculo() {
         try {
-            if (!getMapaOrdenVehiculoListaTrabajos().entrySet().isEmpty()) {
+            /*if (!getMapaOrdenVehiculoListaTrabajos().entrySet().isEmpty()) {
                 addInfoMessage(Constante.EXITO, Constante.EXITO_YA_EXISTE);
                 return;
-            }
+            }*/
+            setMapaOrdenVehiculoListaTrabajos(new HashMap<OrdenVehiculo, List<TrabajoCategoriaPrecio>>());
             System.out.println("agregarVehiculo");
             OrdenVehiculo ordenVehiculo = new OrdenVehiculo();
             ordenVehiculo.setVehiculo(vehiculoSeleccionado);
@@ -1922,6 +1926,20 @@ public class OrdenControlador extends BaseControlador {
      */
     public void setOrdenFecha(OrdenFecha ordenFecha) {
         this.ordenFecha = ordenFecha;
+    }
+    
+    /**
+     * @return the listaVehiculoFiltrado
+     */
+    public List<Vehiculo> getListaVehiculoFiltrado() {
+        return listaVehiculoFiltrado;
+    }
+
+    /**
+     * @param listaVehiculoFiltrado the listaVehiculoFiltrado to set
+     */
+    public void setListaVehiculoFiltrado(List<Vehiculo> listaVehiculoFiltrado) {
+        this.listaVehiculoFiltrado = listaVehiculoFiltrado;
     }
 
 }

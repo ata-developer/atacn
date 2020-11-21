@@ -27,10 +27,10 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import javax.faces.model.SelectItem;
-import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -44,8 +44,8 @@ import org.primefaces.model.UploadedFile;
  *
  * @author ATA1
  */
-@ViewScoped
 @Named
+@SessionScoped
 public class VehiculoAdministracionControlador extends BaseControlador {
 
     @Inject
@@ -149,6 +149,7 @@ public class VehiculoAdministracionControlador extends BaseControlador {
     }
 
     public void seleccionarVehiculo(Vehiculo vehiculoEntrada) {
+        System.out.println("entro al seleccionarVehiculo" + vehiculoEntrada);
         setModoEdicion(true);
         this.vehiculo = vehiculoEntrada;
         configurarRangoAnioFinal();
@@ -219,6 +220,7 @@ public class VehiculoAdministracionControlador extends BaseControlador {
             addInfoMessage(Constante.EXITO, "probando");
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
+            e.printStackTrace();
             if (null != root) {
                 addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
                 return;
@@ -306,10 +308,21 @@ public class VehiculoAdministracionControlador extends BaseControlador {
     }
 
     public void guadarVehiculo() {
-        if (modoEdicion) {
-            modificar();
-        } else {
-            guardar();
+        try {
+            if (modoEdicion) {
+                modificar();
+                modoEdicion = false;
+            } else {
+                guardar();
+                modoEdicion = false;
+            }
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
         }
     }
 
@@ -328,6 +341,7 @@ public class VehiculoAdministracionControlador extends BaseControlador {
             addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
+            e.printStackTrace();
             if (null != root) {
                 addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
                 return;
@@ -338,30 +352,18 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         }
     }
 
-    public void modificar() {
+    public void modificar() throws Exception {
         if (imagenesVehiculo.isEmpty()) {
             addErrorMessage(Constante.ERROR, Constante.SIN_IMAGENES);
-            return;
+            throw new Exception(Constante.ERROR + ' ' + Constante.SIN_IMAGENES);
         }
-        try {
-            vehiculo.getGenericoEntidad().setFechaRegistro(new Date(System.currentTimeMillis()));
-            vehiculo.setMarca(marcaVehiculoSeleccionado);
-            vehiculo.setFilasDeAsientos(filasDelVehiculo);
-            System.out.println("vehiculo modificar: " + vehiculo.toString());
-            vehiculoBean.actualizar(vehiculo, imagenesVehiculo);
-            setListaVehiculo(vehiculoBean.obtenerListaPorMarca(marcaVehiculoSeleccionado));
-            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
-        } catch (Exception e) {
-            e.printStackTrace();
-            final Throwable root = ExceptionUtils.getRootCause(e);
-            if (null != root) {
-                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
-                return;
-            }
-            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
-        } finally {
-            limpiarValoresDespuesDeGuardar();
-        }
+        vehiculo.getGenericoEntidad().setFechaRegistro(new Date(System.currentTimeMillis()));
+        vehiculo.setMarca(marcaVehiculoSeleccionado);
+        vehiculo.setFilasDeAsientos(filasDelVehiculo);
+        System.out.println("vehiculo modificar: " + vehiculo.toString());
+        vehiculoBean.actualizar(vehiculo, imagenesVehiculo);
+        setListaVehiculo(vehiculoBean.obtenerListaPorMarca(marcaVehiculoSeleccionado));
+
     }
 
     public void limpiarValoresDespuesDeGuardar() {

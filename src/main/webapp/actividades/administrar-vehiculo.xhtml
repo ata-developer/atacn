@@ -67,7 +67,7 @@
                         <p:ajax 
                             event="change"
                             process="@this"
-                            update="frmAdministrarMarcaVehiculo mensajeGeneral"
+                            update="frmAdministrarMarcaVehiculo tblListaVehiculos mensajeGeneral"
                             listener="#{vehiculoAdministracionControlador.cargarListaDeVehiculos()}" />
                     </p:selectOneMenu>
                 </p:panelGrid>
@@ -78,10 +78,24 @@
 
             <!-- INICIO MARCA SELECCIONADA -->
             <p:fieldset rendered="#{vehiculoAdministracionControlador.marcaVehiculoSeleccionado.idMarca != null}" >
-                <p:outputLabel value="#{msj.marcaSeleccionada} #{vehiculoAdministracionControlador.marcaVehiculoSeleccionado.marca}" />
+                <p:panelGrid id="pngConfigurarVehiculo" columns="2" style="width: 400px;">
+                    <p:outputLabel value="#{msj.marcaSeleccionada} " />
+                    <p:outputLabel value="#{vehiculoAdministracionControlador.marcaVehiculoSeleccionado.marca}" />
+                    <p:commandButton
+                        id="AgregarVehiculoBtm"
+                        process="@this tblListaVehiculos"
+                        value="#{msj.editar}"
+                        actionListener="#{vehiculoAdministracionControlador.seleccionarVehiculo(vehiculo)}"
+                        action="actualizar-editar-vehiculo" />
+                </p:panelGrid>                    
+
+
             </p:fieldset>
             <!-- FIN MARCA SELECCIONADA -->
             <p/>
+            <p:fieldset rendered="#{vehiculoAdministracionControlador.marcaVehiculoSeleccionado.idMarca != null}" >
+                <p:outputLabel value="#{msj.marcaSeleccionada} #{vehiculoAdministracionControlador.marcaVehiculoSeleccionado.marca}" />
+            </p:fieldset>
             <p/>
             <!-- INICIO CONFIGURACION VEHICULO -->
             <p:fieldset id="configurarVehiculo" legend="#{msj.agregarVehiculo}" rendered="#{vehiculoAdministracionControlador.marcaVehiculoSeleccionado.idMarca != null}" >
@@ -92,11 +106,15 @@
                     <f:facet name="header">
                         #{msj.listaDeVehiculos}
                     </f:facet>
-                    
+
                     <p:column headerText="#{msj.descripcionModelo}" >
                         <h:outputText value="#{vehiculo.modelo}" />
                     </p:column>
-                    
+
+                    <p:column headerText="#{msj.tienePlantilla}" >
+                        <h:outputText value="#{vehiculo.tienePlantilla eq true ? 'Si':'No'}" />
+                    </p:column>
+
                     <p:column headerText="#{msj.descripcion}" >
                         <h:outputText value="#{vehiculo.descripcion}" />
                     </p:column>
@@ -113,21 +131,16 @@
                         <h:outputText value="#{vehiculo.anioHasta}" />
                     </p:column>
 
-                    <p:column headerText="#{msj.listaTipoFila}">
-                        <c:forEach var="fila" items="#{vehiculoAdministracionControlador.listaFila(vehiculo)}">
-                            <h:outputText value="#{fila.tipoFila.tipoFila}" />
-                            <p/>
-                        </c:forEach>
-                    </p:column>
-
-                    <p:column headerText="#{msj.imagenes}" colspan="3">
-                        <p:panelGrid id="pngAdministrarImagenes4" columns="3">
-                            <c:forEach var="imagen" items="#{vehiculoAdministracionControlador.listaImagenes(vehiculo)}">
-                                <h:outputLink value="MostradorImagen?Image_id=#{imagen.idImagen}" target="_blank" >
-                                    <h:graphicImage value="MostradorImagen?Image_id=#{imagen.idImagen}" width="100" height="100"></h:graphicImage>
-                                </h:outputLink>
-                            </c:forEach>
-                        </p:panelGrid>
+                    <p:column headerText="#{msj.imagenes}" >
+                        <p:row>
+                            <p:repeat var="imagen" value="#{vehiculoAdministracionControlador.listaImagenes(vehiculo)}" >
+                                <p:column>
+                                    <h:outputLink value="MostradorImagen?Image_id=#{imagen.idImagen}" target="_blank" >
+                                        <h:graphicImage value="MostradorImagen?Image_id=#{imagen.idImagen}" width="100" height="100"></h:graphicImage>
+                                    </h:outputLink>
+                                </p:column>
+                            </p:repeat>
+                        </p:row>
                     </p:column>
 
                     <p:column headerText="#{msj.acciones}">
@@ -135,209 +148,14 @@
                             id="btnEditarVehiculo"
                             process="@this tblListaVehiculos"
                             value="#{msj.editar}"
-                            update="frmAdministrarMarcaVehiculo:fsDatosVehiculos mensajeGeneral"
-                            action="#{vehiculoAdministracionControlador.seleccionarVehiculo(vehiculo)}" />
+                            actionListener="#{vehiculoAdministracionControlador.seleccionarVehiculo(vehiculo)}"
+                            action="actualizar-editar-vehiculo" />
                     </p:column>
 
                 </p:dataTable>
                 <p/>
-                <!-- INICIO DATOS DEL VEHICULO -->
-                <p:fieldset id="fsDatosVehiculos" legend="#{msj.datosDelVehiculo}">
-                    <p:panelGrid id="pngAdministrarVehiculo1" columns="2" style="width: 400px;">
-                        <p:outputLabel
-                            for="@next"
-                            value="#{msj.anioInicialRango}" />
-                        <p:selectOneMenu
-                            id="anioDesde"
-                            value="#{vehiculoAdministracionControlador.vehiculo.anioDesde}"
-                            panelStyle="width:200px"
-                            effect="fade"
-                            var="t"
-                            style="width:200px" 
-                            filter="true"
-                            filterMatchMode="contains"
-                            rendered="true"
-                            requiredMessage="#{msj.campoNecesario}"
-                            >
-                            <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" />
-                            <f:selectItems
-                                value="#{vehiculoAdministracionControlador.rangoAnioInicial}"
-                                var="anio"
-                                itemLabel="#{anio}"
-                                itemValue="#{anio}" />
-                            <p:column>
-                                <h:outputText value="#{t}" />
-                            </p:column>
-                            <p:ajax
-                                event="change"
-                                update="pngAdministrarVehiculo1"
-                                listener="#{vehiculoAdministracionControlador.configurarRangoAnioFinal()}" />
-                        </p:selectOneMenu>
-
-
-
-                        <p:outputLabel
-                            for="@next"
-                            value="#{msj.anioFinalRango}" />
-                        <p:selectOneMenu
-                            id="anioHasta"
-                            disabled="#{vehiculoAdministracionControlador.vehiculo.anioDesde == null}"
-                            value="#{vehiculoAdministracionControlador.vehiculo.anioHasta}"
-                            panelStyle="width:200px"
-                            effect="fade"
-                            var="t"
-                            style="width:200px" 
-                            filter="true" filterMatchMode="contains">
-                            <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" />
-                            <f:selectItems
-                                value="#{vehiculoAdministracionControlador.rangoAnioFinal}"
-                                var="anio"
-                                itemLabel="#{anio}"
-                                itemValue="#{anio}" >                                
-                            </f:selectItems>
-                            <p:column>
-                                <h:outputText value="#{t}" />
-                            </p:column>
-                            <p:ajax
-                                event="change"
-                                update="pngAdministrarVehiculo1"
-                                listener="#{vehiculoAdministracionControlador.configurarRango()}" />
-
-                        </p:selectOneMenu>
-
-                        <p:outputLabel
-                            for="@next"
-                            value="#{msj.rango}" />                    
-                        <p:inputText
-                            id="rangoVehiculo"
-                            disabled="true"
-                            value="#{vehiculoAdministracionControlador.vehiculo.tipoRango}"/>
-                        
-                        <p:outputLabel
-                            for="@next"
-                            value="#{msj.modeloVehiculo}" />                    
-                        <p:autoComplete
-                            id="modeloVehiculo"
-                            minQueryLength="3"
-                            required="true"
-                            value="#{vehiculoAdministracionControlador.vehiculo.modelo}" 
-                            completeMethod="#{vehiculoAdministracionControlador.autoCompletar}"
-                            effect="fade"
-                            onblur="value = value.toUpperCase()"/>
-
-                        <p:outputLabel
-                            for="@next"
-                            value="#{msj.descripcion}" />                    
-                        <p:inputTextarea 
-                            id="descripcionVehiculo"
-                            value="#{vehiculoAdministracionControlador.vehiculo.descripcion}"
-                            maxlength="254"
-                            rows="6" cols="22"
-                            required="true"
-                            onblur="value = value.toUpperCase()"/>
-
-                    </p:panelGrid>
-                    <p/>
-                    <!-- numero de filas-->
-                    <p:panelGrid id="pngAdministrarVehiculoFilas" columns="2" style="width: 400px;">
-                        <p:outputLabel
-                            for="@next"
-                            value="#{msj.numeroFilas}" />                    
-                        <p:inputNumber
-                            id="numeroFilasVehiculo"
-                            required="true"
-                            value="#{vehiculoAdministracionControlador.vehiculo.numeroDeFilas}">
-                            <p:ajax event="blur" update="tblListaFilas" listener="#{vehiculoAdministracionControlador.generarFilas}" />
-                        </p:inputNumber>
-                    </p:panelGrid>
-                    <p/>
-                    <p:dataTable
-                        id="tblListaFilas"                
-                        var="fila" 
-                        style="width: 600px;"
-                        value="#{vehiculoAdministracionControlador.filasDelVehiculo}">
-                        <f:facet name="header">
-                            #{msj.listaTipoFila}
-                        </f:facet>
-                        <p:column headerText="#{msj.tipoFila}"  style="width: 250px;">
-                            <p:selectOneMenu                                
-                                id="somSeleccionarTipoFila"
-                                value="#{fila.tipoFila}"
-                                panelStyle="width:230px"
-                                converter="omnifaces.SelectItemsConverter"
-                                var="t"
-                                required="true"
-                                style="width: 230px;">
-                                <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
-                                <f:selectItems value="#{vehiculoAdministracionControlador.generarSelectItemDeTipoFilaDeAsiento()}" />
-                                <p:ajax event="change" update="tblListaFilas"/>
-                                <p:column>
-                                    <h:outputText value="#{t.tipoFila}" style="width: 180px;"/>
-                                </p:column>
-                            </p:selectOneMenu>
-                        </p:column>
-                        <p:column headerText="#{msj.numeroAsientos}">
-                            <p:outputLabel value="#{fila.numeroAsientos}"/>
-                        </p:column>
-                    </p:dataTable>
-                    <p/>
-                    <!-- INICIO imagenes del vehiculo -->
-
-                    <p:panelGrid id="pngAdministrarImagenes" columns="1" style="width: 400px;">
-                        <p:fileUpload
-                            id="imagenCargador"
-                            update="mensajeGeneral pngAdministrarImagenes4"
-                            fileUploadListener="#{vehiculoAdministracionControlador.manejadorCargarArchivo}"
-                            mode="advanced"
-                            sizeLimit="1000000"
-                            fileLimit="6"                            
-                            allowTypes="/(\.|\/)(gif|jpe?g|png)$/">
-                        </p:fileUpload>
-
-
-                    </p:panelGrid>
-                    <p:panelGrid id="pngAdministrarImagenes4" columns="2">
-                        <c:forEach var="imagen" items="#{vehiculoAdministracionControlador.imagenesVehiculo}">
-                            <p:panelGrid id="pngAdministrarImagenes5" columns="1">
-                                <h:outputLink value="MostradorImagen?Image_id=#{imagen.idImagen}" target="_blank" >
-                                    <h:graphicImage value="MostradorImagen?Image_id=#{imagen.idImagen}" width="100" height="100"></h:graphicImage>
-                                </h:outputLink>
-                                <p:commandButton
-                                    id="btnEliminarImagen"
-                                    process="@this pngAdministrarImagenes4"
-                                    value="#{msj.eliminar}"
-                                    update="configurarVehiculo  mensajeGeneral"
-                                    action="#{vehiculoAdministracionControlador.eliminarImagen(imagen.idImagen)}" />
-                            </p:panelGrid>
-                            
-                        </c:forEach>
-                    </p:panelGrid>
-
-
-
-                    <!-- FIN imagenes del vehiculo -->
-                    <p/>
-                    <p:panelGrid id="pngAdministrarVehiculoBoton" columns="2" style="width: 400px;">
-                        <p:commandButton
-                            id="btnGuardaVehiculo"
-                            process="@this configurarVehiculo"
-                            value="#{msj.guardar}"
-                            update="configurarVehiculo  mensajeGeneral"
-                            action="#{vehiculoAdministracionControlador.guadarVehiculo()}" />
-                        <p:commandButton
-                            id="btnCancelarVehiculo"
-                            process="@this configurarVehiculo"
-                            value="#{msj.cancelar}"
-                            update="configurarVehiculo  mensajeGeneral"/>
-                    </p:panelGrid>
-                </p:fieldset>
-                <!-- FIN DATOS DEL VEHICULO -->
-                <p/>
-
             </p:fieldset>
             <p/>
-            <p/>
-
             <!-- FIN CONFIGURACION CATEGORIA -->
         </h:form>
     </ui:define>

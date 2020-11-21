@@ -102,7 +102,7 @@
                     <p:outputLabel
                         for="@next"
                         value="#{msj.ciudad}" />
-                    <h:selectOneMenu
+                    <p:selectOneMenu
                         id="somSeleccionarCiudad"
                         value="#{establecimientoControlador.establecimiento.ciudad}"
                         required="true"
@@ -110,12 +110,12 @@
                         converter="omnifaces.SelectItemsConverter">
                         <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                         <f:selectItems value="#{establecimientoControlador.generarSelectItemDeCiudad()}" />                        
-                    </h:selectOneMenu>
+                    </p:selectOneMenu>
 
                     <p:outputLabel
                         for="@next"
                         value="#{msj.usuario}" />
-                    <h:selectOneMenu
+                    <p:selectOneMenu
                         id="somSeleccionarResponsable"
                         value="#{establecimientoControlador.establecimiento.responsable}"
                         required="true"
@@ -123,7 +123,7 @@
                         converter="omnifaces.SelectItemsConverter">
                         <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                         <f:selectItems value="#{establecimientoControlador.generarSelectItemDeUsuario()}" />                        
-                    </h:selectOneMenu>
+                    </p:selectOneMenu>
 
 
 

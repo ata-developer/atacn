@@ -82,7 +82,7 @@
         <p:dataTable
             id="tblListaVehiculoTrabajoResumen"
             var="vehiculoTrabajoParaPago"
-            value="#{ordenControlador.listaVehiculoTrabajosFinal}">           
+            value="#{ordenControlador.listaVehiculoTrabajosFinal}">
 
             <p:column headerText="#{msj.descripcion}">
                 <p:outputLabel value="#{vehiculoTrabajoParaPago.trabajoDescripcion}" />
@@ -90,7 +90,7 @@
             <p:column headerText="#{msj.detalle}">
                 <p:outputLabel value="#{vehiculoTrabajoParaPago.trabajoDescripcion}" />
             </p:column>
-            
+
             <p:column headerText="#{msj.precioUnitario}" rendered="#{ordenControlador.vehiculoParaTrabajos.tipoPago eq 'TARJETA'}" >
                 <p:outputLabel value="#{vehiculoTrabajoParaPago.precioVentaPublico}" />
             </p:column>
@@ -123,6 +123,7 @@
             <p:column headerText="#{msj.precioSaldoEfectivo}" rendered="#{ordenControlador.vehiculoParaTrabajos.tipoPago eq 'EFECTIVO' or ordenControlador.vehiculoParaTrabajos.tipoPago eq 'TRANSFERENCIA'}" >
                 <p:outputLabel value="#{vehiculoTrabajoParaPago.precioSaldoEfectivo}" />
             </p:column>
+        </p:dataTable>          
         <p/>
         <p:panelGrid id="pnlResultadosResumen" columns="2">
             <h:outputText value="#{msj.subTotal}"/>                
