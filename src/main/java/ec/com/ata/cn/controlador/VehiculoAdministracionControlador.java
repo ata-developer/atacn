@@ -147,6 +147,13 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         }
 
     }
+    
+    public void agregarVehiculo() {
+        setModoEdicion(false);
+        this.vehiculo = new Vehiculo();
+        this.imagenesVehiculo = new ArrayList<>();
+        this.filasDelVehiculo = new ArrayList<>();
+    }
 
     public void seleccionarVehiculo(Vehiculo vehiculoEntrada) {
         System.out.println("entro al seleccionarVehiculo" + vehiculoEntrada);

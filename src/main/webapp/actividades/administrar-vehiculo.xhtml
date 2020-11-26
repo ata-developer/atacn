@@ -78,14 +78,14 @@
 
             <!-- INICIO MARCA SELECCIONADA -->
             <p:fieldset rendered="#{vehiculoAdministracionControlador.marcaVehiculoSeleccionado.idMarca != null}" >
-                <p:panelGrid id="pngConfigurarVehiculo" columns="2" style="width: 400px;">
+                <p:panelGrid id="pngAgregarVehiculo" columns="2" style="width: 400px;">
                     <p:outputLabel value="#{msj.marcaSeleccionada} " />
                     <p:outputLabel value="#{vehiculoAdministracionControlador.marcaVehiculoSeleccionado.marca}" />
                     <p:commandButton
                         id="AgregarVehiculoBtm"
                         process="@this tblListaVehiculos"
-                        value="#{msj.editar}"
-                        actionListener="#{vehiculoAdministracionControlador.seleccionarVehiculo(vehiculo)}"
+                        value="#{msj.agregarVehiculo}"
+                        actionListener="#{vehiculoAdministracionControlador.agregarVehiculo()}"
                         action="actualizar-editar-vehiculo" />
                 </p:panelGrid>                    
 

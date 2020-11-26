@@ -95,6 +95,17 @@
                         completeMethod="#{vehiculoAdministracionControlador.autoCompletar}"
                         effect="fade"
                         onblur="value = value.toUpperCase()"/>
+                    
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.descripcion}" />                    
+                    <p:inputTextarea 
+                        id="descripcionVehiculo"
+                        value="#{vehiculoAdministracionControlador.vehiculo.descripcion}"
+                        maxlength="254"
+                        rows="6" cols="22"
+                        required="true"
+                        onblur="value = value.toUpperCase()"/>
 
                     <p:outputLabel
                         for="@next"
@@ -110,25 +121,63 @@
 
 
                     <p:outputLabel
-                        value="#{msj.descuentoAdicional}" />
+                        rendered="#{vehiculoAdministracionControlador.vehiculo.tienePlantilla}"
+                        value="#{msj.estadoPlantilla}" />
                     <p:selectOneMenu
                         id="somDescuentoAdicional"
+                        rendered="#{vehiculoAdministracionControlador.vehiculo.tienePlantilla}"
                         value="#{vehiculoAdministracionControlador.vehiculo.estadoPlantilla}"
                         converter="omnifaces.SelectItemsConverter">
                         <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                         <f:selectItems value="#{consultaControlador.generarEstadoPlantilla()}" />
                     </p:selectOneMenu>
-
+                    
                     <p:outputLabel
                         for="@next"
-                        value="#{msj.descripcion}" />                    
+                        value="#{msj.observacionPlantilla}" />                    
                     <p:inputTextarea 
-                        id="descripcionVehiculo"
-                        value="#{vehiculoAdministracionControlador.vehiculo.descripcion}"
+                        id="observacionPlantilla"
+                        value="#{vehiculoAdministracionControlador.vehiculo.observacionPlantilla}"
                         maxlength="254"
                         rows="6" cols="22"
                         required="true"
                         onblur="value = value.toUpperCase()"/>
+                    
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.tienePlantillaVolante}" />
+                    <p:selectOneMenu
+                        id="somTienePlantilla"
+                        value="#{vehiculoAdministracionControlador.vehiculo.tienePlantillaVolante}"
+                        required="true"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{ordenControlador.listaSiNo}" />
+                    </p:selectOneMenu>
+
+
+                    <p:outputLabel
+                        value="#{msj.estadoPlantillaVolante}" />
+                    <p:selectOneMenu
+                        id="somDescuentoAdicional"
+                        value="#{vehiculoAdministracionControlador.vehiculo.estadoPlantillaVolante}"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{consultaControlador.generarEstadoPlantilla()}" />
+                    </p:selectOneMenu>
+                    
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.observacionPlantillaVolante}" />                    
+                    <p:inputTextarea 
+                        id="observacionPlantilla"
+                        value="#{vehiculoAdministracionControlador.vehiculo.observacionPlantillaVolante}"
+                        maxlength="254"
+                        rows="6" cols="22"
+                        required="true"
+                        onblur="value = value.toUpperCase()"/>
+
+                    
 
                     <p:outputLabel
                         for="@next"
@@ -225,11 +274,12 @@
                     <p:commandButton
                         id="btnGuardaVehiculo"
                         value="#{msj.guardar}"
-                        update="mensajeGeneral"
+                        update="frmAgregarEditarVehiculo mensajeGeneral"
                         actionListener="#{vehiculoAdministracionControlador.guadarVehiculo()}"
                         action="administrar-vehiculo" />
                     <p:commandButton
                         id="btnCancelarVehiculo"
+                        process="@this"
                         value="#{msj.cancelar}"
                         action="administrar-vehiculo"/>
                 </p:panelGrid>

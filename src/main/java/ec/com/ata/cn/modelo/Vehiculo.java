@@ -29,6 +29,8 @@ import javax.persistence.Transient;
 @Table(name = "vehiculo")
 public class Vehiculo implements Serializable {    
 
+    
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -60,9 +62,20 @@ public class Vehiculo implements Serializable {
     @Column(name = "estado_plantilla")
     private String estadoPlantilla;
     
-    @Column(name = "observacion")
-    private String observacion;
+    @Column(name = "observacion_plantilla")
+    private String observacionPlantilla;
     
+    @Column(name = "tiene_plantilla_volante")
+    private boolean tienePlantillaVolante;
+    
+    @Column(name = "estado_plantilla_volante")
+    private String estadoPlantillaVolante;
+    
+    @Column(name = "observacion_plantilla_volante")
+    private String observacionPlantillaVolante;
+    
+    @Column(name = "observacion")
+    private String observacion;    
 
     @Transient
     private String descripcionDetallada;
@@ -312,6 +325,62 @@ public class Vehiculo implements Serializable {
      */
     public void setEstadoPlantilla(String estadoPlantilla) {
         this.estadoPlantilla = estadoPlantilla;
+    }
+    
+    /**
+     * @return the observacionPlantilla
+     */
+    public String getObservacionPlantilla() {
+        return observacionPlantilla;
+    }
+
+    /**
+     * @param observacionPlantilla the observacionPlantilla to set
+     */
+    public void setObservacionPlantilla(String observacionPlantilla) {
+        this.observacionPlantilla = observacionPlantilla;
+    }
+
+    /**
+     * @return the tienePlantillaVolante
+     */
+    public boolean isTienePlantillaVolante() {
+        return tienePlantillaVolante;
+    }
+
+    /**
+     * @param tienePlantillaVolante the tienePlantillaVolante to set
+     */
+    public void setTienePlantillaVolante(boolean tienePlantillaVolante) {
+        this.tienePlantillaVolante = tienePlantillaVolante;
+    }
+
+    /**
+     * @return the estadoPlantillaVolante
+     */
+    public String getEstadoPlantillaVolante() {
+        return estadoPlantillaVolante;
+    }
+
+    /**
+     * @param estadoPlantillaVolante the estadoPlantillaVolante to set
+     */
+    public void setEstadoPlantillaVolante(String estadoPlantillaVolante) {
+        this.estadoPlantillaVolante = estadoPlantillaVolante;
+    }
+
+    /**
+     * @return the observacionPlantillaVolante
+     */
+    public String getObservacionPlantillaVolante() {
+        return observacionPlantillaVolante;
+    }
+
+    /**
+     * @param observacionPlantillaVolante the observacionPlantillaVolante to set
+     */
+    public void setObservacionPlantillaVolante(String observacionPlantillaVolante) {
+        this.observacionPlantillaVolante = observacionPlantillaVolante;
     }
 
 }
