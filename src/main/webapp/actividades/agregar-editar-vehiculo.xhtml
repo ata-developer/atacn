@@ -15,11 +15,12 @@
             <!-- INICIO DATOS DEL VEHICULO -->
             <p:fieldset id="fsDatosVehiculos" legend="#{msj.datosDelVehiculo}">
                 <p:panelGrid id="pngAdministrarVehiculo1" columns="2" style="width: 400px;">
+                    
                     <p:outputLabel
                         for="@next"
                         value="#{msj.anioInicialRango}" />
                     <p:selectOneMenu
-                        id="anioDesde"
+                        id="somAnioDesde"
                         value="#{vehiculoAdministracionControlador.vehiculo.anioDesde}"
                         panelStyle="width:200px"
                         effect="fade"
@@ -51,7 +52,7 @@
                         for="@next"
                         value="#{msj.anioFinalRango}" />
                     <p:selectOneMenu
-                        id="anioHasta"
+                        id="somAnioHasta"
                         disabled="#{vehiculoAdministracionControlador.vehiculo.anioDesde == null}"
                         value="#{vehiculoAdministracionControlador.vehiculo.anioHasta}"
                         panelStyle="width:200px"
@@ -88,7 +89,7 @@
                         for="@next"
                         value="#{msj.modeloVehiculo}" />                    
                     <p:autoComplete
-                        id="modeloVehiculo"
+                        id="acModeloVehiculo"
                         minQueryLength="3"
                         required="true"
                         value="#{vehiculoAdministracionControlador.vehiculo.modelo}" 
@@ -100,7 +101,7 @@
                         for="@next"
                         value="#{msj.descripcion}" />                    
                     <p:inputTextarea 
-                        id="descripcionVehiculo"
+                        id="acdescripcionVehiculo"
                         value="#{vehiculoAdministracionControlador.vehiculo.descripcion}"
                         maxlength="254"
                         rows="6" cols="22"
@@ -117,6 +118,9 @@
                         converter="omnifaces.SelectItemsConverter">
                         <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                         <f:selectItems value="#{ordenControlador.listaSiNo}" />
+                        <p:ajax 
+                            event="change"
+                            update="frmAgregarEditarVehiculo"/>
                     </p:selectOneMenu>
 
 
@@ -124,7 +128,7 @@
                         rendered="#{vehiculoAdministracionControlador.vehiculo.tienePlantilla}"
                         value="#{msj.estadoPlantilla}" />
                     <p:selectOneMenu
-                        id="somDescuentoAdicional"
+                        id="somEstadoPlantilla"
                         rendered="#{vehiculoAdministracionControlador.vehiculo.tienePlantilla}"
                         value="#{vehiculoAdministracionControlador.vehiculo.estadoPlantilla}"
                         converter="omnifaces.SelectItemsConverter">
@@ -136,7 +140,7 @@
                         for="@next"
                         value="#{msj.observacionPlantilla}" />                    
                     <p:inputTextarea 
-                        id="observacionPlantilla"
+                        id="itObservacionPlantilla"
                         value="#{vehiculoAdministracionControlador.vehiculo.observacionPlantilla}"
                         maxlength="254"
                         rows="6" cols="22"
@@ -147,30 +151,36 @@
                         for="@next"
                         value="#{msj.tienePlantillaVolante}" />
                     <p:selectOneMenu
-                        id="somTienePlantilla"
+                        id="somTienePlantillaVolante"
                         value="#{vehiculoAdministracionControlador.vehiculo.tienePlantillaVolante}"
                         required="true"
                         converter="omnifaces.SelectItemsConverter">
                         <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                         <f:selectItems value="#{ordenControlador.listaSiNo}" />
+                         <p:ajax 
+                            event="change"
+                            update="frmAgregarEditarVehiculo"/>
                     </p:selectOneMenu>
 
 
                     <p:outputLabel
+                        rendered="#{vehiculoAdministracionControlador.vehiculo.tienePlantillaVolante}"
                         value="#{msj.estadoPlantillaVolante}" />
                     <p:selectOneMenu
-                        id="somDescuentoAdicional"
+                        id="somEstadoPlantillaVolante"
+                        rendered="#{vehiculoAdministracionControlador.vehiculo.tienePlantillaVolante}"
                         value="#{vehiculoAdministracionControlador.vehiculo.estadoPlantillaVolante}"
                         converter="omnifaces.SelectItemsConverter">
                         <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                         <f:selectItems value="#{consultaControlador.generarEstadoPlantilla()}" />
+                       
                     </p:selectOneMenu>
                     
                     <p:outputLabel
                         for="@next"
                         value="#{msj.observacionPlantillaVolante}" />                    
                     <p:inputTextarea 
-                        id="observacionPlantilla"
+                        id="itObservacionPlantilla"
                         value="#{vehiculoAdministracionControlador.vehiculo.observacionPlantillaVolante}"
                         maxlength="254"
                         rows="6" cols="22"
