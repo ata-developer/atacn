@@ -205,7 +205,7 @@
                     <p:outputLabel
                         for="@next"
                         value="#{msj.seleccionarCategoria}" />
-                    <h:selectOneMenu
+                    <p:selectOneMenu
                         id="somSeleccionarCategoriaConfiguracion"
                         value="#{grupoPrecioControlador.categoriaSeleccionado}"
                         converter="omnifaces.SelectItemsConverter">
@@ -216,12 +216,12 @@
                             process="@this somSeleccionarTrabajo"
                             update="frmAdministrarGrupoPrecio mensajeGeneral"
                             listener="#{grupoPrecioControlador.limpiarParaCategoria()}" />
-                    </h:selectOneMenu>
+                    </p:selectOneMenu>
 
                     <p:outputLabel
                         for="@next"
                         value="#{msj.seleccionarTrabajo}" />
-                    <h:selectOneMenu
+                    <p:selectOneMenu
                         id="somSeleccionarTrabajo"
                         value="#{grupoPrecioControlador.trabajoSeleccionado}"
                         converter="omnifaces.SelectItemsConverter">
@@ -232,12 +232,12 @@
                             process="@this somSeleccionarCategoriaConfiguracion"
                             update="frmAdministrarGrupoPrecio mensajeGeneral"
                             listener="#{grupoPrecioControlador.limpiarParaTrabajo()}" />
-                    </h:selectOneMenu>
+                    </p:selectOneMenu>
                     
                     <p:outputLabel
                         for="@next"
                         value="#{msj.partePrincipal}" />
-                    <h:selectOneMenu
+                    <p:selectOneMenu
                         id="somPartePrincipal"
                         value="#{grupoPrecioControlador.partePrincipalSeleccionada}"
                         converter="omnifaces.SelectItemsConverter">
@@ -248,7 +248,7 @@
                             process="@this somSeleccionarTrabajo"
                             update="frmAdministrarGrupoPrecio mensajeGeneral"
                             listener="#{grupoPrecioControlador.cargarPrecio()}" />
-                    </h:selectOneMenu>
+                    </p:selectOneMenu>
 
                     <p:outputLabel
                         for="@next"

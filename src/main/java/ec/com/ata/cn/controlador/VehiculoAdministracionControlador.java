@@ -151,6 +151,8 @@ public class VehiculoAdministracionControlador extends BaseControlador {
     public void agregarVehiculo() {
         setModoEdicion(false);
         this.vehiculo = new Vehiculo();
+        this.vehiculo.setEstadoPlantilla("SIN REVISAR");
+        this.vehiculo.setEstadoPlantillaVolante("SIN REVISAR");
         this.imagenesVehiculo = new ArrayList<>();
         this.filasDelVehiculo = new ArrayList<>();
     }
