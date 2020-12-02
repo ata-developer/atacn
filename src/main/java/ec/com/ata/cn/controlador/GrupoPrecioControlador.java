@@ -393,6 +393,23 @@ public class GrupoPrecioControlador extends BaseControlador {
             setTrabajo(new Trabajo());
         }
     }
+    
+    public void eliminarTrabajo(Trabajo trabajoEntrada) {
+        try {            
+            trabajoBean.eliminar(trabajoEntrada);
+            listaTrabajo = trabajoBean.obtenerListaPorGrupoPrecio(grupoPrecioSeccionado);
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+        } finally {
+            setTrabajo(new Trabajo());
+        }
+    }
 
     /**
      * @return the grupoPrecio

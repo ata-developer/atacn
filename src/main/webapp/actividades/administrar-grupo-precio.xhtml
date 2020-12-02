@@ -192,6 +192,15 @@
                     <p:column headerText="#{msj.descripcionTrabajo}">
                         <h:outputText value="#{trabajo.descripcion}" />
                     </p:column>
+                    <p:column headerText="#{msj.acciones}">
+                        <p:commandButton
+                        id="btnEliminarTrabajo" 
+                        process="@this"
+                        value="#{msj.eliminar}"
+                        update="tblListaTrabajo mensajeGeneral"
+                        action="#{grupoPrecioControlador.eliminarTrabajo(trabajo)}" />
+                    </p:column>
+                    
                 </p:dataTable>
 
             </p:fieldset>

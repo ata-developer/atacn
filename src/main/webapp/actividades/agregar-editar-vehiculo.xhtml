@@ -15,7 +15,7 @@
             <!-- INICIO DATOS DEL VEHICULO -->
             <p:fieldset id="fsDatosVehiculos" legend="#{msj.datosDelVehiculo}">
                 <p:panelGrid id="pngAdministrarVehiculo1" columns="2" style="width: 400px;">
-                    
+
                     <p:outputLabel
                         for="@next"
                         value="#{msj.anioInicialRango}" />
@@ -96,7 +96,7 @@
                         completeMethod="#{vehiculoAdministracionControlador.autoCompletar}"
                         effect="fade"
                         onblur="value = value.toUpperCase()"/>
-                    
+
                     <p:outputLabel
                         for="@next"
                         value="#{msj.descripcion}" />                    
@@ -135,7 +135,7 @@
                         <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                         <f:selectItems value="#{consultaControlador.generarEstadoPlantilla()}" />
                     </p:selectOneMenu>
-                    
+
                     <p:outputLabel
                         for="@next"
                         value="#{msj.observacionPlantilla}" />                    
@@ -146,7 +146,7 @@
                         rows="6" cols="22"
                         required="true"
                         onblur="value = value.toUpperCase()"/>
-                    
+
                     <p:outputLabel
                         for="@next"
                         value="#{msj.tienePlantillaVolante}" />
@@ -157,7 +157,7 @@
                         converter="omnifaces.SelectItemsConverter">
                         <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                         <f:selectItems value="#{ordenControlador.listaSiNo}" />
-                         <p:ajax 
+                        <p:ajax 
                             event="change"
                             update="frmAgregarEditarVehiculo"/>
                     </p:selectOneMenu>
@@ -173,9 +173,9 @@
                         converter="omnifaces.SelectItemsConverter">
                         <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                         <f:selectItems value="#{consultaControlador.generarEstadoPlantilla()}" />
-                       
+
                     </p:selectOneMenu>
-                    
+
                     <p:outputLabel
                         for="@next"
                         value="#{msj.observacionPlantillaVolante}" />                    
@@ -187,7 +187,7 @@
                         required="true"
                         onblur="value = value.toUpperCase()"/>
 
-                    
+
 
                     <p:outputLabel
                         for="@next"
@@ -201,6 +201,17 @@
 
                 </p:panelGrid>
                 <p/>
+                <p:panelGrid id="pngConfigurarPrecio" columns="2" style="width: 400px;">
+                    <p:outputLabel value="#{msj.configurarPrecio}" />
+                    <p:commandButton
+                        id="cmbConfigurarPrecio"
+                        process="@this"
+                        value="#{msj.configurar}"
+                        action="administrar-vehiculo-precio" />
+                </p:panelGrid>
+                <p/>
+
+
                 <!-- numero de filas-->
                 <p:panelGrid id="pngAdministrarVehiculoFilas" columns="2" style="width: 400px;">
                     <p:outputLabel

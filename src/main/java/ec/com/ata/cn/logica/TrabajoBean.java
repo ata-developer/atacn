@@ -7,6 +7,7 @@ package ec.com.ata.cn.logica;
 
 import ec.com.ata.cn.logica.dao.TrabajoDao;
 import ec.com.ata.cn.modelo.GrupoPrecio;
+import ec.com.ata.cn.modelo.Horario;
 import ec.com.ata.cn.modelo.Trabajo;
 import java.util.HashMap;
 import java.util.List;
@@ -40,4 +41,13 @@ public class TrabajoBean {
         parametros.put("grupoPrecio", grupoPrecio);
         return trabajoDao.obtenerListaPorParametros(parametros);
     }
+    
+    public void eliminar (Trabajo trabajoEntrada) {
+        trabajoDao.eliminar(trabajoEntrada);
+    }
+    
+    public void eliminar (Long idTrabajoEntrada) {
+        trabajoDao.eliminar(idTrabajoEntrada);
+    } 
+    
 }

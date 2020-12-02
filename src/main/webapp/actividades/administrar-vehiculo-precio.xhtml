@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                template="/WEB-INF/templateATA.xhtml">
+
+    <ui:define name="content">
+        <h:form id="frmAdministrarVehiculoPrecio">
+            <h1>#{msj.administrarGrupoPrecio}</h1>
+            <p/>
+            <!-- INICIO CONFIGURACION SELECCION GRUPO PRECIO -->
+            <p:fieldset legend="#{msj.configurarGrupoPrecio}">
+                <p:panelGrid id="pngConfigurarVehiculoPrecioCategoria" columns="2">                    
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.descripcionGrupoPrecio}" />
+                    <p:selectOneMenu
+                        id="somSeleccionarVehiculoPrecio"
+                        value="#{grupoPrecioControlador.grupoPrecioSeccionado}"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{grupoPrecioControlador.generarSelectItemDeGrupoPrecio()}" />
+                        <p:ajax 
+                            event="change"
+                            update="frmAdministrarVehiculoPrecio mensajeGeneral"
+                            listener="#{grupoPrecioControlador.cargarListaCategoriaYTrabajos()}" />
+                    </p:selectOneMenu>
+                </p:panelGrid>
+            </p:fieldset>
+            <!-- FIN CONFIGURACION SELECCION GRUPO PRECIO -->
+            <p/>
+            <!-- INICIO CONFIGURACION DE PRECIOS -->
+            <p:dataTable
+                rendered="#{grupoPrecioControlador.grupoPrecioSeccionado.idGrupoPrecio != null}"
+                id="dtListaMapaPrecioParaVehiculo"                
+                var="mapaTrabajoCategoriaPrecio" 
+                value="#{grupoPrecioControlador.listaMapaTrabajoCategoriaPrecio}">
+                <c:forEach var="categoria" items="#{grupoPrecioControlador.listaCategoriasTemporal()}">
+                    <p:column>
+                        <f:facet name="header" >
+                            <h:outputText value="#{categoria.categoria}" />
+                        </f:facet>
+                        <p:outputLabel
+                            rendered="#{categoria.categoria == 'TRABAJO/CATEGORIA'}"
+                            value="#{mapaTrabajoCategoriaPrecio[categoria.categoria]}" />
+                        <p:panelGrid 
+                            id="pngPrecio"
+                            columns="2" 
+                            rendered="#{categoria.categoria != 'TRABAJO/CATEGORIA'}">
+                            <p:outputLabel
+                                for="@next"
+                                value="#{msj.precioVentaPublico}" />
+                            <p:outputLabel
+                                value="#{mapaTrabajoCategoriaPrecio[categoria.categoria].precioVentaPublico}" />
+                            <p:outputLabel
+                                for="@next"
+                                value="#{msj.precioDescuento}" />
+                            <p:outputLabel
+                                value="#{mapaTrabajoCategoriaPrecio[categoria.categoria].precioDescuento}" />
+                        </p:panelGrid>
+
+                    </p:column>
+
+
+                </c:forEach>
+            </p:dataTable>
+            <!-- FIN CONGIGURACION DEL PRECIOS -->
+
+        </h:form>
+    </ui:define>
+</ui:composition>

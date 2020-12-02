@@ -26,6 +26,10 @@
             <from-outcome>administrar-vehiculo</from-outcome>
             <to-view-id>actividades/administrar-vehiculo.xhtml</to-view-id>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>administrar-vehiculo-precio</from-outcome>
+            <to-view-id>actividades/administrar-vehiculo-precio.xhtml</to-view-id>
+        </navigation-case>
     </navigation-rule>
     <converter>
         <converter-id>trimConverter</converter-id>
