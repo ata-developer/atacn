@@ -164,6 +164,16 @@
                         requiredMessage="#{msj.campoNecesario}"
                         value="#{grupoPrecioControlador.trabajo.descripcion}"
                         onblur="value = value.toUpperCase()"/>
+                    
+                     <p:outputLabel
+                        for="@next"
+                        value="#{msj.detalleTrabajo}" />
+                    <p:inputText
+                        id="descripcionTrabajo"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{grupoPrecioControlador.trabajo.detalle}"
+                        onblur="value = value.toUpperCase()"/>
 
                     <p:commandButton
                         id="btnGuardarTrabajo" 
@@ -192,6 +202,11 @@
                     <p:column headerText="#{msj.descripcionTrabajo}">
                         <h:outputText value="#{trabajo.descripcion}" />
                     </p:column>
+                    
+                    <p:column headerText="#{msj.detalle}">
+                        <h:outputText value="#{trabajo.detalle}" />
+                    </p:column>
+                    
                     <p:column headerText="#{msj.acciones}">
                         <p:commandButton
                         id="btnEliminarTrabajo" 

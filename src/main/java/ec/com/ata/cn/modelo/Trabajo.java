@@ -40,6 +40,9 @@ public class Trabajo implements Serializable {
     @Column(name = "descripcion",unique=true)
     private String descripcion;
     
+    @Column(name = "detalle")
+    private String detalle;
+    
     @Embedded
     private GenericoEntidad genericoEntidad;
     
@@ -122,5 +125,19 @@ public class Trabajo implements Serializable {
      */
     public void setGenericoEntidad(GenericoEntidad genericoEntidad) {
         this.genericoEntidad = genericoEntidad;
+    }
+
+    /**
+     * @return the detalle
+     */
+    public String getDetalle() {
+        return detalle;
+    }
+
+    /**
+     * @param detalle the detalle to set
+     */
+    public void setDetalle(String detalle) {
+        this.detalle = detalle;
     }
 }
