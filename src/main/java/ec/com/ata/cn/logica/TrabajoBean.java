@@ -7,7 +7,6 @@ package ec.com.ata.cn.logica;
 
 import ec.com.ata.cn.logica.dao.TrabajoDao;
 import ec.com.ata.cn.modelo.GrupoPrecio;
-import ec.com.ata.cn.modelo.Horario;
 import ec.com.ata.cn.modelo.Trabajo;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +23,7 @@ public class TrabajoBean {
     @Inject
     private TrabajoDao trabajoDao;
     
-    public Trabajo crear(Trabajo trabajoEntrada) throws Exception{
+    public Trabajo crear(Trabajo trabajoEntrada) throws Exception {
         return trabajoDao.crear(trabajoEntrada);
     }
     
@@ -50,4 +49,7 @@ public class TrabajoBean {
         trabajoDao.eliminar(idTrabajoEntrada);
     } 
     
+    public void modificar(Trabajo trabajoEntrada) throws Exception {
+        trabajoDao.modificar(trabajoEntrada);
+    }
 }

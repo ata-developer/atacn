@@ -751,7 +751,7 @@ public class OrdenControlador extends BaseControlador {
     public List<SelectItem> generarSelectItemPartesAsiento() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
         for (TrabajoCategoriaPrecio trabajoCategoriaPrecioTmp : getListaTrabajoCategoriaPrecioTmp()) {
-            selectItemsBuilder.add(trabajoCategoriaPrecioTmp, trabajoCategoriaPrecioTmp.getTrabajo().getDescripcion() + " - " + trabajoCategoriaPrecioTmp.getPrecioVentaPublico() + " - " + trabajoCategoriaPrecioTmp.getPrecioDescuento());
+            selectItemsBuilder.add(trabajoCategoriaPrecioTmp, trabajoCategoriaPrecioTmp.getDescripcion() + " - " + trabajoCategoriaPrecioTmp.getPrecioVentaPublico() + " - " + trabajoCategoriaPrecioTmp.getPrecioDescuento());
         }
         return selectItemsBuilder.buildList();
     }
@@ -908,7 +908,7 @@ public class OrdenControlador extends BaseControlador {
             VehiculoTrabajo vehiculoTrabajo = new VehiculoTrabajo();
             vehiculoTrabajo.setOrdenVehiculo(ordenVehiculoEntrada);
             vehiculoTrabajo.setIdGrupoPrecio(trabajoCategoriaPrecio.getGrupoPrecio().getIdGrupoPrecio());
-            vehiculoTrabajo.setIdTrabajo(trabajoCategoriaPrecio.getTrabajo().getIdTrabajo());
+            vehiculoTrabajo.setIdTrabajoCategoriaPrecio(trabajoCategoriaPrecio.getIdTrabajoCategoriaPrecio());
             vehiculoTrabajo.setIdVehiculo(ordenVehiculoEntrada.getIdOrdenVehiculo());
             vehiculoTrabajo.setPrecioVentaPublico(trabajoCategoriaPrecio.getPrecioVentaPublico());
             vehiculoTrabajo.setPrecioVentaPublicoFactura(trabajoCategoriaPrecio.getPrecioVentaPublico());
@@ -923,12 +923,12 @@ public class OrdenControlador extends BaseControlador {
             vehiculoTrabajo.setDescuento(new BigDecimal("0"));
 
             vehiculoTrabajo.setVehiculoDescripcion(ordenVehiculoEntrada.getVehiculo().getModelo());
-            vehiculoTrabajo.setTrabajoDescripcion(trabajoCategoriaPrecio.getTrabajo().getDescripcion());
+            vehiculoTrabajo.setTrabajoDescripcion(trabajoCategoriaPrecio.getDescripcion());
             vehiculoTrabajo.setPartePrincipal(trabajoCategoriaPrecio.getParte());
             vehiculoTrabajo.setGenericoEntidad(new GenericoEntidad());
             vehiculoTrabajo.getGenericoEntidad().setFechaRegistro(new Date(System.currentTimeMillis()));
             vehiculoTrabajo = vehiculoTrabajoBean.crear(vehiculoTrabajo);
-            System.out.println("trabajoCategoriaPrecio.getTrabajoCategoriaPrecioId:" + trabajoCategoriaPrecio.getTrabajoCategoriaPrecioId());
+            System.out.println("trabajoCategoriaPrecio.getTrabajoCategoriaPrecioId:" + trabajoCategoriaPrecio.getIdTrabajoCategoriaPrecio());
             System.out.println("trabajoCategoriaPrecio.getParte:" + trabajoCategoriaPrecio.getParte());
             parametros = new HashMap<>();
             parametros.put("padre", trabajoCategoriaPrecio.getParte());
@@ -990,7 +990,7 @@ public class OrdenControlador extends BaseControlador {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
         if (null != ordenVehiculoEntrada) {
             for (TrabajoCategoriaPrecio trabajoCategoriaPrecioTmp : mapaOrdenVehiculoListaTrabajos.get(ordenVehiculoEntrada)) {
-                selectItemsBuilder.add(trabajoCategoriaPrecioTmp, trabajoCategoriaPrecioTmp.getTrabajo().getDescripcion() + " - " + trabajoCategoriaPrecioTmp.getPrecioVentaPublico() + " - " + trabajoCategoriaPrecioTmp.getPrecioDescuento());
+                selectItemsBuilder.add(trabajoCategoriaPrecioTmp, trabajoCategoriaPrecioTmp.getDescripcion() + " - " + trabajoCategoriaPrecioTmp.getPrecioVentaPublico() + " - " + trabajoCategoriaPrecioTmp.getPrecioDescuento());
             }
         }
         return selectItemsBuilder.buildList();
@@ -999,7 +999,7 @@ public class OrdenControlador extends BaseControlador {
     public List<SelectItem> generarSelectItemDeTrabajosParaVehiculoSeleccionado() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
         for (TrabajoCategoriaPrecio trabajoCategoriaPrecioTmp : getListaTrabajoCategoriaPrecioTmp()) {
-            selectItemsBuilder.add(trabajoCategoriaPrecioTmp, trabajoCategoriaPrecioTmp.getTrabajo().getDescripcion() + " - " + trabajoCategoriaPrecioTmp.getPrecioVentaPublico() + " - " + trabajoCategoriaPrecioTmp.getPrecioDescuento());
+            selectItemsBuilder.add(trabajoCategoriaPrecioTmp, trabajoCategoriaPrecioTmp.getDescripcion() + " - " + trabajoCategoriaPrecioTmp.getPrecioVentaPublico() + " - " + trabajoCategoriaPrecioTmp.getPrecioDescuento());
         }
         return selectItemsBuilder.buildList();
     }

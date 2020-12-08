@@ -32,6 +32,8 @@ import javax.persistence.TemporalType;
 @Entity
 @Table ( name = "vehiculo_trabajo")
 public class VehiculoTrabajo implements Serializable {
+
+    
         
     @Id
     @SequenceGenerator(
@@ -53,8 +55,8 @@ public class VehiculoTrabajo implements Serializable {
     @Column(name = "id_vehiculo")
     private Long idVehiculo;
     
-    @Column(name = "id_trabajo")
-    private Long idTrabajo;
+    @Column(name = "id_trabajo_categoria_precio")
+    private Long idTrabajoCategoriaPrecio;
     
     @Column(name = "id_grupo_precio")
     private Long idGrupoPrecio;
@@ -184,20 +186,6 @@ public class VehiculoTrabajo implements Serializable {
      */
     public void setIdVehiculo(Long idVehiculo) {
         this.idVehiculo = idVehiculo;
-    }
-
-    /**
-     * @return the idTrabajo
-     */
-    public Long getIdTrabajo() {
-        return idTrabajo;
-    }
-
-    /**
-     * @param idTrabajo the idTrabajo to set
-     */
-    public void setIdTrabajo(Long idTrabajo) {
-        this.idTrabajo = idTrabajo;
     }
 
     /**
@@ -521,5 +509,19 @@ public class VehiculoTrabajo implements Serializable {
      */
     public void setFechaFin(Date fechaFin) {
         this.fechaFin = fechaFin;
+    }
+    
+    /**
+     * @return the idTrabajoCategoriaPrecio
+     */
+    public Long getIdTrabajoCategoriaPrecio() {
+        return idTrabajoCategoriaPrecio;
+    }
+
+    /**
+     * @param idTrabajoCategoriaPrecio the idTrabajoCategoriaPrecio to set
+     */
+    public void setIdTrabajoCategoriaPrecio(Long idTrabajoCategoriaPrecio) {
+        this.idTrabajoCategoriaPrecio = idTrabajoCategoriaPrecio;
     }
 }

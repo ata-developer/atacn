@@ -189,7 +189,7 @@ public class OrdenControlador1 extends BaseControlador {
     public List<SelectItem> generarSelectItemPartesAsiento() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
         for (TrabajoCategoriaPrecio trabajoCategoriaPrecioTmp : getListaTrabajoCategoriaPrecioTmp()) {
-            selectItemsBuilder.add(trabajoCategoriaPrecioTmp, trabajoCategoriaPrecioTmp.getTrabajo().getDescripcion() + " - " + trabajoCategoriaPrecioTmp.getPrecioVentaPublico() + " - " + trabajoCategoriaPrecioTmp.getPrecioDescuento());
+            selectItemsBuilder.add(trabajoCategoriaPrecioTmp, trabajoCategoriaPrecioTmp.getDescripcion() + " - " + trabajoCategoriaPrecioTmp.getPrecioVentaPublico() + " - " + trabajoCategoriaPrecioTmp.getPrecioDescuento());
         }
         return selectItemsBuilder.buildList();
     }
@@ -204,12 +204,12 @@ public class OrdenControlador1 extends BaseControlador {
 
             VehiculoTrabajo vehiculoTrabajo = new VehiculoTrabajo();
             vehiculoTrabajo.setIdGrupoPrecio(trabajoCategoriaPrecio.getGrupoPrecio().getIdGrupoPrecio());
-            vehiculoTrabajo.setIdTrabajo(trabajoCategoriaPrecio.getTrabajo().getIdTrabajo());
+            vehiculoTrabajo.setIdTrabajoCategoriaPrecio(trabajoCategoriaPrecio.getIdTrabajoCategoriaPrecio());
             vehiculoTrabajo.setIdVehiculo(vehiculoParaTrabajos.getIdOrdenVehiculo());
             vehiculoTrabajo.setPrecioVentaPublico(trabajoCategoriaPrecio.getPrecioVentaPublico());
             vehiculoTrabajo.setPrecioDescuento(trabajoCategoriaPrecio.getPrecioDescuento());
             vehiculoTrabajo.setVehiculoDescripcion(vehiculoParaTrabajos.getVehiculo().getDescripcion());
-            vehiculoTrabajo.setTrabajoDescripcion(trabajoCategoriaPrecio.getTrabajo().getDescripcion());
+            vehiculoTrabajo.setTrabajoDescripcion(trabajoCategoriaPrecio.getDescripcion());
             vehiculoTrabajo.setPartePrincipal(trabajoCategoriaPrecio.getParte());
             HashMap<String, Object> parametros = new HashMap<>();
             parametros.put("padre", trabajoCategoriaPrecio.getParte());
@@ -295,7 +295,7 @@ public class OrdenControlador1 extends BaseControlador {
     public List<SelectItem> generarSelectItemDeTrabajosParaVehiculoSeleccionado() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
         for (TrabajoCategoriaPrecio trabajoCategoriaPrecioTmp : getListaTrabajoCategoriaPrecioTmp()) {
-            selectItemsBuilder.add(trabajoCategoriaPrecioTmp, trabajoCategoriaPrecioTmp.getTrabajo().getDescripcion() + " - " + trabajoCategoriaPrecioTmp.getPrecioVentaPublico() + " - " + trabajoCategoriaPrecioTmp.getPrecioDescuento());
+            selectItemsBuilder.add(trabajoCategoriaPrecioTmp, trabajoCategoriaPrecioTmp.getDescripcion() + " - " + trabajoCategoriaPrecioTmp.getPrecioVentaPublico() + " - " + trabajoCategoriaPrecioTmp.getPrecioDescuento());
         }
         return selectItemsBuilder.buildList();
     }

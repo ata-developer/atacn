@@ -244,5 +244,11 @@ public class TrabajoCategoriaPrecioBean {
         parametros.put("categoria", categoria);
         return trabajoCategoriaPrecioDao.obtenerListaPorParametros(parametros);
     }
+    
+    public List<TrabajoCategoriaPrecio> obtenerPorGrupoPrecio(GrupoPrecio grupoPrecioEntrada) {
+        HashMap<String, Object> parametros = new HashMap<>();
+        parametros.put("grupoPrecio", grupoPrecioEntrada);
+        return trabajoCategoriaPrecioDao.obtenerListaPorParametros(parametros);
+    }
 
 }

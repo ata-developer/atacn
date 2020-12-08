@@ -8,12 +8,15 @@ package ec.com.ata.cn.modelo;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -22,24 +25,25 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "trabajo_categoria_precio")
-public class TrabajoCategoriaPrecio implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
-    @EmbeddedId
-    private TrabajoCategoriaPrecioId trabajoCategoriaPrecioId;
-
-    @MapsId("idTrabajo")
-    @JoinColumn(name = "id_trabajo", referencedColumnName = "id_trabajo")
-    @ManyToOne
-    private Trabajo trabajo;
-
-    @MapsId("idCategoria")
+public class TrabajoCategoriaPrecio implements Serializable {    
+    
+    private static final long serialVersionUID = 1L;  
+    
+    @Id
+    @SequenceGenerator(
+            name = "trabajo_categoria_precio_seq",
+            sequenceName = "trabajo_categoria_precio_seq",
+            allocationSize = 1)
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "trabajo_categoria_precio_seq")
+    @Column(name = "id_trabajo_categoria_precio")
+    private Long idTrabajoCategoriaPrecio;
+    
     @JoinColumn(name = "id_categoria", referencedColumnName = "id_categoria")
     @ManyToOne
     private Categoria categoria;
     
-    @MapsId("idGrupoPrecio")
     @JoinColumn(name = "id_grupo_precio", referencedColumnName = "id_grupo_precio")
     @ManyToOne
     private GrupoPrecio grupoPrecio;
@@ -51,9 +55,22 @@ public class TrabajoCategoriaPrecio implements Serializable {
     @Embedded
     private GenericoEntidad genericoEntidad;
     
+    @Column(name = "codigo",unique=true)
+    private String codigo;
+    
+    @Column(name = "descripcion",unique=true)
+    private String descripcion;
+    
+    @Column(name = "detalle")
+    private String detalle;
 
+    @Column(name = "precio_venta_publico")
     private BigDecimal precioVentaPublico;
+    
+    @Column(name = "precio_efectivo")
+    private BigDecimal precioEfectivo;
 
+    @Column(name = "precio_descuento")
     private BigDecimal precioDescuento;
     
     public TrabajoCategoriaPrecio () {
@@ -62,8 +79,7 @@ public class TrabajoCategoriaPrecio implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 29 * hash + Objects.hashCode(this.trabajoCategoriaPrecioId);
+        int hash = 5;
         return hash;
     }
 
@@ -79,15 +95,20 @@ public class TrabajoCategoriaPrecio implements Serializable {
             return false;
         }
         final TrabajoCategoriaPrecio other = (TrabajoCategoriaPrecio) obj;
-        if (!Objects.equals(this.trabajoCategoriaPrecioId, other.trabajoCategoriaPrecioId)) {
+        if (!Objects.equals(this.idTrabajoCategoriaPrecio, other.idTrabajoCategoriaPrecio)) {
+            return false;
+        }
+        
+        if (!Objects.equals(this.categoria, other.categoria)) {
+            return false;
+        }
+        if (!Objects.equals(this.grupoPrecio, other.grupoPrecio)) {
+            return false;
+        }
+        if (!Objects.equals(this.parte, other.parte)) {
             return false;
         }
         return true;
-    }
-
-    @Override
-    public String toString() {
-        return "TrabajoCategoriaPrecio{" + "trabajoCategoriaPrecioId=" + (trabajoCategoriaPrecioId == null ? null : trabajoCategoriaPrecioId.toString()) + ", precioVentaPublico=" + precioVentaPublico + ", precioDescuento=" + precioDescuento + '}';
     }
     
     
@@ -121,20 +142,6 @@ public class TrabajoCategoriaPrecio implements Serializable {
     }
 
     /**
-     * @return the trabajo
-     */
-    public Trabajo getTrabajo() {
-        return trabajo;
-    }
-
-    /**
-     * @param trabajo the trabajo to set
-     */
-    public void setTrabajo(Trabajo trabajo) {
-        this.trabajo = trabajo;
-    }
-
-    /**
      * @return the categoria
      */
     public Categoria getCategoria() {
@@ -147,21 +154,7 @@ public class TrabajoCategoriaPrecio implements Serializable {
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
-
-    /**
-     * @return the trabajoCategoriaPrecioId
-     */
-    public TrabajoCategoriaPrecioId getTrabajoCategoriaPrecioId() {
-        return trabajoCategoriaPrecioId;
-    }
-
-    /**
-     * @param trabajoCategoriaPrecioId the trabajoCategoriaPrecioId to set
-     */
-    public void setTrabajoCategoriaPrecioId(TrabajoCategoriaPrecioId trabajoCategoriaPrecioId) {
-        this.trabajoCategoriaPrecioId = trabajoCategoriaPrecioId;
-    }
-
+    
     /**
      * @return the grupoPrecio
      */
@@ -202,6 +195,76 @@ public class TrabajoCategoriaPrecio implements Serializable {
      */
     public void setParte(Parte parte) {
         this.parte = parte;
+    }
+    
+    /**
+     * @return the idTrabajoCategoriaPrecio
+     */
+    public Long getIdTrabajoCategoriaPrecio() {
+        return idTrabajoCategoriaPrecio;
+    }
+
+    /**
+     * @param idTrabajoCategoriaPrecio the idTrabajoCategoriaPrecio to set
+     */
+    public void setIdTrabajoCategoriaPrecio(Long idTrabajoCategoriaPrecio) {
+        this.idTrabajoCategoriaPrecio = idTrabajoCategoriaPrecio;
+    }
+    
+    /**
+     * @return the codigo
+     */
+    public String getCodigo() {
+        return codigo;
+    }
+
+    /**
+     * @param codigo the codigo to set
+     */
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    /**
+     * @return the descripcion
+     */
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    /**
+     * @param descripcion the descripcion to set
+     */
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    /**
+     * @return the detalle
+     */
+    public String getDetalle() {
+        return detalle;
+    }
+
+    /**
+     * @param detalle the detalle to set
+     */
+    public void setDetalle(String detalle) {
+        this.detalle = detalle;
+    }
+
+    /**
+     * @return the precioEfectivo
+     */
+    public BigDecimal getPrecioEfectivo() {
+        return precioEfectivo;
+    }
+
+    /**
+     * @param precioEfectivo the precioEfectivo to set
+     */
+    public void setPrecioEfectivo(BigDecimal precioEfectivo) {
+        this.precioEfectivo = precioEfectivo;
     }
 
 }

@@ -148,7 +148,6 @@ public class TrabajoCategoriaPrecioControlador extends BaseControlador {
             //trabajoCategoriaPrecio.setTrabajoCategoriaPrecioId(trabajoCategoriaPrecioId);
             trabajoCategoriaPrecio = new TrabajoCategoriaPrecio();
             trabajoCategoriaPrecio.setCategoria(getCategoria());
-            trabajoCategoriaPrecio.setTrabajo(getTrabajo());
             trabajoCategoriaPrecio.setPrecioDescuento(getPrecioDescuento());
             trabajoCategoriaPrecio.setPrecioVentaPublico(getPrecioVentaPublico());
             trabajoCategoriaTrabajoBean.guardar(trabajoCategoriaPrecio);

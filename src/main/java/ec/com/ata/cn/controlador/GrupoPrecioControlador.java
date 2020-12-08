@@ -5,7 +5,6 @@
  */
 package ec.com.ata.cn.controlador;
 
-
 import ec.com.ata.cn.logica.CategoriaBean;
 import ec.com.ata.cn.logica.EstablecimientoBean;
 import ec.com.ata.cn.logica.GrupoPrecioBean;
@@ -36,6 +35,7 @@ import javax.inject.Named;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.omnifaces.util.selectitems.SelectItemsBuilder;
+import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.TransferEvent;
 import org.primefaces.event.UnselectEvent;
@@ -64,7 +64,7 @@ public class GrupoPrecioControlador extends BaseControlador {
 
     @Inject
     private EstablecimientoBean establecimientoBean;
-    
+
     @Inject
     private ParteBean parteBean;
 
@@ -89,6 +89,8 @@ public class GrupoPrecioControlador extends BaseControlador {
     private TrabajoCategoriaPrecio trabajoCategoriaPrecio;
 
     private List<HashMap<String, Object>> listaMapaTrabajoCategoriaPrecio;
+    
+    private List<TrabajoCategoriaPrecio> listaTrabajoCategoriaPrecio;
 
     private List<Categoria> listaCategoriaTmp = null;
 
@@ -99,9 +101,9 @@ public class GrupoPrecioControlador extends BaseControlador {
     private List<Establecimiento> establecimientosOrigen;
 
     private List<Establecimiento> establecimientosDestino;
-    
+
     private List<Parte> listaPartePrincipal;
-    
+
     private Parte partePrincipalSeleccionada;
 
     private DualListModel<Establecimiento> listaEstablecimientos;
@@ -121,11 +123,33 @@ public class GrupoPrecioControlador extends BaseControlador {
         setEstablecimientosOrigen(new ArrayList<Establecimiento>());
         setEstablecimientosDestino(new ArrayList<Establecimiento>());
         setListaEstablecimientos(new DualListModel<Establecimiento>());
+        setListaTrabajoCategoriaPrecio(new ArrayList<TrabajoCategoriaPrecio>());
 
         setTrabajoCategoriaPrecio(new TrabajoCategoriaPrecio());
         setListaMapaTrabajoCategoriaPrecio(new ArrayList<HashMap<String, Object>>());
         setListaPartePrincipal(parteBean.obtenerListaPorPadre(null));
-        
+
+    }
+
+    public void onRowEdit(RowEditEvent event) {
+        try {
+            Trabajo trabajoTmp = (Trabajo) event.getObject();
+            trabajoBean.modificar(trabajoTmp);
+            System.out.println("Trabajo: " + trabajoTmp.getDescripcion());
+            System.out.println("Trabajo.detalle: " + trabajoTmp.getDetalle());
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_PRECIOS_CONTROLADOR_GUARDAR_ROOT + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_PRECIOS_CONTROLADOR_GUARDAR_EX + ":" + e.getMessage());
+        }
+
+    }
+
+    public void onRowCancel(RowEditEvent event) {
+        System.out.println("cancel");
     }
 
     public void guardarConfiguracionEstablecimiento() {
@@ -227,15 +251,9 @@ public class GrupoPrecioControlador extends BaseControlador {
 
     public void guardarPrecioConfiguracion() {
         try {
-            trabajoCategoriaPrecio = new TrabajoCategoriaPrecio();
-            trabajoCategoriaPrecio.setCategoria(getCategoriaSeleccionado());
-            trabajoCategoriaPrecio.setTrabajo(getTrabajoSeleccionado());
-            trabajoCategoriaPrecio.setGrupoPrecio(getGrupoPrecioSeccionado());
-            trabajoCategoriaPrecio.setParte(getPartePrincipalSeleccionada());
-            trabajoCategoriaPrecio.setPrecioDescuento(getPrecioDescuento());
-            trabajoCategoriaPrecio.setPrecioVentaPublico(getPrecioVentaPublico());
             trabajoCategoriaTrabajoBean.guardar(trabajoCategoriaPrecio);
-            setListaMapaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecio(grupoPrecioSeccionado));
+            setListaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerPorGrupoPrecio(grupoPrecioSeccionado));
+            trabajoCategoriaPrecio = new TrabajoCategoriaPrecio();
             addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
@@ -256,13 +274,13 @@ public class GrupoPrecioControlador extends BaseControlador {
                 trabajoCategoriaPrecioId.setIdCategoria(categoriaSeleccionado.getIdCategoria());
                 trabajoCategoriaPrecioId.setIdTrabajo(trabajoSeleccionado.getIdTrabajo());
                 trabajoCategoriaPrecioId.setIdGrupoPrecio(grupoPrecioSeccionado.getIdGrupoPrecio());
-                
+
                 TrabajoCategoriaPrecio trabajoCategoriaPrecioTmp = trabajoCategoriaTrabajoBean.obtenerPorId(trabajoCategoriaPrecioId);
                 setListaMapaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecio(grupoPrecioSeccionado));
                 if (null != trabajoCategoriaPrecioTmp) {
                     setPrecioVentaPublico(trabajoCategoriaPrecioTmp.getPrecioVentaPublico());
                     setPrecioDescuento(trabajoCategoriaPrecioTmp.getPrecioDescuento());
-                    
+
                     addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
                     return;
                 } else {
@@ -297,7 +315,7 @@ public class GrupoPrecioControlador extends BaseControlador {
         }
         return selectItemsBuilder.buildList();
     }
-    
+
     public List<SelectItem> generarSelectItemDePartesPrincipales() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
         for (Parte parteTmp : parteBean.obtenerListaPorPadre(null)) {
@@ -307,15 +325,15 @@ public class GrupoPrecioControlador extends BaseControlador {
     }
 
     public void limpiarParaCategoria() {
-        setTrabajoSeleccionado( new Trabajo());
+        setTrabajoSeleccionado(new Trabajo());
         setPartePrincipalSeleccionada(new Parte());
-        setPrecioVentaPublico(null);        
+        setPrecioVentaPublico(null);
         setPrecioDescuento(null);
     }
-    
-    public void limpiarParaTrabajo() {        
+
+    public void limpiarParaTrabajo() {
         setPartePrincipalSeleccionada(new Parte());
-        setPrecioVentaPublico(null);        
+        setPrecioVentaPublico(null);
         setPrecioDescuento(null);
     }
 
@@ -378,8 +396,10 @@ public class GrupoPrecioControlador extends BaseControlador {
 
     public void guardarTrabajo() {
         try {
+            System.out.println("trabajo.descripcion: "+getTrabajo().getDescripcion());
+            System.out.println("trabajo.detalle: "+getTrabajo().getDetalle());
             getTrabajo().setGrupoPrecio(grupoPrecioSeccionado);
-            trabajoBean.crear(trabajo);
+            trabajoBean.crear(getTrabajo());
             listaTrabajo = trabajoBean.obtenerListaPorGrupoPrecio(grupoPrecioSeccionado);
             addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
@@ -393,9 +413,9 @@ public class GrupoPrecioControlador extends BaseControlador {
             setTrabajo(new Trabajo());
         }
     }
-    
+
     public void eliminarTrabajo(Trabajo trabajoEntrada) {
-        try {            
+        try {
             trabajoBean.eliminar(trabajoEntrada);
             listaTrabajo = trabajoBean.obtenerListaPorGrupoPrecio(grupoPrecioSeccionado);
             addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
@@ -676,6 +696,20 @@ public class GrupoPrecioControlador extends BaseControlador {
      */
     public void setPartePrincipalSeleccionada(Parte partePrincipalSeleccionada) {
         this.partePrincipalSeleccionada = partePrincipalSeleccionada;
+    }
+    
+    /**
+     * @return the listaTrabajoCategoriaPrecio
+     */
+    public List<TrabajoCategoriaPrecio> getListaTrabajoCategoriaPrecio() {
+        return listaTrabajoCategoriaPrecio;
+    }
+
+    /**
+     * @param listaTrabajoCategoriaPrecio the listaTrabajoCategoriaPrecio to set
+     */
+    public void setListaTrabajoCategoriaPrecio(List<TrabajoCategoriaPrecio> listaTrabajoCategoriaPrecio) {
+        this.listaTrabajoCategoriaPrecio = listaTrabajoCategoriaPrecio;
     }
 
 }
