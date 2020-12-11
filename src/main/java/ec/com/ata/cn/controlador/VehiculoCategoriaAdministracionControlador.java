@@ -174,6 +174,8 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
         setContadorImagenes(0);
         setModoEdicion(false);
         setGrupoPrecioSeccionado(new GrupoPrecio());
+        
+        setListaVehiculo(vehiculoBean.obtenerLista());
     }
 
     public List<TrabajoCategoriaPrecio> generarTrabajoCategoriaPrecioParaAuto(GrupoPrecioParteCategoriaVehiculo grupoPrecioParteCategoriaVehiculo) {

@@ -40,6 +40,10 @@ public class TrabajoCategoriaPrecioBean {
     @Inject
     private GrupoPrecioParteCategoriaVehiculoBean grupoPrecioParteCategoriaVehiculoBean;
     
+    public void eliminar (TrabajoCategoriaPrecio trabajoCategoriaPrecioEntrada) throws Exception {
+        trabajoCategoriaPrecioDao.eliminar(trabajoCategoriaPrecioEntrada);
+    }
+    
     public List<TrabajoCategoriaPrecio> conseguirListaTrabajoCategoriaPrecio (GrupoPrecio grupoPrecioEntrada, Categoria categoriaEntrada ) {
         HashMap<String, Object> parametros = new HashMap<>();
         parametros.put("grupoPrecio", grupoPrecioEntrada);

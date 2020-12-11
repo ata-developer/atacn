@@ -70,8 +70,6 @@ public class TrabajoCategoriaPrecioControlador extends BaseControlador {
         setListaTrabajo(trabajoBean.obtenerLista());
         setListaCategoria(categoriaBean.obtenerLista());
         setTrabajoCategoriaPrecio(new TrabajoCategoriaPrecio());
-        setListaMapaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecio());
-        System.out.println("init(): " + getListaMapaTrabajoCategoriaPrecio().size());
     }
 
     public List<String> clavesDelMapa(HashMap<String, Object> mapaEntrada) {
@@ -142,10 +140,6 @@ public class TrabajoCategoriaPrecioControlador extends BaseControlador {
 
     public void guardar() {
         try {
-            //TrabajoCategoriaPrecioId trabajoCategoriaPrecioId = new TrabajoCategoriaPrecioId();
-            //trabajoCategoriaPrecioId.setIdCategoria(getCategoria().getIdCategoria());
-            //trabajoCategoriaPrecioId.setIdTrabajo(getTrabajo().getIdTrabajo());
-            //trabajoCategoriaPrecio.setTrabajoCategoriaPrecioId(trabajoCategoriaPrecioId);
             trabajoCategoriaPrecio = new TrabajoCategoriaPrecio();
             trabajoCategoriaPrecio.setCategoria(getCategoria());
             trabajoCategoriaPrecio.setPrecioDescuento(getPrecioDescuento());

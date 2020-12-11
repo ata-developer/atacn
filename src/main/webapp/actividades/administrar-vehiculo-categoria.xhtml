@@ -12,37 +12,7 @@
         <h:form id="frmVehiculoCategoria">
             <h1>#{msj.administrarMarcaVehiculos}</h1>
             <p/>
-            <!-- INICIO CONFIGURACION SELECCION VEHICULO -->
-            <p:fieldset legend="#{msj.configurarVehiculo}">
-                <p:panelGrid id="pngConfigurarVehiculo" columns="2" style="width: 400px;">                    
-                    <p:outputLabel
-                        for="@next"
-                        value="#{msj.selecccionarMarca}" />
-                    <p:selectOneMenu
-                        id="somSeleccionarVehiculo"
-                        value="#{vehiculoCategoriaAdministracionControlador.marcaVehiculoSeleccionado}"
-                        converter="omnifaces.SelectItemsConverter">
-                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
-                        <f:selectItems value="#{vehiculoCategoriaAdministracionControlador.generarSelectItemDeMarcaVehiculo()}" />
-                        <p:ajax 
-                            event="change"
-                            process="@this"
-                            update="frmVehiculoCategoria mensajeGeneral"
-                            listener="#{vehiculoCategoriaAdministracionControlador.cargarListaDeVehiculos()}" />
-                    </p:selectOneMenu>
-                </p:panelGrid>
-            </p:fieldset>
-            <p/>
-            <!-- FIN CONFIGURACION SELECCION VEHICULO -->
-
-            <!-- INICIO MARCA SELECCIONADA -->
-            <p:fieldset rendered="#{vehiculoCategoriaAdministracionControlador.marcaVehiculoSeleccionado.idMarca != null}" >
-                <p:outputLabel value="#{msj.marcaSeleccionada} #{vehiculoCategoriaAdministracionControlador.marcaVehiculoSeleccionado.marca}" />
-            </p:fieldset>
-            <!-- FIN MARCA SELECCIONADA -->
-            <p/>
-            <!-- INICIO CONFIGURACION VEHICULO -->
-            <p:fieldset id="configurarVehiculo" legend="#{msj.agregarVehiculo}" rendered="#{vehiculoCategoriaAdministracionControlador.marcaVehiculoSeleccionado.idMarca != null}" >
+            <p:fieldset id="configurarVehiculo" legend="#{msj.agregarVehiculo}"  >
                 <p:dataTable
                     id="tblListaVehiculos2"                
                     var="vehiculo" 
@@ -82,14 +52,16 @@
                         </c:forEach>
                     </p:column>
 
-                    <p:column headerText="#{msj.imagenes}" colspan="3">
-                        <p:panelGrid id="pngAdministrarImagenes4" columns="3">
-                            <c:forEach var="imagen" items="#{vehiculoCategoriaAdministracionControlador.listaImagenes(vehiculo)}">
-                                <h:outputLink value="MostradorImagen?Image_id=#{imagen.idImagen}" target="_blank" >
-                                    <h:graphicImage value="MostradorImagen?Image_id=#{imagen.idImagen}" width="100" height="100"></h:graphicImage>
-                                </h:outputLink>
-                            </c:forEach>
-                        </p:panelGrid>
+                   <p:column headerText="#{msj.imagenes}" >
+                        <p:row>
+                            <p:repeat var="imagen" value="#{vehiculoAdministracionControlador.listaImagenes(vehiculo)}" >
+                                <p:column>
+                                    <h:outputLink value="MostradorImagen?Image_id=#{imagen.idImagen}" target="_blank" >
+                                        <h:graphicImage value="MostradorImagen?Image_id=#{imagen.idImagen}" width="100" height="100"></h:graphicImage>
+                                    </h:outputLink>
+                                </p:column>
+                            </p:repeat>
+                        </p:row>
                     </p:column>
 
                     <p:column headerText="#{msj.acciones}">

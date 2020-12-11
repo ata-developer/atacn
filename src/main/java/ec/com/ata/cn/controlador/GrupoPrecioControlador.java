@@ -130,6 +130,8 @@ public class GrupoPrecioControlador extends BaseControlador {
         setListaPartePrincipal(parteBean.obtenerListaPorPadre(null));
 
     }
+    
+    
 
     public void onRowEdit(RowEditEvent event) {
         try {
@@ -150,6 +152,28 @@ public class GrupoPrecioControlador extends BaseControlador {
 
     public void onRowCancel(RowEditEvent event) {
         System.out.println("cancel");
+    }
+    
+    public void editarDuplaTrabajoCategoriaPrecio(RowEditEvent event) {
+        try {
+            TrabajoCategoriaPrecio trabajoCategoriaPrecioTmp = (TrabajoCategoriaPrecio) event.getObject();
+            trabajoCategoriaTrabajoBean.modificar(trabajoCategoriaPrecioTmp);
+            System.out.println("Trabajo: " + trabajoCategoriaPrecioTmp.getTrabajo().getDescripcion());
+            System.out.println("Trabajo.detalle: " + trabajoCategoriaPrecioTmp.getTrabajo().getDetalle());
+            //setListaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerPorGrupoPrecio(grupoPrecioSeccionado));
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_PRECIOS_CONTROLADOR_GUARDAR_ROOT + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_PRECIOS_CONTROLADOR_GUARDAR_EX + ":" + e.getMessage());
+        }
+
+    }
+
+    public void cancelDuplaTrabajoCategoriaPrecio(RowEditEvent event) {
+        
     }
 
     public void guardarConfiguracionEstablecimiento() {
@@ -251,6 +275,7 @@ public class GrupoPrecioControlador extends BaseControlador {
 
     public void guardarPrecioConfiguracion() {
         try {
+            trabajoCategoriaPrecio.setGrupoPrecio(grupoPrecioSeccionado);
             trabajoCategoriaTrabajoBean.guardar(trabajoCategoriaPrecio);
             setListaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerPorGrupoPrecio(grupoPrecioSeccionado));
             trabajoCategoriaPrecio = new TrabajoCategoriaPrecio();
@@ -344,7 +369,7 @@ public class GrupoPrecioControlador extends BaseControlador {
         listaEstablecimientos.setTarget(establecimientosDestino);
         listaCategoria = categoriaBean.obtenerListaPorGrupoPrecio(grupoPrecioSeccionado);
         listaTrabajo = trabajoBean.obtenerListaPorGrupoPrecio(grupoPrecioSeccionado);
-        setListaMapaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecio(grupoPrecioSeccionado));
+        setListaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerPorGrupoPrecio(grupoPrecioSeccionado));
     }
 
     public List<GrupoPrecio> obtenerListaGrupoPrecio() {
@@ -428,6 +453,20 @@ public class GrupoPrecioControlador extends BaseControlador {
             addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
         } finally {
             setTrabajo(new Trabajo());
+        }
+    }
+    
+    public void eliminarTrabajoCategoriaPrecio(TrabajoCategoriaPrecio trabajoCategoriaPrecioEntrada) {
+        try {
+            trabajoCategoriaTrabajoBean.eliminar(trabajoCategoriaPrecioEntrada);
+            setListaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerPorGrupoPrecio(grupoPrecioSeccionado));
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_PRECIOS_CONTROLADOR_GUARDAR_ROOT + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_PRECIOS_CONTROLADOR_GUARDAR_EX + ":" + e.getMessage());
         }
     }
 

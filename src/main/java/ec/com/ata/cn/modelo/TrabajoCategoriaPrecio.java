@@ -25,7 +25,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "trabajo_categoria_precio")
-public class TrabajoCategoriaPrecio implements Serializable {    
+public class TrabajoCategoriaPrecio implements Serializable { 
     
     private static final long serialVersionUID = 1L;  
     
@@ -39,6 +39,10 @@ public class TrabajoCategoriaPrecio implements Serializable {
             generator = "trabajo_categoria_precio_seq")
     @Column(name = "id_trabajo_categoria_precio")
     private Long idTrabajoCategoriaPrecio;
+    
+    @JoinColumn(name = "id_trabajo", referencedColumnName = "id_trabajo")
+    @ManyToOne
+    private Trabajo trabajo;   
     
     @JoinColumn(name = "id_categoria", referencedColumnName = "id_categoria")
     @ManyToOne
@@ -265,6 +269,22 @@ public class TrabajoCategoriaPrecio implements Serializable {
      */
     public void setPrecioEfectivo(BigDecimal precioEfectivo) {
         this.precioEfectivo = precioEfectivo;
+    }
+    
+       
+
+    /**
+     * @return the trabajo
+     */
+    public Trabajo getTrabajo() {
+        return trabajo;
+    }
+
+    /**
+     * @param trabajo the trabajo to set
+     */
+    public void setTrabajo(Trabajo trabajo) {
+        this.trabajo = trabajo;
     }
 
 }
