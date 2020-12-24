@@ -18,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
@@ -25,7 +26,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "trabajo_categoria_precio")
-public class TrabajoCategoriaPrecio implements Serializable { 
+public class TrabajoCategoriaPrecio implements Serializable {
     
     private static final long serialVersionUID = 1L;  
     
@@ -76,6 +77,9 @@ public class TrabajoCategoriaPrecio implements Serializable {
 
     @Column(name = "precio_descuento")
     private BigDecimal precioDescuento;
+    
+    @Transient
+    private boolean seleccionar;
     
     public TrabajoCategoriaPrecio () {
         genericoEntidad = new GenericoEntidad();
@@ -285,6 +289,20 @@ public class TrabajoCategoriaPrecio implements Serializable {
      */
     public void setTrabajo(Trabajo trabajo) {
         this.trabajo = trabajo;
+    }
+    
+    /**
+     * @return the seleccionar
+     */
+    public boolean isSeleccionar() {
+        return seleccionar;
+    }
+
+    /**
+     * @param seleccionar the seleccionar to set
+     */
+    public void setSeleccionar(boolean seleccionar) {
+        this.seleccionar = seleccionar;
     }
 
 }

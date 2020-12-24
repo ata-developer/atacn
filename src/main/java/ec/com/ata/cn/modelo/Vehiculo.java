@@ -29,6 +29,7 @@ import javax.persistence.Transient;
 @Table(name = "vehiculo")
 public class Vehiculo implements Serializable {    
 
+   
     
 
     private static final long serialVersionUID = 1L;
@@ -79,6 +80,9 @@ public class Vehiculo implements Serializable {
 
     @Transient
     private String descripcionDetallada;
+    
+    @Transient
+    private boolean seleccionar;
 
     @Embedded
     private GenericoEntidad genericoEntidad;
@@ -382,5 +386,20 @@ public class Vehiculo implements Serializable {
     public void setObservacionPlantillaVolante(String observacionPlantillaVolante) {
         this.observacionPlantillaVolante = observacionPlantillaVolante;
     }
+    
+     /**
+     * @return the seleccionar
+     */
+    public boolean isSeleccionar() {
+        return seleccionar;
+    }
+
+    /**
+     * @param seleccionar the seleccionar to set
+     */
+    public void setSeleccionar(boolean seleccionar) {
+        this.seleccionar = seleccionar;
+    }
+
 
 }

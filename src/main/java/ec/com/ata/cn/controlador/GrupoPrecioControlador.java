@@ -371,6 +371,12 @@ public class GrupoPrecioControlador extends BaseControlador {
         listaTrabajo = trabajoBean.obtenerListaPorGrupoPrecio(grupoPrecioSeccionado);
         setListaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerPorGrupoPrecio(grupoPrecioSeccionado));
     }
+    
+    public void cargarListaCategoria() {
+        setListaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerPorGrupoPrecio(grupoPrecioSeccionado));
+    }
+    
+    
 
     public List<GrupoPrecio> obtenerListaGrupoPrecio() {
         return grupoPrecioBean.obtenerLista();

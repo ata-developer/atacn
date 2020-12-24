@@ -24,6 +24,10 @@
                     <p:column headerText="#{msj.codigo}" >
                         <h:outputText value="#{vehiculo.idVehiculo}" />
                     </p:column>
+                    
+                    <p:column headerText="#{msj.marca}" >
+                        <h:outputText value="#{vehiculo.marca.marca}" />
+                    </p:column>
 
                     <p:column headerText="#{msj.descripcionModelo}" >
                         <h:outputText value="#{vehiculo.modelo}" />
@@ -45,13 +49,6 @@
                         <h:outputText value="#{vehiculo.anioHasta}" />
                     </p:column>
 
-                    <p:column headerText="#{msj.listaTipoFila}">
-                        <c:forEach var="fila" items="#{vehiculoCategoriaAdministracionControlador.listaFila(vehiculo)}">
-                            <h:outputText value="#{fila.tipoFila.tipoFila}" />
-                            <p/>
-                        </c:forEach>
-                    </p:column>
-
                     <p:column headerText="#{msj.imagenes}" >
                         <p:row>
                             <p:repeat var="imagen" value="#{vehiculoAdministracionControlador.listaImagenes(vehiculo)}" >
@@ -64,20 +61,83 @@
                         </p:row>
                     </p:column>
 
-                    <p:column headerText="#{msj.acciones}">
-                        <p:commandButton
-                            id="btnEditarVehiculo"
-                            process="@this tblListaVehiculos2 "
-                            value="#{msj.editar}"
-                            update=":frmVehiculoCategoria mensajeGeneral"
-                            action="#{vehiculoCategoriaAdministracionControlador.seleccionarVehiculo(vehiculo)}" />
+                    <p:column headerText="#{msj.seleccionar}">
+                        <p:selectBooleanCheckbox value="#{vehiculo.seleccionar}" itemLabel=""/>
                     </p:column>
 
                 </p:dataTable>
                 <p/>
             </p:fieldset>
             <p/>
-            <p:fieldset id="configurarVehiculo" legend="#{msj.agregarCategoria}"  >
+            <p:fieldset id="configurarGrupoPrecio" legend="#{msj.agregarCategoria}"  >
+                <p:panelGrid id="pngConfigurarGrupoPrecioCategoria" columns="2">                    
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.descripcionGrupoPrecio}" />
+                    <p:selectOneMenu
+                        id="somSeleccionarGrupoPrecio"
+                        value="#{grupoPrecioControlador.grupoPrecioSeccionado}"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{grupoPrecioControlador.generarSelectItemDeGrupoPrecio()}" />
+                        <p:ajax 
+                            event="change"
+                            update="tblListaTrabajoCategoriaPrecio mensajeGeneral"
+                            listener="#{grupoPrecioControlador.cargarListaCategoria()}" />
+                    </p:selectOneMenu>
+                </p:panelGrid>
+                <p/>
+                <p:dataTable
+                    id="tblListaTrabajoCategoriaPrecio"                
+                    var="trabajoCategoriaPrecio"
+                    editable="true"
+                    value="#{grupoPrecioControlador.listaTrabajoCategoriaPrecio}">
+                    <f:facet name="header">
+                        #{msj.listaDeTrabajos}
+                    </f:facet>
+
+                    <p:column headerText="#{msj.codigo}">
+                        <h:outputText value="#{trabajoCategoriaPrecio.idTrabajoCategoriaPrecio}" />                       
+                    </p:column>
+
+                    <p:column headerText="#{msj.codigoTrabajo}">
+                        <h:outputText value="#{trabajoCategoriaPrecio.codigo}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.descripcionTrabajo}">
+                        <h:outputText value="#{trabajoCategoriaPrecio.trabajo.descripcion}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.detalleTrabajo}">
+                        <h:outputText value="#{trabajoCategoriaPrecio.trabajo.detalle}" /> 
+                    </p:column>
+
+                    <p:column headerText="#{msj.descripcionCategoria}">
+                        <h:outputText value="#{trabajoCategoriaPrecio.categoria.categoria}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.parte}">
+                        <h:outputText value="#{trabajoCategoriaPrecio.parte.parte}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.precioVentaPublico}">
+                        <h:outputText value="#{trabajoCategoriaPrecio.precioVentaPublico}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.precioEfectivo}">
+                        <h:outputText value="#{trabajoCategoriaPrecio.precioEfectivo}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.precioDescuento}">
+                        <h:outputText value="#{trabajoCategoriaPrecio.precioDescuento}" />
+
+                    </p:column>
+
+                    <p:column headerText="#{msj.seleccionar}">
+                        <p:selectBooleanCheckbox value="#{vehiculo.seleccionar}" itemLabel=""/>
+                    </p:column>
+
+                </p:dataTable>
             </p:fieldset>
 
         </h:form>
