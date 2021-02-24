@@ -536,7 +536,7 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
             vehiculo.setMarca(marcaVehiculoSeleccionado);
             vehiculo.setFilasDeAsientos(filasDelVehiculo);
             System.out.println("vehiculo: " + vehiculo.toString());
-            vehiculoBean.crear(vehiculo, imagenesVehiculo);
+            //vehiculoBean.crear(vehiculo, imagenesVehiculo);
             setListaVehiculo(vehiculoBean.obtenerListaPorMarca(marcaVehiculoSeleccionado));
             addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
@@ -561,7 +561,7 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
             vehiculo.setMarca(marcaVehiculoSeleccionado);
             vehiculo.setFilasDeAsientos(filasDelVehiculo);
             System.out.println("vehiculo modificar: " + vehiculo.toString());
-            vehiculoBean.actualizar(vehiculo, imagenesVehiculo);
+            vehiculoBean.actualizar(vehiculo);
             setListaVehiculo(vehiculoBean.obtenerListaPorMarca(marcaVehiculoSeleccionado));
             addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {

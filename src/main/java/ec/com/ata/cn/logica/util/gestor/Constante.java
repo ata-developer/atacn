@@ -38,16 +38,14 @@ public class Constante {
     public static final String ARBOLTIPOSUJETO = "ARBOLTIPOSUJETO";
     public static final String FECHA_MINIMA_NO = "no";
     public static final String FECHA_MINIMA_DIAFERIADO = "DiaFeriado";
-    
+
     public static final int ITERATIONS = 65536;
     public static final int KEY_LENGTH = 512;
     public static final String ALGORITHM = "PBKDF2WithHmacSHA512";
-    
+
     public static final String FECHA_INICIAL = "FECHA_INICIAL";
     public static final String FECHA_FIN = "FECHA_FIN";
 
-    
-    
     public static final String CODIGO_APLICACION = "ADC";
     public static final String URL_PAGINA_INICIO_INTRANET = "URL_HOME_INTRANET";
     public static final int NUM_CARACTERES_FILTRAR = 3;
@@ -85,22 +83,68 @@ public class Constante {
     public static final String ERROR_LISTA_ORDEN_FECHA = " 009 ";
     public static final String ERROR_LISTA_ORDEN_FECHA_MENSAJE = "Agregue una fecha";
 
-
-    
     public static final String TRABAJO_CATEGORIA = "TRABAJO/CATEGORIA";
 
     public static final String SALT = "Br6Jew==";
-    
+
     public static final String ANIO_INICIO_RANGO = "ANIO_INICIO_RANGO";
     public static final String ANIO_FIN_RANGO = "ANIO_FIN_RANGO";
     public static final String SIN_IMAGENES = "INGRESAR IMAGENES DEL VEHICULO";
-    
+
     public static final String SUPERIOR = "SUPERIOR";
     public static final String RANGO = "RANGO";
-    
+
     public static final String MENSAJE_SELECCIONADO = "NO PUEDE SELECCIONAR ESTE HORARIO, YA ESTA OCUPADO";
     public static final String MENSAJE_SELECCION_PARQUEADERO = "TIENE QUE SELECCIONAR UN PARQUEADERO";
     public static final String MENSAJE_SELECCION_EQUIPO = "TIENE QUE SELECCIONAR UN EQUIPO";
     public static final String MENSAJE_SELECCION_FECHA_INICIO = "TIENE QUE SELECCIONAR UNA FECHA INICIO";
     public static final String MENSAJE_SELECCION_FECHA_FIN = "TIENE QUE SELECCIONAR UNA FECHA FIN";
+
+    public static final String CODIGO_ASIENTO = "ASI1000";
+    public static final String CODIGO_PISO = "PIS1000";
+    public static final String CODIGO_VOLANTE = "VOL1000";
+    public static final String CODIGO_TECHO = "TEC1000";
+    public static final String CODIGO_PUERTA = "PUE1000";
+    public static final String CODIGO_POMO = "POM1000";
+    public static final String CODIGO_CAPUCHON = "CAP1000";
+    public static final String CODIGO_FRENO = "FRE1000";
+    public static final String CODIGO_CAJUELA = "CAJ1000";    
+    public static final String CODIGO_MOQUETA = "MOQ1000";
+    
+    public static final String CODIGO_CENTRO = "ASI1001";
+    public static final String CODIGO_COSTADOS = "ASI1002";
+    public static final String CODIGO_CENTRO_INFERIOR = "ASI1003";
+    public static final String CODIGO_CENTRO_SUPERIOR = "ASI1004";
+    public static final String CODIGO_PESTANAS = "ASI1005";
+    public static final String CODIGO_LATERAL = "ASI1006";
+    public static final String CODIGO_SOBRE = "ASI1007";
+    public static final String CODIGO_DOBLE = "ASI1008";
+    public static final String CODIGO_BOLSILLOS = "ASI1009";
+    public static final String CODIGO_AIRBAG = "ASI10010";
+    public static final String CODIGO_BRAZO_POSTERIOR = "ASI1011";
+    
+    
+    public static final String CODIGO_MODELO_VOLANTE = "VOL1001";
+    public static final String CODIGO_HILO_SUPERIOR = "VOL1002";
+    public static final String CODIGO_HILO_CIERRA = "VOL1003";
+    public static final String CODIGO_HILO_INFERIOR = "VOL1004";
+    public static final String CODIGO_CUERPO_VOLANTE = "VOL1005";
+    public static final String CODIGO_CUERPO_PISO = "PIS1001";
+    public static final String CODIGO_CUERPO_TECHO = "TEC1001";
+    public static final String CODIGO_CUERPO_PUERTA = "PUE1001";
+    public static final String CODIGO_CUERPO_CAJUELA = "CAJ1001";
+    public static final String CODIGO_CUERPO_POMO = "POM1001";
+    public static final String CODIGO_CUERPO_CAPUCHON = "CAP1001";
+    public static final String CODIGO_CUERPO_MOQUETA = "MOQ1001";
+    public static final String CODIGO_CUERPO_FRENO = "FRE1001";
+    public static final String CODIGO_CUERPO_OTRO = "OTR1001";
+    
+    
+    
+    
+    
+    
+    
+                    
+    
 }

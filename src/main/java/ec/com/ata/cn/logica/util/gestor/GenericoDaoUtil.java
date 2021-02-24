@@ -7,12 +7,14 @@ package ec.com.ata.cn.logica.util.gestor;
 
 import ec.com.ata.cn.logica.excepcion.ParametrosNoExisteExcepcion;
 import java.io.Serializable;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Id;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -61,7 +63,7 @@ public class GenericoDaoUtil<T, I extends Serializable> {
      * @param tablaEntidad tabla de tipo entidad
      * @return tabla de tipo entidad con registro modificado
      */
-    public T modificar(final T tablaEntidad) throws Exception{
+    public T modificar(final T tablaEntidad) throws Exception {
         T tablaEntidadTemp = em.merge(tablaEntidad);
         em.flush();
         return tablaEntidadTemp;
@@ -77,8 +79,8 @@ public class GenericoDaoUtil<T, I extends Serializable> {
         em.remove(tablaEntidadEliminar);
         em.flush();
     }
-    
-     public void eliminar(final T tablaEntidadEliminar) {
+
+    public void eliminar(final T tablaEntidadEliminar) {
         em.remove(tablaEntidadEliminar);
         em.flush();
     }
@@ -99,11 +101,34 @@ public class GenericoDaoUtil<T, I extends Serializable> {
      *
      * @return lista de registros correspondiente a la tabla de tipo entidad
      */
-    public List<T> obtenerTodos() {
-        TypedQuery<T> consulta = em.createQuery("Select t from " + tablaEntidad.getSimpleName() + " t", tablaEntidad);
+    public List<T> obtenerTodosSimple() {
+        TypedQuery<T> consulta = em.createQuery("Select t from " + tablaEntidad.getSimpleName() + " t ", tablaEntidad);
         return consulta.getResultList();
     }
-    
+
+    public List<T> obtenerTodos() {
+        List<Predicate> predicates = new ArrayList<>();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> query = cb.createQuery(tablaEntidad);
+        Root<T> root = query.from(tablaEntidad);
+        Field[] fields = tablaEntidad.getDeclaredFields();
+        List<Order> listOrder = new ArrayList<>();
+        EndFor:
+        for (Field field : fields) {
+            Annotation[] as = (Annotation[]) field.getAnnotations();
+            for (Annotation a : as) {
+                if (a.annotationType() == Id.class) {
+                    listOrder.add(cb.asc(root.get(field.getName())));
+                    break;
+                }
+            }
+        }
+        if (listOrder.size() > 0) {
+            query.orderBy(listOrder);
+        }
+        return em.createQuery(query).getResultList();
+    }
+
     /**
      * MÃ©todo generico para consultar, utilizando criteria query
      *
@@ -123,18 +148,16 @@ public class GenericoDaoUtil<T, I extends Serializable> {
             List<Order> listOrder = new ArrayList<>();
             Field[] fields = tablaEntidad.getDeclaredFields();
             for (Field field : fields) {
-                
+
                 if (parametros.containsKey(field.getName())) {
                     parametro = parametros.get(field.getName());
                     predicates.add(cb.and(cb.equal(root.get(field.getName()), parametro)));
                 }
                 if (parametros.containsKey(field.getName().concat("IsNull"))) {
-                    String parametroCadena = (String) parametros.get(field.getName().concat("IsNull"));
-                    predicates.add(cb.and(cb.isNull(root.get(parametroCadena))));
-                }                
+                    predicates.add(cb.and(cb.isNull(root.get(field.getName()))));
+                }
                 if (parametros.containsKey(field.getName().concat("IsNotNull"))) {
-                    String parametroCadena = (String) parametros.get(field.getName().concat("IsNotNull"));
-                    predicates.add(cb.and(cb.isNotNull(root.get(parametroCadena))));
+                    predicates.add(cb.and(cb.isNotNull(root.get(field.getName()))));
                 }
                 if (parametros.containsKey(field.getName().concat("Like"))) {
                     String parametroCadena = (String) parametros.get(field.getName().concat("Like"));
@@ -148,10 +171,10 @@ public class GenericoDaoUtil<T, I extends Serializable> {
                 if (parametros.containsKey(field.getName().concat("OrderByAsc"))) {
                     listOrder.add(cb.asc(root.get(field.getName())));
                 }
-                
+
             }
             query.select(root).where(predicates.toArray(new Predicate[predicates.size()]));
-            if (listOrder.size() > 0 ) {
+            if (listOrder.size() > 0) {
                 query.orderBy(listOrder);
             }
             return em.createQuery(query).getResultList();

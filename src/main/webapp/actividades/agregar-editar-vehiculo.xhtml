@@ -13,9 +13,8 @@
             <h1>#{msj.agregarEditarVehiculos}</h1>
             <p/>
             <!-- INICIO DATOS DEL VEHICULO -->
-            <p:fieldset id="fsDatosVehiculos" legend="#{msj.datosDelVehiculo}">
-                <p:panelGrid id="pngAdministrarVehiculo1" columns="2" style="width: 400px;">
-
+            <p:fieldset id="fsDatosVehiculos" legend="#{msj.descripcionVehiculo}">
+                <p:panelGrid id="pngAdministrarVehiculo1" columns="6">
                     <p:outputLabel
                         for="@next"
                         value="#{msj.anioInicialRango}" />
@@ -45,9 +44,6 @@
                             update="pngAdministrarVehiculo1"
                             listener="#{vehiculoAdministracionControlador.configurarRangoAnioFinal()}" />
                     </p:selectOneMenu>
-
-
-
                     <p:outputLabel
                         for="@next"
                         value="#{msj.anioFinalRango}" />
@@ -74,9 +70,7 @@
                             event="change"
                             update="pngAdministrarVehiculo1"
                             listener="#{vehiculoAdministracionControlador.configurarRango()}" />
-
                     </p:selectOneMenu>
-
                     <p:outputLabel
                         for="@next"
                         value="#{msj.rango}" />                    
@@ -96,7 +90,6 @@
                         completeMethod="#{vehiculoAdministracionControlador.autoCompletar}"
                         effect="fade"
                         onblur="value = value.toUpperCase()"/>
-
                     <p:outputLabel
                         for="@next"
                         value="#{msj.descripcion}" />                    
@@ -110,87 +103,6 @@
 
                     <p:outputLabel
                         for="@next"
-                        value="#{msj.tienePlantilla}" />
-                    <p:selectOneMenu
-                        id="somTienePlantilla"
-                        value="#{vehiculoAdministracionControlador.vehiculo.tienePlantilla}"
-                        required="true"
-                        converter="omnifaces.SelectItemsConverter">
-                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
-                        <f:selectItems value="#{ordenControlador.listaSiNo}" />
-                        <p:ajax 
-                            event="change"
-                            update="frmAgregarEditarVehiculo"/>
-                    </p:selectOneMenu>
-
-
-                    <p:outputLabel
-                        rendered="#{vehiculoAdministracionControlador.vehiculo.tienePlantilla}"
-                        value="#{msj.estadoPlantilla}" />
-                    <p:selectOneMenu
-                        id="somEstadoPlantilla"
-                        rendered="#{vehiculoAdministracionControlador.vehiculo.tienePlantilla}"
-                        value="#{vehiculoAdministracionControlador.vehiculo.estadoPlantilla}"
-                        converter="omnifaces.SelectItemsConverter">
-                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
-                        <f:selectItems value="#{consultaControlador.generarEstadoPlantilla()}" />
-                    </p:selectOneMenu>
-
-                    <p:outputLabel
-                        for="@next"
-                        value="#{msj.observacionPlantilla}" />                    
-                    <p:inputTextarea 
-                        id="itObservacionPlantilla"
-                        value="#{vehiculoAdministracionControlador.vehiculo.observacionPlantilla}"
-                        maxlength="254"
-                        rows="6" cols="22"
-                        required="true"
-                        onblur="value = value.toUpperCase()"/>
-
-                    <p:outputLabel
-                        for="@next"
-                        value="#{msj.tienePlantillaVolante}" />
-                    <p:selectOneMenu
-                        id="somTienePlantillaVolante"
-                        value="#{vehiculoAdministracionControlador.vehiculo.tienePlantillaVolante}"
-                        required="true"
-                        converter="omnifaces.SelectItemsConverter">
-                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
-                        <f:selectItems value="#{ordenControlador.listaSiNo}" />
-                        <p:ajax 
-                            event="change"
-                            update="frmAgregarEditarVehiculo"/>
-                    </p:selectOneMenu>
-
-
-                    <p:outputLabel
-                        rendered="#{vehiculoAdministracionControlador.vehiculo.tienePlantillaVolante}"
-                        value="#{msj.estadoPlantillaVolante}" />
-                    <p:selectOneMenu
-                        id="somEstadoPlantillaVolante"
-                        rendered="#{vehiculoAdministracionControlador.vehiculo.tienePlantillaVolante}"
-                        value="#{vehiculoAdministracionControlador.vehiculo.estadoPlantillaVolante}"
-                        converter="omnifaces.SelectItemsConverter">
-                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
-                        <f:selectItems value="#{consultaControlador.generarEstadoPlantilla()}" />
-
-                    </p:selectOneMenu>
-
-                    <p:outputLabel
-                        for="@next"
-                        value="#{msj.observacionPlantillaVolante}" />                    
-                    <p:inputTextarea 
-                        id="itObservacionPlantillaVolante"
-                        value="#{vehiculoAdministracionControlador.vehiculo.observacionPlantillaVolante}"
-                        maxlength="254"
-                        rows="6" cols="22"
-                        required="true"
-                        onblur="value = value.toUpperCase()"/>
-
-
-
-                    <p:outputLabel
-                        for="@next"
                         value="#{msj.observacion}" />                    
                     <p:inputTextarea 
                         id="observacionVehiculo"
@@ -198,66 +110,147 @@
                         maxlength="254"
                         rows="6" cols="22"
                         onblur="value = value.toUpperCase()"/>
-
                 </p:panelGrid>
-                <p/>
-                <p:panelGrid id="pngConfigurarPrecio" columns="2" style="width: 400px;">
-                    <p:outputLabel value="#{msj.configurarPrecio}" />
-                    <p:commandButton
-                        id="cmbConfigurarPrecio"
-                        process="@this"
-                        value="#{msj.configurar}"
-                        action="administrar-vehiculo-precio" />
-                </p:panelGrid>
-                <p/>
+            </p:fieldset>
+            <p/>
+            <p:fieldset id="fsPlantillas" legend="#{msj.plantillasVehiculos}">
 
+                <p:dataTable
+                    id="tblListaPlantilla"                
+                    var="plantilla"
+                    editable="true"
+                    value="#{vehiculoAdministracionControlador.listaPlantilla}">
+                    <f:facet name="header">
+                        #{msj.plantillasVehiculos}
+                    </f:facet>
 
-                <!-- numero de filas-->
-                <p:panelGrid id="pngAdministrarVehiculoFilas" columns="2" style="width: 400px;">
-                    <p:outputLabel
-                        for="@next"
-                        value="#{msj.numeroFilas}" />                    
-                    <p:inputNumber
-                        id="numeroFilasVehiculo"
+                    <p:ajax event="rowEdit" listener="#{vehiculoAdministracionControlador.enEditarPlantilla}" update=" mensajeGeneral"/>
+                    <p:ajax event="rowEditCancel" listener="#{vehiculoAdministracionControlador.enCancelarPlantilla}" update=" mensajeGeneral"/>
+
+                    <p:column headerText="#{msj.tipoPlantilla}">
+                        <h:outputText value="#{plantilla.tipo}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.tienePlantilla}">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{plantilla.existe ? 'Si':'No'}" />
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:selectOneMenu
+                                    id="somExistePlantilla"
+                                    value="#{plantilla.existe}"
+                                    converter="omnifaces.SelectItemsConverter">
+                                    <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                                    <f:selectItems value="#{consultaControlador.generarSiNo()}" />
+                                </p:selectOneMenu>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>   
+
+                    <p:column headerText="#{msj.numeroPlantilla}">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{plantilla.numeroPiezas}" />
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText
+                                    id="inNumeroPiezas"
+                                    required="true"
+                                    requiredMessage="#{msj.campoNecesario}"
+                                    value="#{plantilla.numeroPiezas}"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="#{msj.observacion}">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{plantilla.observacion}" />
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText
+                                    id="descripcionParteTbl"
+                                    required="true"
+                                    requiredMessage="#{msj.campoNecesario}"
+                                    value="#{plantilla.observacion}"
+                                    onblur="value = value.toUpperCase()">
+                                    <f:converter converterId="trimConverter" />
+                                </p:inputText>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="#{msj.acciones}">
+                        <p:rowEditor editTitle="Editar" cancelTitle="Cancelar edición" saveTitle="Save Row"/>
+                    </p:column>
+
+                </p:dataTable>
+            </p:fieldset>
+            <p/>
+            <!-- inicio configuracion partes -->
+            <p:fieldset id="fsParte" legend="#{msj.partes}">
+                <p:panelGrid id="pngAdministrarVehiculoPartes" columns="2">
+                    <h:outputText value="#{msj.partePrincipal}" />
+                    <p:selectOneMenu
+                        id="somVehiculoPartePrincipal"
+                        value="#{vehiculoAdministracionControlador.partePadre}"
                         required="true"
-                        value="#{vehiculoAdministracionControlador.vehiculo.numeroDeFilas}">
-                        <p:ajax event="blur" update="tblListaFilas" listener="#{vehiculoAdministracionControlador.generarFilas}" />
-                    </p:inputNumber>
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{consultaControlador.generarSelectItemDePartesPadre()}" />
+                        <p:ajax                             
+                            event="itemSelect"
+                            update="pngAdministrarVehiculoPartes mensajeGeneral" />
+                    </p:selectOneMenu>
+                    <h:outputText value="#{msj.parteSecundaria}" />
+                    <p:selectOneMenu
+                        id="somVehiculoparteHijo"
+                        value="#{vehiculoAdministracionControlador.parteHijo}"
+                        required="true"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{consultaControlador.generarSelectItemDePartesPorPadre(vehiculoAdministracionControlador.partePadre)}" />
+                    </p:selectOneMenu>
+                    <p:commandButton
+                        id="btnAgregarVehiculoParteHijo"
+                        process="@this fsParte"
+                        value="#{msj.agregar}"
+                        update="fsParte mensajeGeneral"
+                        actionListener="#{vehiculoAdministracionControlador.agregarVehiculoParteHijo(vehiculoAdministracionControlador.parteHijo)}" />
+                     <h:outputText value="" />
+
                 </p:panelGrid>
                 <p/>
                 <p:dataTable
-                    id="tblListaFilas"                
-                    var="fila" 
-                    style="width: 600px;"
-                    value="#{vehiculoAdministracionControlador.filasDelVehiculo}">
-                    <f:facet name="header">
-                        #{msj.listaTipoFila}
-                    </f:facet>
-                    <p:column headerText="#{msj.tipoFila}"  style="width: 250px;">
-                        <p:selectOneMenu                                
-                            id="somSeleccionarTipoFila"
-                            value="#{fila.tipoFila}"
-                            panelStyle="width:230px"
-                            converter="omnifaces.SelectItemsConverter"
-                            var="t"
-                            required="true"
-                            style="width: 230px;">
-                            <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
-                            <f:selectItems value="#{vehiculoAdministracionControlador.generarSelectItemDeTipoFilaDeAsiento()}" />
-                            <p:ajax event="change" update="tblListaFilas"/>
-                            <p:column>
-                                <h:outputText value="#{t.tipoFila}" style="width: 180px;"/>
-                            </p:column>
-                        </p:selectOneMenu>
+                    id="dtListaVehiculoParteHijo"
+                    var="vehiculoParte" 
+                    value="#{vehiculoAdministracionControlador.listaVehiculoParte}" 
+                    sortBy="#{vehiculoParte.parte.padre.parte}">
+                    <p:column  headerText="#{msj.partePrincipal}" groupRow="true">
+                        <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                      value="#{vehiculoParte.parte.padre.parte}"/>
                     </p:column>
-                    <p:column headerText="#{msj.numeroAsientos}">
-                        <p:outputLabel value="#{fila.numeroAsientos}"/>
+                    <p:column headerText="#{msj.parte}">
+                        <h:outputText value="#{vehiculoParte.parte.parte}" />
                     </p:column>
-                </p:dataTable>
-                <p/>
-                <!-- INICIO imagenes del vehiculo -->
 
-                <p:panelGrid id="pngAdministrarImagenes" columns="1" style="width: 400px;">
+                    <p:column headerText="#{msj.acciones}">
+                        <p:commandButton
+                        id="eliminarVehiculoHijo"
+                        process="@this dtListaVehiculoParteHijo"
+                        value="#{msj.eliminar}"
+                        update="dtListaVehiculoParteHijo mensajeGeneral"
+                        actionListener="#{vehiculoAdministracionControlador.eliminarVehiculoParteHijo(vehiculoParte)}" />
+                    </p:column>                    
+                </p:dataTable>
+            </p:fieldset>
+            <!-- fin configuracion partes -->
+            <p/>
+
+            <!-- inicio configuracion imagenes -->
+            <p:fieldset id="fsImagenes" legend="#{msj.imagenes}">            
+                <p:panelGrid id="pngAdministrarImagenes" columns="6">
                     <p:fileUpload
                         id="imagenCargador"
                         update="mensajeGeneral pngAdministrarImagenes4"
@@ -267,10 +260,8 @@
                         fileLimit="6"                            
                         allowTypes="/(\.|\/)(gif|jpe?g|png)$/">
                     </p:fileUpload>
-
-
                 </p:panelGrid>
-                <p:panelGrid id="pngAdministrarImagenes4" columns="2">
+                <p:panelGrid id="pngAdministrarImagenes4" columns="6">
                     <c:forEach var="imagen" items="#{vehiculoAdministracionControlador.imagenesVehiculo}">
                         <p:panelGrid id="pngAdministrarImagenes5" columns="1">
                             <h:outputLink value="MostradorImagen?Image_id=#{imagen.idImagen}" target="_blank" >
@@ -280,31 +271,32 @@
                                 id="btnEliminarImagen"
                                 process="@this pngAdministrarImagenes4"
                                 value="#{msj.eliminar}"
-                                update="mensajeGeneral"
+                                update="pngAdministrarImagenes4  mensajeGeneral"
                                 action="#{vehiculoAdministracionControlador.eliminarImagen(imagen.idImagen)}" />
                         </p:panelGrid>
-
                     </c:forEach>
                 </p:panelGrid>
-
-
-
-                <!-- FIN imagenes del vehiculo -->
-                <p/>
-                <p:panelGrid id="pngAdministrarVehiculoBoton" columns="2" style="width: 400px;">
-                    <p:commandButton
-                        id="btnGuardaVehiculo"
-                        value="#{msj.guardar}"
-                        update="frmAgregarEditarVehiculo mensajeGeneral"
-                        actionListener="#{vehiculoAdministracionControlador.guadarVehiculo()}"
-                        action="administrar-vehiculo" />
-                    <p:commandButton
-                        id="btnCancelarVehiculo"
-                        process="@this"
-                        value="#{msj.cancelar}"
-                        action="administrar-vehiculo"/>
-                </p:panelGrid>
             </p:fieldset>
+
+
+
+
+            <!-- FIN imagenes del vehiculo -->
+            <p/>
+
+            <p:panelGrid id="pngAdministrarVehiculoBoton" columns="2" style="width: 400px;">
+                <p:commandButton
+                    id="btnGuardaVehiculo"
+                    value="#{msj.guardar}"
+                    update="frmAgregarEditarVehiculo mensajeGeneral"
+                    actionListener="#{vehiculoAdministracionControlador.guadarVehiculo()}"
+                    action="administrar-vehiculo" />
+                <p:commandButton
+                    id="btnCancelarVehiculo"
+                    process="@this"
+                    value="#{msj.cancelar}"
+                    action="administrar-vehiculo"/>
+            </p:panelGrid>
             <!-- FIN DATOS DEL VEHICULO -->
         </h:form>
     </ui:define>

@@ -25,7 +25,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table
-public class Parte implements Serializable {
+public class Parte implements Serializable { 
     
     @Id
     @SequenceGenerator(
@@ -40,6 +40,9 @@ public class Parte implements Serializable {
     
     @Column(name = "parte")
     private String parte;
+    
+    @Column(name = "codigo")
+    private String codigo;
 
     @Column(name = "distintivo")
     private String distintivo;
@@ -161,5 +164,21 @@ public class Parte implements Serializable {
     public void setDistintivo(String distintivo) {
         this.distintivo = distintivo;
     }
+    
+    /**
+     * @return the codigo
+     */
+    public String getCodigo() {
+        return codigo;
+    }
+
+    /**
+     * @param codigo the codigo to set
+     */
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+    
+    
 
 }

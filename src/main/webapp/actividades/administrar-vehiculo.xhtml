@@ -13,7 +13,7 @@
             <h1>#{msj.administrarMarcaVehiculos}</h1>
             <p/>
             <p:fieldset legend="#{msj.agregarMarcaVehiculo}">
-                <p:panelGrid id="pngMarcaVehiculo" columns="2" style="width: 400px;">
+                <p:panelGrid id="pngMarcaVehiculo" columns="2" >
 
                     <p:outputLabel
                         for="@next"
@@ -35,8 +35,7 @@
                 </p:panelGrid>
                 <p/>
                 <p:dataTable
-                    id="tblListaMarcaVehiculo"                
-                    style="width: 400px;"
+                    id="tblListaMarcaVehiculo"
                     var="marca" 
                     value="#{vehiculoAdministracionControlador.listaMarcaVehiculo}">
                     <f:facet name="header">
@@ -54,7 +53,7 @@
             <p/>
             <!-- INICIO CONFIGURACION SELECCION VEHICULO -->
             <p:fieldset legend="#{msj.configurarVehiculo}">
-                <p:panelGrid id="pngConfigurarVehiculo" columns="2" style="width: 400px;">                    
+                <p:panelGrid id="pngConfigurarVehiculo" columns="2" >                    
                     <p:outputLabel
                         for="@next"
                         value="#{msj.selecccionarMarca}" />

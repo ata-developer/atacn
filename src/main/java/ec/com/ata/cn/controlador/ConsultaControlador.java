@@ -182,6 +182,30 @@ public class ConsultaControlador extends BaseControlador {
         return selectItemsBuilder.buildList();
     }
     
+    public List<SelectItem> generarSelectItemDePartesPricinpales() {
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+        for (Equipo equipoTmp : equipoBean.obtenerLista()) {
+            selectItemsBuilder.add(equipoTmp, equipoTmp.getEquipo());
+        }
+        return selectItemsBuilder.buildList();
+    }
+    
+    public List<SelectItem> generarSelectItemDePartesPadre() {
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+        for (Parte parteTmp : parteBean.obtenerListaPorPadreItNull()) {
+            selectItemsBuilder.add(parteTmp, parteTmp.getParte());
+        }
+        return selectItemsBuilder.buildList();
+    }
+    
+    public List<SelectItem> generarSelectItemDePartesPorPadre(Parte padre) {
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+        for (Parte parteTmp : parteBean.obtenerListaPorPadre(padre)) {
+            selectItemsBuilder.add(parteTmp, parteTmp.getParte());
+        }
+        return selectItemsBuilder.buildList();
+    }
+    
     public List<SelectItem> generarSelectItemDeParqueaderos() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
         for (Parqueadero parqueaderoTmp : parqueaderoBean.obtenerLista()) {

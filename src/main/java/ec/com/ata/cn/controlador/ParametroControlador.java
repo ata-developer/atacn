@@ -26,10 +26,12 @@ import ec.com.ata.cn.modelo.Parte;
 import ec.com.ata.cn.modelo.TipoDocumento;
 import ec.com.ata.cn.modelo.TipoFila;
 import ec.com.ata.cn.modelo.TipoMaterial;
+import ec.com.ata.cn.modelo.Trabajo;
 import java.util.ArrayList;
 
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.annotation.FacesConfig;
 import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -38,6 +40,7 @@ import javax.inject.Named;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.omnifaces.util.selectitems.SelectItemsBuilder;
 import org.primefaces.event.NodeSelectEvent;
+import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
@@ -45,12 +48,10 @@ import org.primefaces.model.TreeNode;
  *
  * @author ATA1
  */
+@FacesConfig
 @ViewScoped
 @Named
-public class ParametroControlador extends BaseControlador {    
-
-   
-    
+public class ParametroControlador extends BaseControlador {
     
     @Inject
     private TipoDocumentoBean tipoNumeracionDocumentoBean;
@@ -156,6 +157,32 @@ public class ParametroControlador extends BaseControlador {
         setListaColor(colorBean.obtenerLista());
         setImpuesto(new Impuesto());
         setListaImpuesto(impuestoBean.obtenerLista());
+    }
+    
+    public void enEditarParte(RowEditEvent event) {
+        try {
+            System.out.println("ec.com.ata.cn.controlador.ParametroControlador.enEditarParte()");
+            //getParte().setPadre(getParteSeleccionada());
+            Parte parteTmp = (Parte) event.getObject();
+            parteBean.modificar(parteTmp);
+            //setListaParte(parteBean.obtenerLista());
+            //setNodoPrincipal(parteBean.cargarNodoPrincipal());
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+        } finally {
+            setParte(new Parte());
+        }
+        
+    }
+
+    public void enCancelarParte(RowEditEvent event) {
+        
     }
     
     public List<SelectItem> generarSelectItemDeTipoMaterial() {
@@ -320,6 +347,25 @@ public class ParametroControlador extends BaseControlador {
             addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
         } finally {
             setParte(new Parte());
+        }
+    }
+    
+    public void eliminarParte(Parte parteEntrada) {
+        try {
+            System.out.println("ec.com.ata.cn.controlador.ParametroControlador.eliminarParte()");
+            //getParte().setPadre(getParteSeleccionada());
+            System.out.println("parteEntrada.getIdParte: "+parteEntrada.getIdParte());
+            parteBean.eliminar(parteEntrada.getIdParte());
+            setListaParte(parteBean.obtenerLista());
+            setNodoPrincipal(parteBean.cargarNodoPrincipal());
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
         }
     }
     

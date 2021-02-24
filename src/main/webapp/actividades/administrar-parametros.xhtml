@@ -179,7 +179,7 @@
             <!-- FIN ADMINISTRACION TIPO FILA -->
             <p/>
             <!-- INICIO ADMINISTRACION PARTE -->
-            <p:fieldset legend="#{msj.administrarPartes}">
+            <p:fieldset id="fsParte" legend="#{msj.administrarPartes}">
                 <p:panelGrid id="pngAdministrarPartes" columns="2">
 
                     <p:outputLabel
@@ -242,6 +242,18 @@
 
                     <p:outputLabel
                         for="@next"
+                        value="#{msj.codigo}" />                    
+                    <p:inputText
+                        id="codigoParte"
+                        required="true"
+                        requiredMessage="#{msj.campoNecesario}"
+                        value="#{parametroControlador.parte.codigo}"
+                        onblur="value = value.toUpperCase()">
+                        <f:converter converterId="trimConverter" />
+                    </p:inputText>
+
+                    <p:outputLabel
+                        for="@next"
                         value="#{msj.distintivo}" />
                     <p:selectOneMenu
                         id="distintivoSelectOne"
@@ -263,7 +275,7 @@
                     <p:commandButton
                         id="btnParte" 
                         value="#{msj.guardar}"
-                        process="@this descripcionParte sorPartePrincipal distintivoSelectOne"
+                        process="@this pngAdministrarPartes"
                         update="pngAdministrarPartes tblListaParte mensajeGeneral"
                         action="#{parametroControlador.guardarParte()}" />
                     <p:outputLabel
@@ -274,8 +286,12 @@
                 <p:dataTable
                     id="tblListaParte"                
                     var="parte"
-                    style="width: 600px;"
+                    editable="true"
                     value="#{parametroControlador.listaParte}">
+
+                    <p:ajax event="rowEdit" listener="#{parametroControlador.enEditarParte}" update="frmAdministrarCatalogos:tblListaParte mensajeGeneral"/>
+                    <p:ajax event="rowEditCancel" listener="#{parametroControlador.enCancelarParte}" update="frmAdministrarCatalogos:tblListaParte mensajeGeneral"/>
+
                     <f:facet name="header">
                         #{msj.listaParteVehiculo}
                     </f:facet>
@@ -285,16 +301,74 @@
                     </p:column>
 
                     <p:column headerText="#{msj.descripcion}">
-                        <h:outputText value="#{parte.parte}" />
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{parte.parte}" />
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText
+                                    id="descripcionParteTbl"
+                                    required="true"
+                                    requiredMessage="#{msj.campoNecesario}"
+                                    value="#{parte.parte}"
+                                    onblur="value = value.toUpperCase()">
+                                    <f:converter converterId="trimConverter" />
+                                </p:inputText>
+                            </f:facet>
+                        </p:cellEditor>
                     </p:column>
-                    
+
+                    <p:column headerText="#{msj.codigoParte}">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{parte.codigo}" />
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText
+                                    id="codigoTbl"
+                                    required="true"
+                                    requiredMessage="#{msj.campoNecesario}"
+                                    value="#{parte.codigo}"
+                                    onblur="value = value.toUpperCase()">
+                                    <f:converter converterId="trimConverter" />
+                                </p:inputText>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
                     <p:column headerText="#{msj.partePrincipal}">
                         <h:outputText value="#{parte.padre.parte}" />
                     </p:column>
-                    
+
                     <p:column headerText="#{msj.distintivo}">
-                        <h:outputText value="#{parte.distintivo}" />
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{parte.distintivo}" />
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText
+                                    id="distintoTbl"
+                                    required="true"
+                                    requiredMessage="#{msj.campoNecesario}"
+                                    value="#{parte.distintivo}"
+                                    onblur="value = value.toUpperCase()">
+                                    <f:converter converterId="trimConverter" />
+                                </p:inputText>
+                            </f:facet>
+                        </p:cellEditor>
                     </p:column>
+                    <p:column headerText="#{msj.acciones}">
+
+                        <p:rowEditor editTitle="Editar" cancelTitle="Cancelar edición" saveTitle="Save Row"/>
+                        <p:commandButton
+                            id="btnParte" 
+                            value="#{msj.eliminar}"
+                            process="@this tblListaParte"
+                            update="frmAdministrarCatalogos:pngAdministrarPartes tblListaParte mensajeGeneral"
+                            action="#{parametroControlador.eliminarParte(parte)}">
+                        </p:commandButton>
+                    </p:column>
+
                 </p:dataTable>
             </p:fieldset>
             <!-- FIN ADMINISTRACION PARTE -->
