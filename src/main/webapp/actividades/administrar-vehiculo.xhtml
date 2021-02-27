@@ -36,8 +36,13 @@
                 <p/>
                 <p:dataTable
                     id="tblListaMarcaVehiculo"
-                    var="marca" 
+                    var="marca"
+                    editable="true"                    
                     value="#{vehiculoAdministracionControlador.listaMarcaVehiculo}">
+
+                    <p:ajax event="rowEdit" listener="#{vehiculoAdministracionControlador.enEditarMarcaVehiculo}" update=" mensajeGeneral"/>
+                    <p:ajax event="rowEditCancel" listener="#{vehiculoAdministracionControlador.enCancelarMarcaVehiculo}" update=" mensajeGeneral"/>
+
                     <f:facet name="header">
                         #{msj.listaDeMarcaVehiculos}
                     </f:facet>
@@ -45,7 +50,24 @@
                         <h:outputText value="#{marca.idMarca}" />
                     </p:column>
                     <p:column headerText="#{msj.marca}">
-                        <h:outputText value="#{marca.marca}" />
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{marca.marca}" />
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText
+                                    id="descripcionParteTbl"
+                                    required="true"
+                                    requiredMessage="#{msj.campoNecesario}"
+                                    value="#{marca.marca}"
+                                    onblur="value = value.toUpperCase()">
+                                    <f:converter converterId="trimConverter" />
+                                </p:inputText>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="#{msj.acciones}">
+                        <p:rowEditor editTitle="Editar" cancelTitle="Cancelar edición" saveTitle="Save Row"/>
                     </p:column>
                 </p:dataTable>
             </p:fieldset>

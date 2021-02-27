@@ -11,8 +11,9 @@
     <ui:define name="content">
         <h:form id="frmAgregarEditarVehiculo">
             <h1>#{msj.agregarEditarVehiculos}</h1>
-            <p/>
+            <p/>            
             <!-- INICIO DATOS DEL VEHICULO -->
+            <!-- INICIO DATOS GENERALES VEHICULO -->
             <p:fieldset id="fsDatosVehiculos" legend="#{msj.descripcionVehiculo}">
                 <p:panelGrid id="pngAdministrarVehiculo1" columns="6">
                     <p:outputLabel
@@ -112,9 +113,9 @@
                         onblur="value = value.toUpperCase()"/>
                 </p:panelGrid>
             </p:fieldset>
+            <!-- FIN DATOS GENERALES VEHICULO -->
             <p/>
             <p:fieldset id="fsPlantillas" legend="#{msj.plantillasVehiculos}">
-
                 <p:dataTable
                     id="tblListaPlantilla"                
                     var="plantilla"
@@ -218,32 +219,55 @@
                         value="#{msj.agregar}"
                         update="fsParte mensajeGeneral"
                         actionListener="#{vehiculoAdministracionControlador.agregarVehiculoParteHijo(vehiculoAdministracionControlador.parteHijo)}" />
-                     <h:outputText value="" />
+                    <h:outputText value="" />
 
                 </p:panelGrid>
                 <p/>
                 <p:dataTable
                     id="dtListaVehiculoParteHijo"
                     var="vehiculoParte" 
+                    editable="true" 
+                    draggableRows="true"
+                    rowIndexVar="indexVehiculoParaHijo"
                     value="#{vehiculoAdministracionControlador.listaVehiculoParte}" 
                     sortBy="#{vehiculoParte.parte.padre.parte}">
+
                     <p:column  headerText="#{msj.partePrincipal}" groupRow="true">
+                       
                         <h:outputText style="vertical-align: middle; margin-left: .5rem"
                                       value="#{vehiculoParte.parte.padre.parte}"/>
                     </p:column>
+                    
+                   
                     <p:column headerText="#{msj.parte}">
                         <h:outputText value="#{vehiculoParte.parte.parte}" />
                     </p:column>
 
+
                     <p:column headerText="#{msj.acciones}">
                         <p:commandButton
-                        id="eliminarVehiculoHijo"
-                        process="@this dtListaVehiculoParteHijo"
-                        value="#{msj.eliminar}"
-                        update="dtListaVehiculoParteHijo mensajeGeneral"
-                        actionListener="#{vehiculoAdministracionControlador.eliminarVehiculoParteHijo(vehiculoParte)}" />
+                            id="eliminarVehiculoHijo"
+                            process="@this dtListaVehiculoParteHijo"
+                            value="#{msj.eliminar}"
+                            update="dtListaVehiculoParteHijo mensajeGeneral"
+                            actionListener="#{vehiculoAdministracionControlador.eliminarVehiculoParteHijo(vehiculoParte)}" />
+                        <p:commandButton
+                            id="subirVehiculoHijo"
+                            process="@this dtListaVehiculoParteHijo"
+                            value="#{msj.subir}"
+                            update="dtListaVehiculoParteHijo mensajeGeneral"
+                            disabled="#{vehiculoAdministracionControlador.evaluarIndexSubir(vehiculoParte, indexVehiculoParaHijo)}"
+                            actionListener="#{vehiculoAdministracionControlador.subirVehiculoParteHijo(vehiculoParte,indexVehiculoParaHijo)}" />
+                        <p:commandButton
+                            id="bajarVehiculoHijo"
+                            process="@this dtListaVehiculoParteHijo"
+                            value="#{msj.bajar}"
+                            update="dtListaVehiculoParteHijo mensajeGeneral"
+                            disabled="#{vehiculoAdministracionControlador.evaluarIndexBajar(vehiculoParte, indexVehiculoParaHijo)}"
+                            actionListener="#{vehiculoAdministracionControlador.bajarVehiculoParteHijo(vehiculoParte,indexVehiculoParaHijo)}" />
                     </p:column>                    
                 </p:dataTable>
+
             </p:fieldset>
             <!-- fin configuracion partes -->
             <p/>
@@ -277,13 +301,8 @@
                     </c:forEach>
                 </p:panelGrid>
             </p:fieldset>
-
-
-
-
             <!-- FIN imagenes del vehiculo -->
             <p/>
-
             <p:panelGrid id="pngAdministrarVehiculoBoton" columns="2" style="width: 400px;">
                 <p:commandButton
                     id="btnGuardaVehiculo"

@@ -21,13 +21,17 @@ import javax.inject.Inject;
 public class MarcaVehiculoBean {
     
     @Inject
-    private MarcaVehiculoDao categoriaDao;
+    private MarcaVehiculoDao marcaVehiculoDao;
     
-    public MarcaVehiculo crear(MarcaVehiculo categoriaEntrada) throws Exception{
-        return categoriaDao.crear(categoriaEntrada);
+    public MarcaVehiculo crear(MarcaVehiculo marcaVehiculoEntrada) throws Exception{
+        return marcaVehiculoDao.crear(marcaVehiculoEntrada);
     }
     
     public List<MarcaVehiculo> obtenerLista(){
-        return categoriaDao.obtenerTodos();
+        return marcaVehiculoDao.obtenerTodos();
+    }
+    
+    public void modificar(MarcaVehiculo marcaVehiculoEntrada) throws Exception {
+        marcaVehiculoDao.modificar(marcaVehiculoEntrada);
     }
 }
