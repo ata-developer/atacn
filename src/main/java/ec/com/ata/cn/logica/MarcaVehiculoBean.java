@@ -8,6 +8,7 @@ package ec.com.ata.cn.logica;
 
 import ec.com.ata.cn.logica.dao.MarcaVehiculoDao;
 import ec.com.ata.cn.modelo.MarcaVehiculo;
+import ec.com.ata.cn.modelo.Parte;
 
 import java.util.List;
 import javax.ejb.Stateless;
@@ -34,4 +35,9 @@ public class MarcaVehiculoBean {
     public void modificar(MarcaVehiculo marcaVehiculoEntrada) throws Exception {
         marcaVehiculoDao.modificar(marcaVehiculoEntrada);
     }
+    
+    public MarcaVehiculo obtenerPorCodigo(Long idVehiculoParte){
+        return marcaVehiculoDao.obtenerPorCodigo(idVehiculoParte);
+    }
+    
 }

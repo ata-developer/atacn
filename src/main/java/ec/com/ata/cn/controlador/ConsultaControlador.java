@@ -12,6 +12,10 @@ import ec.com.ata.cn.logica.ParqueaderoBean;
 import ec.com.ata.cn.logica.ParteBean;
 import ec.com.ata.cn.logica.PeriodoBean;
 import ec.com.ata.cn.logica.PeriodoEstablecimientoBean;
+import ec.com.ata.cn.logica.RolBean;
+import ec.com.ata.cn.logica.RolUrlBean;
+import ec.com.ata.cn.logica.UrlBean;
+import ec.com.ata.cn.logica.UsuarioBean;
 import ec.com.ata.cn.modelo.Equipo;
 import ec.com.ata.cn.modelo.Establecimiento;
 import ec.com.ata.cn.modelo.Horario;
@@ -21,8 +25,11 @@ import ec.com.ata.cn.modelo.Parqueadero;
 import ec.com.ata.cn.modelo.Parte;
 import ec.com.ata.cn.modelo.Periodo;
 import ec.com.ata.cn.modelo.PeriodoEstablecimiento;
+import ec.com.ata.cn.modelo.Rol;
 import ec.com.ata.cn.modelo.TrabajoCategoriaPrecio;
 import ec.com.ata.cn.modelo.TrabajoParte;
+import ec.com.ata.cn.modelo.Url;
+import ec.com.ata.cn.modelo.Usuario;
 import ec.com.ata.cn.modelo.VehiculoTrabajo;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,7 +48,7 @@ import org.omnifaces.util.selectitems.SelectItemsBuilder;
 @ViewScoped
 @Named
 public class ConsultaControlador extends BaseControlador {
-
+    
     @Inject
     private PeriodoBean periodoBean;
 
@@ -62,15 +69,38 @@ public class ConsultaControlador extends BaseControlador {
     
     @Inject
     private ParteBean parteBean;
+    
+    @Inject
+    private RolBean rolBean;
+    
+    @Inject
+    private UsuarioBean usuarioBean;
+    
+    @Inject
+    private UrlBean urlBean;
+    
+    
 
     private List<SelectItem> selectItemDias;
 
     private List<SelectItem> selectItemMeses;
+    
+    private String seleccionConsulta;
+    
+    private List<Usuario> listaClientes;
 
     @PostConstruct
     public void init() {
         selectItemDias = generarDias();
         selectItemMeses = generarMeses();
+    }
+    
+    public List<SelectItem> generarSelectItemDeUrlPadre() {
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+        for (Url urlTmp : urlBean.obtenerListaPorPadreItNull()) {
+            selectItemsBuilder.add(urlTmp, urlTmp.getCabecera());
+        }
+        return selectItemsBuilder.buildList();
     }
 
     public String obtenerEstilo(HorarioParqueadero horarioParqueadero) {
@@ -79,6 +109,12 @@ public class ConsultaControlador extends BaseControlador {
         } else {            
             return "#"+horarioParqueadero.getVehiculoTrabajo().getEquipo().getColor();
         }
+    }
+    
+    public List<Usuario> autoCompletar(String consulta) {
+        System.out.println("seleccion consulta: " + getSeleccionConsulta());
+        listaClientes = usuarioBean.obtenerModeloListaPorNumeroDocumentoLike(consulta);
+        return listaClientes;
     }
 
     private List<SelectItem> generarMeses() {
@@ -182,6 +218,23 @@ public class ConsultaControlador extends BaseControlador {
         return selectItemsBuilder.buildList();
     }
     
+    public List<SelectItem> generarSelectItemDeUrl() {
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+        for (Url urlTmp : urlBean.obtenerLista()) {
+            selectItemsBuilder.add(urlTmp, (urlTmp.getCabecera() == null ? "" : urlTmp.getCabecera()).concat(" - ").concat(urlTmp.getDescripcion()));
+        }
+        return selectItemsBuilder.buildList();
+    }
+    
+    public List<SelectItem> generarSelectItemDeRol() {
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+        for (Rol rolTmp : rolBean.obtenerLista()) {
+            selectItemsBuilder.add(rolTmp, rolTmp.getRol());
+        }
+        return selectItemsBuilder.buildList();
+    }
+    
+   
     public List<SelectItem> generarSelectItemDePartesPricinpales() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
         for (Equipo equipoTmp : equipoBean.obtenerLista()) {
@@ -288,6 +341,20 @@ public class ConsultaControlador extends BaseControlador {
 
     public List<SelectItem> generarSelectItemDeDias() {
         return selectItemDias;
+    }
+    
+    /**
+     * @return the seleccionConsulta
+     */
+    public String getSeleccionConsulta() {
+        return seleccionConsulta;
+    }
+
+    /**
+     * @param seleccionConsulta the seleccionConsulta to set
+     */
+    public void setSeleccionConsulta(String seleccionConsulta) {
+        this.seleccionConsulta = seleccionConsulta;
     }
 
 }

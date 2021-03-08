@@ -14,35 +14,35 @@ import javax.persistence.Embeddable;
  * @author ATA1
  */
 @Embeddable
-public class UsuarioRolId implements Serializable {
+public class RolUrlId implements Serializable {
 
    
 
     private static final long serialVersionUID = 1L;
 
-    @Column(name = "id_usuario")
-    private Long idUsuario;
+    @Column(name = "id_url")
+    private Long idUrl;
     
     @Column(name = "id_rol")
     private Long idRol;
 
     @Override
     public String toString() {
-        return "UsuarioRolId{" + "correo=" + getIdUsuario() + ", idRol=" + idRol + '}';
+        return "UrlRolId{" + "correo=" + getIdUrl() + ", idRol=" + idRol + '}';
     }
     
      /**
-     * @return the idUsuario
+     * @return the idUrl
      */
-    public Long getIdUsuario() {
-        return idUsuario;
+    public Long getIdUrl() {
+        return idUrl;
     }
 
     /**
-     * @param idUsuario the idUsuario to set
+     * @param idUrl the idUrl to set
      */
-    public void setIdUsuario(Long idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setIdUrl(Long idUrl) {
+        this.idUrl = idUrl;
     }
 
     

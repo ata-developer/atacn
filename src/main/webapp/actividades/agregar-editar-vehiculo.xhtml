@@ -225,20 +225,18 @@
                 <p/>
                 <p:dataTable
                     id="dtListaVehiculoParteHijo"
-                    var="vehiculoParte" 
-                    editable="true" 
-                    draggableRows="true"
+                    var="vehiculoParte"
                     rowIndexVar="indexVehiculoParaHijo"
                     value="#{vehiculoAdministracionControlador.listaVehiculoParte}" 
                     sortBy="#{vehiculoParte.parte.padre.parte}">
 
-                    <p:column  headerText="#{msj.partePrincipal}" groupRow="true">
-                       
-                        <h:outputText style="vertical-align: middle; margin-left: .5rem"
-                                      value="#{vehiculoParte.parte.padre.parte}"/>
-                    </p:column>
                     
-                   
+
+                    <p:column headerText="#{msj.orden}">
+                        <c:set target="#{vehiculoParte}" property="disposicion" value="#{indexVehiculoParaHijo}"/>
+                        <h:outputText value="#{vehiculoParte.disposicion}" />
+                    </p:column>
+
                     <p:column headerText="#{msj.parte}">
                         <h:outputText value="#{vehiculoParte.parte.parte}" />
                     </p:column>

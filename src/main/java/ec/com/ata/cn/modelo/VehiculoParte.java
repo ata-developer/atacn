@@ -45,6 +45,7 @@ public class VehiculoParte implements Serializable {
     @JoinColumn(name="id_vehiculo", referencedColumnName="id_vehiculo")
     private Vehiculo vehiculo;    
     
+    @Column(name = "disposicion")
     private Long disposicion;
     
     @Embedded

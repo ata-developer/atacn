@@ -55,6 +55,7 @@ public class VehiculoParteBean {
     public List<VehiculoParte> obtenerListaPorVehiculo(Vehiculo vehiculoEntrada){
         HashMap<String, Object> parametros = new HashMap<>();
         parametros.put("vehiculo", vehiculoEntrada);
+        parametros.put("disposicionOrderByAsc", null);
         return vehiculoParteDao.obtenerListaPorParametros(parametros);
     }
    

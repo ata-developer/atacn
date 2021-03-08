@@ -203,31 +203,28 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         return true;
     }
 
-    public void bajarVehiculoParteHijo(VehiculoParte vehiculoParteEntrada, int index) {
+    public void bajarVehiculoParteHijo(VehiculoParte vehiculoParteDeArriba, int index) {
         if (modoEdicion) {
             try {
-                VehiculoParte vehiculoParteB = this.listaVehiculoParte.get(index + 1);
+                VehiculoParte vehiculoParteDeAbajo = this.listaVehiculoParte.get(index + 1);
 
-                VehiculoParte vehiculoParteTmpB = new VehiculoParte();
-                vehiculoParteTmpB.setDisposicion(vehiculoParteB.getDisposicion());
-                vehiculoParteTmpB.setParte(vehiculoParteB.getParte());
-                vehiculoParteTmpB.setVehiculo(vehiculoParteB.getVehiculo());
+                VehiculoParte vehiculoParteDeArribaTmp = new VehiculoParte();
+                vehiculoParteDeArribaTmp.setDisposicion(vehiculoParteDeArriba.getDisposicion());
+                vehiculoParteDeArribaTmp.setParte(vehiculoParteDeArriba.getParte());
+                vehiculoParteDeArribaTmp.setVehiculo(vehiculoParteDeArriba.getVehiculo());
 
-                VehiculoParte vehiculoParteTmpA = new VehiculoParte();
-                vehiculoParteTmpA.setDisposicion(vehiculoParteEntrada.getDisposicion());
-                vehiculoParteTmpA.setParte(vehiculoParteEntrada.getParte());
-                vehiculoParteTmpA.setVehiculo(vehiculoParteEntrada.getVehiculo());
+                vehiculoParteDeArriba.setDisposicion(vehiculoParteDeAbajo.getDisposicion());
+                vehiculoParteDeArriba.setParte(vehiculoParteDeAbajo.getParte());
+                vehiculoParteDeArriba.setVehiculo(vehiculoParteDeAbajo.getVehiculo());
 
-                vehiculoParteB.setDisposicion(vehiculoParteTmpA.getDisposicion());
-                vehiculoParteB.setParte(vehiculoParteTmpA.getParte());
-                vehiculoParteB.setVehiculo(vehiculoParteTmpA.getVehiculo());
+                vehiculoParteBean.modificar(vehiculoParteDeArriba);
 
-                vehiculoParteEntrada.setDisposicion(vehiculoParteTmpB.getDisposicion());
-                vehiculoParteEntrada.setParte(vehiculoParteTmpB.getParte());
-                vehiculoParteEntrada.setVehiculo(vehiculoParteTmpB.getVehiculo());
+                vehiculoParteDeAbajo.setDisposicion(vehiculoParteDeArribaTmp.getDisposicion());
+                vehiculoParteDeAbajo.setParte(vehiculoParteDeArribaTmp.getParte());
+                vehiculoParteDeAbajo.setVehiculo(vehiculoParteDeArribaTmp.getVehiculo());
 
-                vehiculoParteBean.modificar(vehiculoParteB);
-                vehiculoParteBean.modificar(vehiculoParteEntrada);
+                vehiculoParteBean.modificar(vehiculoParteDeAbajo);
+
                 this.listaVehiculoParte = vehiculoParteBean.obtenerListaPorVehiculo(vehiculo);
                 addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
             } catch (Exception e) {
@@ -240,57 +237,49 @@ public class VehiculoAdministracionControlador extends BaseControlador {
             }
 
         } else {
-            VehiculoParte vehiculoParteB = this.listaVehiculoParte.get(index + 1);
+            VehiculoParte vehiculoParteDeAbajo = this.listaVehiculoParte.get(index + 1);
 
-            VehiculoParte vehiculoParteTmpB = new VehiculoParte();
-            vehiculoParteTmpB.setDisposicion(vehiculoParteB.getDisposicion());
-            vehiculoParteTmpB.setParte(vehiculoParteB.getParte());
-            vehiculoParteTmpB.setVehiculo(vehiculoParteB.getVehiculo());
+            VehiculoParte vehiculoParteDeArribaTmp = new VehiculoParte();
+            vehiculoParteDeArribaTmp.setDisposicion(vehiculoParteDeArriba.getDisposicion());
+            vehiculoParteDeArribaTmp.setParte(vehiculoParteDeArriba.getParte());
+            vehiculoParteDeArribaTmp.setVehiculo(vehiculoParteDeArriba.getVehiculo());
 
-            VehiculoParte vehiculoParteTmpA = new VehiculoParte();
-            vehiculoParteTmpA.setDisposicion(vehiculoParteEntrada.getDisposicion());
-            vehiculoParteTmpA.setParte(vehiculoParteEntrada.getParte());
-            vehiculoParteTmpA.setVehiculo(vehiculoParteEntrada.getVehiculo());
+            vehiculoParteDeArriba.setDisposicion(vehiculoParteDeAbajo.getDisposicion());
+            vehiculoParteDeArriba.setParte(vehiculoParteDeAbajo.getParte());
+            vehiculoParteDeArriba.setVehiculo(vehiculoParteDeAbajo.getVehiculo());
 
-            vehiculoParteB.setDisposicion(vehiculoParteTmpA.getDisposicion());
-            vehiculoParteB.setParte(vehiculoParteTmpA.getParte());
-            vehiculoParteB.setVehiculo(vehiculoParteTmpA.getVehiculo());
+            vehiculoParteDeAbajo.setDisposicion(vehiculoParteDeArribaTmp.getDisposicion());
+            vehiculoParteDeAbajo.setParte(vehiculoParteDeArribaTmp.getParte());
+            vehiculoParteDeAbajo.setVehiculo(vehiculoParteDeArribaTmp.getVehiculo());
 
-            vehiculoParteEntrada.setDisposicion(vehiculoParteTmpB.getDisposicion());
-            vehiculoParteEntrada.setParte(vehiculoParteTmpB.getParte());
-            vehiculoParteEntrada.setVehiculo(vehiculoParteTmpB.getVehiculo());
-            
-            this.listaVehiculoParte.set(index+1, vehiculoParteB);
-            this.listaVehiculoParte.set(index, vehiculoParteEntrada);
+            this.listaVehiculoParte.set(index + 1, vehiculoParteDeAbajo);
+            this.listaVehiculoParte.set(index, vehiculoParteDeArriba);
 
         }
     }
 
-    public void subirVehiculoParteHijo(VehiculoParte vehiculoParteEntrada, int index) {
+    public void subirVehiculoParteHijo(VehiculoParte vehiculoParteDeArriba, int index) {
         if (modoEdicion) {
             try {
-                VehiculoParte vehiculoParteB = this.listaVehiculoParte.get(index - 1);
+                VehiculoParte vehiculoParteDeAbajo = this.listaVehiculoParte.get(index - 1);
 
-                VehiculoParte vehiculoParteTmpB = new VehiculoParte();
-                vehiculoParteTmpB.setDisposicion(vehiculoParteB.getDisposicion());
-                vehiculoParteTmpB.setParte(vehiculoParteB.getParte());
-                vehiculoParteTmpB.setVehiculo(vehiculoParteB.getVehiculo());
+                VehiculoParte vehiculoParteDeArribaTmp = new VehiculoParte();
+                vehiculoParteDeArribaTmp.setDisposicion(vehiculoParteDeArriba.getDisposicion());
+                vehiculoParteDeArribaTmp.setParte(vehiculoParteDeArriba.getParte());
+                vehiculoParteDeArribaTmp.setVehiculo(vehiculoParteDeArriba.getVehiculo());
 
-                VehiculoParte vehiculoParteTmpA = new VehiculoParte();
-                vehiculoParteTmpA.setDisposicion(vehiculoParteEntrada.getDisposicion());
-                vehiculoParteTmpA.setParte(vehiculoParteEntrada.getParte());
-                vehiculoParteTmpA.setVehiculo(vehiculoParteEntrada.getVehiculo());
+                vehiculoParteDeArriba.setDisposicion(vehiculoParteDeAbajo.getDisposicion());
+                vehiculoParteDeArriba.setParte(vehiculoParteDeAbajo.getParte());
+                vehiculoParteDeArriba.setVehiculo(vehiculoParteDeAbajo.getVehiculo());
 
-                vehiculoParteB.setDisposicion(vehiculoParteTmpA.getDisposicion());
-                vehiculoParteB.setParte(vehiculoParteTmpA.getParte());
-                vehiculoParteB.setVehiculo(vehiculoParteTmpA.getVehiculo());
+                vehiculoParteBean.modificar(vehiculoParteDeArriba);
 
-                vehiculoParteEntrada.setDisposicion(vehiculoParteTmpB.getDisposicion());
-                vehiculoParteEntrada.setParte(vehiculoParteTmpB.getParte());
-                vehiculoParteEntrada.setVehiculo(vehiculoParteTmpB.getVehiculo());
+                vehiculoParteDeAbajo.setDisposicion(vehiculoParteDeArribaTmp.getDisposicion());
+                vehiculoParteDeAbajo.setParte(vehiculoParteDeArribaTmp.getParte());
+                vehiculoParteDeAbajo.setVehiculo(vehiculoParteDeArribaTmp.getVehiculo());
 
-                vehiculoParteBean.modificar(vehiculoParteB);
-                vehiculoParteBean.modificar(vehiculoParteEntrada);
+                vehiculoParteBean.modificar(vehiculoParteDeAbajo);
+
                 this.listaVehiculoParte = vehiculoParteBean.obtenerListaPorVehiculo(vehiculo);
                 addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
             } catch (Exception e) {
@@ -303,28 +292,23 @@ public class VehiculoAdministracionControlador extends BaseControlador {
             }
 
         } else {
-            VehiculoParte vehiculoParteB = this.listaVehiculoParte.get(index - 1);
+            VehiculoParte vehiculoParteDeAbajo = this.listaVehiculoParte.get(index - 1);
 
-            VehiculoParte vehiculoParteTmpB = new VehiculoParte();
-            vehiculoParteTmpB.setDisposicion(vehiculoParteB.getDisposicion());
-            vehiculoParteTmpB.setParte(vehiculoParteB.getParte());
-            vehiculoParteTmpB.setVehiculo(vehiculoParteB.getVehiculo());
+            VehiculoParte vehiculoParteDeArribaTmp = new VehiculoParte();
+            vehiculoParteDeArribaTmp.setDisposicion(vehiculoParteDeArriba.getDisposicion());
+            vehiculoParteDeArribaTmp.setParte(vehiculoParteDeArriba.getParte());
+            vehiculoParteDeArribaTmp.setVehiculo(vehiculoParteDeArriba.getVehiculo());
 
-            VehiculoParte vehiculoParteTmpA = new VehiculoParte();
-            vehiculoParteTmpA.setDisposicion(vehiculoParteEntrada.getDisposicion());
-            vehiculoParteTmpA.setParte(vehiculoParteEntrada.getParte());
-            vehiculoParteTmpA.setVehiculo(vehiculoParteEntrada.getVehiculo());
+            vehiculoParteDeArriba.setDisposicion(vehiculoParteDeAbajo.getDisposicion());
+            vehiculoParteDeArriba.setParte(vehiculoParteDeAbajo.getParte());
+            vehiculoParteDeArriba.setVehiculo(vehiculoParteDeAbajo.getVehiculo());
 
-            vehiculoParteB.setDisposicion(vehiculoParteTmpA.getDisposicion());
-            vehiculoParteB.setParte(vehiculoParteTmpA.getParte());
-            vehiculoParteB.setVehiculo(vehiculoParteTmpA.getVehiculo());
+            vehiculoParteDeAbajo.setDisposicion(vehiculoParteDeArribaTmp.getDisposicion());
+            vehiculoParteDeAbajo.setParte(vehiculoParteDeArribaTmp.getParte());
+            vehiculoParteDeAbajo.setVehiculo(vehiculoParteDeArribaTmp.getVehiculo());
 
-            vehiculoParteEntrada.setDisposicion(vehiculoParteTmpB.getDisposicion());
-            vehiculoParteEntrada.setParte(vehiculoParteTmpB.getParte());
-            vehiculoParteEntrada.setVehiculo(vehiculoParteTmpB.getVehiculo());
-            
-            this.listaVehiculoParte.set(index+1, vehiculoParteB);
-            this.listaVehiculoParte.set(index, vehiculoParteEntrada);
+            this.listaVehiculoParte.set(index - 1, vehiculoParteDeAbajo);
+            this.listaVehiculoParte.set(index, vehiculoParteDeArriba);
 
         }
     }
@@ -397,13 +381,11 @@ public class VehiculoAdministracionControlador extends BaseControlador {
     public void enCancelarPlantilla(RowEditEvent event) {
 
     }
-    
+
     public void enEditarMarcaVehiculo(RowEditEvent event) {
         try {
             MarcaVehiculo marcaVehiculoTmp = (MarcaVehiculo) event.getObject();
-            if (modoEdicion) {
-                marcaVehiculoBean.modificar(marcaVehiculoTmp);
-            }
+            marcaVehiculoBean.modificar(marcaVehiculoTmp);
             addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);

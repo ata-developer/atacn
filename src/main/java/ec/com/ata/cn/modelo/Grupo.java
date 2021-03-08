@@ -21,27 +21,21 @@ import javax.persistence.Table;
  */
 @Entity
 @Table
-public class Rol implements Serializable {    
-
-    private static final long serialVersionUID = 1L;
-
-    public Rol() {
-        genericoEntidad = new GenericoEntidad();
-    }
-
+public class Grupo implements Serializable { 
+    
     @Id
     @SequenceGenerator(
-            name = "rol_seq",
-            sequenceName = "rol_seq",
+            name = "grupo_seq",
+            sequenceName = "grupo_seq",
             allocationSize = 1)
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "rol_seq")
-    @Column(name = "id_rol")
-    private Long idRol;
-
-    @Column(name = "rol")
-    private String rol;
+            generator = "grupo_seq")
+    @Column(name = "id_grupo")
+    private Long idGrupo;   
+    
+    @Column(name = "nombre")
+    private String nombre;
     
     @Column(name = "descripcion")
     private String descripcion;
@@ -49,49 +43,45 @@ public class Rol implements Serializable {
     @Embedded
     private GenericoEntidad genericoEntidad;
 
-    public Long getIdRol() {
-        return idRol;
+    public Grupo() {
+        genericoEntidad = new GenericoEntidad();
+    }
+    
+    public void setIdGrupo(Long idGrupo) {
+        this.idGrupo = idGrupo;
+    }
+    
+    public Long getIdGrupo() {
+        return idGrupo;
     }
 
-    public void setIdRol(Long idRol) {
-        this.idRol = idRol;
-    }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idRol != null ? idRol.hashCode() : 0);
+        hash += (idGrupo != null ? idGrupo.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the idRol fields are not set
-        if (!(object instanceof Rol)) {
+        // TODO: Warning - this method won't work in the case the idGrupo fields are not set
+        if (!(object instanceof Grupo)) {
             return false;
         }
-        Rol other = (Rol) object;
-        return !((this.idRol == null && other.idRol != null) || (this.idRol != null && !this.idRol.equals(other.idRol)));
+        Grupo other = (Grupo) object;
+        if ((this.idGrupo == null && other.idGrupo != null) || (this.idGrupo != null && !this.idGrupo.equals(other.idGrupo))) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public String toString() {
-        return "ec.com.ata.cn.modelo.Rol[ id=" + idRol + " ]";
+        return "ec.com.ata.cn.modelo.Grupo[ id=" + idGrupo + " ]";
     }
 
-    /**
-     * @return the rol
-     */
-    public String getRol() {
-        return rol;
-    }
-
-    /**
-     * @param rol the rol to set
-     */
-    public void setRol(String rol) {
-        this.rol = rol;
-    }
+    
 
     /**
      * @return the genericoEntidad
@@ -106,7 +96,22 @@ public class Rol implements Serializable {
     public void setGenericoEntidad(GenericoEntidad genericoEntidad) {
         this.genericoEntidad = genericoEntidad;
     }
-    
+
+   
+   /**
+     * @return the nombre
+     */
+    public String getNombre() {
+        return nombre;
+    }
+
+    /**
+     * @param nombre the nombre to set
+     */
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
     /**
      * @return the descripcion
      */
@@ -120,5 +125,4 @@ public class Rol implements Serializable {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-
 }
