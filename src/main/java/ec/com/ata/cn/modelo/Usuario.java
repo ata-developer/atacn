@@ -27,6 +27,8 @@ import javax.persistence.Transient;
 @Table( name = "usuario")
 public class Usuario implements Serializable {        
 
+    
+
     private static final long serialVersionUID = 1L;
     
     @Id
@@ -81,6 +83,9 @@ public class Usuario implements Serializable {
         
     @Column(name = "contrasenia", length = 100)
     private String contrasenia;
+    
+    @Transient
+    private String repetirContrasenia;
     
     @Transient
     private String documentoYNombres;
@@ -436,5 +441,19 @@ public class Usuario implements Serializable {
      */
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+    
+    /**
+     * @return the repetirContrasenia
+     */
+    public String getRepetirContrasenia() {
+        return repetirContrasenia;
+    }
+
+    /**
+     * @param repetirContrasenia the repetirContrasenia to set
+     */
+    public void setRepetirContrasenia(String repetirContrasenia) {
+        this.repetirContrasenia = repetirContrasenia;
     }
 }

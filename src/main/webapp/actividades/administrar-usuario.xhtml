@@ -194,10 +194,13 @@
                 <p:dataTable
                     id="tblListaUsuario"                
                     var="usuario" 
+                    editable="true"
                     value="#{usuarioControlador.listaUsuario}">
                     <f:facet name="header">
                         #{msj.listaUsuario}
-                    </f:facet>
+                    </f:facet>                    
+                    <p:ajax event="rowEdit" listener="#{usuarioControlador.enEditarUsuario}" update="mensajeGeneral"/>
+                    <p:ajax event="rowEditCancel" listener="#{usuarioControlador.enCancelarUsuario}" update="mensajeGeneral"/>
                     <p:column headerText="#{msj.numeroDocumento}">
                         <h:outputText value="#{usuario.numeroDocumento}" />
                     </p:column>
@@ -213,6 +216,42 @@
                     <p:column headerText="#{msj.apellido}">
                         <h:outputText value="#{usuario.apellido}" />
                     </p:column>
+                    
+                    <p:column headerText="#{msj.correo}">
+                        <h:outputText value="#{usuario.correo}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.contrasena}">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="" />
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText
+                                    value="#{usuario.contrasenia}">
+                                </p:inputText>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="#{msj.repetirContrasena}">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="" />
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText
+                                    value="#{usuario.repetirContrasenia}">
+                                </p:inputText>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="#{msj.acciones}">
+                        <p:rowEditor editTitle="Editar" cancelTitle="Cancelar edición" saveTitle="Save Row"/>
+                    </p:column>
+
+
                 </p:dataTable>
             </p:fieldset>
             <p/>
@@ -351,7 +390,7 @@
                         <p:ajax                             
                             event="change"
                             update="fsAdministracionUrl mensajeGeneral">                             
-                            
+
                         </p:ajax>
                     </p:selectOneRadio>
                     <c:set target="#{usuarioControlador.url}" property="presentar" value="#{usuarioControlador.url.esMenu}"/>
@@ -449,7 +488,7 @@
                     <p:column headerText="#{msj.sePresenta}">
                         <h:outputText value="#{url.presentar eq true ? 'Si' : 'No'}" />
                     </p:column>
-                    
+
                     <p:column headerText="#{msj.menuPadre}">
                         <h:outputText value="#{url.padre.cabecera}" />
                     </p:column>
@@ -464,7 +503,7 @@
             </p:fieldset>
             <p/>
             <!-- FIN url -->
-            
+
             <!-- url rol INICIO  -->
             <p:fieldset id="fsAdministracionRolUrl" legend="#{msj.administraRolUrl}">
                 <p:panelGrid id="pngAdministrarRolUrl" columns="2">
@@ -482,7 +521,7 @@
                         <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                         <f:selectItems value="#{consultaControlador.generarSelectItemDeRol()}" />
                     </p:selectOneMenu>
-                    
+
                     <p:outputLabel
                         for="@next"
                         value="#{msj.url}" />                    
@@ -497,8 +536,8 @@
                         <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                         <f:selectItems value="#{consultaControlador.generarSelectItemDeUrl()}" />
                     </p:selectOneMenu>
-                    
-                    
+
+
                     <p:commandButton
                         id="btnGuardarRolUrl" 
                         value="#{msj.guardar}"

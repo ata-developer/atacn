@@ -7,27 +7,28 @@
     <ui:define name="content">
 
         <h:form>
-            <p:outputLabel
-                for="@next"
-                value="#{msj.usuario}" />
-             <p:inputText
-                        id="itUsuario"
-                        disabled="true"
-                        value="#{loginBean.username}"/>
-             <p:outputLabel
-                for="@next"
-                value="#{msj.usuario}" />
-             <p:inputText
-                        id="itContrasena"
-                        disabled="true"
-                        value="#{loginBean.password}"/>
-             <p:commandButton
-                        id="idBtnLogin"
-                        process="@form"
-                        value="#{msj.ingresar}"
-                        update="mensajeGeneral"
-                        action="" />
-                    <h:outputText value="" />
+            <p:panelGrid id="pngAdministrarUsuario" columns="2">
+                <p:outputLabel
+                    for="@next"
+                    value="#{msj.usuario}" />
+                <p:inputText
+                    id="itUsuario"
+                    value="#{loginBean.correo}"/>
+                <p:outputLabel
+                    for="@next"
+                    value="#{msj.contrasena}" />
+                <p:inputText
+                    id="itContrasena"
+                    value="#{loginBean.contrasena}"/>
+                <p:commandButton
+                    id="idBtnLogin"
+                    process="@form"
+                    value="#{msj.ingresar}"
+                    update="mensajeGeneral"
+                    action="#{loginBean.login()}" />
+                <h:outputText value="" />
+            </p:panelGrid>
+
         </h:form>
 
     </ui:define>

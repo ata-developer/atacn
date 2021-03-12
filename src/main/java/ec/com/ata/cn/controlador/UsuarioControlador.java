@@ -15,6 +15,7 @@ import ec.com.ata.cn.logica.UsuarioBean;
 import ec.com.ata.cn.logica.UsuarioRolBean;
 import ec.com.ata.cn.logica.util.gestor.Constante;
 import ec.com.ata.cn.modelo.Equipo;
+import ec.com.ata.cn.modelo.Parte;
 import ec.com.ata.cn.modelo.Rol;
 import ec.com.ata.cn.modelo.RolUrl;
 import ec.com.ata.cn.modelo.TipoDocumento;
@@ -33,6 +34,7 @@ import javax.inject.Named;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.omnifaces.util.selectitems.SelectItemsBuilder;
+import org.primefaces.event.RowEditEvent;
 
 /**
  *
@@ -124,6 +126,36 @@ public class UsuarioControlador extends BaseControlador {
         
     }
     
+    public void enEditarUsuario(RowEditEvent event) {
+        try {
+            
+            
+            System.out.println("ec.com.ata.cn.controlador.ParametroControlador.enEditarUsuario()");
+            Usuario usuarioTmp = (Usuario) event.getObject();
+            
+            if (!usuarioTmp.getContrasenia().equals(usuarioTmp.getRepetirContrasenia())) {
+                addErrorMessage("Error", "Confirmación contraseña");
+                return;
+            }
+            
+            usuarioBean.modificar(usuarioTmp);
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+        } 
+        
+    }
+    
+    public void enCancelarUsuario(RowEditEvent event) {
+        
+    }
+
+    
     public void cargarListaUsuarioSelecionados(){
         //Equipo equipoTmp = equipoBean.obtenerPorCodigo(getEquipoSeleccionado().getIdEquipo());
         //System.out.println("equipoTmp:+"+equipoTmp.getEquipo());
@@ -168,7 +200,7 @@ public class UsuarioControlador extends BaseControlador {
     public void guardar() {
         try {
             
-            usuarioBean.crear(getUsuario());
+            usuarioBean.crearUsuarioSistema(getUsuario());
             listaUsuario = usuarioBean.obtenerLista();            
             addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
             setUsuario(new Usuario());

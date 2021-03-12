@@ -6,15 +6,16 @@
 package ec.com.ata.cn.logica;
 
 
+import ec.com.ata.cn.controlador.util.AuthenticationUtils;
+import ec.com.ata.cn.logica.dao.CorreoRolDao;
 import ec.com.ata.cn.logica.dao.UsuarioDao;
-import ec.com.ata.cn.logica.util.gestor.Constante;
-import ec.com.ata.cn.logica.util.gestor.HashCreadorUtil;
-import ec.com.ata.cn.modelo.Detalle;
+import ec.com.ata.cn.logica.dao.UsuarioSistemaDao;
+import ec.com.ata.cn.modelo.CorreoRol;
 import ec.com.ata.cn.modelo.Usuario;
+import ec.com.ata.cn.modelo.UsuarioSistema;
 import java.util.HashMap;
 
 import java.util.List;
-import java.util.Optional;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -28,10 +29,29 @@ public class UsuarioBean {
     @Inject
     private UsuarioDao usuarioDao;
     
-    public Usuario crear(Usuario usuarioEntrada) throws Exception{
-        Optional<String> hashContraseniaOptional = HashCreadorUtil.hashContrasenia(usuarioEntrada.getContrasenia(), Constante.SALT);
-        String hashContrasenia = hashContraseniaOptional.get();
-        usuarioEntrada.setContrasenia(hashContrasenia);
+    @Inject
+    private UsuarioSistemaDao usuarioSistemaDao;
+    
+    @Inject
+    private CorreoRolDao correoRolDao;
+    
+    public Usuario crearUsuarioSistema(Usuario usuarioEntrada) throws Exception {
+        usuarioEntrada.setContrasenia(AuthenticationUtils.encodeSHA256(usuarioEntrada.getContrasenia()));
+        Usuario usuarioTmp = usuarioDao.crear(usuarioEntrada);
+        UsuarioSistema usuarioSistemaTmp = new UsuarioSistema();
+        usuarioSistemaTmp.setCorreo(usuarioTmp.getCorreo());
+        usuarioSistemaTmp.setContrasenia(usuarioTmp.getContrasenia());
+        usuarioSistemaTmp.setUsuario(usuarioTmp);
+        usuarioSistemaTmp = usuarioSistemaDao.crear(usuarioSistemaTmp);
+        CorreoRol correoRolTmp = new  CorreoRol();
+        correoRolTmp.setCorreo(usuarioSistemaTmp.getCorreo());
+        correoRolTmp.setRol("USUARIOS");
+        correoRolDao.crear(correoRolTmp);
+        return usuarioTmp;
+    }
+    
+    public Usuario crear(Usuario usuarioEntrada) throws Exception {
+        usuarioEntrada.setContrasenia(AuthenticationUtils.encodeSHA256(usuarioEntrada.getContrasenia()));
         return usuarioDao.crear(usuarioEntrada);
     }
     
@@ -65,6 +85,7 @@ public class UsuarioBean {
     }
     
     public Usuario modificar(Usuario usuarioEntrada) throws Exception {
+        usuarioEntrada.setContrasenia(AuthenticationUtils.encodeSHA256(usuarioEntrada.getContrasenia()));
         return usuarioDao.modificar(usuarioEntrada);
     }
     
