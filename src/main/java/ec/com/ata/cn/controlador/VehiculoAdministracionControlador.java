@@ -166,9 +166,7 @@ public class VehiculoAdministracionControlador extends BaseControlador {
                 cantidad++;
             }
         }
-        System.out.println("partePadre: "+partePadre.getParte());
-        System.out.println("partePadre: "+cantidad);
-        System.out.println("cantidad > 1: "+(cantidad > 1));
+        
         return cantidad > 1;
     }
     
