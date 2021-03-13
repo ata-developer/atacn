@@ -57,6 +57,8 @@ import org.primefaces.model.UploadedFile;
 @SessionScoped
 public class VehiculoAdministracionControlador extends BaseControlador {
 
+    
+
     @Inject
     private MarcaVehiculoBean marcaVehiculoBean;
 
@@ -86,6 +88,8 @@ public class VehiculoAdministracionControlador extends BaseControlador {
 
     @Inject
     private VehiculoParteBean vehiculoParteBean;
+    
+    
 
     private MarcaVehiculo marcaVehiculo;
 
@@ -130,6 +134,8 @@ public class VehiculoAdministracionControlador extends BaseControlador {
     private List<Plantilla> listaPlantilla;
 
     private Parte parteHijo;
+    
+    private List<Parte> listaPartePadre;
 
     @PostConstruct
     public void init() {
@@ -148,7 +154,26 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         setModoEdicion(false);
         setListaVehiculoParte(new ArrayList<VehiculoParte>());
         setListaPlantilla(new ArrayList<Plantilla>());
+        setListaPartePadre(parteBean.obtenerListaPorPadreItNull());
+        
 
+    }
+    
+    public boolean presentarBotonBorra (Parte partePadre){
+        int cantidad = 0 ; 
+        for (VehiculoParte vehiculoParte : this.listaVehiculoParte) {
+            if (vehiculoParte.getParte().getPadre().equals(partePadre)) {
+                cantidad++;
+            }
+        }
+        System.out.println("partePadre: "+partePadre.getParte());
+        System.out.println("partePadre: "+cantidad);
+        System.out.println("cantidad > 1: "+(cantidad > 1));
+        return cantidad > 1;
+    }
+    
+    public String nombreLista(Parte parte){
+        return "listaPartes"+parte.getCodigo();
     }
 
     public void imprimirLista() {
@@ -1186,4 +1211,18 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         this.parteHijo = parteHijo;
     }
 
+    
+    /**
+     * @return the listaPartePadre
+     */
+    public List<Parte> getListaPartePadre() {
+        return listaPartePadre;
+    }
+
+    /**
+     * @param listaPartePadre the listaPartePadre to set
+     */
+    public void setListaPartePadre(List<Parte> listaPartePadre) {
+        this.listaPartePadre = listaPartePadre;
+    }
 }

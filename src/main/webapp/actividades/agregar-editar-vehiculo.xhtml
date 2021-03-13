@@ -190,6 +190,82 @@
             </p:fieldset>
             <p/>
             <!-- inicio configuracion partes -->
+            <ui:repeat value="#{vehiculoAdministracionControlador.listaPartePadre}" var="parte">
+                <p:panelGrid id="pgnVehiculoPartes" columns="2">
+                    <h:outputText value="#{msj.partePrincipal}" />
+                    <h:outputText value="#{parte.parte}" />
+                    <h:outputText value="#{msj.parteSecundaria}" />
+                    <p:selectOneMenu
+                        id="somVehiculoparteHijo2"
+                        value="#{vehiculoAdministracionControlador.parteHijo}"
+                        required="true"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{consultaControlador.generarSelectItemDePartesPorPadre(parte)}" />
+                    </p:selectOneMenu>
+                    <p:commandButton
+                        id="btnAgregarVehiculoParteHijo2"
+                        process="@this somVehiculoparteHijo2"
+                        value="#{msj.agregar}"
+                        update="listaTest mensajeGeneral"
+                        actionListener="#{vehiculoAdministracionControlador.agregarVehiculoParteHijo(vehiculoAdministracionControlador.parteHijo)}" />
+                    <h:outputText value="" />
+                </p:panelGrid>
+                <p/>
+                <p:dataTable
+                    id="listaTest"
+                    var="vehiculoParte"
+                    rowIndexVar="indexVehiculoParaHijo"
+                    value="#{vehiculoAdministracionControlador.listaVehiculoParte}">
+
+                    <f:facet name="header" rendered="#{vehiculoParte.parte.padre eq parte}">
+                        #{msj.plantillasVehiculos}
+                    </f:facet>
+
+                    <p:column headerText="#{msj.parte}" rendered="#{vehiculoParte.parte.padre eq parte}" >
+                        <h:outputText value="#{vehiculoParte.parte.parte}" />
+                    </p:column> 
+
+                    <p:column headerText="#{msj.partePrincipal}" rendered="#{vehiculoParte.parte.padre eq parte}">
+                        <h:outputText value="#{vehiculoParte.parte.padre.parte}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.orden}" rendered="#{vehiculoParte.parte.padre eq parte}">
+                        <c:set target="#{vehiculoParte}" property="disposicion" value="#{indexVehiculoParaHijo}"/>
+                        <h:outputText value="#{vehiculoParte.disposicion}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.parte}" rendered="#{vehiculoParte.parte.padre eq parte}">
+                        <h:outputText value="#{vehiculoParte.parte.parte}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.acciones}" rendered="#{vehiculoParte.parte.padre eq parte}">
+                        <p:commandButton
+                            id="eliminarVehiculoHijo"
+                            process="@this listaTest"
+                            value="#{msj.eliminar}"
+                            rendered="#{vehiculoAdministracionControlador.presentarBotonBorra(parte)}"
+                            update="listaTest mensajeGeneral"
+                            actionListener="#{vehiculoAdministracionControlador.eliminarVehiculoParteHijo(vehiculoParte)}" />
+                        <p:commandButton
+                            id="subirVehiculoHijo"
+                            process="@this listaTest"
+                            value="#{msj.subir}"
+                            update="listaTest mensajeGeneral"
+                            disabled="#{vehiculoAdministracionControlador.evaluarIndexSubir(vehiculoParte, indexVehiculoParaHijo)}"
+                            actionListener="#{vehiculoAdministracionControlador.subirVehiculoParteHijo(vehiculoParte,indexVehiculoParaHijo)}" />
+                        <p:commandButton
+                            id="bajarVehiculoHijo"
+                            process="@this listaTest"
+                            value="#{msj.bajar}"
+                            update="listaTest mensajeGeneral"
+                            disabled="#{vehiculoAdministracionControlador.evaluarIndexBajar(vehiculoParte, indexVehiculoParaHijo)}"
+                            actionListener="#{vehiculoAdministracionControlador.bajarVehiculoParteHijo(vehiculoParte,indexVehiculoParaHijo)}" />
+                    </p:column>      
+                </p:dataTable>
+                <p/>
+            </ui:repeat>
+            <p/>
             <p:fieldset id="fsParte" legend="#{msj.partes}">
                 <p:panelGrid id="pngAdministrarVehiculoPartes" columns="2">
                     <h:outputText value="#{msj.partePrincipal}" />
@@ -230,7 +306,9 @@
                     value="#{vehiculoAdministracionControlador.listaVehiculoParte}" 
                     sortBy="#{vehiculoParte.parte.padre.parte}">
 
-                    
+                    <p:column headerText="#{msj.partePrincipal}">
+                        <h:outputText value="#{vehiculoParte.parte.padre.parte}" />
+                    </p:column>
 
                     <p:column headerText="#{msj.orden}">
                         <c:set target="#{vehiculoParte}" property="disposicion" value="#{indexVehiculoParaHijo}"/>

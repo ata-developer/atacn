@@ -81,6 +81,9 @@
                                     <p:menuitem value="#{msj.generarOrden}" action="/actividades/generar-orden.xhtml"/>
                                     <p:menuitem value="#{msj.administrarVehiculosCategoria}" action="/actividades/administrar-vehiculo-categoria.xhtml"/>
                                 </p:submenu>
+                                <p:submenu label="#{msj.salirSistema}">
+                                    <p:menuitem value="#{msj.cerrarSession}" action="#{loginBean.logout()}"/>
+                                </p:submenu>
                             </p:menu>
                         </h:form>
                     </div>
