@@ -334,6 +334,7 @@ public class ParametroControlador extends BaseControlador {
         try {
             System.out.println("ec.com.ata.cn.controlador.ParametroControlador.guardarParte()");
             //getParte().setPadre(getParteSeleccionada());
+            getParte().setEsPadre(partePrincipal);
             parteBean.crear(getParte());
             setListaParte(parteBean.obtenerLista());
             setNodoPrincipal(parteBean.cargarNodoPrincipal());

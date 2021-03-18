@@ -47,6 +47,9 @@ public class Parte implements Serializable {
     @Column(name = "distintivo")
     private String distintivo;
     
+    @Column(name = "es_padre")
+    private Boolean esPadre;
+    
     @Transient
     private Long idPartePadre;
 
@@ -179,6 +182,19 @@ public class Parte implements Serializable {
         this.codigo = codigo;
     }
     
+    /**
+     * @return the esPadre
+     */
+    public Boolean getEsPadre() {
+        return esPadre;
+    }
+
+    /**
+     * @param esPadre the esPadre to set
+     */
+    public void setEsPadre(Boolean esPadre) {
+        this.esPadre = esPadre;
+    }
     
 
 }

@@ -1,0 +1,74 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:of="http://omnifaces.org/functions"
+                template="/WEB-INF/templateATA.xhtml">
+
+    <ui:define name="content">
+        <h:form id="frmConsultarVehiculo">
+            <h1>#{msj.consultarVehiculos}</h1>
+            <p/>
+            
+            <!-- INICIO CONFIGURACION VEHICULO -->
+            <p:fieldset id="consultarVehiculo" legend="#{msj.consultarVehiculos}"  >
+                
+                
+                <p:dataTable
+                    id="tblListaVehiculosTodos"                
+                    var="vehiculo" 
+                    value="#{vehiculoAdministracionControlador.obtenerTodaLalistaDeAutos()}">
+                    <f:facet name="header">
+                        #{msj.listaDeVehiculos}
+                    </f:facet>
+                    
+                    <p:column headerText="#{msj.codigo}" >
+                        <h:outputText value="#{vehiculo.idVehiculo}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.descripcionModelo}" >
+                        <h:outputText value="#{vehiculo.modelo}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.tienePlantilla}" >
+                        <h:outputText value="#{vehiculoAdministracionControlador.generarDatosPlantilla(vehiculo)}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.descripcion}" >
+                        <h:outputText value="#{vehiculo.descripcion}" />
+                    </p:column>
+                    
+                    <p:column headerText="#{msj.anioInicialRango}">
+                        <h:outputText value="#{vehiculo.anioDesde}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.anioFinalRango}">
+                        <h:outputText value="#{vehiculo.anioHasta}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.imagenes}" >
+                        <p:row>
+                            <p:repeat var="imagen" value="#{vehiculoAdministracionControlador.listaImagenes(vehiculo)}" >
+                                <p:column>
+                                    <h:outputLink value="MostradorImagen?Image_id=#{imagen.idImagen}" target="_blank" >
+                                        <h:graphicImage value="MostradorImagen?Image_id=#{imagen.idImagen}" width="50" height="50"></h:graphicImage>
+                                    </h:outputLink>
+                                </p:column>
+                            </p:repeat>
+                        </p:row>
+                    </p:column>
+
+                   
+
+                </p:dataTable>
+                <p/>
+            </p:fieldset>
+            <p/>
+            <!-- FIN CONFIGURACION CATEGORIA -->
+            
+        </h:form>
+    </ui:define>
+</ui:composition>

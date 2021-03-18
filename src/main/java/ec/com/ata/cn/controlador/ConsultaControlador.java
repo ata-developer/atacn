@@ -245,7 +245,7 @@ public class ConsultaControlador extends BaseControlador {
     
     public List<SelectItem> generarSelectItemDePartesPadre() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
-        for (Parte parteTmp : parteBean.obtenerListaPorPadreItNull()) {
+        for (Parte parteTmp : parteBean.obtenerListaPorPadres()) {
             selectItemsBuilder.add(parteTmp, parteTmp.getParte());
         }
         return selectItemsBuilder.buildList();

@@ -339,7 +339,11 @@
                     <p:column headerText="#{msj.partePrincipal}">
                         <h:outputText value="#{parte.padre.parte}" />
                     </p:column>
-
+                    
+                    <p:column headerText="#{msj.partePrincipal}">
+                        <h:outputText value="#{parte.esPadre ? 'Si':'No'}" />
+                    </p:column>
+                        
                     <p:column headerText="#{msj.distintivo}">
                         <p:cellEditor>
                             <f:facet name="output">

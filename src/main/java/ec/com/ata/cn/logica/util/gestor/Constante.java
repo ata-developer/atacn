@@ -90,6 +90,8 @@ public class Constante {
     public static final String ANIO_INICIO_RANGO = "ANIO_INICIO_RANGO";
     public static final String ANIO_FIN_RANGO = "ANIO_FIN_RANGO";
     public static final String SIN_IMAGENES = "INGRESAR IMAGENES DEL VEHICULO";
+    public static final String SIN_PARTES = "INGRESAR IMAGENES PARTE DEL VEHICULO";
+    
 
     public static final String SUPERIOR = "SUPERIOR";
     public static final String RANGO = "RANGO";
@@ -123,7 +125,7 @@ public class Constante {
     public static final String CODIGO_AIRBAG = "ASI10010";
     public static final String CODIGO_BRAZO_POSTERIOR = "ASI1011";
     
-    
+    public static final String CODIGO_FILA_1 = "ASI1100";
     public static final String CODIGO_MODELO_VOLANTE = "VOL1001";
     public static final String CODIGO_HILO_SUPERIOR = "VOL1002";
     public static final String CODIGO_HILO_CIERRA = "VOL1003";

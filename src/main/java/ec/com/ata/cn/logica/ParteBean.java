@@ -78,6 +78,12 @@ public class ParteBean {
         return parteDao.obtenerListaPorParametros(parametros);
     }
     
+     public List<Parte> obtenerListaPorPadres(){
+        HashMap<String, Object> parametros = new HashMap<>();
+        parametros.put("esPadre", true);
+        return parteDao.obtenerListaPorParametros(parametros);
+    }
+    
     public TreeNode cargarNodoPrincipal (){
         TreeNode nodoPrincipal = new DefaultTreeNode();
         List<Parte> listaParte = obtenerListaPorPadre(null);

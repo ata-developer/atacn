@@ -57,8 +57,6 @@ import org.primefaces.model.UploadedFile;
 @SessionScoped
 public class VehiculoAdministracionControlador extends BaseControlador {
 
-    
-
     @Inject
     private MarcaVehiculoBean marcaVehiculoBean;
 
@@ -88,8 +86,6 @@ public class VehiculoAdministracionControlador extends BaseControlador {
 
     @Inject
     private VehiculoParteBean vehiculoParteBean;
-    
-    
 
     private MarcaVehiculo marcaVehiculo;
 
@@ -134,7 +130,7 @@ public class VehiculoAdministracionControlador extends BaseControlador {
     private List<Plantilla> listaPlantilla;
 
     private Parte parteHijo;
-    
+
     private List<Parte> listaPartePadre;
 
     @PostConstruct
@@ -155,23 +151,35 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         setListaVehiculoParte(new ArrayList<VehiculoParte>());
         setListaPlantilla(new ArrayList<Plantilla>());
         setListaPartePadre(parteBean.obtenerListaPorPadreItNull());
-        
 
     }
     
-    public boolean presentarBotonBorra (Parte partePadre){
-        int cantidad = 0 ; 
+    public List<Vehiculo> obtenerTodaLalistaDeAutos(){
+        return vehiculoBean.obtenerLista();
+    }
+    
+    public String generarDatosPlantilla  (Vehiculo vehiculoEntrada) {
+        String resultado = "";
+        List<Plantilla> listaPlantillaTmp = plantillaBean.obtenerListaPorVehiculo(vehiculoEntrada);
+        for (Plantilla plantilla : listaPlantillaTmp) {
+            resultado = resultado.concat(plantilla.getTipo()).concat("-->").concat(plantilla.getExiste()?"Si":"No").concat(", ");
+        }
+        return resultado;
+    }
+
+    public boolean presentarBotonBorra(Parte partePadre) {
+        int cantidad = 0;
         for (VehiculoParte vehiculoParte : this.listaVehiculoParte) {
             if (vehiculoParte.getParte().getPadre().equals(partePadre)) {
                 cantidad++;
             }
         }
-        
+
         return cantidad > 1;
     }
-    
-    public String nombreLista(Parte parte){
-        return "listaPartes"+parte.getCodigo();
+
+    public String nombreLista(Parte parte) {
+        return "listaPartes" + parte.getCodigo();
     }
 
     public void imprimirLista() {
@@ -206,7 +214,8 @@ public class VehiculoAdministracionControlador extends BaseControlador {
 
     }
 
-    public Boolean evaluarIndexBajar(VehiculoParte vehiculoParteEntrada, int index) {
+    public Boolean evaluarIndexBajar(VehiculoParte vehiculoParteEntrada) {
+        int index = this.listaVehiculoParte.indexOf(vehiculoParteEntrada);
         if ((index + 1) != this.listaVehiculoParte.size()) {
             String padreA = vehiculoParteEntrada.getParte().getPadre().getParte();
             Parte pabreB = this.listaVehiculoParte.get(index + 1).getParte().getPadre();
@@ -216,7 +225,8 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         return true;
     }
 
-    public Boolean evaluarIndexSubir(VehiculoParte vehiculoParteEntrada, int index) {
+    public Boolean evaluarIndexSubir(VehiculoParte vehiculoParteEntrada) {
+        int index = this.listaVehiculoParte.indexOf(vehiculoParteEntrada);
         if (index != 0) {
             String padreA = vehiculoParteEntrada.getParte().getPadre().getParte();
             Parte pabreB = this.listaVehiculoParte.get(index - 1).getParte().getPadre();
@@ -226,9 +236,10 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         return true;
     }
 
-    public void bajarVehiculoParteHijo(VehiculoParte vehiculoParteDeArriba, int index) {
+    public void bajarVehiculoParteHijo(VehiculoParte vehiculoParteDeArriba) {
         if (modoEdicion) {
             try {
+                int index = this.listaVehiculoParte.indexOf(vehiculoParteDeArriba);
                 VehiculoParte vehiculoParteDeAbajo = this.listaVehiculoParte.get(index + 1);
 
                 VehiculoParte vehiculoParteDeArribaTmp = new VehiculoParte();
@@ -260,6 +271,7 @@ public class VehiculoAdministracionControlador extends BaseControlador {
             }
 
         } else {
+            int index = this.listaVehiculoParte.indexOf(vehiculoParteDeArriba);
             VehiculoParte vehiculoParteDeAbajo = this.listaVehiculoParte.get(index + 1);
 
             VehiculoParte vehiculoParteDeArribaTmp = new VehiculoParte();
@@ -281,9 +293,11 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         }
     }
 
-    public void subirVehiculoParteHijo(VehiculoParte vehiculoParteDeArriba, int index) {
+    public void subirVehiculoParteHijo(VehiculoParte vehiculoParteDeArriba) {
         if (modoEdicion) {
+
             try {
+                int index = this.listaVehiculoParte.indexOf(vehiculoParteDeArriba);
                 VehiculoParte vehiculoParteDeAbajo = this.listaVehiculoParte.get(index - 1);
 
                 VehiculoParte vehiculoParteDeArribaTmp = new VehiculoParte();
@@ -315,6 +329,7 @@ public class VehiculoAdministracionControlador extends BaseControlador {
             }
 
         } else {
+            int index = this.listaVehiculoParte.indexOf(vehiculoParteDeArriba);
             VehiculoParte vehiculoParteDeAbajo = this.listaVehiculoParte.get(index - 1);
 
             VehiculoParte vehiculoParteDeArribaTmp = new VehiculoParte();
@@ -482,71 +497,48 @@ public class VehiculoAdministracionControlador extends BaseControlador {
 
     private List<VehiculoParte> generarListaInicialPartes() {
         List<VehiculoParte> listaVehiculoParteTmp = new ArrayList<>();
-        //ASIENTO
-        VehiculoParte vehiculoParteTmp = new VehiculoParte();
-        vehiculoParteTmp.setVehiculo(new Vehiculo());
-        vehiculoParteTmp.setParte(parteBean.obtenerPorCodigoPersonalizado(Constante.CODIGO_CENTRO));
-        vehiculoParteTmp.setDisposicion(1l);
-        listaVehiculoParteTmp.add(vehiculoParteTmp);
-        vehiculoParteTmp = new VehiculoParte();
-        vehiculoParteTmp.setVehiculo(new Vehiculo());
-        vehiculoParteTmp.setParte(parteBean.obtenerPorCodigoPersonalizado(Constante.CODIGO_COSTADOS));
-        vehiculoParteTmp.setDisposicion(2l);
-        listaVehiculoParteTmp.add(vehiculoParteTmp);
-        vehiculoParteTmp = new VehiculoParte();
-        vehiculoParteTmp.setVehiculo(new Vehiculo());
-        vehiculoParteTmp.setParte(parteBean.obtenerPorCodigoPersonalizado(Constante.CODIGO_DOBLE));
-        vehiculoParteTmp.setDisposicion(3l);
-        listaVehiculoParteTmp.add(vehiculoParteTmp);
-        vehiculoParteTmp = new VehiculoParte();
-        vehiculoParteTmp.setVehiculo(new Vehiculo());
-        vehiculoParteTmp.setParte(parteBean.obtenerPorCodigoPersonalizado(Constante.CODIGO_SOBRE));
-        vehiculoParteTmp.setDisposicion(4l);
-        listaVehiculoParteTmp.add(vehiculoParteTmp);
-        vehiculoParteTmp = new VehiculoParte();
-        vehiculoParteTmp.setVehiculo(new Vehiculo());
-        vehiculoParteTmp.setParte(parteBean.obtenerPorCodigoPersonalizado(Constante.CODIGO_AIRBAG));
-        vehiculoParteTmp.setDisposicion(6l);
-        listaVehiculoParteTmp.add(vehiculoParteTmp);
-        vehiculoParteTmp = new VehiculoParte();
-        vehiculoParteTmp.setVehiculo(new Vehiculo());
-        vehiculoParteTmp.setParte(parteBean.obtenerPorCodigoPersonalizado(Constante.CODIGO_BOLSILLOS));
-        vehiculoParteTmp.setDisposicion(7l);
-        listaVehiculoParteTmp.add(vehiculoParteTmp);
-        vehiculoParteTmp = new VehiculoParte();
-        vehiculoParteTmp.setVehiculo(new Vehiculo());
-        vehiculoParteTmp.setParte(parteBean.obtenerPorCodigoPersonalizado(Constante.CODIGO_BRAZO_POSTERIOR));
-        vehiculoParteTmp.setDisposicion(8l);
-        listaVehiculoParteTmp.add(vehiculoParteTmp);
+        Parte parteFilaPadre = parteBean.obtenerPorCodigoPersonalizado(Constante.CODIGO_FILA_1);
+        List<Parte> listaPartesFilaTmp = parteBean.obtenerListaPorPadre(parteFilaPadre);
+        for (Parte parteTmp : listaPartesFilaTmp) {
+            VehiculoParte vehiculoParteTmp = new VehiculoParte();
+            vehiculoParteTmp.setParte(parteTmp);
+            vehiculoParteTmp.setOrdenFecha(new Date(System.currentTimeMillis()));
+            listaVehiculoParteTmp.add(vehiculoParteTmp);
+        }
 
         //VOLANTE
-        vehiculoParteTmp = new VehiculoParte();
+        VehiculoParte vehiculoParteTmp = new VehiculoParte();
         vehiculoParteTmp.setVehiculo(new Vehiculo());
         vehiculoParteTmp.setParte(parteBean.obtenerPorCodigoPersonalizado(Constante.CODIGO_MODELO_VOLANTE));
         vehiculoParteTmp.setDisposicion(1l);
+        vehiculoParteTmp.setOrdenFecha(new Date(System.currentTimeMillis()));
         listaVehiculoParteTmp.add(vehiculoParteTmp);
 
         vehiculoParteTmp = new VehiculoParte();
         vehiculoParteTmp.setVehiculo(new Vehiculo());
         vehiculoParteTmp.setParte(parteBean.obtenerPorCodigoPersonalizado(Constante.CODIGO_HILO_SUPERIOR));
         vehiculoParteTmp.setDisposicion(2l);
+        vehiculoParteTmp.setOrdenFecha(new Date(System.currentTimeMillis()));
         listaVehiculoParteTmp.add(vehiculoParteTmp);
 
         vehiculoParteTmp = new VehiculoParte();
         vehiculoParteTmp.setVehiculo(new Vehiculo());
         vehiculoParteTmp.setParte(parteBean.obtenerPorCodigoPersonalizado(Constante.CODIGO_HILO_CIERRA));
+        vehiculoParteTmp.setOrdenFecha(new Date(System.currentTimeMillis()));
         vehiculoParteTmp.setDisposicion(3l);
         listaVehiculoParteTmp.add(vehiculoParteTmp);
 
         vehiculoParteTmp = new VehiculoParte();
         vehiculoParteTmp.setVehiculo(new Vehiculo());
         vehiculoParteTmp.setParte(parteBean.obtenerPorCodigoPersonalizado(Constante.CODIGO_HILO_INFERIOR));
+        vehiculoParteTmp.setOrdenFecha(new Date(System.currentTimeMillis()));
         vehiculoParteTmp.setDisposicion(4l);
         listaVehiculoParteTmp.add(vehiculoParteTmp);
 
         vehiculoParteTmp = new VehiculoParte();
         vehiculoParteTmp.setVehiculo(new Vehiculo());
         vehiculoParteTmp.setParte(parteBean.obtenerPorCodigoPersonalizado(Constante.CODIGO_CUERPO_VOLANTE));
+        vehiculoParteTmp.setOrdenFecha(new Date(System.currentTimeMillis()));
         vehiculoParteTmp.setDisposicion(5l);
         listaVehiculoParteTmp.add(vehiculoParteTmp);
 
@@ -554,6 +546,7 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         vehiculoParteTmp = new VehiculoParte();
         vehiculoParteTmp.setVehiculo(new Vehiculo());
         vehiculoParteTmp.setParte(parteBean.obtenerPorCodigoPersonalizado(Constante.CODIGO_CUERPO_PISO));
+        vehiculoParteTmp.setOrdenFecha(new Date(System.currentTimeMillis()));
         vehiculoParteTmp.setDisposicion(1l);
         listaVehiculoParteTmp.add(vehiculoParteTmp);
 
@@ -561,6 +554,7 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         vehiculoParteTmp = new VehiculoParte();
         vehiculoParteTmp.setVehiculo(new Vehiculo());
         vehiculoParteTmp.setParte(parteBean.obtenerPorCodigoPersonalizado(Constante.CODIGO_CUERPO_TECHO));
+        vehiculoParteTmp.setOrdenFecha(new Date(System.currentTimeMillis()));
         vehiculoParteTmp.setDisposicion(1l);
         listaVehiculoParteTmp.add(vehiculoParteTmp);
 
@@ -568,6 +562,7 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         vehiculoParteTmp = new VehiculoParte();
         vehiculoParteTmp.setVehiculo(new Vehiculo());
         vehiculoParteTmp.setParte(parteBean.obtenerPorCodigoPersonalizado(Constante.CODIGO_CUERPO_PUERTA));
+        vehiculoParteTmp.setOrdenFecha(new Date(System.currentTimeMillis()));
         vehiculoParteTmp.setDisposicion(1l);
         listaVehiculoParteTmp.add(vehiculoParteTmp);
 
@@ -575,6 +570,7 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         vehiculoParteTmp = new VehiculoParte();
         vehiculoParteTmp.setVehiculo(new Vehiculo());
         vehiculoParteTmp.setParte(parteBean.obtenerPorCodigoPersonalizado(Constante.CODIGO_CUERPO_CAJUELA));
+        vehiculoParteTmp.setOrdenFecha(new Date(System.currentTimeMillis()));
         vehiculoParteTmp.setDisposicion(1l);
         listaVehiculoParteTmp.add(vehiculoParteTmp);
 
@@ -582,6 +578,7 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         vehiculoParteTmp = new VehiculoParte();
         vehiculoParteTmp.setVehiculo(new Vehiculo());
         vehiculoParteTmp.setParte(parteBean.obtenerPorCodigoPersonalizado(Constante.CODIGO_CUERPO_POMO));
+        vehiculoParteTmp.setOrdenFecha(new Date(System.currentTimeMillis()));
         vehiculoParteTmp.setDisposicion(1l);
         listaVehiculoParteTmp.add(vehiculoParteTmp);
 
@@ -589,6 +586,7 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         vehiculoParteTmp = new VehiculoParte();
         vehiculoParteTmp.setVehiculo(new Vehiculo());
         vehiculoParteTmp.setParte(parteBean.obtenerPorCodigoPersonalizado(Constante.CODIGO_CUERPO_CAPUCHON));
+        vehiculoParteTmp.setOrdenFecha(new Date(System.currentTimeMillis()));
         vehiculoParteTmp.setDisposicion(1l);
         listaVehiculoParteTmp.add(vehiculoParteTmp);
 
@@ -596,6 +594,7 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         vehiculoParteTmp = new VehiculoParte();
         vehiculoParteTmp.setVehiculo(new Vehiculo());
         vehiculoParteTmp.setParte(parteBean.obtenerPorCodigoPersonalizado(Constante.CODIGO_CUERPO_MOQUETA));
+        vehiculoParteTmp.setOrdenFecha(new Date(System.currentTimeMillis()));
         vehiculoParteTmp.setDisposicion(1l);
         listaVehiculoParteTmp.add(vehiculoParteTmp);
 
@@ -603,6 +602,7 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         vehiculoParteTmp = new VehiculoParte();
         vehiculoParteTmp.setVehiculo(new Vehiculo());
         vehiculoParteTmp.setParte(parteBean.obtenerPorCodigoPersonalizado(Constante.CODIGO_CUERPO_FRENO));
+        vehiculoParteTmp.setOrdenFecha(new Date(System.currentTimeMillis()));
         vehiculoParteTmp.setDisposicion(1l);
         listaVehiculoParteTmp.add(vehiculoParteTmp);
 
@@ -610,6 +610,7 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         vehiculoParteTmp = new VehiculoParte();
         vehiculoParteTmp.setVehiculo(new Vehiculo());
         vehiculoParteTmp.setParte(parteBean.obtenerPorCodigoPersonalizado(Constante.CODIGO_CUERPO_OTRO));
+        vehiculoParteTmp.setOrdenFecha(new Date(System.currentTimeMillis()));
         vehiculoParteTmp.setDisposicion(1l);
         listaVehiculoParteTmp.add(vehiculoParteTmp);
 
@@ -641,8 +642,8 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         }
 
     }
-
-    public void agregarVehiculo() {
+    
+    public String agregarVehiculo() {
         setModoEdicion(false);
         this.vehiculo = new Vehiculo();
         this.vehiculo.setEstadoPlantilla("SIN REVISAR");
@@ -651,8 +652,40 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         this.filasDelVehiculo = new ArrayList<>();
         this.listaVehiculoParte = this.generarListaInicialPartes();
         this.listaPlantilla = this.generarListaInicialPlantillas();
+        return "actualizar-editar-vehiculo";
 
     }
+
+    /*public String agregarVehiculo() {
+        setModoEdicion(true);
+        this.vehiculo = new Vehiculo();
+        this.vehiculo.setEstadoPlantilla("SIN REVISAR");
+        this.vehiculo.setEstadoPlantillaVolante("SIN REVISAR");
+        this.imagenesVehiculo = new ArrayList<>();
+        this.filasDelVehiculo = new ArrayList<>();
+        this.listaVehiculoParte = this.generarListaInicialPartes();
+        this.listaPlantilla = this.generarListaInicialPlantillas();
+        try {
+            vehiculo.getGenericoEntidad().setFechaRegistro(new Date(System.currentTimeMillis()));
+            vehiculo.setMarca(marcaVehiculoSeleccionado);
+            vehiculoBean.crear(
+                    vehiculo,
+                    imagenesVehiculo,
+                    listaPlantilla,
+                    listaVehiculoParte);
+            addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            e.printStackTrace();
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return "administrar-vehiculo";
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+            return "administrar-vehiculo";
+        }
+        return "actualizar-editar-vehiculo";
+    }*/
 
     public void seleccionarVehiculo(Vehiculo vehiculoEntrada) {
         System.out.println("entro al seleccionarVehiculo" + vehiculoEntrada);
@@ -839,7 +872,7 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         }
     }
 
-    public void guadarVehiculo() {
+    public String guadarVehiculo() {
         try {
             if (modoEdicion) {
                 modificar();
@@ -852,10 +885,42 @@ public class VehiculoAdministracionControlador extends BaseControlador {
             final Throwable root = ExceptionUtils.getRootCause(e);
             if (null != root) {
                 addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
-                return;
+                return null;
             }
             addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+            return null;
         }
+        return "administrar-vehiculo";
+    }
+
+    public String regresar() {
+        if (imagenesVehiculo.isEmpty()) {
+            addErrorMessage(Constante.ERROR, Constante.SIN_IMAGENES);
+            return null;
+        }
+        if (listaVehiculoParte.isEmpty()) {
+            addErrorMessage(Constante.ERROR, Constante.SIN_PARTES);
+            return null;
+        }
+        try {
+            if (modoEdicion) {
+                modificar();
+                modoEdicion = false;
+            } else {
+                guardar();
+                modoEdicion = false;
+            }
+        } catch (Exception e) {
+            final Throwable root = ExceptionUtils.getRootCause(e);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return null;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + e.getMessage());
+            return null;
+        }
+        setListaVehiculo(vehiculoBean.obtenerListaPorMarca(marcaVehiculoSeleccionado));
+        return "administrar-vehiculo";
     }
 
     public void guardar() {
@@ -1209,7 +1274,6 @@ public class VehiculoAdministracionControlador extends BaseControlador {
         this.parteHijo = parteHijo;
     }
 
-    
     /**
      * @return the listaPartePadre
      */

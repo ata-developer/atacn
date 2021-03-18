@@ -45,15 +45,15 @@ public class LoginBean extends BaseControlador {
             System.out.println("correo: " + this.correo);
             System.out.println("contrasena: " + this.contrasena);
             request.login(this.correo, this.contrasena);
-            //Principal principal = request.getUserPrincipal();
-            //HashMap<String, Object> parametros = new HashMap<>();
-            //parametros.put("correo", this.correo);
-            //List<Usuario> listaUsuario = usuarioBean.obtenerListaPorParametros(parametros);
-            //this.usuario = listaUsuario.get(0);
+            Principal principal = request.getUserPrincipal();
+            HashMap<String, Object> parametros = new HashMap<>();
+            parametros.put("correo", this.correo);
+            List<Usuario> listaUsuario = usuarioBean.obtenerListaPorParametros(parametros);
+            this.setUsuario(listaUsuario.get(0));
             
-            //ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-            //Map<String, Object> sessionMap = externalContext.getSessionMap();
-            //sessionMap.put("usuario", usuario);
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            Map<String, Object> sessionMap = externalContext.getSessionMap();
+            sessionMap.put("usuario", getUsuario());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,7 +67,7 @@ public class LoginBean extends BaseControlador {
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         try {
-            this.usuario = null;
+            this.setUsuario(null);
             request.logout();
             // clear the session
             ((HttpSession) context.getExternalContext().getSession(false)).invalidate();
@@ -103,6 +103,20 @@ public class LoginBean extends BaseControlador {
      */
     public void setCorreo(String correo) {
         this.correo = correo;
+    }
+    
+    /**
+     * @return the usuario
+     */
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    /**
+     * @param usuario the usuario to set
+     */
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
 }

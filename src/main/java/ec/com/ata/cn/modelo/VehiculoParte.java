@@ -6,6 +6,7 @@
 package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -16,16 +17,19 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
  * @author ATA1
  */
-
 @Entity
-@Table ( name = "vehiculo_parte")
+@Table(name = "vehiculo_parte")
 public class VehiculoParte implements Serializable {
-        
+
+   
+
     @Id
     @SequenceGenerator(
             name = "vehiculo_parte_seq",
@@ -36,22 +40,25 @@ public class VehiculoParte implements Serializable {
             generator = "vehiculo_parte_seq")
     @Column(name = "id_vehiculo_parte")
     private Long idVehiculoParte;
-    
+
     @ManyToOne
-    @JoinColumn(name="id_parte", referencedColumnName="id_parte")
+    @JoinColumn(name = "id_parte", referencedColumnName = "id_parte")
     private Parte parte;
-    
+
     @ManyToOne
-    @JoinColumn(name="id_vehiculo", referencedColumnName="id_vehiculo")
-    private Vehiculo vehiculo;    
-    
+    @JoinColumn(name = "id_vehiculo", referencedColumnName = "id_vehiculo")
+    private Vehiculo vehiculo;
+
     @Column(name = "disposicion")
     private Long disposicion;
-    
+
+    @Column(name = "orden_fecha")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date ordenFecha;
+
     @Embedded
     private GenericoEntidad genericoEntidad;
 
-    
     /**
      * @return the idVehiculoParte
      */
@@ -121,8 +128,19 @@ public class VehiculoParte implements Serializable {
     public void setDisposicion(Long disposicion) {
         this.disposicion = disposicion;
     }
+    
+     /**
+     * @return the ordenFecha
+     */
+    public Date getOrdenFecha() {
+        return ordenFecha;
+    }
 
-    
-    
+    /**
+     * @param ordenFecha the ordenFecha to set
+     */
+    public void setOrdenFecha(Date ordenFecha) {
+        this.ordenFecha = ordenFecha;
+    }
 
 }
