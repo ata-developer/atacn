@@ -27,10 +27,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name = "vehiculo")
-public class Vehiculo implements Serializable {    
-
-   
-    
+public class Vehiculo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -56,38 +53,41 @@ public class Vehiculo implements Serializable {
 
     @Column(name = "tipo_rango")
     private String tipoRango;
-    
+
     @Column(name = "tiene_plantilla")
     private boolean tienePlantilla;
-    
+
     @Column(name = "estado_plantilla")
     private String estadoPlantilla;
-    
+
     @Column(name = "observacion_plantilla")
     private String observacionPlantilla;
-    
+
     @Column(name = "tiene_plantilla_volante")
     private boolean tienePlantillaVolante;
-    
+
     @Column(name = "estado_plantilla_volante")
     private String estadoPlantillaVolante;
-    
+
     @Column(name = "observacion_plantilla_volante")
     private String observacionPlantillaVolante;
-    
+
     @Column(name = "observacion")
-    private String observacion;    
+    private String observacion;
 
     @Transient
     private String descripcionDetallada;
-    
+
+    @Transient
+    private String descripcionConMarca;
+
     @Transient
     private boolean seleccionar;
 
     @Embedded
     private GenericoEntidad genericoEntidad;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private MarcaVehiculo marca;
 
     @OneToMany(mappedBy = "vehiculo", fetch = FetchType.EAGER)
@@ -99,12 +99,9 @@ public class Vehiculo implements Serializable {
     @Column(name = "anio_hasta")
     private Long anioHasta;
 
-    
-    
-
     public Vehiculo() {
         genericoEntidad = new GenericoEntidad();
-        filasDeAsientos = new ArrayList<> ();
+        filasDeAsientos = new ArrayList<>();
     }
 
     public Long getIdVehiculo() {
@@ -289,7 +286,7 @@ public class Vehiculo implements Serializable {
         this.descripcionDetallada = descripcionDetallada;
     }
 
-   /**
+    /**
      * @return the tiene_plantillas
      */
     public boolean isTienePlantilla() {
@@ -302,7 +299,7 @@ public class Vehiculo implements Serializable {
     public void setTienePlantilla(boolean tiene_plantillas) {
         this.tienePlantilla = tiene_plantillas;
     }
-    
+
     /**
      * @return the observacion
      */
@@ -316,7 +313,7 @@ public class Vehiculo implements Serializable {
     public void setObservacion(String observacion) {
         this.observacion = observacion;
     }
-    
+
     /**
      * @return the estadoPlantilla
      */
@@ -330,7 +327,7 @@ public class Vehiculo implements Serializable {
     public void setEstadoPlantilla(String estadoPlantilla) {
         this.estadoPlantilla = estadoPlantilla;
     }
-    
+
     /**
      * @return the observacionPlantilla
      */
@@ -386,8 +383,8 @@ public class Vehiculo implements Serializable {
     public void setObservacionPlantillaVolante(String observacionPlantillaVolante) {
         this.observacionPlantillaVolante = observacionPlantillaVolante;
     }
-    
-     /**
+
+    /**
      * @return the seleccionar
      */
     public boolean isSeleccionar() {
@@ -401,5 +398,28 @@ public class Vehiculo implements Serializable {
         this.seleccionar = seleccionar;
     }
 
+    /**
+     * @return the descripcionConMarca
+     */
+    public String getDescripcionConMarca() {
+        try {
+            String marcatmp = getMarca() == null ? "" : getMarca().getMarca();
+            String modelotmp = getModelo();
+            String anioDesdeTmp = getAnioDesde() == null ? "" : getAnioDesde().toString();
+            String anioHastaTmp = getAnioHasta() == null ? "" : getAnioHasta().toString();
+            descripcionConMarca = marcatmp.concat(" ").concat(modelotmp).concat(" ").concat(anioDesdeTmp).concat(" ").concat(anioHastaTmp);
+            return descripcionConMarca;
+        } catch (Exception e) {
+            return "";
+        }
+
+    }
+
+    /**
+     * @param descripcionConMarca the descripcionConMarca to set
+     */
+    public void setDescripcionConMarca(String descripcionConMarca) {
+        this.descripcionConMarca = descripcionConMarca;
+    }
 
 }

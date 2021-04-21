@@ -40,10 +40,9 @@ public class LoginBean extends BaseControlador {
 
     public String login() {
         FacesContext context = FacesContext.getCurrentInstance();
-        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+        HttpServletRequest request = (HttpServletRequest) this.getHttpRequest();
         try {
-            System.out.println("correo: " + this.correo);
-            System.out.println("contrasena: " + this.contrasena);
+            
             request.login(this.correo, this.contrasena);
             Principal principal = request.getUserPrincipal();
             HashMap<String, Object> parametros = new HashMap<>();

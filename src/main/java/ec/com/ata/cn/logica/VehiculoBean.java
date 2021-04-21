@@ -136,10 +136,24 @@ public class VehiculoBean {
         return listaDescripcion;
     }
     
-    public List<Vehiculo> obtenerModeloListaPorModeloLike(String modelo) {
+    public List<String> obtenerModeloListaPorModeloLike(String modelo) {
+        List<String> listaDescripcion = new ArrayList<>();
         HashMap<String, Object> parametros = new HashMap<>();
         parametros.put("modeloLike", modelo);
-        return  vehiculoDao.obtenerListaPorParametros(parametros);
+        List<Vehiculo> listaVehiculos = vehiculoDao.obtenerListaPorParametros(parametros);
+        for (Vehiculo vehiculo : listaVehiculos) {
+            String modeloResultado = vehiculo.getModelo();
+            String anioDesde = vehiculo.getAnioDesde() == null ? "" : " - " + vehiculo.getAnioDesde().toString();
+            String anioHasta = vehiculo.getAnioHasta() == null ? "" : " - " + vehiculo.getAnioHasta().toString();
+            List<Fila> filas = vehiculo.getFilasDeAsientos();
+            String descripcionFilas = "";
+            for (Fila fila : filas) {
+                descripcionFilas = descripcionFilas + " - " + fila.getTipoFila().getTipoFila() + "\n";
+            }
+            String resultado = modeloResultado + anioDesde + anioHasta + descripcionFilas;
+            listaDescripcion.add(resultado);
+        }
+        return listaDescripcion;
     }
 
     public Vehiculo obtenerPorCodigo(Long idVehiculo){

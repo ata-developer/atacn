@@ -20,7 +20,10 @@
                 <p:dataTable
                     id="tblListaVehiculosTodos"                
                     var="vehiculo" 
-                    value="#{vehiculoAdministracionControlador.obtenerTodaLalistaDeAutos()}">
+                    emptyMessage="#{msj.noHayInformacion}"
+                    value="#{vehiculoAdministracionControlador.obtenerTodaLalistaDeAutos()}"
+                    filteredValue="#{vehiculoAdministracionControlador.listaVehiculosFiltrados}"
+                    >
                     <f:facet name="header">
                         #{msj.listaDeVehiculos}
                     </f:facet>
@@ -29,15 +32,19 @@
                         <h:outputText value="#{vehiculo.idVehiculo}" />
                     </p:column>
 
-                    <p:column headerText="#{msj.descripcionModelo}" >
+                    <p:column headerText="#{msj.descripcionModelo}" filterBy="#{vehiculo.modelo}" filterMatchMode="contains">
                         <h:outputText value="#{vehiculo.modelo}" />
+                    </p:column>
+                    
+                    <p:column headerText="#{msj.marca}" filterBy="#{vehiculo.marca.marca}" filterMatchMode="contains">
+                        <h:outputText value="#{vehiculo.marca.marca}" />
                     </p:column>
 
                     <p:column headerText="#{msj.tienePlantilla}" >
                         <h:outputText value="#{vehiculoAdministracionControlador.generarDatosPlantilla(vehiculo)}" />
                     </p:column>
 
-                    <p:column headerText="#{msj.descripcion}" >
+                    <p:column headerText="#{msj.descripcion}" filterBy="#{vehiculo.descripcion}" filterMatchMode="contains">
                         <h:outputText value="#{vehiculo.descripcion}" />
                     </p:column>
                     

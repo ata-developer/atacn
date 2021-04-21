@@ -5,7 +5,6 @@
  */
 package ec.com.ata.cn.controlador;
 
-
 import ec.com.ata.cn.logica.CategoriaBean;
 import ec.com.ata.cn.logica.FilaBean;
 import ec.com.ata.cn.logica.GrupoPrecioBean;
@@ -17,6 +16,7 @@ import ec.com.ata.cn.logica.ParteBean;
 import ec.com.ata.cn.logica.TipoFilaBean;
 import ec.com.ata.cn.logica.TrabajoCategoriaPrecioBean;
 import ec.com.ata.cn.logica.VehiculoBean;
+import ec.com.ata.cn.logica.VehiculoCategoriaTrabajoBean;
 import ec.com.ata.cn.logica.VehiculoImagenBean;
 import ec.com.ata.cn.logica.util.gestor.Constante;
 import ec.com.ata.cn.logica.util.gestor.UtilGeneral;
@@ -30,6 +30,7 @@ import ec.com.ata.cn.modelo.Parte;
 import ec.com.ata.cn.modelo.TipoFila;
 import ec.com.ata.cn.modelo.TrabajoCategoriaPrecio;
 import ec.com.ata.cn.modelo.Vehiculo;
+import ec.com.ata.cn.modelo.VehiculoCategoriaTrabajo;
 import ec.com.ata.cn.modelo.VehiculoImagen;
 import ec.com.ata.cn.modelo.VehiculoImagenId;
 import java.io.ByteArrayInputStream;
@@ -37,6 +38,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -59,7 +63,7 @@ import org.primefaces.model.UploadedFile;
 @ViewScoped
 @Named
 public class VehiculoCategoriaAdministracionControlador extends BaseControlador {
-    
+
     @Inject
     private CategoriaBean categoriaBean;
 
@@ -96,6 +100,9 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
     @Inject
     private GrupoPrecioParteCategoriaVehiculoBean grupoPrecioParteCategoriaVehiculoBean;
 
+    @Inject
+    private VehiculoCategoriaTrabajoBean vehiculoCategoriaTrabajoBean;
+
     private MarcaVehiculo marcaVehiculo;
 
     private MarcaVehiculo marcaVehiculoSeleccionado;
@@ -103,6 +110,8 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
     private Vehiculo vehiculo;
 
     private Vehiculo vehiculoSeleccionado;
+
+    private Vehiculo vehiculoSeleccionadoParaCopiar;
 
     private List<MarcaVehiculo> listaMarcaVehiculo;
 
@@ -152,6 +161,12 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
 
     private List<TrabajoCategoriaPrecio> listaTrabajoCategoriaPrecio;
 
+    private List<TrabajoCategoriaPrecio> listaTrabajoCategoriaPrecioParaConFigurar;
+
+    private List<VehiculoCategoriaTrabajo> listaVehiculoCategoriaTrabajo;
+
+    private List<VehiculoCategoriaTrabajo> listaVehiculoCategoriaTrabajoDeAutoCopiado;
+
     @PostConstruct
     public void init() {
 
@@ -163,19 +178,75 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
         setTipoFilasAsiento(tipoFilaBean.obtenerLista());
         setAnioDesdeRango(new Integer(parametroBean.obtenerPorCodigo(Constante.ANIO_INICIO_RANGO) == null ? "0" : parametroBean.obtenerPorCodigo(Constante.ANIO_INICIO_RANGO).getValor()));
         setAnioHastaRango(new Integer(parametroBean.obtenerPorCodigo(Constante.ANIO_FIN_RANGO) == null ? "0" : parametroBean.obtenerPorCodigo(Constante.ANIO_FIN_RANGO).getValor()));
-        setRangoAnioInicial(new ArrayList<Integer>());
-        setRangoAnioFinal(new ArrayList<Integer>());
-        setImagenes(new ArrayList<UploadedFile>());
-        setImagenesVehiculo(new ArrayList<Imagen>());
-        setListaCategoria(new ArrayList<Categoria>());
+        setRangoAnioInicial(new ArrayList<>());
+        setRangoAnioFinal(new ArrayList<>());
+        setImagenes(new ArrayList<>());
+        setImagenesVehiculo(new ArrayList<>());
+        setListaCategoria(new ArrayList<>());
         setVehiculoSeleccionado(new Vehiculo());
+        setListaVehiculoCategoriaTrabajo(new ArrayList<>());
+        setListaVehiculoCategoriaTrabajoDeAutoCopiado(new ArrayList<>());
 
         inicializarRangoAnioInicial();
         setContadorImagenes(0);
         setModoEdicion(false);
         setGrupoPrecioSeccionado(new GrupoPrecio());
-        
+
         setListaVehiculo(vehiculoBean.obtenerLista());
+    }
+    
+    public void seleccionarTodos () {
+        List<VehiculoCategoriaTrabajo> listaVehiculoCategoriaTrabajoTmp1 = this.listaVehiculoCategoriaTrabajo;
+        List<VehiculoCategoriaTrabajo> listaVehiculoCategoriaTrabajoTmp2 = new ArrayList<>();
+        listaVehiculoCategoriaTrabajoTmp1.stream().map(vehiculoCategoriaTrabajoTmp -> {
+            vehiculoCategoriaTrabajoTmp.setSeleccionar(true);
+            return vehiculoCategoriaTrabajoTmp;
+        }).forEachOrdered(vehiculoCategoriaTrabajoTmp -> {
+            listaVehiculoCategoriaTrabajoTmp2.add(vehiculoCategoriaTrabajoTmp);
+        });
+        this.listaVehiculoCategoriaTrabajo = listaVehiculoCategoriaTrabajoTmp2;
+    }
+
+    public void eliminarVehiculoCategoriaTrabajo(VehiculoCategoriaTrabajo vehiculoCategoriaTrabajo) {
+        try {
+            this.vehiculoCategoriaTrabajoBean.eliminarVehiculoCategoriaTrabajo(vehiculoCategoriaTrabajo);
+            this.listaVehiculoCategoriaTrabajo = this.vehiculoCategoriaTrabajoBean.obtenerListaPorVehiculo(vehiculo);
+            setListaTrabajoCategoriaPrecioParaConFigurar(this.trabajoCategoriaTrabajoBean.generarListaTrabajoCategoriaPrecioTodosMenosElAuto(vehiculo, grupoPrecioSeccionado));
+        } catch (Exception ex) {
+            final Throwable root = ExceptionUtils.getRootCause(ex);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + ex.getMessage());
+            Logger.getLogger(VehiculoCategoriaAdministracionControlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public List<Vehiculo> completarAuto(String consulta) {
+
+        List<Vehiculo> listaVehiculos = this.vehiculoBean.obtenerLista();
+        return listaVehiculos.stream().filter(t -> t.getDescripcionConMarca().toLowerCase().contains(consulta.toLowerCase())).collect(Collectors.toList());
+
+    }
+
+    public void cargarVehiculoSeleccionado() {
+        cargarVehiculoSeleccionadoParaCopiar();
+        setListaTrabajoCategoriaPrecioParaConFigurar(this.trabajoCategoriaTrabajoBean.generarListaTrabajoCategoriaPrecioTodosMenosElAuto(vehiculo, grupoPrecioSeccionado));
+    }
+
+    public void cargarVehiculoSeleccionadoParaCopiar() {
+        this.listaVehiculoSeleccionado = new ArrayList<>();
+        this.listaVehiculoSeleccionado.add(vehiculo);
+        this.listaVehiculoCategoriaTrabajo = this.vehiculoCategoriaTrabajoBean.obtenerListaPorVehiculo(vehiculo);
+    }
+
+    public void cargarPreciosAVehiculo() {
+        for (TrabajoCategoriaPrecio trabajoCategoriaPrecioTmp : getListaTrabajoCategoriaPrecioParaConFigurar()) {
+            if (trabajoCategoriaPrecioTmp.isSeleccionar()) {
+
+            }
+        }
     }
 
     public List<TrabajoCategoriaPrecio> generarTrabajoCategoriaPrecioParaAuto(GrupoPrecioParteCategoriaVehiculo grupoPrecioParteCategoriaVehiculo) {
@@ -197,11 +268,11 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
         System.out.println("agregarGrupoTrabajoAVehiculo");
         try {
             GrupoPrecioParteCategoriaVehiculo grupoPrecioParteCategoriaVehiculo = new GrupoPrecioParteCategoriaVehiculo();
-            System.out.println("grupoPrecioSeccionado: "+grupoPrecioSeccionado.getNombre());
-            System.out.println("partePrincipalSeleccionada: "+partePrincipalSeleccionada.getParte());
-            System.out.println("categoriaSeleccionado: "+categoriaSeleccionado.getCategoria());
-            System.out.println("agregarGrupoTrabajoAVehiculo: "+vehiculoSeleccionado.getDescripcionDetallada());
-            
+            System.out.println("grupoPrecioSeccionado: " + grupoPrecioSeccionado.getNombre());
+            System.out.println("partePrincipalSeleccionada: " + partePrincipalSeleccionada.getParte());
+            System.out.println("categoriaSeleccionado: " + categoriaSeleccionado.getCategoria());
+            System.out.println("agregarGrupoTrabajoAVehiculo: " + vehiculoSeleccionado.getDescripcionDetallada());
+
             grupoPrecioParteCategoriaVehiculo.setGrupoPrecio(grupoPrecioSeccionado);
             grupoPrecioParteCategoriaVehiculo.setParte(partePrincipalSeleccionada);
             grupoPrecioParteCategoriaVehiculo.setCategoria(categoriaSeleccionado);
@@ -214,7 +285,7 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
             grupoPrecioSeccionado = null;
             partePrincipalSeleccionada = null;
             categoriaSeleccionado = null;
-            
+
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
             if (null != root) {
@@ -523,6 +594,45 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
             modificar();
         } else {
             guardar();
+        }
+    }
+
+    public void guardarProductosSeleccionados() {
+        try {
+            this.vehiculoCategoriaTrabajoBean.crearListaVehiculoCategoriaTrabajo(listaTrabajoCategoriaPrecioParaConFigurar, vehiculo);
+            this.listaVehiculoCategoriaTrabajo = this.vehiculoCategoriaTrabajoBean.obtenerListaPorVehiculo(vehiculo);
+            setListaTrabajoCategoriaPrecioParaConFigurar(this.trabajoCategoriaTrabajoBean.generarListaTrabajoCategoriaPrecioTodosMenosElAuto(vehiculo, grupoPrecioSeccionado));
+        } catch (Exception ex) {
+            final Throwable root = ExceptionUtils.getRootCause(ex);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + ex.getMessage());
+            Logger.getLogger(VehiculoCategoriaAdministracionControlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void copiarCategoriaProductosAOtro() {
+        try {
+            for (VehiculoCategoriaTrabajo vehiculoCategoriaTrabajoTmp : this.listaVehiculoCategoriaTrabajo) {
+                if (vehiculoCategoriaTrabajoTmp.isSeleccionar()) {
+                    VehiculoCategoriaTrabajo vehiculoCategoriaTrabajoTmp2 = new VehiculoCategoriaTrabajo();
+                    vehiculoCategoriaTrabajoTmp2.setVehiculo(vehiculoSeleccionadoParaCopiar);
+                    vehiculoCategoriaTrabajoTmp2.setTrabajoCategoriaPrecio(vehiculoCategoriaTrabajoTmp.getTrabajoCategoriaPrecio());
+                    vehiculoCategoriaTrabajoBean.crear(vehiculoCategoriaTrabajoTmp2);
+                }
+            }
+            this.listaVehiculoCategoriaTrabajoDeAutoCopiado = vehiculoCategoriaTrabajoBean.obtenerListaPorVehiculo(vehiculoSeleccionadoParaCopiar);
+            
+        } catch (Exception ex) {
+            final Throwable root = ExceptionUtils.getRootCause(ex);
+            if (null != root) {
+                addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + root.getMessage());
+                return;
+            }
+            addErrorMessage(Constante.ERROR, Constante.ERROR_TRABAJO_CONTROLADOR_CARGAR_PRECIO + ":" + ex.getMessage());
+            Logger.getLogger(VehiculoCategoriaAdministracionControlador.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -936,7 +1046,7 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
     public void setListaGrupoPrecioParteCategoriaVehiculo(List<GrupoPrecioParteCategoriaVehiculo> listaGrupoPrecioParteCategoriaVehiculo) {
         this.listaGrupoPrecioParteCategoriaVehiculo = listaGrupoPrecioParteCategoriaVehiculo;
     }
-    
+
     /**
      * @return the listaTrabajoCategoriaPrecio
      */
@@ -963,6 +1073,66 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
      */
     public void setCategoriaSeleccionado(Categoria categoriaSeleccionado) {
         this.categoriaSeleccionado = categoriaSeleccionado;
+    }
+
+    /**
+     * @return the listaTrabajoCategoriaPrecioParaConFigurar
+     */
+    public List<TrabajoCategoriaPrecio> getListaTrabajoCategoriaPrecioParaConFigurar() {
+        return listaTrabajoCategoriaPrecioParaConFigurar;
+    }
+
+    /**
+     * @param listaTrabajoCategoriaPrecioParaConFigurar the
+     * listaTrabajoCategoriaPrecioParaConFigurar to set
+     */
+    public void setListaTrabajoCategoriaPrecioParaConFigurar(List<TrabajoCategoriaPrecio> listaTrabajoCategoriaPrecioParaConFigurar) {
+        this.listaTrabajoCategoriaPrecioParaConFigurar = listaTrabajoCategoriaPrecioParaConFigurar;
+    }
+
+    /**
+     * @return the listaVehiculoCategoriaTrabajo
+     */
+    public List<VehiculoCategoriaTrabajo> getListaVehiculoCategoriaTrabajo() {
+        return listaVehiculoCategoriaTrabajo;
+    }
+
+    /**
+     * @param listaVehiculoCategoriaTrabajo the listaVehiculoCategoriaTrabajo to
+     * set
+     */
+    public void setListaVehiculoCategoriaTrabajo(List<VehiculoCategoriaTrabajo> listaVehiculoCategoriaTrabajo) {
+        this.listaVehiculoCategoriaTrabajo = listaVehiculoCategoriaTrabajo;
+    }
+
+    /**
+     * @return the vehiculoSeleccionadoParaCopiar
+     */
+    public Vehiculo getVehiculoSeleccionadoParaCopiar() {
+        return vehiculoSeleccionadoParaCopiar;
+    }
+
+    /**
+     * @param vehiculoSeleccionadoParaCopiar the vehiculoSeleccionadoParaCopiar
+     * to set
+     */
+    public void setVehiculoSeleccionadoParaCopiar(Vehiculo vehiculoSeleccionadoParaCopiar) {
+        this.vehiculoSeleccionadoParaCopiar = vehiculoSeleccionadoParaCopiar;
+    }
+
+    /**
+     * @return the listaVehiculoCategoriaTrabajoDeAutoCopiado
+     */
+    public List<VehiculoCategoriaTrabajo> getListaVehiculoCategoriaTrabajoDeAutoCopiado() {
+        return listaVehiculoCategoriaTrabajoDeAutoCopiado;
+    }
+
+    /**
+     * @param listaVehiculoCategoriaTrabajoDeAutoCopiado the
+     * listaVehiculoCategoriaTrabajoDeAutoCopiado to set
+     */
+    public void setListaVehiculoCategoriaTrabajoDeAutoCopiado(List<VehiculoCategoriaTrabajo> listaVehiculoCategoriaTrabajoDeAutoCopiado) {
+        this.listaVehiculoCategoriaTrabajoDeAutoCopiado = listaVehiculoCategoriaTrabajoDeAutoCopiado;
     }
 
 }

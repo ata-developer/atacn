@@ -7,6 +7,7 @@ package ec.com.ata.cn.modelo;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -22,6 +23,7 @@ import javax.persistence.Table;
 @Table(name = "vehiculo_imagen")
 public class VehiculoImagen implements Serializable {
 
+    
     private static final long serialVersionUID = 1L;
 
     @EmbeddedId
@@ -36,6 +38,9 @@ public class VehiculoImagen implements Serializable {
     @JoinColumn(name = "id_imagen", referencedColumnName = "id_imagen")
     @ManyToOne
     private Imagen imagen;
+    
+     @Embedded
+    private GenericoEntidad genericoEntidad;
 
     @Override
     public int hashCode() {
@@ -105,5 +110,20 @@ public class VehiculoImagen implements Serializable {
     public void setVehiculoImagenId(VehiculoImagenId vehiculoImagenId) {
         this.vehiculoImagenId = vehiculoImagenId;
     }
+    
+    /**
+     * @return the genericoEntidad
+     */
+    public GenericoEntidad getGenericoEntidad() {
+        return genericoEntidad;
+    }
+
+    /**
+     * @param genericoEntidad the genericoEntidad to set
+     */
+    public void setGenericoEntidad(GenericoEntidad genericoEntidad) {
+        this.genericoEntidad = genericoEntidad;
+    }
+
 
 }

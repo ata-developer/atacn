@@ -58,6 +58,10 @@ public class VehiculoParte implements Serializable {
 
     @Embedded
     private GenericoEntidad genericoEntidad;
+    
+    public VehiculoParte(){
+        this.genericoEntidad = new GenericoEntidad();
+    }
 
     /**
      * @return the idVehiculoParte

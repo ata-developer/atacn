@@ -1,0 +1,238 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"                
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:of="http://omnifaces.org/functions"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/WEB-INF/templateATA.xhtml">
+
+    <ui:define name="content">
+        <h:form id="frmConfigurarVehiculoCategoria">
+            <h1>#{msj.administrarMarcaVehiculos}</h1>
+            <p/>
+            <p:fieldset id="fsConfigurarVehiculo" legend="#{msj.configurarPrecio  }"  >
+                <p:panelGrid id="pngAdministrarVehiculo1" columns="2">
+                     
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.descripcionGrupoPrecio}" />
+                    <p:selectOneMenu
+                        id="somSeleccionarGrupoPrecio"
+                        value="#{vehiculoCategoriaAdministracionControlador.grupoPrecioSeccionado}"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{grupoPrecioControlador.generarSelectItemDeGrupoPrecio()}" />
+                        <p:ajax 
+                            event="change"
+                            update="fsConfigurarVehiculo mensajeGeneral"/>
+                    </p:selectOneMenu>
+                    
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.grupoTrabajoSeleccionado}" />
+                    
+                     <p:outputLabel
+                        for="@next"
+                        value="#{vehiculoCategoriaAdministracionControlador.grupoPrecioSeccionado.nombre}" />
+                    
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.seleccionVehiculo}" />
+                    <p:autoComplete
+                        id="acVehiculo"
+                        minQueryLength="3"
+                        effect="fade"
+                        value="#{vehiculoCategoriaAdministracionControlador.vehiculo}"
+                        completeMethod="#{vehiculoCategoriaAdministracionControlador.completarAuto}"
+                        converter="vehiculoConvertidor"
+                        var="vehiculo"
+                        itemValue="#{vehiculo}"
+                        itemLabel="#{vehiculo.descripcionConMarca}">
+                        <p:ajax
+                            event="itemSelect"
+                            resetValues="true" 
+                            update="tblListaVehiculosTodos tblListaTrabajoCategoriaPrecio fsCargarPrecios mensajeGeneral"
+                            listener="#{vehiculoCategoriaAdministracionControlador.cargarVehiculoSeleccionado()}"/>
+                        <p:column>
+                            <h:outputText value="#{vehiculo.descripcionConMarca}" />
+                        </p:column>
+                    </p:autoComplete>
+                    
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.vehiculoSeleccionado}" />
+                    
+                     <p:outputLabel
+                         value="#{vehiculoCategoriaAdministracionControlador.vehiculo.descripcionConMarca}" />
+                </p:panelGrid>
+                <p/>
+                <p:dataTable
+                    id="tblListaVehiculosTodos"                
+                    var="vehiculo" 
+                    emptyMessage="#{msj.noHayInformacion}"
+                    value="#{vehiculoCategoriaAdministracionControlador.listaVehiculoSeleccionado}">
+                    <f:facet name="header">
+                        #{msj.listaDeVehiculos}
+                    </f:facet>
+
+                    <p:column headerText="#{msj.codigo}" >
+                        <h:outputText value="#{vehiculo.idVehiculo}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.descripcionModelo}" >
+                        <h:outputText value="#{vehiculo.modelo}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.marca}" >
+                        <h:outputText value="#{vehiculo.marca.marca}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.tienePlantilla}" >
+                        <h:outputText value="#{vehiculoAdministracionControlador.generarDatosPlantilla(vehiculo)}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.descripcion}" >
+                        <h:outputText value="#{vehiculo.descripcion}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.anioInicialRango}">
+                        <h:outputText value="#{vehiculo.anioDesde}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.anioFinalRango}">
+                        <h:outputText value="#{vehiculo.anioHasta}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.imagenes}" >
+                        <p:row>
+                            <p:repeat var="imagen" value="#{vehiculoAdministracionControlador.listaImagenes(vehiculo)}" >
+                                <p:column>
+                                    <h:outputLink value="MostradorImagen?Image_id=#{imagen.idImagen}" target="_blank" >
+                                        <h:graphicImage value="MostradorImagen?Image_id=#{imagen.idImagen}" width="50" height="50"></h:graphicImage>
+                                    </h:outputLink>
+                                </p:column>
+                            </p:repeat>
+                        </p:row>
+                    </p:column>
+                </p:dataTable>
+                <p/>
+                <p:dataTable
+                    id="tblListaTrabajoCategoriaPrecio"                
+                    var="trabajoCategoriaPrecio"
+                    editable="true"
+                    value="#{vehiculoCategoriaAdministracionControlador.listaTrabajoCategoriaPrecioParaConFigurar}">
+                    <f:facet name="header">
+                        #{msj.listaDeTrabajos}
+                    </f:facet>
+
+
+
+                    <p:column headerText="#{msj.codigo}">
+                        <h:outputText value="#{trabajoCategoriaPrecio.idTrabajoCategoriaPrecio}" />                       
+                    </p:column>
+
+                    <p:column headerText="#{msj.codigoTrabajo}">
+                        <h:outputText value="#{trabajoCategoriaPrecio.codigo}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.descripcionTrabajo}">
+                        <h:outputText value="#{trabajoCategoriaPrecio.trabajo.descripcion}" />
+
+                    </p:column>
+
+                    <p:column headerText="#{msj.detalleTrabajo}">
+                        <h:outputText value="#{trabajoCategoriaPrecio.trabajo.detalle}" /> 
+                    </p:column>
+
+                    <p:column headerText="#{msj.descripcionCategoria}">
+                        <h:outputText value="#{trabajoCategoriaPrecio.categoria.categoria}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.parte}">
+                        <h:outputText value="#{trabajoCategoriaPrecio.parte.parte}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.precioVentaPublico}">
+                        <h:outputText value="#{trabajoCategoriaPrecio.precioVentaPublico}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.precioEfectivo}">
+                        <h:outputText value="#{trabajoCategoriaPrecio.precioEfectivo}" />
+                    </p:column>
+
+
+
+                    <p:column headerText="#{msj.seleccionar}">
+                        <p:selectBooleanCheckbox value="#{trabajoCategoriaPrecio.seleccionar}" itemLabel="#{msj.seleccionar}"/>
+                    </p:column>
+
+                </p:dataTable>
+
+            </p:fieldset>
+            <p/>
+            <p:fieldset id="fsCargarPrecios" legend="#{msj.cargarPrecios}"  >
+                <p:commandButton
+                    id="btnGuardar" 
+                    value="#{msj.agregarTrabajos}"
+                    process="@this fsConfigurarVehiculo"
+                    update="fsCargarPrecios fsConfigurarVehiculo mensajeGeneral"
+                    action="#{vehiculoCategoriaAdministracionControlador.guardarProductosSeleccionados()}" />
+                <p/>
+                <p:dataTable
+                    id="tblListaVehiculoCategoriaPrecio"                
+                    var="vehiculoCategoriaTrabajo"
+                    value="#{vehiculoCategoriaAdministracionControlador.listaVehiculoCategoriaTrabajo}">
+                    <f:facet name="header">
+                        #{msj.listaDeTrabajos}
+                    </f:facet>
+
+
+
+                    <p:column headerText="#{msj.codigo}">
+                        <h:outputText value="#{vehiculoCategoriaTrabajo.trabajoCategoriaPrecio.idTrabajoCategoriaPrecio}" />                       
+                    </p:column>
+
+                    <p:column headerText="#{msj.codigoTrabajo}">
+                        <h:outputText value="#{vehiculoCategoriaTrabajo.trabajoCategoriaPrecio.codigo}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.descripcionTrabajo}">
+                        <h:outputText value="#{vehiculoCategoriaTrabajo.trabajoCategoriaPrecio.trabajo.descripcion}" />
+
+                    </p:column>
+
+                    <p:column headerText="#{msj.detalleTrabajo}">
+                        <h:outputText value="#{vehiculoCategoriaTrabajo.trabajoCategoriaPrecio.trabajo.detalle}" /> 
+                    </p:column>
+
+                    <p:column headerText="#{msj.descripcionCategoria}">
+                        <h:outputText value="#{vehiculoCategoriaTrabajo.trabajoCategoriaPrecio.categoria.categoria}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.parte}">
+                        <h:outputText value="#{vehiculoCategoriaTrabajo.trabajoCategoriaPrecio.parte.parte}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.precioVentaPublico}">
+                        <h:outputText value="#{vehiculoCategoriaTrabajo.trabajoCategoriaPrecio.precioVentaPublico}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.precioEfectivo}">
+                        <h:outputText value="#{vehiculoCategoriaTrabajo.trabajoCategoriaPrecio.precioEfectivo}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.acciones}">
+                        <p:commandButton
+                            id="btnEliminarTrabajo" 
+                            process="@this"
+                            value="#{msj.eliminar}"
+                            update=":frmConfigurarVehiculoCategoria:fsConfigurarVehiculo :frmConfigurarVehiculoCategoria:fsCargarPrecios mensajeGeneral"
+                            action="#{vehiculoCategoriaAdministracionControlador.eliminarVehiculoCategoriaTrabajo(vehiculoCategoriaTrabajo)}" />
+                    </p:column>
+                </p:dataTable>
+            </p:fieldset>
+        </h:form>
+    </ui:define>
+</ui:composition>

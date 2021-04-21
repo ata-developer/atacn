@@ -10,8 +10,7 @@ import ec.com.ata.cn.modelo.Vehiculo;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
+import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -21,57 +20,30 @@ import javax.inject.Named;
  */
 @Named
 @RequestScoped
-public class VehiculoConvertidor implements Converter{
-     
+public class VehiculoConvertidor implements Convertidor<Vehiculo> {
+
     @Inject
     private VehiculoBean vehiculoBean;
 
-    /**
-     * Default constructor
-     */
-    public VehiculoConvertidor () {
-    }
-
     @Override
-    public Vehiculo getAsObject (final FacesContext context, final UIComponent component, final String submittedValue) {
-        // Is the value null or empty?
-        System.out.println("vehiculoBean: "+vehiculoBean);
-        System.out.println("submittedValue: "+submittedValue);
-        if ((null == submittedValue) || (submittedValue.trim().isEmpty())) {
-            // Return null
+    public Vehiculo getAsObject(FacesContext context, UIComponent component, String value) {
+        System.out.println("getAsObject----------");
+        System.out.println("value:---------------------" +value);
+        if (value != null && value.trim().length() > 0) {
+            return vehiculoBean.obtenerPorCodigo(new Long(value));
+        } else {
             return null;
         }
-
-        // Init instance
-        Vehiculo vehiculo = null;
-
-        try {
-            // Try to parse the value as long
-            
-            final Long idVehiculo = Long.valueOf(submittedValue);
-
-            // Try to get user instance from it
-            vehiculo = vehiculoBean.obtenerPorCodigo(idVehiculo);
-        } catch (Exception ex) {
-            // Throw again
-            ex.printStackTrace();
-            throw new ConverterException(ex);
-        } 
-
-        // Return it
-        return vehiculo;
     }
 
     @Override
-    public String getAsString(FacesContext context, UIComponent component, Object vehiculo) {
-        System.out.println("vehiculo: "+vehiculo);
-        if ((null == vehiculo) || (null == ((Vehiculo)vehiculo).getIdVehiculo())|| (String.valueOf(vehiculo).isEmpty())) {
-            // Is null
-            return ""; //NOI18N
+    public String getAsString(FacesContext context, UIComponent component, Object value) {
+        System.out.println("getAsString------------");
+        if (value != null) {
+            Vehiculo vehiculoTmp = (Vehiculo) value;
+            return String.valueOf(vehiculoTmp.getIdVehiculo());
+        } else {
+            return null;
         }
-
-        // Return id number
-        Vehiculo vehiculoTmp =  (Vehiculo) vehiculo;
-        return vehiculoTmp.getIdVehiculo().toString();
     }
 }

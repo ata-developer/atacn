@@ -50,6 +50,8 @@ import org.primefaces.model.DualListModel;
 @Named
 public class GrupoPrecioControlador extends BaseControlador {
 
+    
+
     @Inject
     private GrupoPrecioBean grupoPrecioBean;
 
@@ -91,6 +93,8 @@ public class GrupoPrecioControlador extends BaseControlador {
     private List<HashMap<String, Object>> listaMapaTrabajoCategoriaPrecio;
     
     private List<TrabajoCategoriaPrecio> listaTrabajoCategoriaPrecio;
+    
+    
 
     private List<Categoria> listaCategoriaTmp = null;
 
@@ -128,7 +132,7 @@ public class GrupoPrecioControlador extends BaseControlador {
         setTrabajoCategoriaPrecio(new TrabajoCategoriaPrecio());
         setListaMapaTrabajoCategoriaPrecio(new ArrayList<HashMap<String, Object>>());
         setListaPartePrincipal(parteBean.obtenerListaPorPadre(null));
-
+        
     }
     
     
@@ -160,7 +164,7 @@ public class GrupoPrecioControlador extends BaseControlador {
             trabajoCategoriaTrabajoBean.modificar(trabajoCategoriaPrecioTmp);
             System.out.println("Trabajo: " + trabajoCategoriaPrecioTmp.getTrabajo().getDescripcion());
             System.out.println("Trabajo.detalle: " + trabajoCategoriaPrecioTmp.getTrabajo().getDetalle());
-            //setListaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerPorGrupoPrecio(grupoPrecioSeccionado));
+            setListaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerPorGrupoPrecio(grupoPrecioSeccionado));
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
             if (null != root) {
@@ -756,5 +760,6 @@ public class GrupoPrecioControlador extends BaseControlador {
     public void setListaTrabajoCategoriaPrecio(List<TrabajoCategoriaPrecio> listaTrabajoCategoriaPrecio) {
         this.listaTrabajoCategoriaPrecio = listaTrabajoCategoriaPrecio;
     }
-
+    
+  
 }

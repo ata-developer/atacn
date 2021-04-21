@@ -929,7 +929,7 @@ public class OrdenControlador extends BaseControlador {
             vehiculoTrabajo.getGenericoEntidad().setFechaRegistro(new Date(System.currentTimeMillis()));
             vehiculoTrabajo = vehiculoTrabajoBean.crear(vehiculoTrabajo);
             System.out.println("trabajoCategoriaPrecio.getTrabajoCategoriaPrecioId:" + trabajoCategoriaPrecio.getIdTrabajoCategoriaPrecio());
-            System.out.println("trabajoCategoriaPrecio.getParte:" + trabajoCategoriaPrecio.getParte());
+            //System.out.println("trabajoCategoriaPrecio.getParte:" + trabajoCategoriaPrecio.getParte());
             parametros = new HashMap<>();
             parametros.put("padre", trabajoCategoriaPrecio.getParte());
             parametros.put("distintivo", "INICIALIZAR");

@@ -15,7 +15,6 @@ import ec.com.ata.cn.logica.UsuarioBean;
 import ec.com.ata.cn.logica.UsuarioRolBean;
 import ec.com.ata.cn.logica.util.gestor.Constante;
 import ec.com.ata.cn.modelo.Equipo;
-import ec.com.ata.cn.modelo.Parte;
 import ec.com.ata.cn.modelo.Rol;
 import ec.com.ata.cn.modelo.RolUrl;
 import ec.com.ata.cn.modelo.TipoDocumento;
@@ -137,7 +136,7 @@ public class UsuarioControlador extends BaseControlador {
                 addErrorMessage("Error", "Confirmación contraseña");
                 return;
             }
-            
+            System.out.println("usuarioTmp: "+usuarioTmp.getContrasenia());
             usuarioBean.modificar(usuarioTmp);
             addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {

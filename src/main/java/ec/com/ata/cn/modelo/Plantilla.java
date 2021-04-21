@@ -37,7 +37,7 @@ public class Plantilla implements Serializable {
     private Long idPlantilla;
     
     @Column(name = "existe")
-    private Boolean existe;
+    private boolean existe;
     
     @Column(name = "numero_piezas")
     private Integer numeroPiezas;

@@ -324,17 +324,7 @@
                         <f:convertNumber pattern="#0.00" />
                     </p:inputText>
 
-                    <p:outputLabel
-                        for="@next"
-                        value="#{msj.precioDescuento}" />
-                    <p:inputText
-                        id="itPrecioDescuento"
-                        required="true"
-                        requiredMessage="#{msj.campoNecesario}"
-                        value="#{grupoPrecioControlador.trabajoCategoriaPrecio.precioDescuento}"
-                        onblur="value = value.toUpperCase()">
-                        <f:convertNumber pattern="#0.00" />
-                    </p:inputText>
+                    
 
                     <p:commandButton
                         id="btnGuardar" 
@@ -458,21 +448,7 @@
                         </p:cellEditor>
                     </p:column>
 
-                    <p:column headerText="#{msj.precioDescuento}">
-                        <p:cellEditor>
-                            <f:facet name="output"><h:outputText value="#{trabajoCategoriaPrecio.precioDescuento}" /></f:facet>
-                            <f:facet name="input">
-                                <p:inputText
-                                    id="itPrecioDescuentoTabla"
-                                    required="true"
-                                    requiredMessage="#{msj.campoNecesario}"
-                                    value="#{trabajoCategoriaPrecio.precioDescuento}">
-                                    <f:convertNumber pattern="#0.00" />
-                                </p:inputText>
-
-                            </f:facet>
-                        </p:cellEditor>
-                    </p:column>
+                    
 
                     <p:column headerText="#{msj.acciones}">
                         <p:commandButton

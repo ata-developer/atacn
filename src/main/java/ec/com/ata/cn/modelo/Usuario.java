@@ -72,7 +72,7 @@ public class Usuario implements Serializable {
     @Column(name = "telefono", length = 60, unique=true)
     private String telefono;
     
-    @Column(name = "correo", length = 60, unique=true)
+    @Column(name = "correo", length = 255, unique=true)
     private String correo;
     
     @Column(name = "tipo_usuario", length = 60)
@@ -81,7 +81,7 @@ public class Usuario implements Serializable {
     @Column(name = "usuario", length = 60, unique=true)
     private String usuario;
         
-    @Column(name = "contrasenia", length = 100)
+    @Column(name = "contrasenia", length = 2000)
     private String contrasenia;
     
     @Transient

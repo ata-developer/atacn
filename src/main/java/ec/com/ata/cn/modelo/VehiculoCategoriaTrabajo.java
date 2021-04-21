@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -11,8 +11,8 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  *
@@ -21,6 +21,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "vehiculo_categoria_trabajo")
 public class VehiculoCategoriaTrabajo implements Serializable {
+    
 
     private static final long serialVersionUID = 1L;
     
@@ -32,20 +33,13 @@ public class VehiculoCategoriaTrabajo implements Serializable {
     @ManyToOne
     private Vehiculo vehiculo;
     
-    @MapsId("idGrupoPrecio")
-    @JoinColumn(name="id_grupo_precio", referencedColumnName="id_grupo_precio")
+    @MapsId("idTrabajoCategoriaPrecio")
+    @JoinColumn(name="id_trabajo_categoria_precio", referencedColumnName="id_trabajo_categoria_precio")
     @ManyToOne
-    private GrupoPrecio grupoPrecio;
+    private TrabajoCategoriaPrecio trabajoCategoriaPrecio;
     
-    @MapsId("idCategoriaForroTapiceria")
-    @JoinColumn(name="id_categoria_forro_tapiceria", referencedColumnName="id_categoria" )
-    @ManyToOne
-    private Categoria categoriaForroTapiceria;
-    
-    @MapsId("idCategoriaPiso")
-    @ManyToOne
-    @PrimaryKeyJoinColumn(name="id_categoria_piso", referencedColumnName="id_categoria")
-    private Categoria categoriaPiso;
+    @Transient
+    private boolean seleccionar;
    
     /**
      * @return the vehiculo
@@ -60,35 +54,6 @@ public class VehiculoCategoriaTrabajo implements Serializable {
     public void setVehiculo(Vehiculo vehiculo) {
         this.vehiculo = vehiculo;
     }
-
-    /**
-     * @return the categoriaForroTapiceria
-     */
-    public Categoria getCategoriaForroTapiceria() {
-        return categoriaForroTapiceria;
-    }
-
-    /**
-     * @param categoriaForroTapiceria the categoriaForroTapiceria to set
-     */
-    public void setCategoriaForroTapiceria(Categoria categoriaForroTapiceria) {
-        this.categoriaForroTapiceria = categoriaForroTapiceria;
-    }
-
-    /**
-     * @return the categoriaPiso
-     */
-    public Categoria getCategoriaPiso() {
-        return categoriaPiso;
-    }
-
-    /**
-     * @param categoriaPiso the categoriaPiso to set
-     */
-    public void setCategoriaPiso(Categoria categoriaPiso) {
-        this.categoriaPiso = categoriaPiso;
-    }
-
     
     /**
      * @return the vehiculoCategoriaTrabajoId
@@ -104,19 +69,34 @@ public class VehiculoCategoriaTrabajo implements Serializable {
         this.vehiculoCategoriaTrabajoId = vehiculoCategoriaTrabajoId;
     }
 
-    /**
-     * @return the grupoPrecio
+   /**
+     * @return the trabajoCategoriaPrecio
      */
-    public GrupoPrecio getGrupoPrecio() {
-        return grupoPrecio;
+    public TrabajoCategoriaPrecio getTrabajoCategoriaPrecio() {
+        return trabajoCategoriaPrecio;
     }
 
     /**
-     * @param grupoPrecio the grupoPrecio to set
+     * @param trabajoCategoriaPrecio the trabajoCategoriaPrecio to set
      */
-    public void setGrupoPrecio(GrupoPrecio grupoPrecio) {
-        this.grupoPrecio = grupoPrecio;
+    public void setTrabajoCategoriaPrecio(TrabajoCategoriaPrecio trabajoCategoriaPrecio) {
+        this.trabajoCategoriaPrecio = trabajoCategoriaPrecio;
     }
     
+    
+    /**
+     * @return the seleccionar
+     */
+    public boolean isSeleccionar() {
+        return seleccionar;
+    }
+
+    /**
+     * @param seleccionar the seleccionar to set
+     */
+    public void setSeleccionar(boolean seleccionar) {
+        this.seleccionar = seleccionar;
+    }
+
     
 }

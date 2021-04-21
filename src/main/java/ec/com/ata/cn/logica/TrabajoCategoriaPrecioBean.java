@@ -15,9 +15,11 @@ import ec.com.ata.cn.modelo.Trabajo;
 import ec.com.ata.cn.modelo.TrabajoCategoriaPrecio;
 import ec.com.ata.cn.modelo.TrabajoCategoriaPrecioId;
 import ec.com.ata.cn.modelo.Vehiculo;
+import ec.com.ata.cn.modelo.VehiculoCategoriaTrabajo;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -39,6 +41,21 @@ public class TrabajoCategoriaPrecioBean {
 
     @Inject
     private GrupoPrecioParteCategoriaVehiculoBean grupoPrecioParteCategoriaVehiculoBean;
+    
+    @Inject
+    private VehiculoCategoriaTrabajoBean vehiculoCategoriaTrabajoBean;
+    
+    public List<TrabajoCategoriaPrecio> generarListaTrabajoCategoriaPrecioTodosMenosElAuto(Vehiculo vehiculoEntrada, GrupoPrecio grupoPrecio){
+        List<VehiculoCategoriaTrabajo> listaVehiculoCategoriaTrabajo = this.vehiculoCategoriaTrabajoBean.obtenerListaPorVehiculo(vehiculoEntrada);
+        List<TrabajoCategoriaPrecio> listaCategoriaPrecioDeAuto = new ArrayList<>();
+        for (VehiculoCategoriaTrabajo vehiculoCategoriaTrabajo : listaVehiculoCategoriaTrabajo) {
+            listaCategoriaPrecioDeAuto.add(vehiculoCategoriaTrabajo.getTrabajoCategoriaPrecio());
+        }        
+        List<TrabajoCategoriaPrecio> diff = obtenerPorGrupoPrecio(grupoPrecio).stream()
+                          .filter(i -> !listaCategoriaPrecioDeAuto.contains(i))
+                          .collect (Collectors.toList());
+        return diff;
+    }
     
     public void eliminar (TrabajoCategoriaPrecio trabajoCategoriaPrecioEntrada) throws Exception {
         trabajoCategoriaPrecioDao.eliminar(trabajoCategoriaPrecioEntrada);

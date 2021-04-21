@@ -1,0 +1,235 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"                
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:of="http://omnifaces.org/functions"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/WEB-INF/templateATA.xhtml">
+
+    <ui:define name="content">
+        <h:form id="frmCopiarVehiculoCategoria">
+            <h1>#{msj.administrarMarcaVehiculos}</h1>
+            <p/>
+            <p:fieldset id="fsConfigurarVehiculo" legend="#{msj.configurarPrecio  }"  >
+                <p:panelGrid id="pngAdministrarVehiculoConfigurar" columns="2">
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.seleccionVehiculo}" />
+                    <p:autoComplete
+                        id="acVehiculoConfigurarOrigen"
+                        minQueryLength="3"
+                        effect="fade"
+                        value="#{vehiculoCategoriaAdministracionControlador.vehiculo}"
+                        completeMethod="#{vehiculoCategoriaAdministracionControlador.completarAuto}"
+                        converter="vehiculoConvertidor"
+                        var="vehiculo"
+                        itemValue="#{vehiculo}"
+                        itemLabel="#{vehiculo.descripcionConMarca}">
+                        <p:ajax
+                            event="itemSelect"
+                            resetValues="true" 
+                            update="tblListaVehiculosCopiar fsConfigurarVehiculo mensajeGeneral"
+                            listener="#{vehiculoCategoriaAdministracionControlador.cargarVehiculoSeleccionadoParaCopiar()}"/>
+                        <p:column>
+                            <h:outputText value="#{vehiculo.descripcionConMarca}" />
+                        </p:column>
+                    </p:autoComplete>
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.vehiculoSeleccionado}" />
+
+                    <p:outputLabel
+                        value="#{vehiculoCategoriaAdministracionControlador.vehiculo.descripcionConMarca}" />
+                </p:panelGrid>
+                <p/>
+                <p:dataTable
+                    id="tblListaVehiculosCopiar"                
+                    var="vehiculo" 
+                    emptyMessage="#{msj.noHayInformacion}"
+                    value="#{vehiculoCategoriaAdministracionControlador.listaVehiculoSeleccionado}">
+                    <f:facet name="header">
+                        #{msj.listaDeVehiculos}
+                    </f:facet>
+
+                    <p:column headerText="#{msj.codigo}" >
+                        <h:outputText value="#{vehiculo.idVehiculo}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.descripcionModelo}" >
+                        <h:outputText value="#{vehiculo.modelo}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.marca}" >
+                        <h:outputText value="#{vehiculo.marca.marca}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.tienePlantilla}" >
+                        <h:outputText value="#{vehiculoAdministracionControlador.generarDatosPlantilla(vehiculo)}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.descripcion}" >
+                        <h:outputText value="#{vehiculo.descripcion}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.anioInicialRango}">
+                        <h:outputText value="#{vehiculo.anioDesde}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.anioFinalRango}">
+                        <h:outputText value="#{vehiculo.anioHasta}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.imagenes}" >
+                        <p:row>
+                            <p:repeat var="imagen" value="#{vehiculoAdministracionControlador.listaImagenes(vehiculo)}" >
+                                <p:column>
+                                    <h:outputLink value="MostradorImagen?Image_id=#{imagen.idImagen}" target="_blank" >
+                                        <h:graphicImage value="MostradorImagen?Image_id=#{imagen.idImagen}" width="50" height="50"></h:graphicImage>
+                                    </h:outputLink>
+                                </p:column>
+                            </p:repeat>
+                        </p:row>
+                    </p:column>
+                </p:dataTable>
+                <p/>
+                <p:commandButton
+                    id="btnSeleccionarTodos" 
+                    value="#{msj.seleccionarTodos}"
+                    process="@this frmCopiarVehiculoCategoria"
+                    update="frmCopiarVehiculoCategoria mensajeGeneral"
+                    action="#{vehiculoCategoriaAdministracionControlador.seleccionarTodos()}" />
+                <p/>
+                <p:dataTable
+                    id="tblListaVehiculoCategoriaPrecio"                
+                    var="vehiculoCategoriaTrabajo"
+                    value="#{vehiculoCategoriaAdministracionControlador.listaVehiculoCategoriaTrabajo}">
+                    <f:facet name="header">
+                        #{msj.listaDeTrabajos}
+                    </f:facet>
+                    <p:column headerText="#{msj.codigo}">
+                        <h:outputText value="#{vehiculoCategoriaTrabajo.trabajoCategoriaPrecio.idTrabajoCategoriaPrecio}" />                       
+                    </p:column>
+
+                    <p:column headerText="#{msj.codigoTrabajo}">
+                        <h:outputText value="#{vehiculoCategoriaTrabajo.trabajoCategoriaPrecio.codigo}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.descripcionTrabajo}">
+                        <h:outputText value="#{vehiculoCategoriaTrabajo.trabajoCategoriaPrecio.trabajo.descripcion}" />
+
+                    </p:column>
+
+                    <p:column headerText="#{msj.detalleTrabajo}">
+                        <h:outputText value="#{vehiculoCategoriaTrabajo.trabajoCategoriaPrecio.trabajo.detalle}" /> 
+                    </p:column>
+
+                    <p:column headerText="#{msj.descripcionCategoria}">
+                        <h:outputText value="#{vehiculoCategoriaTrabajo.trabajoCategoriaPrecio.categoria.categoria}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.parte}">
+                        <h:outputText value="#{vehiculoCategoriaTrabajo.trabajoCategoriaPrecio.parte.parte}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.precioVentaPublico}">
+                        <h:outputText value="#{vehiculoCategoriaTrabajo.trabajoCategoriaPrecio.precioVentaPublico}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.precioEfectivo}">
+                        <h:outputText value="#{vehiculoCategoriaTrabajo.trabajoCategoriaPrecio.precioEfectivo}" />
+                    </p:column>
+                    
+                    <p:column headerText="#{msj.seleccionar}">
+                        <p:selectBooleanCheckbox value="#{vehiculoCategoriaTrabajo.seleccionar}" itemLabel="#{msj.seleccionar}"/>
+                    </p:column>
+                </p:dataTable>
+                <p/>
+                <p:panelGrid id="pngAdministrarVehiculoCopiar" columns="2">
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.seleccionVehiculo}" />
+                    <p:autoComplete
+                        id="acVehiculoConfigurarCopiar"
+                        minQueryLength="3"
+                        effect="fade"
+                        value="#{vehiculoCategoriaAdministracionControlador.vehiculoSeleccionadoParaCopiar}"
+                        completeMethod="#{vehiculoCategoriaAdministracionControlador.completarAuto}"
+                        converter="vehiculoConvertidor"
+                        var="vehiculo"
+                        itemValue="#{vehiculo}"
+                        itemLabel="#{vehiculo.descripcionConMarca}">
+                        <p:ajax
+                            event="itemSelect"
+                            resetValues="true" 
+                            update="tblListaVehiculosCopiar fsConfigurarVehiculo mensajeGeneral"
+                            listener="#{vehiculoCategoriaAdministracionControlador.cargarVehiculoSeleccionadoParaCopiar()}"/>
+                        <p:column>
+                            <h:outputText value="#{vehiculo.descripcionConMarca}" />
+                        </p:column>
+                    </p:autoComplete>
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.vehiculoSeleccionado}" />
+
+                    <p:outputLabel
+                        value="#{vehiculoCategoriaAdministracionControlador.vehiculoSeleccionadoParaCopiar.descripcionConMarca}" />
+                </p:panelGrid>
+
+                <p/>
+                <p:commandButton
+                    id="btnCopiarCategoriaPrecioParaOtroVehiculo" 
+                    value="#{msj.agregarTrabajos}"
+                    process="@this frmCopiarVehiculoCategoria"
+                    update="frmCopiarVehiculoCategoria mensajeGeneral"
+                    action="#{vehiculoCategoriaAdministracionControlador.copiarCategoriaProductosAOtro()}" />
+                <p/>
+                
+                <p:dataTable
+                    id="tblListaVehiculoCategoriaPrecioCopiado"                
+                    var="vehiculoCategoriaTrabajo"
+                    value="#{vehiculoCategoriaAdministracionControlador.listaVehiculoCategoriaTrabajoDeAutoCopiado}">
+                    <f:facet name="header">
+                        #{msj.listaDeTrabajos}
+                    </f:facet>
+                    <p:column headerText="#{msj.codigo}">
+                        <h:outputText value="#{vehiculoCategoriaTrabajo.trabajoCategoriaPrecio.idTrabajoCategoriaPrecio}" />                       
+                    </p:column>
+
+                    <p:column headerText="#{msj.codigoTrabajo}">
+                        <h:outputText value="#{vehiculoCategoriaTrabajo.trabajoCategoriaPrecio.codigo}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.descripcionTrabajo}">
+                        <h:outputText value="#{vehiculoCategoriaTrabajo.trabajoCategoriaPrecio.trabajo.descripcion}" />
+
+                    </p:column>
+
+                    <p:column headerText="#{msj.detalleTrabajo}">
+                        <h:outputText value="#{vehiculoCategoriaTrabajo.trabajoCategoriaPrecio.trabajo.detalle}" /> 
+                    </p:column>
+
+                    <p:column headerText="#{msj.descripcionCategoria}">
+                        <h:outputText value="#{vehiculoCategoriaTrabajo.trabajoCategoriaPrecio.categoria.categoria}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.parte}">
+                        <h:outputText value="#{vehiculoCategoriaTrabajo.trabajoCategoriaPrecio.parte.parte}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.precioVentaPublico}">
+                        <h:outputText value="#{vehiculoCategoriaTrabajo.trabajoCategoriaPrecio.precioVentaPublico}" />
+                    </p:column>
+
+                    <p:column headerText="#{msj.precioEfectivo}">
+                        <h:outputText value="#{vehiculoCategoriaTrabajo.trabajoCategoriaPrecio.precioEfectivo}" />
+                    </p:column>
+                </p:dataTable>
+
+            </p:fieldset>
+        </h:form>
+    </ui:define>
+</ui:composition>

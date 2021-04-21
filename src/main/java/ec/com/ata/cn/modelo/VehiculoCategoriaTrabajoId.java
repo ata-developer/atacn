@@ -21,18 +21,14 @@ public class VehiculoCategoriaTrabajoId implements Serializable {
     @Column(name = "id_vehiculo")
     private Long idVehiculo;
     
-    @Column(name = "id_grupo_precio")
-    private Long idGrupoPrecio;
+    @Column(name = "id_trabajo_categoria_precio")
+    private Long idTrabajoCategoriaPrecio;
     
-    @Column(name = "id_categoria_forro_tapiceria")
-    private Long idCategoriaForroTapiceria;
-    
-    @Column(name = "id_categoria_piso")
-    private Long idCategoriaPiso;
+   
 
     @Override
     public String toString() {
-        return "VehiculoCategoriaTrabajoId{" + "idVehiculo=" + idVehiculo + ", idGrupoPrecio=" + idGrupoPrecio + ", idCategoriaForroTapiceria=" + idCategoriaForroTapiceria + ", idCategoriaPiso=" + idCategoriaPiso + '}';
+        return "VehiculoCategoriaTrabajoId{" + "idVehiculo=" + idVehiculo + ", idTrabajoCategoriaPrecio=" + idTrabajoCategoriaPrecio + '}';
     }
     
     /**
@@ -49,39 +45,6 @@ public class VehiculoCategoriaTrabajoId implements Serializable {
         this.idVehiculo = idVehiculo;
     }
 
-    /**
-     * @return the idCategoriaForroTapiceria
-     */
-    public Long getIdCategoriaForroTapiceria() {
-        return idCategoriaForroTapiceria;
-    }
-
-    /**
-     * @param idCategoriaForroTapiceria the idCategoriaForroTapiceria to set
-     */
-    public void setIdCategoriaForroTapiceria(Long idCategoriaForroTapiceria) {
-        this.idCategoriaForroTapiceria = idCategoriaForroTapiceria;
-    }
-
-    /**
-     * @return the idCategoriaPiso
-     */
-    public Long getIdCategoriaPiso() {
-        return idCategoriaPiso;
-    }
-
-    /**
-     * @return the idGrupoPrecio
-     */
-    public Long getIdGrupoPrecio() {
-        return idGrupoPrecio;
-    }
-
-    /**
-     * @param idGrupoPrecio the idGrupoPrecio to set
-     */
-    public void setIdGrupoPrecio(Long idGrupoPrecio) {
-        this.idGrupoPrecio = idGrupoPrecio;
-    }
+    
     
 }

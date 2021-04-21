@@ -2,14 +2,6 @@
 <!DOCTYPE resources PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Resource Definitions//EN" "https://glassfish.java.net/dtds/glassfish-resources_1_5.dtd">
 <resources>
 
-    <jdbc-connection-pool name="ATACNPoolRC"
-                          datasource-classname="org.postgresql.ds.PGPoolingDataSource"
-                          res-type="javax.sql.ConnectionPoolDataSource">
-        <property name="URL" value="jdbc:postgresql://localhost:5432/atacnbd"/>
-        <property name="user" value="atadbuser01"></property>
-        <property name="password" value="**Ata0510**"></property>
-    </jdbc-connection-pool>
-
-    <jdbc-resource jndi-name="jdbc/ATACNPool" pool-name="ATACNPoolRC" />
+    
 
 </resources>

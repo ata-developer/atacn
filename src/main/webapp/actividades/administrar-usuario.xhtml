@@ -216,9 +216,18 @@
                     <p:column headerText="#{msj.apellido}">
                         <h:outputText value="#{usuario.apellido}" />
                     </p:column>
-                    
-                    <p:column headerText="#{msj.correo}">
-                        <h:outputText value="#{usuario.correo}" />
+
+                    <p:column headerText="#{msj.correo}">                        
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{usuario.correo}" />
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText
+                                    value="#{usuario.correo}">
+                                </p:inputText>
+                            </f:facet>
+                        </p:cellEditor>
                     </p:column>
 
                     <p:column headerText="#{msj.contrasena}">

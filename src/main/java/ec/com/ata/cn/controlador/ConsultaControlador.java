@@ -13,9 +13,9 @@ import ec.com.ata.cn.logica.ParteBean;
 import ec.com.ata.cn.logica.PeriodoBean;
 import ec.com.ata.cn.logica.PeriodoEstablecimientoBean;
 import ec.com.ata.cn.logica.RolBean;
-import ec.com.ata.cn.logica.RolUrlBean;
 import ec.com.ata.cn.logica.UrlBean;
 import ec.com.ata.cn.logica.UsuarioBean;
+import ec.com.ata.cn.logica.VehiculoBean;
 import ec.com.ata.cn.modelo.Equipo;
 import ec.com.ata.cn.modelo.Establecimiento;
 import ec.com.ata.cn.modelo.Horario;
@@ -30,10 +30,12 @@ import ec.com.ata.cn.modelo.TrabajoCategoriaPrecio;
 import ec.com.ata.cn.modelo.TrabajoParte;
 import ec.com.ata.cn.modelo.Url;
 import ec.com.ata.cn.modelo.Usuario;
+import ec.com.ata.cn.modelo.Vehiculo;
 import ec.com.ata.cn.modelo.VehiculoTrabajo;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
@@ -48,7 +50,7 @@ import org.omnifaces.util.selectitems.SelectItemsBuilder;
 @ViewScoped
 @Named
 public class ConsultaControlador extends BaseControlador {
-    
+
     @Inject
     private PeriodoBean periodoBean;
 
@@ -63,30 +65,31 @@ public class ConsultaControlador extends BaseControlador {
 
     @Inject
     private EquipoBean equipoBean;
-    
+
     @Inject
     private ParqueaderoBean parqueaderoBean;
-    
+
     @Inject
     private ParteBean parteBean;
-    
+
     @Inject
     private RolBean rolBean;
-    
+
     @Inject
     private UsuarioBean usuarioBean;
-    
+
     @Inject
     private UrlBean urlBean;
-    
-    
+
+    @Inject
+    private VehiculoBean vehiculoBean;
 
     private List<SelectItem> selectItemDias;
 
     private List<SelectItem> selectItemMeses;
-    
+
     private String seleccionConsulta;
-    
+
     private List<Usuario> listaClientes;
 
     @PostConstruct
@@ -94,7 +97,18 @@ public class ConsultaControlador extends BaseControlador {
         selectItemDias = generarDias();
         selectItemMeses = generarMeses();
     }
+
     
+
+    public List<SelectItem> generarSelectItemTodosLosAutos() {
+        SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
+        for (Vehiculo vehiculoTmp : vehiculoBean.obtenerLista()) {
+            selectItemsBuilder.add(vehiculoTmp,
+                    vehiculoTmp.getDescripcionConMarca());
+        }
+        return selectItemsBuilder.buildList();
+    }
+
     public List<SelectItem> generarSelectItemDeUrlPadre() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
         for (Url urlTmp : urlBean.obtenerListaPorPadreItNull()) {
@@ -106,11 +120,11 @@ public class ConsultaControlador extends BaseControlador {
     public String obtenerEstilo(HorarioParqueadero horarioParqueadero) {
         if (null == horarioParqueadero.getVehiculoTrabajo()) {
             return "#435A5F";
-        } else {            
-            return "#"+horarioParqueadero.getVehiculoTrabajo().getEquipo().getColor();
+        } else {
+            return "#" + horarioParqueadero.getVehiculoTrabajo().getEquipo().getColor();
         }
     }
-    
+
     public List<Usuario> autoCompletar(String consulta) {
         System.out.println("seleccion consulta: " + getSeleccionConsulta());
         listaClientes = usuarioBean.obtenerModeloListaPorNumeroDocumentoLike(consulta);
@@ -151,7 +165,7 @@ public class ConsultaControlador extends BaseControlador {
 
         return selectItemsBuilder.buildList();
     }
-    
+
     public List<SelectItem> generarOrigen() {
 
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
@@ -161,10 +175,10 @@ public class ConsultaControlador extends BaseControlador {
         selectItemsBuilder.add(getBundle("twitter"), getBundle("twitter"));
         selectItemsBuilder.add(getBundle("instagram"), getBundle("instagram"));
         selectItemsBuilder.add(getBundle("facebook"), getBundle("facebook"));
-        
+
         return selectItemsBuilder.buildList();
     }
-    
+
     public List<SelectItem> generarTipoPago() {
 
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
@@ -175,7 +189,7 @@ public class ConsultaControlador extends BaseControlador {
 
         return selectItemsBuilder.buildList();
     }
-    
+
     public List<SelectItem> generarSiNo() {
 
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
@@ -185,7 +199,7 @@ public class ConsultaControlador extends BaseControlador {
 
         return selectItemsBuilder.buildList();
     }
-    
+
     public List<SelectItem> generarEstadoPlantilla() {
 
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
@@ -217,7 +231,7 @@ public class ConsultaControlador extends BaseControlador {
         }
         return selectItemsBuilder.buildList();
     }
-    
+
     public List<SelectItem> generarSelectItemDeUrl() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
         for (Url urlTmp : urlBean.obtenerLista()) {
@@ -225,7 +239,7 @@ public class ConsultaControlador extends BaseControlador {
         }
         return selectItemsBuilder.buildList();
     }
-    
+
     public List<SelectItem> generarSelectItemDeRol() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
         for (Rol rolTmp : rolBean.obtenerLista()) {
@@ -233,8 +247,7 @@ public class ConsultaControlador extends BaseControlador {
         }
         return selectItemsBuilder.buildList();
     }
-    
-   
+
     public List<SelectItem> generarSelectItemDePartesPricinpales() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
         for (Equipo equipoTmp : equipoBean.obtenerLista()) {
@@ -242,7 +255,7 @@ public class ConsultaControlador extends BaseControlador {
         }
         return selectItemsBuilder.buildList();
     }
-    
+
     public List<SelectItem> generarSelectItemDePartesPadre() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
         for (Parte parteTmp : parteBean.obtenerListaPorPadres()) {
@@ -250,7 +263,7 @@ public class ConsultaControlador extends BaseControlador {
         }
         return selectItemsBuilder.buildList();
     }
-    
+
     public List<SelectItem> generarSelectItemDePartesPorPadre(Parte padre) {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
         for (Parte parteTmp : parteBean.obtenerListaPorPadre(padre)) {
@@ -258,7 +271,7 @@ public class ConsultaControlador extends BaseControlador {
         }
         return selectItemsBuilder.buildList();
     }
-    
+
     public List<SelectItem> generarSelectItemDeParqueaderos() {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
         for (Parqueadero parqueaderoTmp : parqueaderoBean.obtenerLista()) {
@@ -287,7 +300,7 @@ public class ConsultaControlador extends BaseControlador {
         }
         return selectItemsBuilder.buildList();
     }
-    
+
     public List<SelectItem> generarSelectItemDeVehiculoTrabajoMapa(HashMap< OrdenVehiculo, List<VehiculoTrabajo>> mapaOrdenVehiculoTrabajo) {
         SelectItemsBuilder selectItemsBuilder = new SelectItemsBuilder();
         for (OrdenVehiculo ordenVehiculoTmo : mapaOrdenVehiculoTrabajo.keySet()) {
@@ -295,7 +308,7 @@ public class ConsultaControlador extends BaseControlador {
             for (VehiculoTrabajo vehiculoTrabajoTmp : listaVehiculoTrabajo) {
                 selectItemsBuilder.add(vehiculoTrabajoTmp, vehiculoTrabajoTmp.getVehiculoDescripcion() + " " + vehiculoTrabajoTmp.getTrabajoDescripcion());
             }
-            
+
         }
         return selectItemsBuilder.buildList();
     }
@@ -342,7 +355,7 @@ public class ConsultaControlador extends BaseControlador {
     public List<SelectItem> generarSelectItemDeDias() {
         return selectItemDias;
     }
-    
+
     /**
      * @return the seleccionConsulta
      */
