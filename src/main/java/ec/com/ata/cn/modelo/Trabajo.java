@@ -25,7 +25,7 @@ import javax.persistence.Table;
 @Entity
 @Table
 public class Trabajo implements Serializable {
-    
+        
     @Id
     @SequenceGenerator(
             name = "trabajo_seq",
@@ -42,6 +42,10 @@ public class Trabajo implements Serializable {
     
     @Column(name = "detalle")
     private String detalle;
+    
+    @Column(name = "orden")
+    private Long orden;
+    
     
     @Embedded
     private GenericoEntidad genericoEntidad;
@@ -139,5 +143,19 @@ public class Trabajo implements Serializable {
      */
     public void setDetalle(String detalle) {
         this.detalle = detalle;
+    }
+    
+    /**
+     * @return the orden
+     */
+    public Long getOrden() {
+        return orden;
+    }
+
+    /**
+     * @param orden the orden to set
+     */
+    public void setOrden(Long orden) {
+        this.orden = orden;
     }
 }

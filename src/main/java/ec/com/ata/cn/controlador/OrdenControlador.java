@@ -49,6 +49,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.model.SelectItem;
@@ -1062,9 +1063,11 @@ public class OrdenControlador extends BaseControlador {
                 addInfoMessage(Constante.EXITO, Constante.EXITO_YA_EXISTE);
                 return;
             }*/
-            setMapaOrdenVehiculoListaTrabajos(new HashMap<OrdenVehiculo, List<TrabajoCategoriaPrecio>>());
+            //setMapaOrdenVehiculoListaTrabajos(new HashMap<OrdenVehiculo, List<TrabajoCategoriaPrecio>>());
             System.out.println("agregarVehiculo");
-            OrdenVehiculo ordenVehiculo = new OrdenVehiculo();
+            this.listaVehiculos = new ArrayList<>();
+            this.listaVehiculos.add(vehiculoSeleccionado);
+            /*OrdenVehiculo ordenVehiculo = new OrdenVehiculo();
             ordenVehiculo.setVehiculo(vehiculoSeleccionado);
             ordenVehiculo.setFechaRegistroVehiculo(new Date(System.currentTimeMillis()));
             ordenVehiculo.setOrigen(origen);
@@ -1074,7 +1077,7 @@ public class OrdenControlador extends BaseControlador {
             getVehiculosCliente().add(ordenVehiculo);
             List<TrabajoCategoriaPrecio> listaTrabajoCategoriaPrecio = obtenerListaTrabajoPorGrupoVehiculo(establecimiento.getGrupoPrecio(), vehiculoSeleccionado);
             getMapaOrdenVehiculoListaTrabajos().put(ordenVehiculo, listaTrabajoCategoriaPrecio);
-            getMapaOrdenVehiculoTrabajo().put(ordenVehiculo, new ArrayList<VehiculoTrabajo>());
+            getMapaOrdenVehiculoTrabajo().put(ordenVehiculo, new ArrayList<VehiculoTrabajo>());*/
             addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
         } catch (Exception e) {
             final Throwable root = ExceptionUtils.getRootCause(e);
@@ -1163,9 +1166,8 @@ public class OrdenControlador extends BaseControlador {
     }
 
     public List<Usuario> autoCompletar(String consulta) {
-        System.out.println("seleccion consulta: " + seleccionConsulta);
-        listaClientes = usuarioBean.obtenerModeloListaPorNumeroDocumentoLike(consulta);
-        return listaClientes;
+        List<Usuario> listaVehiculosTmp = this.usuarioBean.obtenerLista();
+        return listaVehiculosTmp.stream().filter(t -> t.getDocumentoYNombres().toLowerCase().contains(consulta.toLowerCase())).collect(Collectors.toList());
     }
 
     public List<SelectItem> autoCompletarSoloTexto2(String consulta) {

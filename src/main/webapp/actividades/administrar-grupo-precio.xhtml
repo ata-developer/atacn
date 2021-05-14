@@ -163,6 +163,15 @@
                         value="#{grupoPrecioControlador.trabajo.descripcion}"
                         onblur="value = value.toUpperCase()"/>
 
+
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.orden}" />
+                    <p:inputTextarea 
+                        id="itaOrdenTrabajo"
+                        value="#{grupoPrecioControlador.trabajo.orden}"
+                        requiredMessage="#{msj.campoNecesario}"/>
+
                     <p:outputLabel
                         for="@next"
                         value="#{msj.detalleTrabajo}" />
@@ -210,6 +219,16 @@
                                     requiredMessage="#{msj.campoNecesario}"
                                     value="#{trabajo.descripcion}"
                                     onblur="value = value.toUpperCase()"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="#{msj.orden}">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{trabajo.orden}" /></f:facet>
+                            <f:facet name="input"><p:inputTextarea 
+                                    id="itaOrden"
+                                    value="#{trabajo.orden}"/>
+                            </f:facet>
                         </p:cellEditor>
                     </p:column>
 
@@ -285,8 +304,14 @@
                         id="somPartePrincipal"
                         value="#{grupoPrecioControlador.trabajoCategoriaPrecio.parte}"
                         converter="omnifaces.SelectItemsConverter">
+
                         <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                         <f:selectItems value="#{grupoPrecioControlador.generarSelectItemDePartesPrincipales()}" />
+                        <p:ajax 
+                            event="change"
+                            process="@this somSeleccionarTrabajo"
+                            update="frmAdministrarGrupoPrecio mensajeGeneral"
+                            listener="#{grupoPrecioControlador.cargarPrecio()}" />
                     </p:selectOneMenu>
 
                     <p:outputLabel
@@ -324,142 +349,53 @@
                         <f:convertNumber pattern="#0.00" />
                     </p:inputText>
 
-                    
+
 
                     <p:commandButton
                         id="btnGuardar" 
                         value="#{msj.guardar}" 
                         process="@this pngAdministrarPrecio"
-                        update="tblListaTrabajoCategoriaPrecio pngAdministrarPrecio mensajeGeneral"
+                        update=" pngAdministrarPrecio mensajeGeneral"
                         actionListener="#{grupoPrecioControlador.guardarPrecioConfiguracion()}"/>
                     <p:outputLabel
                         value="" />
                 </p:panelGrid>
                 <p/>
+
+                <p/>
                 <p:dataTable
-                    id="tblListaTrabajoCategoriaPrecio"                
-                    var="trabajoCategoriaPrecio"
-                    editable="true"
-                    value="#{grupoPrecioControlador.listaTrabajoCategoriaPrecio}">
-                    <f:facet name="header">
-                        #{msj.listaDeTrabajos}
-                    </f:facet>
+                    id="dtListaMapaPrecio"                
+                    var="mapaTrabajoCategoriaPrecio" 
+                    value="#{grupoPrecioControlador.listaMapaTrabajoCategoriaPrecio}">
+                    <c:forEach var="categoria" items="#{grupoPrecioControlador.listaCategoriasTemporal()}">
 
-                    <p:ajax event="rowEdit" listener="#{grupoPrecioControlador.editarDuplaTrabajoCategoriaPrecio}" update="tblListaTrabajoCategoriaPrecio mensajeGeneral" />
-                    <p:ajax event="rowEditCancel" listener="#{grupoPrecioControlador.cancelDuplaTrabajoCategoriaPrecio}" update="tblListaTrabajoCategoriaPrecio mensajeGeneral" />
-
-                    <p:column headerText="#{msj.codigo}">
-                        <h:outputText value="#{trabajoCategoriaPrecio.idTrabajoCategoriaPrecio}" />                       
-                    </p:column>
-
-                    <p:column headerText="#{msj.codigoTrabajo}">
-                        <p:cellEditor>
-                            <f:facet name="output"><h:outputText value="#{trabajoCategoriaPrecio.codigo}" /></f:facet>
-                            <f:facet name="input">
-                                <p:inputText
-                                    id="itCodigoTrabajoCategoriaPrecioTabla"
-                                    required="true"
-                                    requiredMessage="#{msj.campoNecesario}"
-                                    value="#{trabajoCategoriaPrecio.codigo}"
-                                    onblur="value = value.toUpperCase()">
-                                </p:inputText>
-
+                        <p:column>
+                            <f:facet name="header" >
+                                <h:outputText value="#{categoria.categoria}" />
                             </f:facet>
-                        </p:cellEditor>
-                    </p:column>
+                            <p:outputLabel
+                                rendered="#{categoria.categoria == 'TRABAJO/CATEGORIA'}"
+                                value="#{mapaTrabajoCategoriaPrecio[categoria.categoria]}" />
+                            <p:panelGrid 
+                                id="pngPrecio"
+                                columns="2" 
+                                rendered="#{categoria.categoria != 'TRABAJO/CATEGORIA'}">
+                                <p:outputLabel
+                                    for="@next"
+                                    value="#{msj.precioVentaPublico}" />
+                                <p:outputLabel
+                                    value="#{mapaTrabajoCategoriaPrecio[categoria.categoria].precioVentaPublico}" />
+                                <p:outputLabel
+                                    for="@next"
+                                    value="#{msj.precioDescuento}" />
+                                <p:outputLabel
+                                    value="#{mapaTrabajoCategoriaPrecio[categoria.categoria].precioDescuento}" />
+                            </p:panelGrid>
 
-                    <p:column headerText="#{msj.descripcionTrabajo}">
-                        <p:cellEditor>
-                            <f:facet name="output"><h:outputText value="#{trabajoCategoriaPrecio.trabajo.descripcion}" /></f:facet>
-                            <f:facet name="input">
-                                <p:selectOneMenu
-                                    id="somSeleccionarTrabajoTabla"
-                                    value="#{trabajoCategoriaPrecio.trabajo}"
-                                    converter="omnifaces.SelectItemsConverter">
-                                    <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
-                                    <f:selectItems value="#{grupoPrecioControlador.generarSelectItemDeTrabajos()}" />                                    
-                                </p:selectOneMenu>
-                            </f:facet>
-                        </p:cellEditor>
-                    </p:column>
+                        </p:column>
 
-                    <p:column headerText="#{msj.detalleTrabajo}">
-                        <h:outputText value="#{trabajoCategoriaPrecio.trabajo.detalle}" /> 
-                    </p:column>
 
-                    <p:column headerText="#{msj.descripcionCategoria}">
-                        <p:cellEditor>
-                            <f:facet name="output"><h:outputText value="#{trabajoCategoriaPrecio.categoria.categoria}" /></f:facet>
-                            <f:facet name="input">
-                                <p:selectOneMenu
-                                    id="somSeleccionarCategoriaConfiguracionTabla"
-                                    value="#{trabajoCategoriaPrecio.categoria}"
-                                    converter="omnifaces.SelectItemsConverter">
-                                    <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
-                                    <f:selectItems value="#{grupoPrecioControlador.generarSelectItemDeCategorias()}" />
-                                </p:selectOneMenu>
-                            </f:facet>
-                        </p:cellEditor>
-                    </p:column>
-
-                    <p:column headerText="#{msj.parte}">
-                        <p:cellEditor>
-                            <f:facet name="output"><h:outputText value="#{trabajoCategoriaPrecio.parte.parte}" /></f:facet>
-                            <f:facet name="input">
-                                <p:selectOneMenu
-                                    id="somPartePrincipalTabla"
-                                    value="#{trabajoCategoriaPrecio.parte}"
-                                    converter="omnifaces.SelectItemsConverter">
-                                    <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
-                                    <f:selectItems value="#{grupoPrecioControlador.generarSelectItemDePartesPrincipales()}" />
-                                </p:selectOneMenu>
-                            </f:facet>
-                        </p:cellEditor>
-                    </p:column>
-
-                    <p:column headerText="#{msj.precioVentaPublico}">
-                        <p:cellEditor>
-                            <f:facet name="output"><h:outputText value="#{trabajoCategoriaPrecio.precioVentaPublico}" /></f:facet>
-                            <f:facet name="input">
-                                <p:inputText
-                                    id="itPrecioVentaPublicoTabla"
-                                    required="true"
-                                    requiredMessage="#{msj.campoNecesario}"
-                                    value="#{trabajoCategoriaPrecio.precioVentaPublico}">
-                                    <f:convertNumber pattern="#0.00" />
-                                </p:inputText>
-                            </f:facet>
-                        </p:cellEditor>
-                    </p:column>
-
-                    <p:column headerText="#{msj.precioEfectivo}">
-                        <p:cellEditor>
-                            <f:facet name="output"><h:outputText value="#{trabajoCategoriaPrecio.precioEfectivo}" /></f:facet>
-                            <f:facet name="input">
-                                <p:inputText
-                                    id="itPrecioEfectivoTabla"
-                                    required="true"
-                                    requiredMessage="#{msj.campoNecesario}"
-                                    value="#{trabajoCategoriaPrecio.precioEfectivo}">
-                                    <f:convertNumber pattern="#0.00" />
-                                </p:inputText>
-
-                            </f:facet>
-                        </p:cellEditor>
-                    </p:column>
-
-                    
-
-                    <p:column headerText="#{msj.acciones}">
-                        <p:commandButton
-                            id="btnEliminarTrabajoCategoriaPrecio" 
-                            process="@this"
-                            value="#{msj.eliminar}"
-                            update="tblListaTrabajoCategoriaPrecio mensajeGeneral"
-                            action="#{grupoPrecioControlador.eliminarTrabajoCategoriaPrecio(trabajoCategoriaPrecio)}" />
-                        <p:rowEditor />
-                    </p:column>
-
+                    </c:forEach>
                 </p:dataTable>
             </p:fieldset>
             <p/>

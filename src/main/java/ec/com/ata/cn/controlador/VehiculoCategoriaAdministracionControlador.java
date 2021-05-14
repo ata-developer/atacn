@@ -195,6 +195,8 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
         setListaVehiculo(vehiculoBean.obtenerLista());
     }
     
+    
+    
     public void seleccionarTodos () {
         List<VehiculoCategoriaTrabajo> listaVehiculoCategoriaTrabajoTmp1 = this.listaVehiculoCategoriaTrabajo;
         List<VehiculoCategoriaTrabajo> listaVehiculoCategoriaTrabajoTmp2 = new ArrayList<>();
@@ -229,7 +231,10 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
         return listaVehiculos.stream().filter(t -> t.getDescripcionConMarca().toLowerCase().contains(consulta.toLowerCase())).collect(Collectors.toList());
 
     }
-
+    
+   
+    
+   
     public void cargarVehiculoSeleccionado() {
         cargarVehiculoSeleccionadoParaCopiar();
         setListaTrabajoCategoriaPrecioParaConFigurar(this.trabajoCategoriaTrabajoBean.generarListaTrabajoCategoriaPrecioTodosMenosElAuto(vehiculo, grupoPrecioSeccionado));
@@ -321,9 +326,7 @@ public class VehiculoCategoriaAdministracionControlador extends BaseControlador 
 
     }
 
-    public void consultarListaTrabajo() {
-    }
-
+    
     public List<Categoria> listaCategoriasTemporal() {
 
         listaCategoriaTmp = new ArrayList<>();

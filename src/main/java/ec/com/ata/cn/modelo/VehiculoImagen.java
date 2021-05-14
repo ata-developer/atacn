@@ -23,7 +23,6 @@ import javax.persistence.Table;
 @Table(name = "vehiculo_imagen")
 public class VehiculoImagen implements Serializable {
 
-    
     private static final long serialVersionUID = 1L;
 
     @EmbeddedId
@@ -38,9 +37,13 @@ public class VehiculoImagen implements Serializable {
     @JoinColumn(name = "id_imagen", referencedColumnName = "id_imagen")
     @ManyToOne
     private Imagen imagen;
-    
-     @Embedded
+
+    @Embedded
     private GenericoEntidad genericoEntidad;
+    
+    public VehiculoImagen(){
+        this.genericoEntidad = new GenericoEntidad();
+    }
 
     @Override
     public int hashCode() {
@@ -68,7 +71,7 @@ public class VehiculoImagen implements Serializable {
     public String toString() {
         return "VehiculoImagen{" + "vehiculoImagenPrecioId=" + (vehiculoImagenId == null ? null : vehiculoImagenId.toString()) + "'}'";
     }
-    
+
     /**
      * @return the vehiculo
      */
@@ -110,7 +113,7 @@ public class VehiculoImagen implements Serializable {
     public void setVehiculoImagenId(VehiculoImagenId vehiculoImagenId) {
         this.vehiculoImagenId = vehiculoImagenId;
     }
-    
+
     /**
      * @return the genericoEntidad
      */
@@ -124,6 +127,5 @@ public class VehiculoImagen implements Serializable {
     public void setGenericoEntidad(GenericoEntidad genericoEntidad) {
         this.genericoEntidad = genericoEntidad;
     }
-
 
 }

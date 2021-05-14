@@ -304,12 +304,11 @@ public class GrupoPrecioControlador extends BaseControlador {
                 trabajoCategoriaPrecioId.setIdTrabajo(trabajoSeleccionado.getIdTrabajo());
                 trabajoCategoriaPrecioId.setIdGrupoPrecio(grupoPrecioSeccionado.getIdGrupoPrecio());
 
-                TrabajoCategoriaPrecio trabajoCategoriaPrecioTmp = trabajoCategoriaTrabajoBean.obtenerPorId(trabajoCategoriaPrecioId);
+                TrabajoCategoriaPrecio trabajoCategoriaPrecioTmp =
+                        trabajoCategoriaTrabajoBean.obtenerPorCategoriaTrabajoGrupoPrecio(categoriaSeleccionado, trabajoSeleccionado, grupoPrecioSeccionado);
                 setListaMapaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecio(grupoPrecioSeccionado));
                 if (null != trabajoCategoriaPrecioTmp) {
-                    setPrecioVentaPublico(trabajoCategoriaPrecioTmp.getPrecioVentaPublico());
-                    setPrecioDescuento(trabajoCategoriaPrecioTmp.getPrecioDescuento());
-
+                    setTrabajoCategoriaPrecio(trabajoCategoriaPrecioTmp);
                     addInfoMessage(Constante.EXITO, Constante.EXITO_DETALLE);
                     return;
                 } else {
@@ -374,6 +373,7 @@ public class GrupoPrecioControlador extends BaseControlador {
         listaCategoria = categoriaBean.obtenerListaPorGrupoPrecio(grupoPrecioSeccionado);
         listaTrabajo = trabajoBean.obtenerListaPorGrupoPrecio(grupoPrecioSeccionado);
         setListaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerPorGrupoPrecio(grupoPrecioSeccionado));
+        setListaMapaTrabajoCategoriaPrecio(trabajoCategoriaTrabajoBean.obtenerListaMapaTrabajoCategoriaPrecio(grupoPrecioSeccionado));
     }
     
     public void cargarListaCategoria() {

@@ -64,7 +64,7 @@ public class UsuarioConvertidor implements Converter{
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object usuario) {
-        System.out.println("usuario: "+usuario);
+        
         if ((null == usuario) || (null == ((Usuario)usuario).getIdUsuario())|| (String.valueOf(usuario).isEmpty())) {
             // Is null
             return ""; //NOI18N

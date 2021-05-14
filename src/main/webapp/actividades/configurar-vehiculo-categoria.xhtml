@@ -13,8 +13,9 @@
             <h1>#{msj.administrarMarcaVehiculos}</h1>
             <p/>
             <p:fieldset id="fsConfigurarVehiculo" legend="#{msj.configurarPrecio  }"  >
+
                 <p:panelGrid id="pngAdministrarVehiculo1" columns="2">
-                     
+
                     <p:outputLabel
                         for="@next"
                         value="#{msj.descripcionGrupoPrecio}" />
@@ -28,15 +29,6 @@
                             event="change"
                             update="fsConfigurarVehiculo mensajeGeneral"/>
                     </p:selectOneMenu>
-                    
-                    <p:outputLabel
-                        for="@next"
-                        value="#{msj.grupoTrabajoSeleccionado}" />
-                    
-                     <p:outputLabel
-                        for="@next"
-                        value="#{vehiculoCategoriaAdministracionControlador.grupoPrecioSeccionado.nombre}" />
-                    
                     <p:outputLabel
                         for="@next"
                         value="#{msj.seleccionVehiculo}" />
@@ -59,13 +51,13 @@
                             <h:outputText value="#{vehiculo.descripcionConMarca}" />
                         </p:column>
                     </p:autoComplete>
-                    
+
                     <p:outputLabel
                         for="@next"
                         value="#{msj.vehiculoSeleccionado}" />
-                    
-                     <p:outputLabel
-                         value="#{vehiculoCategoriaAdministracionControlador.vehiculo.descripcionConMarca}" />
+
+                    <p:outputLabel
+                        value="#{vehiculoCategoriaAdministracionControlador.vehiculo.descripcionConMarca}" />
                 </p:panelGrid>
                 <p/>
                 <p:dataTable

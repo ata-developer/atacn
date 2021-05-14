@@ -58,12 +58,7 @@
                     <h:outputText value="#{vehiculo.anioHasta}" />
                 </p:column>
 
-                <p:column headerText="#{msj.listaTipoFila}">
-                    <c:forEach var="fila" items="#{vehiculoAdministracionControlador.listaFila(vehiculo)}">
-                        <h:outputText value="#{fila.tipoFila.tipoFila}" />
-                        <p/>
-                    </c:forEach>
-                </p:column>
+                
 
 
                 <p:column headerText="#{msj.imagenes}" colspan="3">
@@ -88,42 +83,35 @@
             <p/>
             <p:dataTable
                 id="tblListaVehiculosSeleccionados"                
-                var="ordenVehiculo" 
+                var="vehiculo" 
                 value="#{ordenControlador.vehiculosCliente}">
                 <f:facet name="header">
                     #{msj.listaDeVehiculos}
                 </f:facet>
 
                 <p:column headerText="#{msj.descripcionModelo}" >
-                    <h:outputText value="#{ordenVehiculo.vehiculo.modelo}" />
+                    <h:outputText value="#{vehiculo.modelo}" />
                 </p:column>
 
                 <p:column headerText="#{msj.descripcion}" >
-                    <h:outputText value="#{ordenVehiculo.vehiculo.descripcion}" />
+                    <h:outputText value="#{vehiculo.descripcion}" />
                 </p:column>
 
-                <p:column headerText="#{msj.numeroFilas}">
-                    <h:outputText value="#{ordenVehiculo.vehiculo.numeroDeFilas}" />
-                </p:column>
+                
 
                 <p:column headerText="#{msj.anioInicialRango}">
-                    <h:outputText value="#{ordenVehiculo.vehiculo.anioDesde}" />
+                    <h:outputText value="#{anioDesde}" />
                 </p:column>
 
                 <p:column headerText="#{msj.anioFinalRango}">
-                    <h:outputText value="#{ordenVehiculo.vehiculo.anioHasta}" />
+                    <h:outputText value="#{vehiculo.anioHasta}" />
                 </p:column>
 
-                <p:column headerText="#{msj.listaTipoFila}">
-                    <c:forEach var="fila" items="#{vehiculoAdministracionControlador.listaFila(ordenVehiculo.vehiculo)}">
-                        <h:outputText value="#{fila.tipoFila.tipoFila}" />
-                        <p/>
-                    </c:forEach>
-                </p:column>
+                
 
                 <p:column headerText="#{msj.imagenes}" colspan="3">
                     <p:panelGrid id="pngAdministrarImagenes4" columns="3">
-                        <c:forEach var="imagen" items="#{vehiculoAdministracionControlador.listaImagenes(ordenVehiculo.vehiculo)}">
+                        <c:forEach var="imagen" items="#{vehiculoAdministracionControlador.listaImagenes(vehiculo)}">
                             <h:outputLink value="MostradorImagen?Image_id=#{imagen.idImagen}" target="_blank" >
                                 <h:graphicImage value="MostradorImagen?Image_id=#{imagen.idImagen}" width="100" height="100"></h:graphicImage>
                             </h:outputLink>

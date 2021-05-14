@@ -38,6 +38,7 @@ public class TrabajoBean {
     public List<Trabajo> obtenerListaPorGrupoPrecio(GrupoPrecio grupoPrecio){
         HashMap<String, Object> parametros = new HashMap<>();
         parametros.put("grupoPrecio", grupoPrecio);
+        parametros.put("ordenOrderByAsc", null);
         return trabajoDao.obtenerListaPorParametros(parametros);
     }
     

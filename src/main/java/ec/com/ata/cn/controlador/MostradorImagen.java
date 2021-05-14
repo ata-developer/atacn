@@ -50,6 +50,7 @@ public class MostradorImagen extends HttpServlet {
             response.reset();
             response.setContentType("image/jpeg");
             response.getOutputStream().write(new byte[0]);
+            e.printStackTrace();
         }
 
     }

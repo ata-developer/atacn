@@ -407,7 +407,7 @@ public class Vehiculo implements Serializable {
             String modelotmp = getModelo();
             String anioDesdeTmp = getAnioDesde() == null ? "" : getAnioDesde().toString();
             String anioHastaTmp = getAnioHasta() == null ? "" : getAnioHasta().toString();
-            descripcionConMarca = marcatmp.concat(" ").concat(modelotmp).concat(" ").concat(anioDesdeTmp).concat(" ").concat(anioHastaTmp);
+            descripcionConMarca = marcatmp.trim().concat(" ").concat(modelotmp.trim()).concat(" ").concat(anioDesdeTmp.trim()).concat(" ").concat(anioHastaTmp.trim());
             return descripcionConMarca;
         } catch (Exception e) {
             return "";

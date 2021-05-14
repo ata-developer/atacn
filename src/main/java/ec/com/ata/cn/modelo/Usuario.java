@@ -51,9 +51,6 @@ public class Usuario implements Serializable {
     @Column(name = "apellido", length = 60)
     private String apellido;
     
-    @Column(name = "nombres_apellidos")
-    private String nombresApellidos;
-    
     @Column(name = "direccion")
     private String direccion;
         
@@ -415,19 +412,7 @@ public class Usuario implements Serializable {
     }
     
     
-    /**
-     * @return the nombresApellidos
-     */
-    public String getNombresApellidos() {
-        return nombresApellidos;
-    }
-
-    /**
-     * @param nombresApellidos the nombresApellidos to set
-     */
-    public void setNombresApellidos(String nombresApellidos) {
-        this.nombresApellidos = nombresApellidos;
-    }
+    
     
     /**
      * @return the direccion

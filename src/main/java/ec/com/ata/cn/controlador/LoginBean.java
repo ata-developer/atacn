@@ -42,7 +42,6 @@ public class LoginBean extends BaseControlador {
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) this.getHttpRequest();
         try {
-            
             request.login(this.correo, this.contrasena);
             Principal principal = request.getUserPrincipal();
             HashMap<String, Object> parametros = new HashMap<>();
@@ -56,8 +55,9 @@ public class LoginBean extends BaseControlador {
 
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("mensaje--->"+e.getMessage());
             context.addMessage(null, new FacesMessage("Login failed."));
-            return "error";
+            return logout();
         }
         return "/actividades/index.xhtml";
     }

@@ -61,22 +61,17 @@
         </p:fieldset>
         <p:fieldset id="fbBuscarCliente" legend="#{msj.buscar}">
             <p:panelGrid id="pngBuscar" columns="2"> 
-                <p:selectOneMenu id="console" value="#{ordenControlador.seleccionConsulta}" style="width:125px">
-                    <f:selectItem itemLabel="Seleccionar..." itemValue="#{null}" noSelectionOption="false" />
-                    <f:selectItem itemLabel="CÉDULA/RUC/PASAPORTE" itemValue="CÉDULA" />
-                    <f:selectItem itemLabel="NOMBRE Y APELLIDOS" itemValue="NOMBRESAPELLIDOS" />
-                    <p:ajax event="change" update="atcCedula2" />
-                    <p:ajax event="itemSelect" update="atcCedula2" />
-                </p:selectOneMenu>
+                <p:outputLabel
+                    for="@next"
+                    value="#{msj.consultarCliente}" />
                 <p:autoComplete
                     id="atcCedula2"
-                    minQueryLength="4"
+                    minQueryLength="2"
                     effect="fade"
                     value="#{ordenControlador.clienteOrden}"
                     completeMethod="#{ordenControlador.autoCompletar}"
                     converter="usuarioConvertidor"
                     var="cliente"
-                    disabled="#{ordenControlador.seleccionConsulta eq null}"
                     itemValue="#{cliente}"
                     itemLabel="#{cliente.numeroDocumento}">
                     <p:ajax
@@ -100,6 +95,7 @@
                     id="somSeleccionarCategoria"
                     value="#{ordenControlador.clienteOrden.tipoDocumento}"
                     required="true"
+                    placeholder="#{msj.NombresOrCedulaOrApellido}"
                     converter="omnifaces.SelectItemsConverter">
                     <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
                     <f:selectItems value="#{ordenControlador.generarSelectItemDeTipoDocumento()}" />
@@ -111,16 +107,30 @@
 
                 <p:outputLabel
                     for="@next"
-                    value="#{msj.nombresCompletos}" />                    
+                    value="#{msj.nombre}" />                    
                 <p:inputText
                     id="iTNombre"
                     required="true"
-                    value="#{ordenControlador.clienteOrden.nombresApellidos}"
+                    value="#{ordenControlador.clienteOrden.nombre}"
                     placeholder="#{msj.ejemploNombre}"
                     onblur="value = value.toUpperCase()">
                     <p:keyFilter regEx="/[a-zA-ZáéíñóúüÁÉÍÑÓÚÜ\s]/"/>
                     <f:converter converterId="trimConverter" />
                 </p:inputText>
+                
+                <p:outputLabel
+                    for="@next"
+                    value="#{msj.apellido}" />                    
+                <p:inputText
+                    id="iTApellido"
+                    required="true"
+                    value="#{ordenControlador.clienteOrden.apellido}"
+                    placeholder="#{msj.ejemploNombre}"
+                    onblur="value = value.toUpperCase()">
+                    <p:keyFilter regEx="/[a-zA-ZáéíñóúüÁÉÍÑÓÚÜ\s]/"/>
+                    <f:converter converterId="trimConverter" />
+                </p:inputText>
+                
 
                 <p:outputLabel
                     for="@next"

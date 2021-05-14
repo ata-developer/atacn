@@ -12,70 +12,221 @@
         <h:form id="frmConsultarVehiculo">
             <h1>#{msj.consultarVehiculos}</h1>
             <p/>
-            
             <!-- INICIO CONFIGURACION VEHICULO -->
             <p:fieldset id="consultarVehiculo" legend="#{msj.consultarVehiculos}"  >
-                
-                
-                <p:dataTable
-                    id="tblListaVehiculosTodos"                
-                    var="vehiculo" 
-                    emptyMessage="#{msj.noHayInformacion}"
-                    value="#{vehiculoAdministracionControlador.obtenerTodaLalistaDeAutos()}"
-                    filteredValue="#{vehiculoAdministracionControlador.listaVehiculosFiltrados}"
-                    >
-                    <f:facet name="header">
-                        #{msj.listaDeVehiculos}
-                    </f:facet>
-                    
-                    <p:column headerText="#{msj.codigo}" >
-                        <h:outputText value="#{vehiculo.idVehiculo}" />
-                    </p:column>
 
-                    <p:column headerText="#{msj.descripcionModelo}" filterBy="#{vehiculo.modelo}" filterMatchMode="contains">
-                        <h:outputText value="#{vehiculo.modelo}" />
-                    </p:column>
-                    
-                    <p:column headerText="#{msj.marca}" filterBy="#{vehiculo.marca.marca}" filterMatchMode="contains">
-                        <h:outputText value="#{vehiculo.marca.marca}" />
-                    </p:column>
+                <p:panelGrid id="pngConsultarVehiculo" columns="2" >
 
-                    <p:column headerText="#{msj.tienePlantilla}" >
-                        <h:outputText value="#{vehiculoAdministracionControlador.generarDatosPlantilla(vehiculo)}" />
-                    </p:column>
+                    <p:outputLabel
+                        for="@next"
+                        value="#{msj.descripcionGrupoPrecio}" />
+                    <p:selectOneMenu
+                        id="somSeleccionarGrupoPrecio"
+                        value="#{vehiculoAdministracionControlador.grupoPrecioSeccionado}"
+                        converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="#{msj.seleccionar}" value="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{grupoPrecioControlador.generarSelectItemDeGrupoPrecio()}" />
+                        <p:ajax 
+                            event="change"
+                            update=":frmConsultarVehiculo:consultarVehiculo mensajeGeneral"
+                            />
+                    </p:selectOneMenu>
 
-                    <p:column headerText="#{msj.descripcion}" filterBy="#{vehiculo.descripcion}" filterMatchMode="contains">
-                        <h:outputText value="#{vehiculo.descripcion}" />
-                    </p:column>
-                    
-                    <p:column headerText="#{msj.anioInicialRango}">
-                        <h:outputText value="#{vehiculo.anioDesde}" />
-                    </p:column>
+                    <p:outputLabel
+                        for="@next"
+                        rendered="#{vehiculoAdministracionControlador.grupoPrecioSeccionado.idGrupoPrecio ne null}"
+                        value="#{msj.grupoTrabajoSeleccionado}" />
 
-                    <p:column headerText="#{msj.anioFinalRango}">
-                        <h:outputText value="#{vehiculo.anioHasta}" />
-                    </p:column>
+                    <p:outputLabel
+                        rendered="#{vehiculoAdministracionControlador.grupoPrecioSeccionado.idGrupoPrecio ne null}"
+                        value="#{vehiculoAdministracionControlador.grupoPrecioSeccionado.nombre}" />
 
-                    <p:column headerText="#{msj.imagenes}" >
-                        <p:row>
-                            <p:repeat var="imagen" value="#{vehiculoAdministracionControlador.listaImagenes(vehiculo)}" >
-                                <p:column>
-                                    <h:outputLink value="MostradorImagen?Image_id=#{imagen.idImagen}" target="_blank" >
-                                        <h:graphicImage value="MostradorImagen?Image_id=#{imagen.idImagen}" width="50" height="50"></h:graphicImage>
-                                    </h:outputLink>
-                                </p:column>
-                            </p:repeat>
-                        </p:row>
-                    </p:column>
+                    <p:outputLabel
+                        for="@next"
+                        rendered="#{vehiculoAdministracionControlador.grupoPrecioSeccionado.idGrupoPrecio ne null}"
+                        value="#{msj.consultarVehiculos}" />
 
-                   
+                    <p:inputText
+                        id="iTConsultaVehiculo"
+                        required="true"
+                        rendered="#{vehiculoAdministracionControlador.grupoPrecioSeccionado.idGrupoPrecio ne null}"
+                        value="#{vehiculoAdministracionControlador.consultaVehiculo}"
+                        placeholder="#{msj.consultarVehiculoEjemplo}"
+                        onblur="value = value.toUpperCase()">
+                        <p:keyFilter regEx="/[a-zA-ZáéíñóúüÁÉÍÑÓÚÜ\s]/"/>
+                        <f:converter converterId="trimConverter" />
+                        <p:ajax event="keyup" update=":frmConsultarVehiculo:pngResultadoTabla" listener="#{vehiculoAdministracionControlador.consultarAuto()}"/>
+                    </p:inputText>
 
-                </p:dataTable>
-                <p/>
+
+
+                </p:panelGrid>
+
+                <p:panelGrid id="pngResultadoTabla" columns="1" >
+                    <p:dataTable
+                        id="tblListaVehiculosTodos"                
+                        var="vehiculo" 
+                        emptyMessage="#{msj.noHayInformacion}"                    
+                        rendered="#{!empty vehiculoAdministracionControlador.listaVehiculo}"
+                        value="#{vehiculoAdministracionControlador.listaVehiculo}"
+                        >
+                        <f:facet name="header">
+                            #{msj.listaDeVehiculos}
+                        </f:facet>
+
+                        <p:column headerText="#{msj.codigo}" >
+                            <h:outputText value="#{vehiculo.idVehiculo}" />
+                        </p:column>
+
+                        <p:column headerText="#{msj.descripcionModelo}" filterBy="#{vehiculo.modelo}" filterMatchMode="contains">
+                            <h:outputText value="#{vehiculo.modelo}" />
+                        </p:column>
+
+                        <p:column headerText="#{msj.marca}" filterBy="#{vehiculo.marca.marca}" filterMatchMode="contains">
+                            <h:outputText value="#{vehiculo.marca.marca}" />
+                        </p:column>
+
+                        <p:column headerText="#{msj.tienePlantilla}" >
+                            <h:outputText value="#{vehiculoAdministracionControlador.generarDatosPlantilla(vehiculo)}" />
+                        </p:column>
+
+                        <p:column headerText="#{msj.descripcion}" filterBy="#{vehiculo.descripcion}" filterMatchMode="contains">
+                            <h:outputText value="#{vehiculo.descripcion}" />
+                        </p:column>
+
+                        <p:column headerText="#{msj.anioInicialRango}">
+                            <h:outputText value="#{vehiculo.anioDesde}" />
+                        </p:column>
+
+                        <p:column headerText="#{msj.anioFinalRango}">
+                            <h:outputText value="#{vehiculo.anioHasta}" />
+                        </p:column>
+
+                        <p:column headerText="#{msj.imagenes}" >
+                            <p:row>
+                                <p:repeat var="imagen" value="#{vehiculoAdministracionControlador.listaImagenes(vehiculo)}" >
+                                    <p:column>
+                                        <h:outputLink value="MostradorImagen?Image_id=#{imagen.idImagen}" target="_blank" >
+                                            <h:graphicImage value="MostradorImagen?Image_id=#{imagen.idImagen}" width="50" height="50"></h:graphicImage>
+                                        </h:outputLink>
+                                    </p:column>
+                                </p:repeat>
+                            </p:row>
+                        </p:column>
+                        <p:column headerText="#{msj.acciones}">
+                            <p:commandButton
+                                id="btnSeleccionarVehiculo"
+                                update=":frmConsultarVehiculo:pngResultadoTabla"
+                                value="#{msj.seleccionar}"
+                                actionListener="#{vehiculoAdministracionControlador.seleccionarVehiculoParaConsulta(vehiculo)}"
+                                />
+                        </p:column>
+                    </p:dataTable>
+                    <p/>
+                    <p:dataTable
+                        id="tblListaVehiculosParaConsulta"                
+                        var="vehiculoConsulta" 
+                        emptyMessage="#{msj.noHayInformacion}"
+                        rendered="#{!empty vehiculoAdministracionControlador.listaVehiculoSeleccionado}"
+                        value="#{vehiculoAdministracionControlador.listaVehiculoSeleccionado}"
+                        >
+                        <f:facet name="header">
+                            #{msj.seleccionado}
+                        </f:facet>
+
+                        <p:column headerText="#{msj.codigo}" >
+                            <h:outputText value="#{vehiculoConsulta.idVehiculo}" />
+                        </p:column>
+
+                        <p:column headerText="#{msj.descripcionModelo}" >
+                            <h:outputText value="#{vehiculoConsulta.modelo}" />
+                        </p:column>
+
+                        <p:column headerText="#{msj.marca}" >
+                            <h:outputText value="#{vehiculoConsulta.marca.marca}" />
+                        </p:column>
+
+                        <p:column headerText="#{msj.tienePlantilla}" >
+                            <h:outputText value="#{vehiculoAdministracionControlador.generarDatosPlantilla(vehiculoConsulta)}" />
+                        </p:column>
+
+                        <p:column headerText="#{msj.descripcion}" >
+                            <h:outputText value="#{vehiculoConsulta.descripcion}" />
+                        </p:column>
+
+                        <p:column headerText="#{msj.anioInicialRango}">
+                            <h:outputText value="#{vehiculoConsulta.anioDesde}" />
+                        </p:column>
+
+                        <p:column headerText="#{msj.anioFinalRango}">
+                            <h:outputText value="#{vehiculoConsulta.anioHasta}" />
+                        </p:column>
+
+                        <p:column headerText="#{msj.imagenes}" >
+                            <p:row>
+                                <p:repeat var="imagen" value="#{vehiculoAdministracionControlador.listaImagenes(vehiculoConsulta)}" >
+                                    <p:column>
+                                        <h:outputLink value="MostradorImagen?Image_id=#{imagen.idImagen}" target="_blank" >
+                                            <h:graphicImage value="MostradorImagen?Image_id=#{imagen.idImagen}" width="50" height="50"></h:graphicImage>
+                                        </h:outputLink>
+                                    </p:column>
+                                </p:repeat>
+                            </p:row>
+                        </p:column>
+                    </p:dataTable>
+                    <p/>
+                    <p:dataTable
+                        id="tblListaVehiculoCategoriaPrecioPorConsultar"   
+                        rendered="#{!empty vehiculoAdministracionControlador.listaVehiculoCategoriaTrabajo}"
+                        var="vehiculoCategoriaTrabajo"
+                        value="#{vehiculoAdministracionControlador.listaVehiculoCategoriaTrabajo}">
+
+                        <f:facet name="header">
+                            #{msj.listaDeTrabajos}
+                        </f:facet>
+
+                        <p:column headerText="#{msj.codigo}">
+                            <h:outputText value="#{vehiculoCategoriaTrabajo.trabajoCategoriaPrecio.idTrabajoCategoriaPrecio}" />                       
+                        </p:column>
+
+                        <p:column headerText="#{msj.codigoTrabajo}">
+                            <h:outputText value="#{vehiculoCategoriaTrabajo.trabajoCategoriaPrecio.codigo}" />
+                        </p:column>
+
+                        <p:column headerText="#{msj.descripcionTrabajo}">
+                            <h:outputText value="#{vehiculoCategoriaTrabajo.trabajoCategoriaPrecio.trabajo.descripcion}" />
+
+                        </p:column>
+
+                        <p:column headerText="#{msj.detalleTrabajo}">
+                            <h:outputText value="#{vehiculoCategoriaTrabajo.trabajoCategoriaPrecio.trabajo.detalle}" /> 
+                        </p:column>
+
+                        <p:column headerText="#{msj.descripcionCategoria}">
+                            <h:outputText value="#{vehiculoCategoriaTrabajo.trabajoCategoriaPrecio.categoria.categoria}" />
+                        </p:column>
+
+                        <p:column headerText="#{msj.parte}">
+                            <h:outputText value="#{vehiculoCategoriaTrabajo.trabajoCategoriaPrecio.parte.parte}" />
+                        </p:column>
+
+                        <p:column headerText="#{msj.precioVentaPublico}">
+                            <h:outputText value="#{vehiculoCategoriaTrabajo.trabajoCategoriaPrecio.precioVentaPublico}" />
+                        </p:column>
+
+                        <p:column headerText="#{msj.precioEfectivo}">
+                            <h:outputText value="#{vehiculoCategoriaTrabajo.trabajoCategoriaPrecio.precioEfectivo}" />
+                        </p:column>
+                    </p:dataTable>
+                </p:panelGrid>
+
+
+
+
             </p:fieldset>
             <p/>
             <!-- FIN CONFIGURACION CATEGORIA -->
-            
+
         </h:form>
     </ui:define>
 </ui:composition>
